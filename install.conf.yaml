@@ -1,0 +1,51 @@
+- defaults:
+    link:
+      create: true
+      relink: true
+
+- clean: ["~"]
+
+- link:
+    ~/.config/:
+      glob: true
+      path: config/*
+    ~/.zshrc: zshrc/.zshrc
+    ~/.zprofile: zshrc/.zprofile
+    ~/.zshenv: zshrc/.zshenv
+    ~/.local/bin/t: config/taskfile/t.sh
+- create:
+    - ~/.config
+    - ~/.local/bin
+
+- shell:
+    - [git submodule update --init --recursive, Installing submodules]
+    - [chmod u+x -R ~/.local/bin]
+
+- if:
+    cond: "grep -Eq WSL2 /proc/version"
+    met:
+      - create:
+          - ~/winhome/.config/wezterm/
+      - shell:
+          - cp -r config/wezterm/* ~/winhome/.config/wezterm/
+
+# WORK enviroment specific files
+- if:
+    cond: "hostname | grep -Eq MTL"
+    met:
+      - shell:
+          - echo "⚒  Work enviroment detected"
+      - link:
+          ~/.gitconfig:
+            path: work/gitconfig/.gitconfig
+          ~/.gitignore:
+            path: work/gitconfig/.gitignore
+          ~/.config/work/:
+            glob: true
+            path: work/config/*
+    unmet:
+      - link:
+          ~/.gitconfig:
+            path: gitconfig/.gitconfig
+          ~/.gitignore:
+            path: gitconfig/.gitignore

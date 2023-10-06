@@ -1,0 +1,12 @@
+justfile
+Taskfile
+.yalc/
+yalc.lock
+*.local.fb.*
+*.fb.*
+.nvim.lua
+.nvim/*
+.vscode/*
+.vscode/
+lpm.manifest.json
+.ignore

@@ -1,0 +1,8 @@
+[user]
+	email = francis.belanger@gmail.com
+	name = francis.belanger@gmail.com
+[pull]
+	rebase = true
+	autoStash = true
+[core]
+  excludesfile = /home/francis/.gitignore
