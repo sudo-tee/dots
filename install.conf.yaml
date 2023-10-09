@@ -21,10 +21,7 @@
 - create:
     - ~/.config
     - ~/.local/bin
-
-- shell:
-    - [git submodule update --init --recursive, Installing submodules]
-    - [chmod u+x -R ~/.local/bin]
+    - ~/Projects
 
 - if:
     cond: "grep -Eq WSL2 /proc/version"
@@ -54,3 +51,8 @@
             path: gitconfig/.gitconfig
           ~/.gitignore:
             path: gitconfig/.gitignore
+
+- shell:
+    - [git submodule update --init --recursive, Installing submodules]
+    - [chmod u+x -R ~/.local/bin]
+    - [source ~/.zshrc]
