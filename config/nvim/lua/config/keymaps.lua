@@ -14,24 +14,6 @@ map("n", "X", '"_X', { silent = true })
 map("v", "x", '"_x', { silent = true })
 map("v", "X", '"_X', { silent = true })
 
--- Copy to clipboard
-map("v", "<localleader>y", '"+y', { noremap = true, silent = true, desc = "Copy selected text to clipboard" })
-map("n", "<localleader>Y", '"+yg_', { noremap = true, silent = true, desc = "Copy to end of line to clipboard" })
-map("n", "<localleader>y", '"+y', { noremap = true, silent = true, desc = "Copy the current line to clipboard" })
-map("n", "<localleader>yy", '"+yy', { noremap = true, silent = true, desc = "Copy the current line to clipboard" })
-
--- Map <leader>y to copy the default register to the system register
-map("n", "<Leader>y", function()
-  local content = vim.fn.getreg('"')
-  vim.fn.setreg("+", content)
-end, { silent = true, desc = "Sync to system clipboard" })
-
--- Paste from clipboard
-map("n", "<localleader>p", '"+p', { noremap = true, silent = true, desc = "Paste from clipboard" })
-map("n", "<localleader>P", '"+P', { noremap = true, silent = true, desc = "Paste before from clipboard" })
-map("v", "<localleader>p", '"+p', { noremap = true, silent = true, desc = "Paste paste in place from clipboard" })
-map("v", "<localleader>P", '"+P', { noremap = true, silent = true, desc = "Paste from clipboard and indent" })
-
 -- Easier line-wise movement
 map({ "n", "v" }, "gh", "g^")
 map({ "n", "v" }, "gl", "g$")
