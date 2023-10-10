@@ -2,6 +2,8 @@
     link:
       create: true
       relink: true
+    include:
+      isolated: False
 
 - clean: ["~"]
 - link:
@@ -20,6 +22,7 @@
     ~/.local/bin/t: config/taskfile/t.sh
 - create:
     - ~/.config
+    - ~/.config/work
     - ~/.local/bin
     - ~/Projects
 
@@ -32,18 +35,21 @@
       - create:
           - ~/winhome/.config/wezterm/
       - shell:
+          - echo "📁 Copying config files for wezterm"
           - cp -r config/wezterm/* ~/winhome/.config/wezterm/
 
 # WORK enviroment specific files
 - if:
-    cond: "hostname | grep -Eq MTL"
+    cond: '[ "$DOT_ENV" = "work" ]'
     met:
       - shell:
           - echo "⚒  Work enviroment detected"
       - link:
           ~/.gitconfig:
+            force: true
             path: work/gitconfig/.gitconfig
           ~/.gitignore:
+            force: true
             path: work/gitconfig/.gitignore
           ~/.config/work/:
             glob: true
@@ -51,8 +57,10 @@
     unmet:
       - link:
           ~/.gitconfig:
+            force: true
             path: gitconfig/.gitconfig
           ~/.gitignore:
+            force: true
             path: gitconfig/.gitignore
 
 - shell:
