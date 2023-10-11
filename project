@@ -5,5 +5,4 @@ set -e
 export PROJECT=$1
 export PROJECT_GIT=$2
 export CONFIG="stages/project.conf.yaml"
-echo $PROJECT $PROJECT_GIT
 ./install

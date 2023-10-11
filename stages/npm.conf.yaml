@@ -15,4 +15,5 @@
         else
           echo "⌛ Installing global npm packages"
           npm install -g @antfu/ni pnpm eslint prettier node-ts typescript yarn jsdom vitest npkill
+          touch .state/npm.skip
         fi

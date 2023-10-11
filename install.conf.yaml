@@ -39,21 +39,13 @@
     - [CONFIG="stages/npm.conf.yaml" ./install]
 
 - shell:
-    - description: "💫💫💫  WINHOME 💫💫💫"
-      command: |
-        if  [ -e "$HOME/winhome" ]; then
-          mkdir -p  ~/winhome/.config/wezterm/
-          echo "📁 Copying config files for wezterm"
-          cp -r config/wezterm/* ~/winhome/.config/wezterm/
-        else
-          echo "Nothing to do"
-        fi
+    - [CONFIG="stages/winhome.conf.yaml" ./install]
 
 - shell:
     - description: "💫💫💫 Running $DOT_ENV install file 💫💫💫"
       command: |
         echo "⚒  [${DOT_ENV}] enviroment detected"
-        if [ -d $DOT_ENV ]; then
+        if [ -d "./$DOT_ENV" ]; then
           CONFIG=${DOT_ENV}/install.conf.yaml ./install
         else
           echo "⚠️ ⚒  No installation file for env [${DOT_ENV}]"

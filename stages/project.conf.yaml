@@ -15,10 +15,8 @@
         if  [ -d "$HOME/Projects/$PROJECT" ]; 
         then
           cd "$HOME/Projects/$PROJECT" 
-          echo "pulling $(pwd)"
           git pull;
         else 
-          echo "cloning $(pwd)"
           git clone $PROJECT_GIT "$HOME/Projects/$PROJECT";
         fi
 
@@ -31,7 +29,11 @@
 - link:
     ~/Projects/${PROJECT}/:
       glob: true
-      path: $DOT_ENV/overlays/${PROJECT}/*
+      path: $DOT_ENV/overlays/${PROJECT}/**/*
+
+    ~/Projects/${PROJECT}/:
+      glob: true
+      path: $DOT_ENV/overlays/${PROJECT}/**/.*
 
 - shell:
     - description: "📦 Post install"
