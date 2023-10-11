@@ -1,0 +1,9 @@
+- defaults:
+    shell:
+      quiet: true
+      stdout: true
+      stderr: true
+
+- shell:
+    - desctiption: "Running Post Installation"
+      command: cd ~/Projects/lpm/ && ni && nr build && npm link

@@ -1,0 +1,9 @@
+#!/usr/bin/env bash
+
+set -e
+
+export PROJECT=$1
+export PROJECT_GIT=$1
+export CONFIG="stages/project.conf.yaml"
+
+./install

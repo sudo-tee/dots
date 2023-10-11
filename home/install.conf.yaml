@@ -1,0 +1,35 @@
+- defaults:
+    link:
+      create: true
+      relink: true
+    shell:
+      stdout: true
+      stderr: true
+      quiet: true
+
+- shell:
+    - [echo "✨ Configuring home env"]
+    - [chmod u+x projects_run.sh]
+
+- link:
+    ~/.gitconfig:
+      force: true
+      path: home/gitconfig/.gitconfig
+    ~/.gitignore:
+      force: true
+      path: home/gitconfig/.gitignore
+    ~/.config/local/zsh/:
+      force: true
+      glob: true
+      path: work/config/zsh/*
+
+- shell:
+    - [echo "🤖 Installing projects"]
+
+- shell:
+    - description: "LPM"
+      command: |
+        ./project lpm  git@github.com:sudo-tee/lpm.git
+
+- shell:
+    - [source ~/.zshrc]
