@@ -33,6 +33,7 @@
     - ~/.config/local/zsh
     - ~/.local/bin
     - ~/Projects
+    - .state
 
 - shell:
     - description: "💫💫💫  NPM Packages 💫💫💫"
