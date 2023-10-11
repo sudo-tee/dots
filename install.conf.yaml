@@ -36,14 +36,7 @@
     - .state
 
 - shell:
-    - description: "💫💫💫  NPM Packages 💫💫💫"
-      command: |
-        if  [ -e ".state/npm.skip" ]; then
-          echo "😎 Skipping npm install"
-        else
-          echo "⌛ Installing global npm packages"
-          npm install -g @antfu/ni pnpm eslint prettier node-ts typescript yarn jsdom vitest npkill
-        fi
+    - [CONFIG="stages/npm.conf.yaml" ./install]
 
 - shell:
     - description: "💫💫💫  WINHOME 💫💫💫"
