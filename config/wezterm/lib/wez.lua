@@ -13,8 +13,6 @@ function M.switch_workspace(name, win, pane)
 		pane
 	)
 
-	wezterm.sleep_ms(1000)
-
 	local workspace_win = u.find(mux.all_windows(), function(mux_window)
 		return mux_window:get_workspace() == mux.get_active_workspace()
 	end)
@@ -43,18 +41,18 @@ function M.load_layout(name, window, pane)
 		end
 
 		if workspace_win then
-			M.apply_layout(workspace_win, layout)
+			M.apply_layout(window, layout)
 		end
 	end
 end
 
 function M.apply_layout(win, layout)
+	wezterm.sleep_ms(1000)
+
 	local main_pane = win:active_pane()
 
-	wezterm.time.call_after(1, function()
-		main_pane:send_text("cd " .. layout.cwd .. "\n")
-		main_pane:send_text(layout.command .. "\n")
-	end)
+	main_pane:send_text("cd " .. layout.cwd .. "\n")
+	main_pane:send_text(layout.command .. "\n")
 
 	local current_pane = main_pane
 	for _, pane_config in pairs(layout.panes) do
@@ -62,18 +60,13 @@ function M.apply_layout(win, layout)
 			size = pane_config.size,
 			direction = pane_config.direction,
 		})
-		pane_config.pane = current_pane
+
+		local cwd = pane_config.cwd or layout.cwd
+		current_pane:send_text("cd " .. cwd .. "\n")
+		current_pane:send_text(pane_config.command .. "\n")
 	end
-
-	wezterm.time.call_after(1, function()
-		for _, pane_config in pairs(layout.panes) do
-			local cwd = pane_config.cwd or layout.cwd
-
-			pane_config.pane:send_text("cd " .. cwd .. "\n")
-			pane_config.pane:send_text(pane_config.command .. "\n")
-		end
-	end)
 
 	main_pane:activate()
 end
+
 return M
