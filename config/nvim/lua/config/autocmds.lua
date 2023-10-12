@@ -23,10 +23,6 @@ vim.api.nvim_create_autocmd("FocusLost", {
   pattern = "*",
   callback = function()
     vim.api.nvim_set_option("mouse", "")
-    local content = vim.fn.getreg('"')
-    if content ~= "" then
-      vim.fn.setreg("+", content)
-    end
   end,
 })
 
