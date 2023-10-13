@@ -21,7 +21,7 @@
     ~/.config/local/zsh/:
       force: true
       glob: true
-      path: work/config/zsh/*
+      path: home/config/zsh/*
 
 - shell:
     - [echo "🤖 Installing projects"]
