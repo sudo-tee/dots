@@ -20,6 +20,9 @@
     ~/.zshenv:
       force: true
       path: zshrc/.zshenv
+    ~/.tmux.conf:
+      force: true
+      path: tmuxconf/tmux.conf
     ~/.gitconfig:
       force: true
       path: gitconfig/.gitconfig
