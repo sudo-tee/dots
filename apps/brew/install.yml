@@ -1,0 +1,26 @@
+- defaults:
+    link:
+      create: true
+      relink: true
+    shell:
+      stdout: true
+      stderr: true
+      quiet: true
+
+- clean: ["~"]
+
+- link:
+    ~/.config/zsh/includes/_brew.sh:
+      force: true
+      path: apps/brew/_brew.sh
+- shell:
+    - description: "💫💫💫  installing brew 💫💫💫"
+      command: |
+        if  [ -e ".state/brew.skip" ]; then
+          echo "😎 Skipping tmp install"
+        else
+          echo "⌛ Installing brew"
+          NONINTERACTIVE=1 /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+          eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
+          touch .state/brew.skip
+        fi
