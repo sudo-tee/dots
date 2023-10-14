@@ -1,0 +1,28 @@
+- defaults:
+    link:
+      create: true
+      relink: true
+    shell:
+      stdout: true
+      stderr: true
+      quiet: true
+
+- clean: ["~"]
+- create:
+    - "$HOME/.config/smug"
+- link:
+    ~/.config/smug:
+      force: true
+      glob: true
+      path: apps/smug/config/*
+
+- shell:
+    - description: "💫💫💫  Installing smug for tmux 💫💫💫"
+      command: |
+        if  [ -e ".state/smug.skip" ]; then
+          echo "😎 Skipping smug install"
+        else
+          echo "⌛ Installing smug for tmux"
+          brew install smug
+          touch .state/smug.skip
+        fi

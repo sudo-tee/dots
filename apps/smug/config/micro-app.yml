@@ -1,0 +1,17 @@
+session: micro-app 
+
+root: /home/francis/Projects/react-micro-app
+
+before_start:
+  
+stop:
+
+
+windows:
+  - name: code
+    layout: main-horizontal
+    commands:
+      - nvim
+    panes:
+      - type: horizontal
+      - type: vertical
