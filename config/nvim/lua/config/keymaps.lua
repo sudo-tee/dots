@@ -151,7 +151,7 @@ end)
 map("t", "<C-o>", "<C-\\><C-n>", { noremap = true })
 
 -- Wezterm session switch
-map({ "n", "i", "v" }, "<C-\\>", "<cmd>Ws<cr>")
+-- map({ "n", "i", "v" }, "<C-\\>", "<cmd>Ws<cr>")
 
 -- Map arrow keys for wildmenu completion
 vim.api.nvim_set_keymap("c", "<Down>", 'v:lua.get_wildmenu_key("<right>", "<down>")', { expr = true })

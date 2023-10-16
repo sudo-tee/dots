@@ -1,0 +1,5 @@
+#!/bin/bash
+source "$HOME/.config/zsh/wezterm.sh"
+echo "$@" >~/winhome/.config/wezterm/xdg-start
+
+wezterm_send_user_command "start" ""

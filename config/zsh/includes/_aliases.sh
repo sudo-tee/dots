@@ -1,5 +1,5 @@
 alias zr="source ~/.zshrc"
-alias za="source $HOME/.config/zsh/aliases.sh"
+alias za="source $HOME/.config/zsh/includes/_aliases.sh"
 alias cl="clear"
 alias ..="cd .."
 alias ...="cd ../.."
