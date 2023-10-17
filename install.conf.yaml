@@ -7,52 +7,20 @@
       quiet: true
 
 - clean: ["~"]
-- link:
-    ~/.config/:
-      glob: true
-      path: config/*
-    ~/.zshrc:
-      force: true
-      path: zshrc/.zshrc
-    ~/.zprofile:
-      force: true
-      path: zshrc/.zprofile
-    ~/.zshenv:
-      force: true
-      path: zshrc/.zshenv
-    ~/.gitconfig:
-      force: true
-      path: gitconfig/.gitconfig
-    ~/.gitignore:
-      force: true
-      path: gitconfig/.gitignore
-    ~/.local/bin/t: config/taskfile/t.sh
-    ~/.local/bin/xdg-open: bin/xdg-open
-    ~/.local/bin/xdg-start: bin/xdg-start
-- create:
-    - ~/.config
-    - ~/.config/local
-    - ~/.config/local/zsh
-    - ~/.local/bin
-    - ~/Projects
-    - .state
-# - shell:
-#     - [CONFIG="stages/npm.yaml" ./install]
-#
-# - shell:
-#     - [CONFIG="stages/winhome.yaml" ./install]
-#
-# - shell:
-#     - description: "💫💫💫 Running $DOT_ENV install file 💫💫💫"
-#       command: |
-#         echo "⚒  [${DOT_ENV}] enviroment detected"
-#         if [ -d "./$DOT_ENV" ]; then
-#           CONFIG=${DOT_ENV}/install.yaml ./install
-#         else
-#           echo "⚠️ ⚒  No installation file for env [${DOT_ENV}]"
-#         fi
-#
-# - shell:
-#     - [git submodule update --init --recursive, Installing submodules]
-#     - [chmod u+x -R ~/.local/bin]
-#     - [source ~/.zshrc]
+
+- shell:
+    - [CONFIG="stages/links.yaml" ./install]
+
+- shell:
+    - [CONFIG="stages/npm.yaml" ./install]
+
+- shell:
+    - [CONFIG="stages/env.yaml" ./install]
+
+- shell:
+    - [CONFIG="stages/winhome.yaml" ./install]
+
+- shell:
+    - [git submodule update --init --recursive, Installing submodules]
+    - [chmod u+x -R ~/.local/bin]
+    - [source ~/.zshrc]

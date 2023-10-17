@@ -21,6 +21,14 @@
         fi
 
 - shell:
+    - description: "📦 Pre install"
+      command: |
+        if [ -f ${DOT_ENV}/projects/${PROJECT}/pre-install.yaml ]; then 
+          CONFIG="${DOT_ENV}/projects/${PROJECT}/pre-install.yaml" ./install
+        else
+          echo "No pre install file ${DOT_ENV}/projects/${PROJECT}/pre-install.yaml"
+        fi
+- shell:
     - description: "📦 Installing"
       command: |
         cd ~/Projects/${PROJECT}
@@ -29,19 +37,22 @@
 - link:
     ~/Projects/${PROJECT}/:
       glob: true
-      path: $DOT_ENV/overlays/${PROJECT}/**/*
+      force: true
+      path: $DOT_ENV/projects/${PROJECT}/overlays/**/*
 
+- link:
     ~/Projects/${PROJECT}/:
       glob: true
-      path: $DOT_ENV/overlays/${PROJECT}/**/.*
+      force: true
+      path: $DOT_ENV/projects/${PROJECT}/overlays/**/.*
 
 - shell:
     - description: "📦 Post install"
       command: |
-        if [ -f ${DOT_ENV}/_${PROJECT}.yaml ]; then 
-          CONFIG="${DOT_ENV}/_${PROJECT}.yaml" ./install
+        if [ -f ${DOT_ENV}/projects/${PROJECT}/post-install.yaml ]; then
+          CONFIG="${DOT_ENV}/projects/${PROJECT}/post-install.yaml" ./install
         else
-          echo "No Post install file ${DOT_ENV}/_${PROJECT}.yaml"
+          echo "No Post install file ${DOT_ENV}/projects/${PROJECT}/post-install.yaml"
         fi
 
 - shell:
