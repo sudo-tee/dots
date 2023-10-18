@@ -10,7 +10,7 @@
         if  [ -e ".state/nvr.skip" ]; then
           echo "😎 Skipping nvr install"
         else
-          echo "⌛ Installing nvr for tmux"
+          echo "⌛ Installing nvr"
           brew install nvr
           touch .state/nvr.skip
         fi
