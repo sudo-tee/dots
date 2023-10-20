@@ -5,6 +5,7 @@ plug "zsh-users/zsh-autosuggestions"
 plug "zap-zsh/supercharge"
 plug "zap-zsh/zap-prompt"
 plug "zsh-users/zsh-syntax-highlighting"
+plug "zsh-users/zsh-history-substring-search"
 
 # Load and initialise completion system
 [ ! "$(find ~/.zcompdump -mtime 1)" ] || compinit
