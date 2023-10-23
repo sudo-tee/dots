@@ -1,8 +1,8 @@
 #!/bin/bash
-
-fdfind -t l -H | while read -r link; do
-	real_path=$(readlink -f "$link")
-	if [[ $real_path == *"/home/francis/dots"* && $real_path == *"overlays"* ]]; then
-		echo $link
-	fi
-done
+fdfind -HI -l -t l . -E node_modules | grep overlays | awk '{print $9}'
+# fdfind -HI -t l -E node_modules | while read -r link; do
+# 	real_path=$(readlink -f "$link")
+# 	if [[ $real_path == *"/home/francis/dots"* && $real_path == *"overlays"* ]]; then
+# 		echo $link
+# 	fi
+# done
