@@ -6,6 +6,8 @@ alias ...="cd ../.."
 alias .3="cd ../../.."
 alias .4="cd ../../../.."
 
+alias nvim="IS_NVIM=true wezterm_run_prog nvim"
+
 alias up="sudo dnf distro-sync"
 
 if [[ -f "/usr/local/bin/win32yank.exe" ]]; then

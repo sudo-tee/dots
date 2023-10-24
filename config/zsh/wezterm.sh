@@ -1,3 +1,6 @@
+export WEZTERM_CONFIG_DIR="~/winhome/.config/wezterm/"
+export WEZTERM_CONFIG_TMP_DIR="~/winhome/.config/wezterm/tmp"
+
 # This function emits an OSC 1337 sequence to set a user var
 # associated with the current terminal pane.
 # It requires the `base64` utility to be available in the path.
@@ -39,10 +42,20 @@ wezterm_send_user_command() {
 	fi
 }
 
-function _run_prog() {
+wezterm_write_to_temp_dir() {
+	local file_name = "msg.$RANDOM"
+
+	mkdir -p $WEZTERM_CONFIG_TMP_DIR
+
+	cat "$1" >"$WEZTERM_CONFIG_TMP_DIR/$file_name"
+
+	echo $file_name
+}
+
+function wezterm_run_prog() {
 	export WEZTERM_PROG="$1"
 	# set PROG to the program being run
-	__wezterm_set_user_var "PROG" "$1"
+	wezterm_set_user_var "PROG" "$1"
 
 	# arrange to clear it when it is done
 	trap '__wezterm_set_user_var PROG ""' EXIT

@@ -3,6 +3,9 @@ local M = {}
 M.commands = {
   OpenWorkspace = "w:open",
   CreateWorkspace = "w:create",
+  Open = "open",
+  Start = "start",
+  ActivatePaneDirection = "p:activate",
 }
 
 local function base64_encode(data)
@@ -70,10 +73,18 @@ function M.send_user_command(command, payload)
   M.send_user_var("uc", json_payload)
 end
 
-function M.open_url() end
+function M.open_url(url)
+  M.send_user_command("open")
+end
+
+function M.write_to_wezterm_tmp_dir() end
 
 function M.switch_workspace(workspace)
   M.send_user_command(M.commands.OpenWorkspace, workspace)
+end
+
+function M.activate_pane_direction(direction)
+  M.send_user_command(M.commands.ActivatePaneDirection, direction)
 end
 
 function M.kill_workspace(workspace)
