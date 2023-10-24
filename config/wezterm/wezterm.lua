@@ -40,8 +40,10 @@ wezterm.on("update-status", function(window, pane)
 	local cwd = pane:get_current_working_dir()
 	cwd = cwd and basename(cwd) or ""
 	-- Current command
+	local vars = pane:get_user_vars()
 	local cmd = pane:get_foreground_process_name()
-	cmd = cmd and basename(cmd) or ""
+	cmd = cmd and basename(cmd)
+	cmd = cmd or vars["PROG"] or ""
 
 	-- Time
 	local time = wezterm.strftime("%H:%M")
@@ -213,24 +215,24 @@ return {
 
 			action = wezterm.action_callback(function(w, p) end),
 		},
-	},
-	-- move between split panes
-	smart_splits.split_nav("move", "h"),
-	smart_splits.split_nav("move", "j"),
-	smart_splits.split_nav("move", "k"),
-	smart_splits.split_nav("move", "l"),
-	smart_splits.split_nav("move", "LeftArrow"),
-	smart_splits.split_nav("move", "DownArrow"),
-	smart_splits.split_nav("move", "UpArrow"),
-	smart_splits.split_nav("move", "RightArrow"),
+		-- move between split panes
+		smart_splits.split_nav("move", "h"),
+		smart_splits.split_nav("move", "j"),
+		smart_splits.split_nav("move", "k"),
+		smart_splits.split_nav("move", "l"),
+		smart_splits.split_nav("move", "LeftArrow"),
+		smart_splits.split_nav("move", "DownArrow"),
+		smart_splits.split_nav("move", "UpArrow"),
+		smart_splits.split_nav("move", "RightArrow"),
 
-	-- resize panes
-	smart_splits.split_nav("resize", "h"),
-	smart_splits.split_nav("resize", "j"),
-	smart_splits.split_nav("resize", "k"),
-	smart_splits.split_nav("resize", "l"),
-	smart_splits.split_nav("resize", "LeftArrow"),
-	smart_splits.split_nav("resize", "DownArrow"),
-	smart_splits.split_nav("resize", "UpArrow"),
-	smart_splits.split_nav("resize", "RightArrow"),
+		-- resize panes
+		smart_splits.split_nav("resize", "h"),
+		smart_splits.split_nav("resize", "j"),
+		smart_splits.split_nav("resize", "k"),
+		smart_splits.split_nav("resize", "l"),
+		smart_splits.split_nav("resize", "LeftArrow"),
+		smart_splits.split_nav("resize", "DownArrow"),
+		smart_splits.split_nav("resize", "UpArrow"),
+		smart_splits.split_nav("resize", "RightArrow"),
+	},
 }
