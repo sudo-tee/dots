@@ -4,16 +4,16 @@
 --
 vim.g.maplocalleader = "\\"
 
-local opt = vim.opt
-
 vim.o.background = "dark"
+
+vim.opt.autowrite = true -- Enable auto write
+vim.opt.clipboard = nil -- Don't Sync with system clipboard
+vim.opt.scrolloff = math.floor(0.5 * vim.o.lines)
+
 vim.g.is_wsl = vim.fn.has("unix")
   and vim.fn.has("wsl")
   and vim.fn.executable("win32yank.exe") == 1
   and vim.loop.os_uname().sysname == "Linux"
-
-opt.autowrite = true -- Enable auto write
-opt.clipboard = nil -- Don't Sync with system clipboard
 
 -- If wsl is detected
 if vim.g.is_wsl then
@@ -32,7 +32,6 @@ if vim.g.is_wsl then
 end
 
 -- keep the buffer centered on screen the best it can
-vim.opt.scrolloff = math.floor(0.5 * vim.o.lines)
 
 -- Allow misspellings
 vim.cmd.cnoreabbrev("qw", "wq")
