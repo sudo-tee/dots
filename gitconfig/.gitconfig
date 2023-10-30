@@ -7,3 +7,9 @@
 	autoStash = true
 [core]
   excludesfile = /home/francis/.gitignore
+[alias]
+  co = checkout
+  ll = log --oneline
+  F  = git push --force-with-lease
+  last = log -1 HEAD --stat
+
