@@ -23,7 +23,7 @@
     - [CONFIG="stages/env.yaml" ./install]
 
 - shell:
-    - [CONFIG="stages/winhome.yaml" ./install]
+    - [CONFIG="winhome/install.yaml" ./install]
 
 - shell:
     - [git submodule update --init --recursive, Installing submodules]
