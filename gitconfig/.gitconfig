@@ -5,6 +5,8 @@
 	autoStash = true
 [rebase]
 	autoStash = true
+[push]
+  autoSetupRemote = true
 [core]
   excludesfile = /home/francis/.gitignore
 [alias]
