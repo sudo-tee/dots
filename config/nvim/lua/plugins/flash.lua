@@ -2,6 +2,9 @@ return {
   "folke/flash.nvim",
   opts = {
     modes = {
+      char = {
+        autohide = true,
+      },
       -- char = {
       --   label = { exclude = "hjkliardcn[]" },
       --   jump_labels = true,
