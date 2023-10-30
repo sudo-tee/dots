@@ -1,5 +1,5 @@
-local add_cmd = vim.api.nvim_create_user_command
-add_cmd("CheckLua", function()
+local cmd = vim.api.nvim_create_user_command
+cmd("CheckLua", function()
   local plenary = require("plenary")
   local os_env_path = os.getenv("PATH")
 
@@ -103,6 +103,32 @@ function _G.create_jira_link(ticket)
   vim.api.nvim_put({ link }, "c", true, true)
   vim.api.nvim_win_set_cursor(0, cursor_pos)
 end
+
+-- start profiling
+cmd("StartProfile", function()
+  vim.cmd([[profile start profile.log]])
+  vim.cmd([[profile func *]])
+  vim.cmd([[profile file *")]])
+  -- vim.cmd([[set more | verbose function {function_name}]])
+  print("Profilling...")
+end, {})
+
+cmd("StopProfile", function()
+  vim.cmd("profile stop")
+  print("End of profilling, opening results")
+  vim.cmd("e profile.log")
+end, {})
+
+local isProfiling = false
+cmd("ToggleProfile", function()
+  if isProfiling then
+    vim.cmd("StopProfile")
+    isProfiling = false
+  else
+    vim.cmd("StartProfile")
+    isProfiling = true
+  end
+end, {})
 
 vim.cmd("command! -nargs=1 JiraLink lua _G.create_jira_link(<f-args>)")
 vim.cmd("command! Ws lua require('lib.wezterm').WeztermSwitchWorkspace()")
