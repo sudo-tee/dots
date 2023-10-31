@@ -4,7 +4,7 @@
 --
 
 local function map(mode, lhs, rhs, opts)
-  local options = { noremap = true }
+  local options = { noremap = true, silent = true }
   if opts then
     options = vim.tbl_extend("force", options, opts)
   end
@@ -158,21 +158,21 @@ map(
   "n",
   "<leader>rw",
   [[:%s/\<<C-r><C-w>\>/<C-r><C-w>/gI<Left><Left><Left>]],
-  { desc = "Replace all instances of word under cursor" }
+  { silent = false, desc = "Replace all instances of word under cursor" }
 )
 -- replace all instances selected with shift + *
-map("n", "<Leader>rz", [[:%s///g<Left><Left>]], { desc = "Replace all * search" })
+map("n", "<Leader>rz", [[:%s///g<Left><Left>]], { silent = false, desc = "Replace all * search" })
 map("n", "g*", "*Ncgn", { desc = "Change word with . repeat" })
 
-map("x", "<Leader>rz", ":s///g<Left><Left>", { desc = "Replace selected * search " })
+map("x", "<Leader>rz", ":s///g<Left><Left>", { silent = false, desc = "Replace selected * search " })
 
 -- Put vim command output into buffer
-map("n", "g!", ":put=execute('')<Left><Left>", { desc = "Paste Command" })
+map("n", "g!", ":put=execute('')<Left><Left>", { silent = false, desc = "Paste Command" })
 
 -- Helper to create a jira link
-map("v", "<localleader>jl", ':JiraLink <C-R>"<CR>', { desc = "Create a jira link in markdown" })
+map("v", "<localleader>jl", ':JiraLink <C-R>"<CR>', { silent = false, desc = "Create a jira link in markdown" })
 
-map("n", "<localleader>jl", ":JiraLink ", { desc = "Create a jira link in markdown" })
-map("n", "<localleader>jl", ":JiraLink ", { noremap = true, desc = "Create a jira link in markdown" })
+map("n", "<localleader>jl", ":JiraLink ", { silent = false, desc = "Create a jira link in markdown" })
+map("n", "<localleader>jl", ":JiraLink ", { silent = false, noremap = true, desc = "Create a jira link in markdown" })
 
-map("n", "<leader>uz", ":ToggleProfile<cr>", { noremap = true, desc = "Start a profilling session" })
+map("n", "<leader>uz", ":ToggleProfile<cr>", { silent = false, noremap = true, desc = "Start a profilling session" })
