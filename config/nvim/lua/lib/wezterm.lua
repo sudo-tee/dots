@@ -75,6 +75,8 @@ function M.send_user_command(command, payload)
 end
 
 function M.open_url(url)
+  pcall(vim.fn.system, "xdg-open " .. url)
+  --
   M.send_user_command("open")
 end
 
