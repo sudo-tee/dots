@@ -14,5 +14,26 @@ return {
       inc_rename = false, -- enables an input dialog for inc-rename.nvim
       lsp_doc_border = true, -- add a border to hover docs and signature help
     },
+    routes = {
+      {
+        view = "mini",
+        filter = {
+          any = {
+            { event = "msg_show", find = "written" },
+            { event = "msg_show", find = "%d+ lines, %d+ bytes" },
+            { event = "msg_show", find = "%d+ fewer lines" },
+            { event = "msg_show", find = "%d+ more lines" },
+            { event = "msg_show", find = "%d+ more lines" },
+            { event = "msg_show", find = "%d+L, %d+B" },
+            { event = "msg_show", find = "^Hunk %d+ of %d" },
+            { event = "msg_show", find = "%d+ change" },
+            { event = "msg_show", find = "%d+ line" },
+            { event = "msg_show", find = "%d+ more line" },
+            { event = "notify", find = "Config Change" },
+            { event = "notify", find = "Config file" },
+          },
+        },
+      },
+    },
   },
 }
