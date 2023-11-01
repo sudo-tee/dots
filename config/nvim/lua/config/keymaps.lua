@@ -150,7 +150,17 @@ end, { desc = "Generate a sharing message for MR" })
 
 -- Close any floating window
 map({ "n", "i", "t" }, "<A-q>", function()
-  require("lib.utils").close_float_windows()
+  local utils = require("lib.utils")
+  if utils.has_float_window() then
+    return utils.close_float_windows()
+  end
+
+  if utils.is_buffer_in_split() then
+    vim.cmd("quit")
+    return
+  end
+
+  require("mini.bufremove").delete(0, false)
 end, { desc = "Close floating windows" })
 
 -- Replace word under cursor across entire buffer
