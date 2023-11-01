@@ -103,10 +103,6 @@ end, { desc = "Find predefined macros" })
 map("n", "<M-Right>", ":bn<cr>", { desc = "Next buffer" })
 map("n", "<M-Left>", ":bp<cr>", { desc = "Previous buffer" })
 
-map("n", "<C-x>", function()
-  require("mini.bufremove").delete(0, false)
-end, { desc = "Delete Buffer" })
-
 --buffers swap
 map("n", "<leader>b<Left>", function()
   require("smart-splits").swap_buf_left()
@@ -148,7 +144,7 @@ map("n", "<leader>glc", function()
   require("lib.gitlab").generate_chat_message_for_mr()
 end, { desc = "Generate a sharing message for MR" })
 
--- Close any floating window
+-- Close anything order: floating window | splits | buffer
 map({ "n", "i", "t" }, "<A-q>", function()
   local utils = require("lib.utils")
   if utils.has_float_window() then
