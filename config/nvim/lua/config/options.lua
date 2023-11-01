@@ -7,29 +7,8 @@ vim.g.maplocalleader = "\\"
 vim.o.background = "dark"
 
 vim.opt.autowrite = true -- Enable auto write
-vim.opt.clipboard = nil -- Don't Sync with system clipboard
+vim.opt.clipboard = "" -- Don't Sync with system clipboard
 vim.opt.scrolloff = math.floor(0.5 * vim.o.lines)
-
-vim.g.is_wsl = vim.fn.has("unix")
-  and vim.fn.has("wsl")
-  and vim.fn.executable("win32yank.exe") == 1
-  and vim.loop.os_uname().sysname == "Linux"
-
--- If wsl is detected
-if vim.g.is_wsl then
-  vim.g.clipboard = {
-    name = "win32yank_nvim",
-    copy = {
-      ["+"] = "win32yank.exe -i --crlf",
-      ["*"] = "win32yank.exe -i --crlf",
-    },
-    paste = {
-      ["+"] = "win32yank.exe -o --lf",
-      ["*"] = "win32yank.exe -o --lf",
-    },
-    cache_enabled = 1,
-  }
-end
 
 -- keep the buffer centered on screen the best it can
 
