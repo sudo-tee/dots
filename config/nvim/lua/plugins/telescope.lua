@@ -73,13 +73,15 @@ return {
         "nvim-lua/plenary.nvim",
         "debugloop/telescope-undo.nvim",
         "molecule-man/telescope-menufacture",
+        "radyz/telescope-gitsigns",
       },
     },
     branch = "master",
     keys = {
       -- add a keymap to browse plugin files
       -- stylua: ignore
-      { '<leader>fr', "<cmd>Telescope registers<cr>", desc = "Registers" },
+      { '<leader>fh', "<cmd>Telescope git_signs<cr>", desc = "Git hunks" },
+      { "<leader>fr", "<cmd>Telescope registers<cr>", desc = "Registers" },
       { "<leader>fj", "<cmd>Telescope jumplist<cr>", desc = "Jumplist" },
       { "<leader>/", "<cmd>Telescope current_buffer_fuzzy_find<cr>", desc = "Current Buffer Fuzzy" },
       {
@@ -163,7 +165,7 @@ return {
         desc = "Find project overlays",
       },
       {
-        "<leader>fh",
+        "<leader>fu",
         "<cmd>Telescope undo<cr>",
         desc = "Undo history",
       },
@@ -295,6 +297,7 @@ return {
       require("telescope").setup(opts)
       require("telescope").load_extension("undo")
       require("telescope").load_extension("menufacture")
+      require("telescope").load_extension("git_signs")
     end,
   },
 }
