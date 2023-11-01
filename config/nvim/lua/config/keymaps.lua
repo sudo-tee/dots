@@ -120,9 +120,6 @@ end)
 -- in terminal mode fast switch to normal mode
 map("t", "<C-o>", "<C-\\><C-n>")
 
--- Wezterm session switch
--- map({ "n", "i", "v" }, "<C-\\>", "<cmd>Ws<cr>")
-
 -- Map arrow keys for wildmenu completion
 vim.api.nvim_set_keymap("c", "<Down>", 'v:lua.get_wildmenu_key("<right>", "<down>")', { expr = true })
 vim.api.nvim_set_keymap("c", "<Up>", 'v:lua.get_wildmenu_key("<left>", "<up>")', { expr = true })

@@ -131,7 +131,6 @@ cmd("ToggleProfile", function()
 end, {})
 
 vim.cmd("command! -nargs=1 JiraLink lua _G.create_jira_link(<f-args>)")
-vim.cmd("command! Ws lua require('lib.wezterm').WeztermSwitchWorkspace()")
 vim.cmd("command! -nargs=? TermShell lua _G.Term(<q-args>)")
 vim.cmd("command! -nargs=? TermPopup lua _G.TermPopup(<q-args>)")
 vim.cmd("command! -nargs=?  T lua _G.RunTask(<q-args>)")
