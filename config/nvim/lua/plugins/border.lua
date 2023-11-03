@@ -30,6 +30,9 @@ return {
     opts = function(_, opts)
       -- Set LspInfo border
       require("lspconfig.ui.windows").default_options.border = BORDER_STYLE
+      vim.lsp.handlers["textDocument/hover"] = vim.lsp.with(vim.lsp.handlers.hover, {
+        border = "rounded",
+      })
 
       vim.diagnostic.open_float = (function(orig)
         return function(opts)
@@ -65,7 +68,7 @@ return {
     "gitsigns.nvim",
     opts = {
       preview_config = {
-        border = "single",
+        border = "rounded",
       },
     },
   },
