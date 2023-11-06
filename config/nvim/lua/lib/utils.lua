@@ -91,7 +91,7 @@ function M.smart_close()
   require("mini.bufremove").delete(0, false)
 end
 
-M.read_file = function(path)
+function M.read_file(path)
   local open = io.open
   local file = open(path, "rb") -- r read mode and b binary mode
   if not file then
@@ -100,6 +100,13 @@ M.read_file = function(path)
   local content = file:read("*a") -- *a or *all reads the whole file
   file:close()
   return content
+end
+
+function M.git_default_branch()
+  local handle = io.popen("basename $(git symbolic-ref refs/remotes/origin/HEAD) | tr -d '\n\r'")
+  local result = handle:read("*a")
+  handle:close()
+  return result
 end
 
 return M

@@ -53,6 +53,13 @@ return {
     cmd = { "DiffviewOpen", "DiffviewFileHistory" },
     keys = {
       { "<leader>gd", "<cmd>DiffviewOpen<CR>", desc = "Git Diff View" },
+      {
+        "<leader>gmd",
+        function()
+          vim.cmd("DiffviewOpen origin/" .. require("lib.utils").git_default_branch() .. "...HEAD")
+        end,
+        desc = "Git Diff MAIN",
+      },
       { "<leader>gfh", "<cmd>DiffviewFileHistory<CR>", desc = "Git Diff File History" },
     },
     opts = function()
