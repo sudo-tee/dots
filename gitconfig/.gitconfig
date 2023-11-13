@@ -14,4 +14,5 @@
   ll = log --oneline
   F  = git push --force-with-lease
   last = log -1 HEAD --stat
+	default-branch = !basename $(git symbolic-ref refs/remotes/origin/HEAD) |  tr -d '\\n\\r'
 
