@@ -65,6 +65,8 @@ local function paste_from_register()
   vim.api.nvim_feedkeys(ctrl_r_key .. quote_key, "n", true)
 end
 
+local ignored = "{.git,.bzr,.svn,.hg,node_modules,dist,deps,build,.cache,.next,out}"
+
 return {
   {
     "nvim-telescope/telescope.nvim",
@@ -131,7 +133,7 @@ return {
       {
         "<leader>fa",
         function()
-          require("telescope").extensions.menufacture.find_files({
+          require("telescope.builtin").find_files({
             hidden = true,
             no_ignore = true,
             prompt_title = "All files",
@@ -148,9 +150,7 @@ return {
       },
       {
         "<C-p>",
-        function()
-          require("telescope").extensions.menufacture.find_files({ cwd = false })
-        end,
+        ":Telescope find_files<cr>",
         desc = "Find files",
       },
       {
@@ -188,7 +188,11 @@ return {
         --   override_generic_sorter = false,
         --   override_file_sorter = true,
         -- },
-
+        preview = {
+          treesitter = false,
+          filesize_limit = 0.1, -- MB
+          highlight_limit = 0.1,
+        },
         hidden = false,
         path_display = { "smart" },
         sorting_strategy = "ascending",
@@ -200,12 +204,6 @@ return {
           preview_cutoff = 120,
         },
         file_ignore_patterns = {
-          ".git/",
-          ".cache",
-          "build/",
-          "dist/",
-          "fonts/",
-          "icons/",
           "%.png",
           "%.jpg",
           "%.gif",
@@ -224,11 +222,6 @@ return {
           "yarn.lock",
           "pnpm-lock.yml",
           "pnpm-lock.yaml",
-          "node_modules/.*",
-          ".chageset/.*",
-          "docs/.*",
-          "dotbot/.*",
-          "dotbot*",
         },
         mappings = {
           i = {
@@ -255,6 +248,55 @@ return {
             end,
             ["<c-h>"] = "which_key",
             ["<esc>"] = "close",
+            ["<a-Down>"] = function(buff)
+              require("telescope.actions").cycle_history_next(buff)
+            end,
+            ["<a-Up>"] = function(buff)
+              require("telescope.actions").cycle_history_prev(buff)
+            end,
+          },
+        },
+      },
+      pickers = {
+        find_files = {
+          cwd = false,
+          -- find_command = {
+          --   "rg",
+          --   "--files",
+          --   "--no-ignore-vcs",
+          --   "--hidden",
+          --   "--follow",
+          --   "--glob",
+          --   "!**/{.git,.bzr,.svn,.hg,CVS,node_modules,dist,deps,build,.cache,.next,out,e2e,icons,fonts,.gitlab,dotbot}/*",
+          -- },
+          find_command = {
+            "fd",
+            "-cnever",
+            "-tf",
+            "-i",
+            "--hidden",
+            "--follow",
+            "--strip-cwd-prefix",
+            "--exclude",
+            ".git",
+            "--exclude",
+            "node_modules",
+            "--exclude",
+            "dist",
+            "--exclude",
+            "build",
+            "--exclude",
+            "icons",
+            "--exclude",
+            "e2e",
+            "--exclude",
+            "dotbot",
+            "--exclude",
+            ".gitlab",
+            "--exclude",
+            ".turbo",
+            "--exclude",
+            ".cache",
           },
         },
       },

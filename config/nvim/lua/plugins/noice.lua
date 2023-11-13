@@ -20,6 +20,15 @@ return {
         view = "mini",
         filter = {
           any = {
+            { event = "notify", find = "Config Change" },
+            { event = "notify", find = "Config file" },
+          },
+        },
+      },
+      {
+        opts = { skip = true },
+        filter = {
+          any = {
             { event = "msg_show", find = "written" },
             { event = "msg_show", find = "%d+ lines, %d+ bytes" },
             { event = "msg_show", find = "%d+ fewer lines" },
@@ -30,15 +39,6 @@ return {
             { event = "msg_show", find = "%d+ change" },
             { event = "msg_show", find = "%d+ line" },
             { event = "msg_show", find = "%d+ more line" },
-            { event = "notify", find = "Config Change" },
-            { event = "notify", find = "Config file" },
-          },
-        },
-      },
-      {
-        opts = { skip = true },
-        filter = {
-          any = {
             { event = "notify", find = "No information available" },
           },
         },

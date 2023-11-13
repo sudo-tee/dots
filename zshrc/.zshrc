@@ -16,6 +16,7 @@ path=(
  ~/.local/share/fnm
  ~/.npm-global/bin
  /usr/local/bin
+ ~/.cargo/bin
  $path
 )
 
@@ -39,4 +40,4 @@ for file in $HOME/.config/zsh/includes/_*; do
     source "$file"
 done
 
-# zprof
+
