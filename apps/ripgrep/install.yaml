@@ -1,0 +1,29 @@
+- defaults:
+    link:
+      create: true
+      relink: true
+    shell:
+      stdout: true
+      stderr: true
+      quiet: true
+
+- clean: ["~"]
+- link:
+    ~/.ripgreprc:
+      force: true
+      glob: true
+      path: apps/ripgrep/config/.ripgreprc
+- link:
+    ~/.config/zsh/includes/_rg.sh:
+      force: true
+      path: apps/ripgrep/_ripgrep.sh
+- shell:
+    - description: "💫💫💫 Installing rg 💫💫💫"
+      command: |
+        if  [ -e ".state/rg.skip" ]; then
+          echo "😎 Skipping rg install"
+        else
+          echo "⌛ Installing rg "
+          brew install rg && \
+          touch .state/rg.skip
+        fi
