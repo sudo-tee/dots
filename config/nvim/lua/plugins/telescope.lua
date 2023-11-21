@@ -194,7 +194,7 @@ return {
           highlight_limit = 0.1,
         },
         hidden = false,
-        path_display = { "smart" },
+        path_display = { "truncate" },
         sorting_strategy = "ascending",
         layout_config = {
           horizontal = { prompt_position = "top", preview_width = 0.55 },
