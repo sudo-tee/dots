@@ -108,15 +108,17 @@ end
 cmd("StartProfile", function()
   vim.cmd([[profile start profile.log]])
   vim.cmd([[profile func *]])
-  vim.cmd([[profile file *")]])
-  -- vim.cmd([[set more | verbose function {function_name}]])
-  vim.notify("Profilling...")
+  vim.cmd([[profile file *]])
+  require("plenary.profile").start("profile-lua.log")
+  vim.notify("Profilling ...")
 end, {})
 
 cmd("StopProfile", function()
   vim.cmd("profile stop")
+  require("plenary.profile").stop()
   vim.notify("End of profilling, opening results")
   vim.cmd("e profile.log")
+  vim.cmd("e profile-lua.log")
 end, {})
 
 local isProfiling = false
