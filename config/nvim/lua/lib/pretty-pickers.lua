@@ -1,7 +1,41 @@
 -- Modifes telescope pickers with path after file like vscode
 -- @see https://github.com/nvim-telescope/telescope.nvim/issues/2014
-
 local M = {}
+
+local kind_icons = {
+  Text = "",
+  String = "",
+  Array = "",
+  Object = "󰅩",
+  Namespace = "",
+  Method = "m",
+  Function = "󰊕",
+  Constructor = "",
+  Field = "",
+  Variable = "󰫧",
+  Class = "",
+  Interface = "",
+  Module = "",
+  Property = "",
+  Unit = "",
+  Value = "⨈",
+  Enum = "",
+  Keyword = "⫯",
+  Snippet = "",
+  Color = "🖌",
+  File = "",
+  Reference = "",
+  Folder = "",
+  EnumMember = "",
+  Constant = "",
+  Struct = "∈",
+  Event = "",
+  Operator = "",
+  TypeParameter = "",
+  Copilot = "🤖",
+  Boolean = "",
+  Package = "▨",
+}
 
 local function get_icon_width()
   local plenary_strings = require("plenary.strings")
@@ -124,7 +158,7 @@ function M.grep_picker_options(options)
   return options
 end
 
-function M.buffer_picker_options(options)
+function M.buffers(options)
   local utils = require("telescope.utils")
   local make_enty = require("telescope.make_entry")
   local entry_display = require("telescope.pickers.entry_display")
@@ -166,8 +200,85 @@ function M.buffer_picker_options(options)
   require("telescope.builtin").buffers(options)
 end
 
-M.buffers = function(options)
-  M.buffer_picker_options({ options = options })
+function M.lsp_document_symbols(options)
+  local make_enty = require("telescope.make_entry")
+  local entry_display = require("telescope.pickers.entry_display")
+
+  options = options or {}
+  assert(type(options) == "table", "Options must be a table.")
+
+  local original_entry_maker = make_enty.gen_from_lsp_symbols(options)
+
+  options.entry_maker = function(line)
+    local original_entry = original_entry_maker(line)
+
+    local displayer = entry_display.create({
+      separator = " ",
+      items = {
+        { width = get_icon_width() },
+        { width = 20 },
+        { remaining = true },
+      },
+    })
+
+    original_entry.display = function(entry)
+      return displayer({
+        string.format("%s", kind_icons[(entry.symbol_type:lower():gsub("^%l", string.upper))]),
+        { entry.symbol_type:lower(), "TelescopeResultsVariable" },
+        { entry.symbol_name, "TelescopeResultsConstant" },
+      })
+    end
+
+    return original_entry
+  end
+
+  require("telescope.builtin").lsp_document_symbols(options)
+end
+
+function M.lsp_dynamic_workspace_symbols(options)
+  local utils = require("telescope.utils")
+  local make_enty = require("telescope.make_entry")
+  local entry_display = require("telescope.pickers.entry_display")
+
+  options = options or {}
+  assert(type(options) == "table", "Options must be a table.")
+
+  local original_entry_maker = make_enty.gen_from_lsp_symbols(options)
+
+  options.entry_maker = function(line)
+    local original_entry = original_entry_maker(line)
+
+    local displayer = entry_display.create({
+      separator = " ",
+      items = {
+        { width = get_icon_width() },
+        { width = 15 },
+        { width = 30 },
+        { width = nil },
+        { remaining = true },
+      },
+    })
+
+    original_entry.display = function(entry)
+      local tail, _ = get_path_and_tail(entry.filename)
+      local display_tail = tail .. " "
+      local display_path = utils.transform_path({
+        path_display = { shorten = { num = 2, exclude = { -2, -1 } }, "truncate" },
+      }, entry.value.filename)
+
+      return displayer({
+        string.format("%s", kind_icons[(entry.symbol_type:lower():gsub("^%l", string.upper))]),
+        { entry.symbol_type:lower(), "TelescopeResultsVariable" },
+        { entry.symbol_name, "TelescopeResultsConstant" },
+        display_tail,
+        { display_path, "TelescopeResultsComment" },
+      })
+    end
+
+    return original_entry
+  end
+
+  require("telescope.builtin").lsp_dynamic_workspace_symbols(options)
 end
 
 M.find_files = function(options)
@@ -179,7 +290,7 @@ M.git_files = function(options)
 end
 
 M.oldfiles = function(options)
-  require("telescope.builtin").git_files(M.file_picker_options(options))
+  require("telescope.builtin").oldfiles(M.file_picker_options(options))
 end
 
 M.live_grep = function(options)
