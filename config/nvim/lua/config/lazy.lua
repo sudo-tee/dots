@@ -40,7 +40,7 @@ require("lazy").setup({
     patterns = {}, -- For example {"folke"}
     fallback = false, -- Fallback to git when local plugin doesn't exist
   },
-  install = { colorscheme = { "tokyonight", "habamax" } },
+  install = { colorscheme = { "kanagawa", "habamax" } },
 
   checker = { enabled = true, notify = false }, -- automatically check for plugin updates
   change_detection = {
