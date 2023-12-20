@@ -88,21 +88,9 @@ end
 
 vim.keymap.set("n", "<leader>tg", neotest_staged_files, { desc = "Test git changed files" })
 
-function _G.create_jira_link(ticket)
-  print(vim.g.jira_host)
-  local jira_url = "https://my-jira-url/browse/"
-
-  if vim.g.jira_host then
-    jira_url = vim.g.jira_host
-  end
-
-  local link = string.format("[%s](%s%s)", ticket, jira_url, ticket)
-
-  local cursor_pos = vim.api.nvim_win_get_cursor(0)
-
-  vim.api.nvim_put({ link }, "c", true, true)
-  vim.api.nvim_win_set_cursor(0, cursor_pos)
-end
+cmd("JiraLink", function(ticket)
+  require("lib.jira").create_jira_link(ticket.fargs[1])
+end, { nargs = "*" })
 
 -- start profiling
 cmd("StartProfile", function()
@@ -132,7 +120,7 @@ cmd("ToggleProfile", function()
   end
 end, {})
 
-vim.cmd("command! -nargs=1 JiraLink lua _G.create_jira_link(<f-args>)")
+-- vim.cmd("command! -nargs=1 JiraLink lua _G.create_jira_link(<f-args>)")
 vim.cmd("command! -nargs=? TermShell lua _G.Term(<q-args>)")
 vim.cmd("command! -nargs=? TermPopup lua _G.TermPopup(<q-args>)")
 vim.cmd("command! -nargs=?  T lua _G.RunTask(<q-args>)")

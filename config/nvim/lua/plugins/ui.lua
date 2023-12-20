@@ -25,6 +25,7 @@ return {
     "folke/which-key.nvim",
     opts = {
       defaults = {
+        ["<leader>p"] = { name = "+project" },
         ["<leader>m"] = { name = "+macros" },
         ["<leader>j"] = { name = "+jump" },
         ["<leader>r"] = { name = "+replace" },

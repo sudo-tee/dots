@@ -48,6 +48,8 @@ map("i", "<S-Tab>", "<gv", { desc = "Indent Right" })
 -- Start an external command with a single bang
 map("n", "!", ":R ", { desc = "Execute Shell Command in the floating term", silent = false })
 
+map("n", "<localleader>g", ":G ", { silent = false })
+
 -- Duplicate lines without affecting PRIMARY and CLIPBOARD selections.
 map("n", "<Leader>d", 'm`""Y""P``', { desc = "Duplicate line" })
 map("x", "<Leader>d", '""Y""Pgv', { desc = "Duplicate selection" })
@@ -166,7 +168,6 @@ map({ "v", "x" }, "<leader>vn", ":norm ", { silent = false })
 
 -- Helper to create a jira link
 map("v", "<localleader>jl", ':JiraLink <C-R>"<CR>', { silent = false, desc = "Create a jira link in markdown" })
-map("n", "<localleader>jl", ":JiraLink ", { silent = false, desc = "Create a jira link in markdown" })
-map("n", "<localleader>jl", ":JiraLink ", { silent = false, noremap = true, desc = "Create a jira link in markdown" })
+map("n", "<localleader>jl", ":JiraLink<CR>", { silent = false, desc = "Create a jira link in markdown" })
 
 map("n", "<leader>uz", ":ToggleProfile<cr>", { silent = false, noremap = true, desc = "Start a profilling session" })

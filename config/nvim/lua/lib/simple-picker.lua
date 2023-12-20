@@ -38,16 +38,16 @@ function M.simple_picker(choices, name, on_select, attach_mappings, opts)
   local get_selection = function()
     return action_state.get_selected_entry()
   end
-
   pickers
     .new(opts, {
+      file_ignore_patterns = {},
       prompt_title = name,
       layout_strategy = "horizontal",
       layout_config = {
         prompt_position = "top",
         horizontal = {
           height = height,
-          width = 0.25,
+          width = 0.4,
         },
       },
       finder = create_finder(choices),
