@@ -1,73 +1,62 @@
 local wezterm = require("wezterm")
+local wez = require("lib.wez")
+local utils = require("lib.utils")
 local act = wezterm.action
-local mux = wezterm.mux
-local u = require("lib.utils")
 
 local M = {}
 
-function M.switch_workspace(name, win, pane, layout)
-	win:perform_action(
-		act.SwitchToWorkspace({
-			name = name,
-			spawn = {
-				cwd = layout and layout.cwd or "",
-			},
-		}),
-		pane
-	)
+M.commands = {
+  OpenWorkspace = "w:open",
+  CreateWorkspace = "w:create",
+  Open = "open",
+  Start = "start",
+  ActivatePaneDirection = "p:activate",
+  ResizePaneDirection = "p:resize",
+  GetClipboard = "getclip",
+}
 
-	local workspace_win = u.find(mux.all_windows(), function(mux_window)
-		return mux_window:get_workspace() == mux.get_active_workspace()
-	end)
+return {
+  [M.commands.OpenWorkspace] = function(window, pane, cmd_context)
+    wezterm.log_info("SWITCHING WORKSPACE", cmd_context)
+    window:perform_action(
+      act.SwitchToWorkspace({
+        name = cmd_context.v,
+      }),
+      pane
+    )
+  end,
 
-	return workspace_win
-end
+  [M.commands.CreateWorkspace] = function(window, pane, cmd_context)
+    wezterm.log_info(cmd_context)
+    wez.switch_workspace(cmd_context.v, window, pane)
+  end,
 
-function M.load_layout(name, window, pane)
-	local projects_dir = u.path_join(os.getenv("HOME"), ".config", "projects")
-	local path = u.path_join(projects_dir, name)
+  [M.commands.Open] = function(window, pane, cmd_context)
+    local home = os.getenv("HOME")
 
-	local layout_file = loadfile(path)
-	wezterm.log_info(path, layout_file)
-	if layout_file then
-		local layout = layout_file()
+    local url = utils.read_file(home .. "\\.config\\wezterm\\xdg-open-url")
 
-		local workspaces = mux.get_workspace_names()
-		local workspace_exists = u.contains(workspaces, layout.name)
+    wezterm.log_info("OPENING URL:" .. url)
 
-		wezterm.log_info("Starting workspace ", layout.name)
+    wezterm.open_with(url)
+  end,
 
-		local workspace_win = M.switch_workspace(layout.name, window, pane, layout)
-		wezterm.sleep_ms(100)
+  [M.commands.Start] = function(window, pane, cmd_context)
+    local home = os.getenv("HOME")
+    local url = utils.read_file(home .. "\\.config\\wezterm\\xdg-start")
 
-		if workspace_exists then
-			return
-		end
+    wezterm.log_info("OPENING :" .. url)
 
-		if workspace_win then
-			M.apply_layout(workspace_win, layout)
-		end
-	end
-end
+    os.execute("start " .. url)
+  end,
 
-function M.apply_layout(win, layout)
-	local main_pane = win:active_pane()
+  [M.commands.ActivatePaneDirection] = function(window, pane, cmd_context)
+    wezterm.log_info("ACTIVATE DIRECTION", cmd_context.v)
+    window:perform_action({ ActivatePaneDirection = cmd_context.v }, pane)
+  end,
 
-	local current_pane = main_pane
-	for _, pane_config in pairs(layout.panes) do
-		local cwd = pane_config.cwd or layout.cwd
-		current_pane = current_pane:split({
-			size = pane_config.size,
-			direction = pane_config.direction,
-			cwd = cwd,
-		})
-
-		wezterm.sleep_ms(100)
-		current_pane:send_text(pane_config.command .. "\n")
-	end
-	wezterm.sleep_ms(100)
-	main_pane:send_text(layout.command .. "\n")
-	main_pane:activate()
-end
-
-return M
+  [M.commands.ResizePaneDirection] = function(window, pane, cmd_context)
+    wezterm.log_info("RESIZE DIRECTION", cmd_context.v)
+    window:perform_action({ AdjustPaneSize = { cmd_context.v, 3 } }, pane)
+  end,
+}
