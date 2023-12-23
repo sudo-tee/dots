@@ -23,9 +23,7 @@ end
 function M.create_new_tab(window, pane, line)
   local cwd = pane:get_current_working_dir()
 
-  window:perform_action(act.SpawnTab("CurrentPaneDomain"), pane)
-
-  local new_pane = window:active_pane()
+  local _, new_pane = window:mux_window():spawn_tab { cwd = cwd }
   wez.ensure_cwd(new_pane, cwd.path)
 end
 
@@ -85,7 +83,7 @@ function M.open_project_workspace(window, pane, line)
   )
 end
 
-function M.create_new_workspace(window)
+function M.create_new_workspace(window, pane, line)
   window:perform_action(act.PromptInputLine({
     description = wezterm.format({
       { Attribute = { Intensity = "Bold" } },
@@ -98,7 +96,7 @@ function M.create_new_workspace(window)
         wez.switch_workspace(line, window, pane)
       end
     end),
-  }))
+  }), pane)
 end
 
 function M.kill_current_wokspace(window, pane, line)

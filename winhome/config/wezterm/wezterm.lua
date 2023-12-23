@@ -24,7 +24,7 @@ wezterm.on("update-status", function(window, pane)
   local cwd = cwd_dir and u.basename(cwd_dir.path) or ""
 
   window:set_left_status(wezterm.format({
-    { Foreground = { Color = colors.kanagawa.special } },
+    { Foreground = { Color = colors.custom.workspace_name } },
     { Text = "  " },
     { Text = wezterm.nerdfonts.oct_table .. "  " .. workspace },
     { Text = " :: " },
