@@ -35,7 +35,7 @@ local function get_current_function_name()
 end
 
 return {
-  "sudo_tee/printer.nvim",
+  "sudo-tee/printer.nvim",
   -- dir = "~/Projects/_nvim/printer.nvim",
   event = { "VeryLazy" },
   keys = {
