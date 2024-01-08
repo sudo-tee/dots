@@ -30,7 +30,7 @@ return {
       adapters = {
         ["neotest-vitest"] = {
           env = { CI = true },
-          vitestCommand = "nr test",
+          -- vitestCommand = "nr test",
           vitestConfigFile = function(path)
             local util = require("neotest-vitest.util")
             local vitestConfigPattern = util.root_pattern("{vitest,vite}.config.{fb.ts,fb.js,js,ts}")
@@ -41,8 +41,8 @@ return {
             end
 
             local possible_files = {
-              -- "vite.config.fb.ts",
-              -- "vitest.config.fb.ts",
+              "vite.config.fb.ts",
+              "vitest.config.fb.ts",
               "vitest.config.ts",
               "vitest.config.js",
               "vite.config.ts",
@@ -57,48 +57,25 @@ return {
             end
           end,
           cwd = function(file)
+            local util = require("neotest-vitest.util")
             if string.find(file, "/packages/") then
               return string.match(file, "(.-/[^/]+/)src")
             end
+
             if string.find(file, "/apps/") then
               return string.match(file, "(.-/[^/]+/)src")
             end
-            return vim.fn.getcwd()
+
+            local cwd = vim.fn.getcwd()
+            if util.path.exists(cwd .. "/package.json") then
+              return vim.fn.getcwd()
+            end
+
+            local current_path = vim.fs.dirname(file)
+            return current_path
           end,
         },
-        -- ["neotest-vim-test"] = {},
-        -- ["neotest-jest"] = {},
       },
     },
-    -- config = function(_, opts)
-    --   local neotest_ns = vim.api.nvim_create_namespace("neotest")
-    --   vim.diagnostic.config({
-    --     virtual_text = {
-    --       format = function(diagnostic)
-    --         -- Replace newline and tab characters with space for more compact diagnostics
-    --         local message = diagnostic.message:gsub("\n", " "):gsub("\t", " "):gsub("%s+", " "):gsub("^%s+", "")
-    --         return message
-    --       end,
-    --     },
-    --   }, neotest_ns)
-    --
-    --   if opts.adapters then
-    --     local adapters = {}
-    --     for name, config in pairs(opts.adapters or {}) do
-    --       if type(name) == "number" then
-    --         adapters[#adapters + 1] = config
-    --       elseif config ~= false then
-    --         local adapter = require(name)
-    --         if type(config) == "table" and not vim.tbl_isempty(config) then
-    --           adapter = adapter(config)
-    --         end
-    --         adapters[#adapters + 1] = adapter
-    --       end
-    --     end
-    --     opts.adapters = adapters
-    --   end
-    --
-    --   require("neotest").setup(opts)
-    -- end,
   },
 }
