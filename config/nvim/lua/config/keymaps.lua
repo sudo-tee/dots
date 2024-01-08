@@ -171,3 +171,12 @@ map("v", "<localleader>jl", ':JiraLink <C-R>"<CR>', { silent = false, desc = "Cr
 map("n", "<localleader>jl", ":JiraLink<CR>", { silent = false, desc = "Create a jira link in markdown" })
 
 map("n", "<leader>uz", ":ToggleProfile<cr>", { silent = false, noremap = true, desc = "Start a profilling session" })
+
+-- Surround shortcuts
+local surrounds = { "{", "}", "[", "]", "(", ")", "'", '"', "`" }
+for _, char in ipairs(surrounds) do
+  map("v", char, function()
+    local c = vim.api.nvim_replace_termcodes(char, true, false, true)
+    vim.api.nvim_feedkeys("aaa" .. c, "v", true)
+  end, {})
+end
