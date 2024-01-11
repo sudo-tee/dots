@@ -41,11 +41,24 @@ return {
   keys = {
     { mode = "n", "gP", "<Plug>(printer_print)iw" },
     {
-      "<localleader>dc",
+      "<localleader>py",
       function()
         vim.fn.setreg([["]], DEFAULT_PRINT_TAG)
+        vim.fn.setreg([[*]], DEFAULT_PRINT_TAG)
+        vim.notify("copied " .. DEFAULT_PRINT_TAG .. "to clipboard")
       end,
       desc = "Copy debug prefix",
+      silent = false,
+    },
+    {
+      "<localleader>pY",
+      function()
+        local print_tag = get_print_tag()
+        vim.fn.setreg([["]], print_tag)
+        vim.fn.setreg([[*]], print_tag)
+        vim.notify("copied " .. print_tag .. "to clipboard")
+      end,
+      desc = "Copy debug prefix + project prefix",
       silent = false,
     },
     {
