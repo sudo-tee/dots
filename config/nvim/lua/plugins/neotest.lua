@@ -24,12 +24,21 @@ return {
       },
     },
     opts = {
+      discovery = {
+        -- enabled = false,
+      },
       -- Can be a list of adapters like what neotest expects,
       -- or a table of adapter names, mapped to adapter configs.
       -- The adapter will then be automatically loaded with the config.
       adapters = {
         ["neotest-vitest"] = {
           env = { CI = true },
+          vitestCommand = function()
+            if vim.g.vitest_command then
+              return vim.g.vitest_command
+            end
+            return "vitest"
+          end,
           -- vitestCommand = "nr test",
           vitestConfigFile = function(path)
             local util = require("neotest-vitest.util")
