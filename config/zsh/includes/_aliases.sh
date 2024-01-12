@@ -12,7 +12,8 @@ function pbpaste() {
 	curl -s $REMOTE_HOST:5173
 }
 
-alias nvim="IS_NVIM=true wezterm_run_prog nvim"
+alias nvim="IS_NVIM=true wezterm_run_prog ~/.local/share/bob/nvim-bin/nvim"
+# alias nvim="IS_NVIM=true wezterm_run_prog nvim"
 
 alias up="sudo apt update && sudo apt dist-upgrade"
 
@@ -36,7 +37,34 @@ mkcd() {
 }
 
 wtp() {
-	lsof -i -P -n | grep LISTEN | grep :$1
+	if [ -z "$1" ]; then
+		echo "Usage: wtp [-p][-k] port_number"
+		return 1
+	fi
+
+	local pid_flag
+	if [[ "$1" == "-p" ]]; then
+		shift
+		pid_flag=1
+	fi
+
+	local kill_flag
+	if [[ "$1" == "-k" ]]; then
+		if [[ -n "$pid_flag" ]]; then
+			echo "You cannot use the -p flag and the -k flag at the same time"
+			return 1
+		fi
+		shift
+		kill_flag=1
+	fi
+
+	if [ -n "$pid_flag" ]; then
+		sudo lsof -i:$1 -t
+	elif [[ -n "$kill_flag" ]]; then
+		kill -9 $(sudo lsof -i:$1 -t)
+	else
+		sudo lsof -i:$1
+	fi
 }
 
 hextorgb() {
