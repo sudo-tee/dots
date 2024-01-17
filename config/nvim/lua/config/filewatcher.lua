@@ -61,5 +61,5 @@ function watchman(path, opts, callback)
 end
 
 if vim.fn.executable("watchman") == 1 then
-  require("vim.lsp._watchfiles")._watchfunc = watchman
+  -- require("vim.lsp._watchfiles")._watchfunc = watchman
 end

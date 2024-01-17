@@ -16,7 +16,7 @@ cmd("CheckLua", function()
     env = { ["PATH"] = os_env_path },
   })
   tests_run:sync()
-  print(vim.inspect.inspect(tests_run:result()))
+  print(vim.inspect(tests_run:result()))
 end, {})
 
 function _G.Term(cmd)
@@ -59,35 +59,6 @@ function _G.RunCommand(args)
   TermPopup(args)
 end
 
-local neotest_staged_files = function()
-  local output = vim.fn.system("git diff --name-only")
-  local files = vim.split(output, "\n")
-  local file_table = {}
-
-  for _, filename in ipairs(files) do
-    if string.sub(filename, -8) == ".test.ts" or string.sub(filename, -8) == ".spec.ts" then
-      table.insert(file_table, filename)
-    else
-      local test_filename = string.gsub(filename, "%.ts$", ".test.ts")
-      local spec_filename = string.gsub(filename, "%.ts$", ".spec.ts")
-      if vim.fn.filereadable(test_filename) == 1 then
-        table.insert(file_table, test_filename)
-      elseif vim.fn.filereadable(spec_filename) == 1 then
-        table.insert(file_table, spec_filename)
-      end
-    end
-  end
-
-  require("neotest").summary.open()
-
-  for _, filename in ipairs(file_table) do
-    local absolute_path = vim.fn.fnamemodify(filename, ":p")
-    require("neotest").run.run(absolute_path)
-  end
-end
-
-vim.keymap.set("n", "<leader>tg", neotest_staged_files, { desc = "Test git changed files" })
-
 cmd("JiraLink", function(ticket)
   require("lib.jira").create_jira_link(ticket.fargs[1])
 end, { nargs = "*" })
@@ -125,4 +96,3 @@ vim.cmd("command! -nargs=? TermShell lua _G.Term(<q-args>)")
 vim.cmd("command! -nargs=? TermPopup lua _G.TermPopup(<q-args>)")
 vim.cmd("command! -nargs=?  T lua _G.RunTask(<q-args>)")
 vim.cmd("command! -nargs=?  R lua _G.RunCommand(<q-args>)")
-vim.cmd("command! -nargs=? Tl :topleft split | terminal <args>")
