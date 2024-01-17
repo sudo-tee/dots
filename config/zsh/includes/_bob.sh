@@ -1,0 +1,1 @@
+/home/francis/dots/apps/bob/_bob.sh

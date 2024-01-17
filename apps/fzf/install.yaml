@@ -1,0 +1,18 @@
+- defaults:
+    link:
+      create: true
+      relink: true
+    shell:
+      stdout: true
+      stderr: true
+      quiet: true
+- shell:
+    - description: "💫💫💫 Installing fnm 💫💫💫"
+      command: |
+        if  [ -e ".state/fzf.skip" ]; then
+          echo "😎 Skipping fzf install"
+        else
+          echo "⌛ Installing fnm "
+          brew install fzf
+          touch .state/fzf.skip
+        fi

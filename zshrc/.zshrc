@@ -20,9 +20,6 @@ path=(
  $path
 )
 
-# fnm
-eval "$(fnm env --use-on-cd)"
-
 export TSC_WATCHFILE=UseFsEvents
 export TSC_NONPOLLING_WATCHER="1"
 export NODE_NO_WARNINGS=1
