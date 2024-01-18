@@ -8,7 +8,7 @@
 [push]
   autoSetupRemote = true
 [core]
-  excludesfile = /home/francis/.gitignore
+  excludesfile = ~/.gitignore
 [alias]
   default-branch = !basename $(git symbolic-ref refs/remotes/origin/HEAD) |  tr -d '\\n\\r'
   ac = commit --amend

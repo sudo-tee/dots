@@ -1,9 +1,9 @@
 #!/bin/bash
 source "$HOME/.config/zsh/wezterm.sh"
 rm /tmp/xdg-open-url
-rm "$HOME/winhome/.config/wezterm/xdg-open-url"
+rm "$WEZTERM_CONFIG_DIR/xdg-open-url"
 
 echo "$@" >/tmp/xdg-open-url
-echo "$@" >"$HOME/winhome/.config/wezterm/xdg-open-url"
+echo "$@" >"$WEZTERM_CONFIG_DIR/xdg-open-url"
 
 wezterm_send_user_command "open" ""

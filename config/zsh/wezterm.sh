@@ -1,5 +1,5 @@
-export WEZTERM_CONFIG_DIR="~/winhome/.config/wezterm/"
-export WEZTERM_CONFIG_TMP_DIR="~/winhome/.config/wezterm/tmp"
+export WEZTERM_CONFIG_DIR="$HOME/.config/wezterm/"
+export WEZTERM_CONFIG_TMP_DIR="$HOME/.config/wezterm/tmp"
 
 # This function emits an OSC 1337 sequence to set a user var
 # associated with the current terminal pane.
@@ -52,7 +52,7 @@ wezterm_write_to_temp_dir() {
 	echo $file_name
 }
 
-function wezterm_run_prog() {
+wezterm_run_prog() {
 	export WEZTERM_PROG="$1"
 	# set PROG to the program being run
 	wezterm_set_user_var "PROG" "$1"

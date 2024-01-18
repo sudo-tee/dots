@@ -35,6 +35,29 @@ function M.path_split(str)
   return M.split(str, separator)
 end
 
+function M.path_join(...)
+  local separator
+  if package.config:sub(1, 1) == "\\" then
+    -- Windows
+    separator = "\\"
+  else
+    -- Unix-like
+    separator = "/"
+  end
+
+  return table.concat({ ... }, separator)
+end
+
+function M.is_windows()
+  if package.config:sub(1, 1) == "\\" then
+    -- Windows
+    return true
+  else
+    -- Unix-like
+    return false
+  end
+end
+
 -- Equivalent to POSIX basename(3)
 -- Given "/foo/bar" returns "bar"
 -- Given "c:\\foo\\bar" returns "bar"
