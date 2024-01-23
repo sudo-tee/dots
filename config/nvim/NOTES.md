@@ -2,7 +2,6 @@
 
 ## Need to improve
 
-- `$` and `_` to go to the end or start of line
 - `/` need to press enter...
 
 ## Recently discovered
@@ -29,8 +28,11 @@
 
 ## Plugins to check
 
+- typescript-tools
+
 ## Dotfiles inspirations
 
 - https://github.com/loctvl842/nvim
 - https://github.com/MariaSolOs/dotfiles
 - https://github.com/jesseleite/dotfiles
+- https://github.com/mischavandenburg/dotfiles
