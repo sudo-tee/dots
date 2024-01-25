@@ -1,5 +1,5 @@
 #!/bin/bash
-source "$HOME/.config/zsh/wezterm.sh"
+source "$HOME/.config/zsh/includes/_wezterm.sh"
 rm /tmp/xdg-open-url
 rm "$WEZTERM_CONFIG_DIR/xdg-open-url"
 

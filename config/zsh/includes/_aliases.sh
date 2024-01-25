@@ -12,8 +12,7 @@ function pbpaste() {
 	curl -s $REMOTE_HOST:5173
 }
 
-alias nvim="IS_NVIM=true wezterm_run_prog ~/.local/share/bob/nvim-bin/nvim"
-# alias nvim="IS_NVIM=true wezterm_run_prog nvim"
+alias nvim="IS_NVIM=true ~/.local/share/bob/nvim-bin/nvim"
 
 alias up="sudo apt update && sudo apt dist-upgrade"
 
@@ -23,13 +22,16 @@ if [[ -f "/usr/local/bin/win32yank.exe" ]]; then
 fi
 
 # function aliases
-function urldecode() {
+urldecode() {
 	echo "$1" | python3 -c "import sys; from urllib.parse import unquote; print(unquote(sys.stdin.read()));"
 }
 
-function urlencode() {
+urlencode() {
 	echo "$1" | python3 -c "import sys; from urllib.parse import quote; print(quote(sys.stdin.read()));"
 }
+
+alias urld="urldecode"
+alias urle="urlencode"
 
 mkcd() {
 	mkdir -p $1
@@ -76,9 +78,6 @@ hextorgb() {
 rgbtohex() {
 	printf '#%02x%02x%02x\n' "$1" "$2" "$3"
 }
-
-alias urld="urldecode"
-alias urle="urlencode"
 
 ucd() {
 	local search_term="${1:-}"
