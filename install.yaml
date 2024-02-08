@@ -9,14 +9,15 @@
 - clean: ["~"]
 
 - shell:
-    - [CONFIG="apps/brew/install.yaml" ./install]
-    - [CONFIG="apps/fnm/install.yaml" ./install]
-    - [CONFIG="apps/rust/install.yaml" ./install]
-    - [CONFIG="apps/bob/install.yaml" ./install]
-    - [CONFIG="apps/fzf/install.yaml" ./install]
-    - [CONFIG="apps/nvr/install.yaml" ./install]
-    - [CONFIG="apps/fdfind/install.yaml" ./install]
-    - [CONFIG="apps/ripgrep/install.yaml" ./install]
+    - [./app brew]
+    - [./app fnm]
+    - [./app rust]
+    - [./app bob]
+    - [./app fzf]
+    - [./app nvr]
+    - [./app fdfind]
+    - [./app ripgrep]
+    - [./app jq]
 
 - shell:
     - [CONFIG="stages/links.yaml" ./install]
