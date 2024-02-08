@@ -8,9 +8,5 @@ start() {
 	echo "start task not implemented"
 }
 
-_restart() {
-	echo "please implement _restart for your specific project"
-}
-
 TIMEFORMAT="Task completed in %3lR"
 time ${@:-help}

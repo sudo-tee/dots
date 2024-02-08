@@ -1,0 +1,28 @@
+- defaults:
+    link:
+      create: true
+      relink: true
+    shell:
+      stdout: true
+      stderr: true
+      quiet: true
+
+- clean: ["~"]
+
+- create:
+    - ~/.config/nvim
+- link:
+    ~/.config/nvim/:
+      force: true
+      path: apps/nvim/config
+- shell:
+    - description: "💫💫💫 installing nvim 💫💫💫"
+      command: |
+        if  [ -e ".state/nvim.skip" ]; then
+          echo "😎 Skipping nvim install"
+        else
+          echo "⌛ Installing nvim"
+          bob install nightly
+          bob use nightly
+          touch .state/nvim.skip
+        fi
