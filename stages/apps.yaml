@@ -1,0 +1,21 @@
+- defaults:
+    link:
+      create: true
+      relink: true
+    shell:
+      stdout: true
+      stderr: true
+      quiet: true
+
+- shell:
+    - [./Taskfile app brew]
+    - [./Taskfile app fnm]
+    - [./Taskfile app rust]
+    - [./Taskfile app bob]
+    - [./Taskfile app nvim]
+    - [./Taskfile app fzf]
+    - [./Taskfile app nvr]
+    - [./Taskfile app fdfind]
+    - [./Taskfile app ripgrep]
+    - [./Taskfile app jq]
+    - [./Taskfile app zoxide]

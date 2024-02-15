@@ -9,16 +9,7 @@
 - clean: ["~"]
 
 - shell:
-    - [./app brew]
-    - [./app fnm]
-    - [./app rust]
-    - [./app bob]
-    - [./app nvim]
-    - [./app fzf]
-    - [./app nvr]
-    - [./app fdfind]
-    - [./app ripgrep]
-    - [./app jq]
+    - [CONFIG="stages/apps.yaml" ./install]
 
 - shell:
     - [CONFIG="stages/links.yaml" ./install]
