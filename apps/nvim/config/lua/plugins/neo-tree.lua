@@ -8,6 +8,11 @@ return {
       close_if_last_window = true,
       window = {
         position = "right",
+        mappings = {
+          ["<leader>o"] = {
+            "toggle_node",
+          },
+        },
       },
       nesting_rules = {
         ["ts"] = { "spec.ts", "spec.tsx", "stories.tsx", "stories.mdx" },
@@ -33,6 +38,7 @@ return {
         -- bind_to_cwd = true,
         follow_current_file = { enabled = true },
         hijack_netrw_behavior = "open_default",
+        use_libuv_file_watcher = false,
       },
     },
   },
