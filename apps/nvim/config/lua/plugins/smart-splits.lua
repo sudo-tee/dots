@@ -27,7 +27,7 @@ end
 ---@param winnr number|nil window ID, defaults to current window
 ---@return boolean
 local function is_full_height(winnr)
-  return vim.api.nvim_win_get_height(winnr or 0) == vim.o.lines - 1 --status line
+  return vim.api.nvim_win_get_height(winnr or 0) > vim.o.lines - 4 -- bufferline / status line / cmd height
 end
 
 return {
