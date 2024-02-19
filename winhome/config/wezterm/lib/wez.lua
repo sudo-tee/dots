@@ -2,7 +2,6 @@ local wezterm = require("wezterm")
 local act = wezterm.action
 local mux = wezterm.mux
 local u = require("lib.utils")
-local print = wezterm.log_info
 
 local M = {}
 
@@ -10,9 +9,9 @@ function M.switch_workspace(name, win, pane, layout)
   win:perform_action(
     act.SwitchToWorkspace({
       name = name,
-      spawn = {
-        cwd = layout and layout.cwd or "",
-      },
+      -- spawn = {
+      --   cwd = layout and layout.cwd or "~",
+      -- },
     }),
     pane
   )

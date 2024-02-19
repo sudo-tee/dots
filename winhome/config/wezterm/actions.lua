@@ -14,18 +14,17 @@ function M.split_pane(direction)
 
     local new_pane = pane:split({
       direction = direction,
-      cwd = cwd.path or cwd,
+      cwd = cwd.path,
     })
 
-    wez.ensure_cwd(new_pane, cwd.path or cwd)
+    wez.ensure_cwd(new_pane, cwd.path)
   end
 end
 
 function M.create_new_tab(window, pane, line)
   local cwd = pane:get_current_working_dir()
-
-  local _, new_pane = window:mux_window():spawn_tab({ cwd = cwd })
-  wez.ensure_cwd(new_pane, cwd.path or cwd)
+  local _, new_pane = window:mux_window():spawn_tab({})
+  wez.ensure_cwd(new_pane, cwd.path)
 end
 
 function M.switch_to_open_workspace(window, pane)
@@ -93,9 +92,9 @@ function M.create_new_workspace(window, pane, line)
         { Text = "Enter name for new workspace" },
       }),
 
-      action = wezterm.action_callback(function(window, pane, line)
-        if line then
-          wez.switch_workspace(line, window, pane)
+      action = wezterm.action_callback(function(window, pane, text)
+        if text then
+          wez.switch_workspace(text, window, pane)
         end
       end),
     }),
