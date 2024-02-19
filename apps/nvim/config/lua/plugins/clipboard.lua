@@ -1,3 +1,4 @@
+local opts = {}
 -- Copy to clipboard only when yanking
 vim.keymap.set("n", "<Leader>y", function()
   local content = vim.fn.getreg('"')
@@ -49,7 +50,7 @@ else
     cache_enabled = 1,
   }
 
-  return {
+  opts = {
     "ojroques/nvim-osc52",
     event = "VeryLazy",
     opts = {
@@ -59,3 +60,5 @@ else
     },
   }
 end
+
+return opts
