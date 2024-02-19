@@ -9,7 +9,6 @@
 
 - shell:
     - [echo "✨ Configuring home env"]
-    - [chmod u+x projects_run.sh]
 
 - link:
     ~/.gitconfig.local:
