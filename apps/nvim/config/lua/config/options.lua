@@ -6,7 +6,6 @@ vim.g.maplocalleader = "\\"
 
 vim.opt.cmdheight = 0
 vim.opt.autowrite = true -- Enable auto write
-vim.opt.clipboard = "" -- Don't Sync with system clipboard
 -- vim.opt.conceallevel = 0
 vim.opt.scrolloff = math.floor(0.5 * vim.o.lines)
 

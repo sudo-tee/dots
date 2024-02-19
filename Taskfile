@@ -49,6 +49,14 @@ apps() {
 	CONFIG="stages/apps.yaml" ./install
 }
 
+winhome() {
+	CONFIG="winhome/install.yaml" ./install
+}
+
+winhome:sync() {
+	CONFIG="winhome/sync.yaml" ./install
+}
+
 npm() {
 	export CONFIG="stages/npm.yaml"
 	local FLAG="${1:-}"
