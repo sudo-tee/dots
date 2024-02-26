@@ -33,6 +33,7 @@ export VISUAL='nvim'
 [[ -f "$HOME/.config/local/zsh/local.sh" ]] && source "$HOME/.config/local/zsh/local.sh"
 [[ -f "$HOME/.config/local/zsh/secrets.sh" ]] && source "$HOME/.config/local/zsh/secrets.sh"
 [[ -f "$HOME/.config/zsh/aliases.sh" ]] && source "$HOME/.config/zsh/aliases.sh"
+[[ -f "$HOME/.config/zsh/ulimit.sh" ]] && source "$HOME/.config/zsh/ulimit.sh"
 
 for file in $HOME/.config/zsh/includes/_*; do
     source "$file"
