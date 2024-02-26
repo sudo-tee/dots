@@ -19,6 +19,15 @@ cmd("CheckLua", function()
   print(vim.inspect(tests_run:result()))
 end, {})
 
+cmd("PutShellCmd", function(command)
+  local cmd_output = vim.fn.system(command.args)
+
+  -- Trim trailing newline (if any)
+  local result = cmd_output:gsub("[\r\n]+$", "")
+  -- Write the result to the current buffer
+  vim.api.nvim_put({ result }, "c", true, true)
+end, { nargs = "*" })
+
 function _G.Term(cmd)
   if os.getenv("TMUX") == nil then
     require("FTerm").run({ cmd })
