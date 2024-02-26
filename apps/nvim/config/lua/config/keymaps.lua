@@ -16,6 +16,8 @@ map("n", "x", '"_x')
 map("n", "X", '"_X')
 map("v", "x", '"_x')
 map("v", "X", '"_X')
+map("n", "<Del>", '"_x')
+map("v", "<Del>", '"_x')
 
 -- Easier line-wise movement
 map({ "n", "v" }, "gh", "g^")
