@@ -8,18 +8,9 @@ alias .4="cd ../../../.."
 
 alias g=git
 
-function pbpaste() {
-	curl -s $REMOTE_HOST:5173
-}
-
 alias nvim="IS_NVIM=true ~/.local/share/bob/nvim-bin/nvim"
 
 alias up="sudo apt update && sudo apt dist-upgrade"
-
-if [[ -f "/usr/local/bin/win32yank.exe" ]]; then
-	alias pbcopy='win32yank.exe -i --crlf'
-	alias pbpaste='win32yank.exe -o --lf'
-fi
 
 # function aliases
 urldecode() {

@@ -1,0 +1,2 @@
+#!/bin/bash
+/usr/local/bin/win32yank.exe -i --crlf
