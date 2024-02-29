@@ -56,6 +56,7 @@ return {
       { "<leader>fu", "<cmd>Telescope undo<cr>", desc = "Undo history" },
       { "<leader>gc", "<cmd>Telescope git_commits<cr>", desc = "Git commits" },
       { "<leader>gbc", "<cmd>Telescope git_bcommits<cr>", desc = "Git branch commits" },
+      { "<leader><leader>", "<cmd>Telescope buffers<cr>", desc = "Buffers" },
       {
         "<leader>?",
         function()
@@ -67,7 +68,7 @@ return {
         desc = "Grep (root dir)",
       },
       {
-        "<leader><space>",
+        "<leader><localleader>",
         function()
           require("telescope.builtin").oldfiles({ cwd = vim.loop.cwd() })
         end,
@@ -130,6 +131,14 @@ return {
             ["<c-h>"] = "which_key",
             ["<a-p>"] = paste_from_register,
             ["<a-d>"] = open_with_diff_view,
+            ["<c-t>"] = function(buf, mode)
+              require("trouble.providers.telescope").open_with_trouble(buf, mode)
+            end,
+          },
+          n = {
+            ["<c-t>"] = function(buf, mode)
+              require("trouble.providers.telescope").open_with_trouble(buf, mode)
+            end,
           },
         },
       },
