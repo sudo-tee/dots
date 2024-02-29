@@ -10,6 +10,8 @@ vim.g.is_wsl = vim.fn.has("unix")
   and vim.fn.executable("win32yank.exe") == 1
   and vim.loop.os_uname().sysname == "Linux"
 
+-- disable clipboard is to slow
+vim.g.is_wsl = false
 -- If wsl is detected
 if vim.g.is_wsl then
   vim.opt.clipboard = "unnamedplus"
