@@ -1,0 +1,18 @@
+- defaults:
+    link:
+      create: true
+      relink: true
+    shell:
+      stdout: true
+      stderr: true
+      quiet: true
+- shell:
+    - description: "💫💫💫 Installing git 💫💫💫"
+      command: |
+        if  [ -e ".state/git.skip" ]; then
+          echo "😎 Skipping git install"
+        else
+          echo "⌛ Installing git "
+          brew install git
+          touch .state/git.skip
+        fi

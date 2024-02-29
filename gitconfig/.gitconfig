@@ -6,7 +6,7 @@
 [rebase]
 	autoStash = true
 [push]
-  autoSetupRemote = true
+	autoSetupRemote = true
 [core]
   excludesfile = ~/.gitignore
 [alias]
