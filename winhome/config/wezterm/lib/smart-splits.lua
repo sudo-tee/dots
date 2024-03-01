@@ -2,8 +2,8 @@ local w = require("wezterm")
 local print = w.log_info
 local function is_vim(pane)
   local vars = pane:get_user_vars()
-  local is_nvim = vars["IS_NVIM"] or vars["WEZTERM_PROG"] == "nvim"
-  return is_nvim == "true"
+  local is_nvim = vars["IS_NVIM"] == "true" or vars["WEZTERM_PROG"] == "nvim"
+  return is_nvim
 end
 
 local direction_keys = {
