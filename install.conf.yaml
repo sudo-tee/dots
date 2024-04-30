@@ -23,6 +23,9 @@
     - ~/.local/bin
     - ~/Projects
 
+- npm:
+    - "@antfu/ni pnpm eslint prettier node-ts typescript yarn jsdom vitest npkill"
+
 - if:
     cond: '[ -e "$HOME/winhome" ]'
     met:
