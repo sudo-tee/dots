@@ -11,6 +11,9 @@ local jira = lazy_require('custom.lib.jira')
 
 ---@module 'custom.lib.wezterm'
 local wezterm = lazy_require('custom.lib.wezterm')
+---
+---@module 'custom.lib.git'
+local git = lazy_require('custom.lib.git')
 
 local open_url = function(url)
   return function()
@@ -44,7 +47,7 @@ end
 
 local function get_mr_link()
   local links = {}
-  local branch = u.get_current_branch()
+  local branch = git.current_branch()
 
   local mr_url = gitlab.get_current_mr_url(branch)
   if mr_url then
