@@ -1,0 +1,42 @@
+- defaults:
+    link:
+      create: true
+      relink: true
+
+- clean: ["~"]
+- link:
+    ~/.config/:
+      glob: true
+      path: config/*
+    ~/.zshrc:
+      force: true
+      path: zshrc/.zshrc
+    ~/.zprofile:
+      force: true
+      path: zshrc/.zprofile
+    ~/.zshenv:
+      force: true
+      path: zshrc/.zshenv
+    ~/.gitconfig:
+      force: true
+      path: gitconfig/.gitconfig
+    ~/.gitignore:
+      force: true
+      path: gitconfig/.gitignore
+    ~/.terminfo:
+      force: true
+      path: config/.terminfo
+    ~/.local/bin/t: config/taskfile/t.sh
+    ~/.local/bin/xdg-open:
+      force: true
+      path: bin/xdg-open
+    ~/.local/bin/xdg-start:
+      force: true
+      path: bin/xdg-start
+- create:
+    - ~/.config
+    - ~/.config/local
+    - ~/.config/local/zsh
+    - ~/.local/bin
+    - ~/Projects
+    - .state
