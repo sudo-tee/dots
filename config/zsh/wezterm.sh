@@ -58,7 +58,7 @@ function wezterm_run_prog() {
 	wezterm_set_user_var "PROG" "$1"
 
 	# arrange to clear it when it is done
-	trap '__wezterm_set_user_var PROG ""' EXIT
+	trap 'wezterm_set_user_var PROG ""' EXIT
 	trap 'export WEZTERM_PROG=""' EXIT
 
 	# and now run the corresponding command, taking care to avoid looping
