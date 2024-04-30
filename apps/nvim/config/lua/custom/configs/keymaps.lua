@@ -95,13 +95,26 @@ map({ 'n', 'i', 't' }, '<A-q>', function()
   require('custom.lib.smart-close').close()
 end, { desc = 'Close floating windows' })
 
---  navigation
-map('n', '<S-Right>', cmd('bnext'), { desc = 'Prev [B]uffer' })
-map('n', '<S-Left>', cmd('bprev'), { desc = 'Next [B]uffer' })
+-- buffer navigation, only for listed buffers
+-- so it does not navigate to files on unwanted layout buffers
+-- like (floating windows, diffview, neotest, etc)
+
+local function bufnav(command)
+  return function()
+    if vim.bo.buflisted then
+      vim.cmd(command)
+    end
+  end
+end
+
+map('n', '<S-Right>', bufnav('bnext'), { desc = 'Prev [B]uffer' })
+
+map('n', '<S-Left>', bufnav('bprev'), { desc = 'Next [B]uffer' })
+
 -- ]b [b
-map_pair('n', 'b', cmd('bprev'), cmd('bnext'), '[b]uffer')
-map('n', '<leader>bo', cmd('CloseOthers'), { desc = 'Close [o]ther [b]uffers' })
-map('n', '<leader>`', cmd('e #'), { desc = 'Switch to alternate ' })
+map_pair('n', 'b', bufnav('bprev'), bufnav('bnext'), '[b]uffer')
+map('n', '<leader>`', bufnav('e #'), { desc = 'Switch to alternate ' })
+map('n', '<leader>bo', bufnav('CloseOtherBuffers'), { desc = 'Close [o]ther [b]uffers' })
 
 --Profiling
 map('n', '<leader>uz', ':ToggleProfile<cr>', { silent = false, noremap = true, desc = 'Start a profilling session' })
