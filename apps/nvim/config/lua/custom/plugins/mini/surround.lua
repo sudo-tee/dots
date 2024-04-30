@@ -10,5 +10,5 @@ for _, char in ipairs(surrounds) do
   vim.keymap.set('v', 's' .. char, function()
     local c = vim.api.nvim_replace_termcodes(char, true, false, true)
     vim.api.nvim_feedkeys('sa' .. c, 'v', true)
-  end, { desc = 'Surround with ' .. char })
+  end, { desc = 'Surround with ' .. char, noremap = true })
 end
