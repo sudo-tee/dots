@@ -9,14 +9,11 @@ require('mini.statusline').setup({
       local diagnostics = MiniStatusline.custom_diagnostics({ trunc_width = 75 })
       local filename = MiniStatusline.section_filename({ trunc_width = 140 })
       local fileinfo = MiniStatusline.section_fileinfo({ trunc_width = 120 })
-      local updates = MiniStatusline.updates()
+      local lazy_updates = MiniStatusline.updates()
 
       local location = MiniStatusline.section_location({ trunc_width = 75 })
       local copilot_status = MiniStatusline.copilot_status()
 
-      -- Usage of `MiniStatusline.combine_groups()` ensures highlighting and
-      -- correct padding with spaces between groups (accounts for 'missing'
-      -- sections, etc.)
       local groups = {
         { hl = 'IncSearch', strings = { search } },
         { hl = mode_hl, strings = { mode } },
@@ -30,7 +27,7 @@ require('mini.statusline').setup({
         { hl = 'MiniStatuslineFilename', strings = { filename } },
         '%=', -- End left alignment
         { hl = 'MiniStatuslineCustomRecordingStatus', strings = { macro } },
-        { hl = 'MiniStatuslineCustomUpdatesStatus', strings = { updates } },
+        { hl = 'MiniStatuslineCustomUpdatesStatus', strings = { lazy_updates } },
         { hl = 'MiniStatuslineFileinfo', strings = { fileinfo } },
         { hl = mode_hl, strings = { location } },
       }

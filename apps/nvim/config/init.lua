@@ -1,5 +1,17 @@
 require('custom.configs')
 
+--- Lazy require a module
+function _G.lazy_require(module)
+  local mod = nil
+  return type(package.loaded[module]) == 'table' and package.loaded[module]
+    or setmetatable({}, {
+      __index = function(_, key)
+        mod = mod or require(module)
+        return mod[key]
+      end,
+    })
+end
+
 -- [[ Install `lazy.nvim` plugin manager ]]
 --    See `:help lazy.nvim.txt` or https://github.com/folke/lazy.nvim for more info
 local lazypath = vim.fn.stdpath('data') .. '/lazy/lazy.nvim'
@@ -48,18 +60,6 @@ require('lazy').setup({
     },
   },
 })
-
---- Lazy require a module
----@see lazy-require.nvim 'https://github.com/tjdevries/lazy-require.nvim/blob/master/lua/lazy-require.lua'
-_G.lazy_require = function(require_path)
-  return setmetatable({}, {
-    __index = function(_, k)
-      return function(...)
-        return require(require_path)[k](...)
-      end
-    end,
-  })
-end
 
 -- The line beneath this is called `modeline`. See `:help modeline`
 -- vim: ts=2 sts=2 sw=2 et
