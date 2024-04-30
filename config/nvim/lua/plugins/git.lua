@@ -55,13 +55,6 @@ return {
       { "<leader>gfh", "<cmd>DiffviewFileHistory<CR>", desc = "Git Diff File History" },
     },
     opts = function()
-      if vim.fn.executable("nvr") == 1 then
-        local nvr = "nvr --servername " .. vim.v.servername .. " "
-        vim.env.GIT_EDITOR = nvr .. " +'setl bh=delete' --remote-wait"
-        vim.env.EDITOR = nvr .. "-l --remote" -- (Optional)
-        vim.env.VISUAL = nvr .. "-l --remote" -- (Optional)
-      end
-
       local actions = require("diffview.actions")
 
       return {
