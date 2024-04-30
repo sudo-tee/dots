@@ -26,6 +26,12 @@ function M.cmd(command)
   return string.format('<cmd>%s<cr>', command)
 end
 
+function M.yank(text, title)
+  title = title or 'Yanked'
+  vim.fn.setreg('+', text)
+  vim.notify(text, vim.log.levels.INFO, { title = title })
+end
+
 function M.first_to_upper(str)
   return (str:gsub('^%l', string.upper))
 end

@@ -6,6 +6,21 @@ local map_pair = u.map_pair
 --file related maps
 map('n', '<leader>fn', cmd('enew'), { desc = 'New File' })
 
+-- Yank absolute path
+map('n', '<Leader>fya', function()
+  u.yank(vim.fn.expand('%:p'))
+end, { desc = '[F]ile [y]ank [a]bsolute path' })
+
+-- Yank buffer's relative path
+map('n', '<Leader>fyr', function()
+  u.yank(vim.fn.expand('%:~:.'))
+end, { desc = '[F]ile [y]ank [r]elative path' })
+
+-- Yank buffer's filename
+map('n', '<Leader>fyn', function()
+  u.yank(vim.fn.expand('%:t'))
+end, { desc = '[F]ile [y]ank [n]ame' })
+
 map('n', '<Esc>', cmd('nohlsearch'))
 
 -- I hate the "q:" I will use <C-f> in command mode if needed
@@ -70,18 +85,23 @@ map('n', '<C-f>', '<C-f>zz', { desc = 'Scroll forward' })
 map('n', '<C-b>', '<C-b>zz', { desc = 'Scroll backward' })
 map('n', 'G', 'Gzz')
 
--- Close anything order: floating window | splits | buffer
+-- Utilities to replace text
+-- map('n', 'g*', '*Ncgn', { desc = 'Change word with . repeat' })
+map('x', '<leader>rv', cmd('ReplaceSelection'), { desc = '[R]eplace [v]isually selected text' })
+map('n', '<leader>rw', cmd('ReplaceWord'), { desc = '[R]eplace [w]ord under cursor' })
+
+-- Close anything order: floating window | splits |
 map({ 'n', 'i', 't' }, '<A-q>', function()
   require('custom.lib.smart-close').close()
 end, { desc = 'Close floating windows' })
 
--- buffer navigation
+--  navigation
 map('n', '<S-Right>', cmd('bnext'), { desc = 'Prev [B]uffer' })
 map('n', '<S-Left>', cmd('bprev'), { desc = 'Next [B]uffer' })
 -- ]b [b
 map_pair('n', 'b', cmd('bprev'), cmd('bnext'), '[b]uffer')
-map('n', '<leader>bo', cmd('CloseOtherBuffers'), { desc = 'Close [o]ther [b]uffers' })
-map('n', '<leader>`', cmd('e #'), { desc = 'Switch to alternate buffer' })
+map('n', '<leader>bo', cmd('CloseOthers'), { desc = 'Close [o]ther [b]uffers' })
+map('n', '<leader>`', cmd('e #'), { desc = 'Switch to alternate ' })
 
 --Profiling
 map('n', '<leader>uz', ':ToggleProfile<cr>', { silent = false, noremap = true, desc = 'Start a profilling session' })
@@ -94,7 +114,7 @@ map('n', '!', ':Sh ', { desc = 'Execute Shell Command in the floating term', sil
 -- Work/Workflow specific keymaps
 
 -- Helper to create a jira link
-map('v', '<leader>pj', ':JiraLink <C-R>"<CR>', { silent = false, desc = 'Create a jira link in markdown' })
+map('v', '<leader>pj', 'y:JiraLink <C-R>"<CR>', { silent = false, desc = 'Create a jira link in markdown' })
 map('n', '<leader>pj', ':JiraLink', { silent = false, desc = 'Create a jira link in markdown' })
 
 -- Gitlab shortcuts

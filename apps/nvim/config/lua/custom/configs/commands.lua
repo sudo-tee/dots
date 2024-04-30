@@ -1,11 +1,30 @@
-local cmd = vim.api.nvim_create_user_command
+local command = vim.api.nvim_create_user_command
 
-cmd('Sh', function(command)
+local function replace_text(text, replacement)
+  replacement = replacement or ''
+  local move_between_slashes = vim.api.nvim_replace_termcodes('<Left><Left>', true, true, true)
+  vim.api.nvim_feedkeys(':%s/' .. text .. '/' .. replacement .. '/g' .. move_between_slashes, 'n', false)
+end
+
+command('ReplaceSelection', function()
+  vim.api.nvim_exec('normal! "ay', false)
+  local selected_text = vim.fn.getreg('a')
+
+  replace_text(selected_text)
+end, {})
+
+command('ReplaceWord', function()
+  local selected_text = vim.fn.expand('<cword>')
+
+  replace_text(selected_text)
+end, {})
+
+command('Sh', function(command)
   require('FTerm').scratch({ cmd = command.args })
 end, { nargs = '*' })
 
 -- start profiling
-cmd('StartProfile', function()
+command('StartProfile', function()
   vim.cmd([[profile start profile.log]])
   vim.cmd([[profile func *]])
   vim.cmd([[profile file *]])
@@ -13,7 +32,7 @@ cmd('StartProfile', function()
   vim.notify('Profilling ...')
 end, {})
 
-cmd('StopProfile', function()
+command('StopProfile', function()
   vim.cmd('profile stop')
   require('plenary.profile').stop()
   vim.notify('End of profilling, opening results')
@@ -22,7 +41,7 @@ cmd('StopProfile', function()
 end, {})
 
 local is_profiling = false
-cmd('ToggleProfile', function()
+command('ToggleProfile', function()
   if is_profiling then
     vim.cmd('StopProfile')
     is_profiling = false
@@ -32,11 +51,11 @@ cmd('ToggleProfile', function()
   end
 end, {})
 
-cmd('JiraLink', function(ticket)
+command('JiraLink', function(ticket)
   require('custom.lib.jira').create_jira_link(ticket.fargs[1])
 end, { nargs = '*' })
 
-cmd('CloseOtherBuffers', function()
+command('CloseOtherBuffers', function()
   local bufs = vim.api.nvim_list_bufs()
   local current_buf = vim.api.nvim_get_current_buf()
   for _, i in ipairs(bufs) do
