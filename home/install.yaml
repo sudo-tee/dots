@@ -29,7 +29,7 @@
 - shell:
     - description: "LPM"
       command: |
-        ./project lpm  git@github.com:sudo-tee/lpm.git
+        ./Taskfile project lpm  git@github.com:sudo-tee/lpm.git
 
 - shell:
     - [source ~/.zshrc]

@@ -1,0 +1,69 @@
+#!/bin/bash -ue
+
+install() {
+	./install
+}
+
+app() {
+	local APP="$1"
+	local FLAG="${2:-}"
+
+	export CONFIG="apps/$APP/install.yaml"
+
+	if [ "$FLAG" == "-f" ]; then
+		rm -f .state/$APP.skip
+		echo "Deleted .state/$APP.skip"
+	fi
+
+	./install
+}
+
+project() {
+	export PROJECT=$1
+	export PROJECT_GIT=${2-}
+	export CONFIG="stages/project.yaml"
+	local FLAG="${2:-}"
+
+	if [ "$FLAG" == "-f" ]; then
+		rm -f .state/$APP.skip
+		echo "Deleted .state/$PROJECT-pre-install.skip"
+		echo "Deleted .state/$PROJECT-post-install.skip"
+	fi
+
+	./install
+}
+
+links() {
+	CONFIG="stages/links.yaml" ./install
+}
+
+npm() {
+	export CONFIG="stages/npm.yaml"
+	local FLAG="${1:-}"
+
+	if [ "$FLAG" == "-f" ]; then
+		rm -f .state/npm.skip
+		echo "Deleted .state/npm.skip"
+	fi
+
+	./install
+}
+
+projects:run() {
+	local cmd=${@:-pwd}
+	find ~/Projects/ -maxdepth 1 -mindepth 1 -type d | while read d; do
+		(
+			cd $d/
+			echo "Running command in $(pwd)"
+			eval "$cmd"
+		)
+
+	done
+}
+
+projects:update() {
+	projects:run "git pull && ni"
+}
+
+TIMEFORMAT="Task completed in %3lR"
+time ${@:-help}
