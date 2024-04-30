@@ -1,0 +1,25 @@
+- defaults:
+    link:
+      create: true
+      relink: true
+    shell:
+      stdout: true
+      stderr: true
+      quiet: true
+
+- clean: ["~"]
+
+- link:
+    ~/.config/zsh/includes/_bob.sh:
+      force: true
+      path: apps/bob/_bob.sh
+- shell:
+    - description: "💫💫💫  installing bob 💫💫💫"
+      command: |
+        if  [ -e ".state/bob.skip" ]; then
+          echo "😎 Skipping bob install"
+        else
+          echo "⌛ Installing bob"
+          cargo install bob-nvim
+          touch .state/bob.skip
+        fi
