@@ -141,7 +141,7 @@ function M.concat(...)
 end
 
 function M.read_file(path)
-  local success, file = pcall(io.open, 'rb', path)
+  local success, file = pcall(io.open, path, 'rb')
 
   local function read_file(f)
     local content = f:read('*a')
@@ -172,6 +172,39 @@ function M.memoize(f)
       mem[key] = f(...)
     end
     return mem[key]
+  end
+end
+
+function M.auto_restart_lsp(name)
+  local uv = vim.uv or vim.loop
+  if not vim.g.focus_lost then
+    local total_retries = 3
+    local duration = 1000
+
+    local timer = uv.new_timer()
+    if timer == nil then
+      print('Failed to create new timer')
+      return
+    end
+
+    local elapsed_retries = 0
+    local timer_callback
+    timer_callback = vim.schedule_wrap(function()
+      -- Check if the desired number of retries has been met
+      if elapsed_retries >= total_retries then
+        timer:stop()
+        timer:close()
+        return
+      end
+
+      vim.cmd(':LspStart ' .. name)
+
+      elapsed_retries = elapsed_retries + 1
+
+      timer:start(duration, 0, timer_callback)
+    end)
+
+    timer:start(duration, 0, timer_callback)
   end
 end
 

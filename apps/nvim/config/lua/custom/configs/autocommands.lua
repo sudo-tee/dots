@@ -28,6 +28,7 @@ vim.api.nvim_create_autocmd('TextYankPost', {
 })
 
 local focus_cmd_group = augroup('focus_commands')
+vim.g.focus_lost = false
 
 -- Disable mouse when not in focus so it never ends in visual mode when clicking the neovim window
 -- FocusGained autocommand
@@ -35,6 +36,7 @@ vim.api.nvim_create_autocmd('FocusGained', {
   group = focus_cmd_group,
   pattern = '*',
   callback = function()
+    vim.g.focus_lost = false
     vim.defer_fn(function()
       vim.api.nvim_set_option_value('mouse', 'a', { scope = 'global' })
     end, 1000)
@@ -46,6 +48,7 @@ vim.api.nvim_create_autocmd('FocusLost', {
   group = focus_cmd_group,
   pattern = '*',
   callback = function()
+    vim.g.focus_lost = true
     vim.api.nvim_set_option_value('mouse', '', { scope = 'global' })
   end,
 })
