@@ -10,7 +10,7 @@ M.open_git_remote = function()
   end
 
   print("Opening git remote url:", remote_url)
-  os.execute("xdg-open '" .. vim.fn.shellescape(remote_url) .. "'")
+  wez.open_url(remote_url)
   vim.fn.setreg("+", remote_url)
 end
 
