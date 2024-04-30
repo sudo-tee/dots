@@ -1,5 +1,3 @@
---       Error  13:21:05 notify.error method textDocument/documentHighlight is not supported by any of the servers registered for the current buffer
-
 -- Map arrow keys for wildmenu completion
 -- It makes the command pallent more usable
 vim.api.nvim_set_keymap('c', '<Down>', 'v:lua.get_wildmenu_key("<right>", "<down>")', { expr = true })
@@ -49,6 +47,19 @@ return {
     routes = {
       {
         filter = {
+          event = 'lsp',
+          kind = 'progress',
+          any = {
+            { find = 'Diagnosing' },
+            { find = 'Processing full' },
+            { find = 'Processing completion' },
+          },
+        },
+        skip = true,
+        opts = { skip = true },
+      },
+      {
+        filter = {
           event = 'msg_show',
           any = {
             { find = '%d+L, %d+B' },
@@ -66,6 +77,7 @@ return {
           },
         },
         skip = true,
+        opts = { skip = true },
       },
     },
   },
