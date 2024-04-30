@@ -1,0 +1,16 @@
+- defaults:
+    shell:
+      stdout: true
+      stderr: true
+      quiet: true
+
+- shell:
+    - description: "💫💫💫  Installing nvr 💫💫💫"
+      command: |
+        if  [ -e ".state/nvr.skip" ]; then
+          echo "😎 Skipping nvr install"
+        else
+          echo "⌛ Installing nvr for tmux"
+          brew install nvr
+          touch .state/nvr.skip
+        fi
