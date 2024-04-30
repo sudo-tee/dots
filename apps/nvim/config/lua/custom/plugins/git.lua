@@ -69,8 +69,10 @@ return {
     },
   },
   {
-    'sindrets/diffview.nvim',
-    branch = 'main',
+    dir = '/home/francis/Projects/_nvim/diffview.nvim',
+    -- 'sudo-tee/diffview.nvim',
+    -- 'sindrets/diffview.nvim',
+    -- branch = 'main',
     lazy = true,
     cmd = { 'DiffviewOpen', 'DiffviewFileHistory' },
     keys = {
@@ -93,6 +95,8 @@ return {
             { 'n', '<Leader>rc', u.cmd('Grc'),           { desc = 'Git Rebase Continue' } },
             { 'n', '<Leader>rm', u.cmd('Grm'),           { desc = 'Git Rebase master/main' } },
             { 'n', '<Leader>\\', actions.cycle_layout,   { desc = 'Cycle layout' } },
+            -- { 'n', '<S-Left>', '<nop>',   { desc = '' } },
+            -- { 'n', '<S-Right>', '<nop>',   { desc = '' } },
           },
           file_panel = {
             { 'n', 'q',          u.cmd('DiffviewClose'), { desc = 'Close' } },
@@ -106,13 +110,27 @@ return {
             { 'n', '<Leader>rm', u.cmd('Grm'),           { desc = 'Git Rebase master/main' } },
             { 'n', 'h',          actions.prev_entry,     { desc = 'Previuos entry' } },
             { 'n', '<Leader>\\', actions.cycle_layout,   { desc = 'Cycle layout' } },
+            -- { 'n', '<S-Left>', '<nop>',   { desc = '' } },
+            -- { 'n', '<S-Right>', '<nop>',   { desc = '' } },
           },
           file_history_panel = {
             { 'n', 'q',          u.cmd('DiffviewClose'), { desc = 'Close' }},
             { 'n', '<A-q>',      u.cmd('DiffviewClose'), { desc = 'Close' }},
             { 'n', '<Leader>\\', actions.cycle_layout,   { desc = 'Cycle layout' } },
+            -- { 'n', '<S-Left>', '<nop>',   { desc = '' } },
+            -- { 'n', '<S-Right>', '<nop>',   { desc = '' } },
           },
           -- stylua: ignore end
+        },
+        file_panel = {
+          components = {
+            working = {
+              auto_hide = false,
+            },
+            staged = {
+              auto_hide = false,
+            },
+          },
         },
       }
     end,

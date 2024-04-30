@@ -23,7 +23,7 @@ local open_url = function(url)
 end
 
 local function format_link(label, url)
-  return (string.format('%s| %s', u.rpad(label, 7), url))
+  return u.fixed_width(label, 10) .. ' | ' .. url
 end
 
 local function get_project_links()

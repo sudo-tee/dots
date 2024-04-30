@@ -1,6 +1,7 @@
 require('custom.configs')
 
 --- Lazy require a module
+---@diagnostic disable-next-line: duplicate-set-field
 function _G.lazy_require(module)
   local mod = nil
   return type(package.loaded[module]) == 'table' and package.loaded[module]

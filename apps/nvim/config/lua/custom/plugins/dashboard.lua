@@ -1,5 +1,6 @@
 return {
   'nvimdev/dashboard-nvim',
+  dependencies = { { 'nvim-tree/nvim-web-devicons' } },
   event = 'VimEnter',
   opts = function()
     local logo = [[
@@ -26,15 +27,16 @@ return {
       },
       config = {
         header = vim.split(logo, '\n'),
-          -- stylua: ignore
-          center = {
-            { action = "Telescope smart_open",  desc = " Find file",    icon = " ", key = "f" },
-            { action = "Telescope oldfiles",    desc = " Recent files", icon = " ", key = "e" },
-            { action = "ene | startinsert",     desc = " New file",     icon = " ", key = "n" },
-            { action = "Telescope live_grep",   desc = " Find text",    icon = " ", key = "g" },
-            { action = "Lazy",                  desc = " Lazy",         icon = "󰒲 ", key = "l" },
-            { action = "qa",                    desc = " Quit",         icon = " ", key = "q" },
-          },
+        -- stylua: ignore start
+        center = {
+          { action = "Telescope smart_open",  desc = " Find file",    icon = " ", key = "f" },
+          { action = "Telescope oldfiles",    desc = " Recent files", icon = " ", key = "e" },
+          { action = "ene | startinsert",     desc = " New file",     icon = " ", key = "n" },
+          { action = "Telescope live_grep",   desc = " Find text",    icon = " ", key = "g" },
+          { action = "Lazy",                  desc = " Lazy",         icon = "󰒲 ", key = "l" },
+          { action = "qa",                    desc = " Quit",         icon = " ", key = "q" },
+        },
+        -- stylua: ignore end
         footer = function()
           local stats = require('lazy').stats()
           local ms = (math.floor(stats.startuptime * 100 + 0.5) / 100)

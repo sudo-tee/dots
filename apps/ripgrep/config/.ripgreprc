@@ -31,6 +31,18 @@ web:*.{html,css,js}*
 --glob
 !tests/e2e/**/*
 
+--glob
+!tsx-0/
+
+--glob
+!apps/docs/.vitepress
+
+--glob
+!apps/docs/
+
+--glob
+!apps/shell-app/assets
+
 # Set the colors.
 --colors=line:none
 --colors=line:style:bold

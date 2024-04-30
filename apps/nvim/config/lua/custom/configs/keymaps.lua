@@ -4,22 +4,22 @@ local map = u.map
 local map_pair = u.map_pair
 
 --file related maps
-map('n', '<leader>fn', cmd('enew'), { desc = 'New File' })
+map('n', '<leader>fn', cmd('enew'), { desc = '[N]ew File' })
 
 -- Yank absolute path
 map('n', '<Leader>fya', function()
   u.yank(vim.fn.expand('%:p'))
-end, { desc = '[F]ile [y]ank [a]bsolute path' })
+end, { desc = '[a]bsolute path' })
 
 -- Yank buffer's relative path
 map('n', '<Leader>fyr', function()
   u.yank(vim.fn.expand('%:~:.'))
-end, { desc = '[F]ile [y]ank [r]elative path' })
+end, { desc = '[r]elative path' })
 
 -- Yank buffer's filename
 map('n', '<Leader>fyn', function()
   u.yank(vim.fn.expand('%:t'))
-end, { desc = '[F]ile [y]ank [n]ame' })
+end, { desc = '[n]ame' })
 
 map('n', '<Esc>', cmd('nohlsearch'))
 

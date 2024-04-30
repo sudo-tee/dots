@@ -4,4 +4,6 @@ dist
 .turbo
 .cache
 dotbot*
-
+apps/docs/.vitepress
+apps/shell-app/assests/fonts/*
+apps/docs/*

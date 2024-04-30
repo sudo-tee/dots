@@ -87,6 +87,11 @@ vim.opt.wrap = false
 -- Position cursor anywhere in visual block
 vim.opt.virtualedit = 'block'
 
+-- Dont show the default intro message
+vim.opt.shortmess:append('I')
+
+vim.opt.spelllang = { 'en' }
+
 -- Allow misspellings
 vim.cmd.cnoreabbrev('qw', 'wq')
 vim.cmd.cnoreabbrev('W', 'w')
@@ -97,6 +102,10 @@ vim.cmd.cnoreabbrev('Bd', 'bd')
 vim.cmd.cnoreabbrev('bD', 'bd')
 vim.cmd.cnoreabbrev('bD', 'bd')
 vim.cmd.cnoreabbrev('Q', 'q')
+vim.cmd.cnoreabbrev('H', 'h')
+vim.cmd.cnoreabbrev('tt', 'Telescope')
+vim.cmd.cnoreabbrev('Tt', 'Telescope')
+vim.cmd.cnoreabbrev('TT', 'Telescope')
 
 if vim.fn.executable('nvr') == 1 then
   local nvr = 'nvr --servername ' .. vim.v.servername .. ' '
