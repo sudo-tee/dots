@@ -4,6 +4,7 @@ justfile
 yalc.lock
 !*.local.fb.*
 !.*.fb.*
+!__FB__*/
 !.nvim.lua
 !.nvim/*
 .vscode/*
