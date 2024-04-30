@@ -113,37 +113,4 @@ function M.open_workspace_file(path)
   M.send_user_command(M.commands.CreateWorkspace, path)
 end
 
--- Sexy switcher but to slow
--- function M.WeztermSwitchWorkspace()
---   local ts = require("lib.simple_picker")
---
---   ts.simple_picker(M.get_workspaces(), "Select a workspace", function(sel)
---     M.switch_workspace(sel.value)
---   end, function(_, map, refresh, get_selection)
---     -- Create a new empty workspace
---     map("i", "<c-n>", function()
---       vim.ui.input({ prompt = "Enter Name for new workspace: " }, function(input)
---         if input then
---           M.switch_workspace(input)
---         end
---       end)
---     end)
---
---     -- Open a new preconfigured workspace
---     map("i", "<c-o>", function()
---       ts.simple_picker(M.project_files(), "Open a workspace", function(sel)
---         M.open_workspace_file(sel.value)
---       end)
---     end)
---
---     -- Kill the workspace
---     map("i", "<c-x>", function()
---       local selection = get_selection()
---       M.kill_workspace(selection.value)
---       refresh(M.get_workspaces())
---       vim.notify(string.format("Workspace [%s] Deleted", selection.value))
---     end)
---   end)
--- end
-
 return M
