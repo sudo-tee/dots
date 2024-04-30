@@ -56,6 +56,14 @@ local function project_links()
   menu()
 end
 
+local function paste_from_register()
+  local reg = '"'
+  local ctrl_r_key = vim.api.nvim_replace_termcodes('<C-R>', true, false, true)
+  local quote_key = vim.api.nvim_replace_termcodes(reg, true, false, true)
+
+  vim.api.nvim_feedkeys(ctrl_r_key .. quote_key, 'n', true)
+end
+
 return { -- Fuzzy Finder (files, lsp, etc)
   'nvim-telescope/telescope.nvim',
   branch = '0.1.x',
@@ -112,6 +120,7 @@ return { -- Fuzzy Finder (files, lsp, etc)
           ['<esc>'] = 'close',
           ['<C-Down>'] = 'cycle_history_next',
           ['<C-Up>'] = 'cycle_history_prev',
+          ['<a-p>'] = paste_from_register,
         },
       },
     },
