@@ -12,7 +12,7 @@
     - [chmod u+x projects_run.sh]
 
 - link:
-    ~/.gitconfig:
+    ~/.gitconfig.local:
       force: true
       path: home/gitconfig/.gitconfig
     ~/.gitignore:
