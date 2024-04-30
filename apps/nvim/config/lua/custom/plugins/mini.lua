@@ -8,7 +8,7 @@ return { -- Collection of various small independent plugins/modules
       require('custom.plugins.mini.notify')
       require('custom.plugins.mini.statusline')
       require('custom.plugins.mini.surround')
-
+      require('custom.plugins.mini.tabline')
       -- ... and there is more!
       --  Check out: https://github.com/echasnovski/mini.nvim
     end,

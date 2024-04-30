@@ -72,6 +72,8 @@ vim.opt.laststatus = 3
 
 vim.opt.cmdheight = 0
 
+vim.opt.showtabline = 2
+
 -- Allow misspellings
 vim.cmd.cnoreabbrev('qw', 'wq')
 vim.cmd.cnoreabbrev('W', 'w')
