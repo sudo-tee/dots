@@ -1,12 +1,12 @@
 [include]
     path = .gitconfig.local
 [pull]
-	rebase = true
-	autoStash = true
+  rebase = true
+  autoStash = true
 [rebase]
-	autoStash = true
+  autoStash = true
 [push]
-	autoSetupRemote = true
+  autoSetupRemote = true
 [core]
   excludesfile = ~/.gitignore
 [alias]
@@ -20,6 +20,6 @@
   rbm  =  !git-rebase-main --silent
   rim = !git rebase -i $(git merge-base HEAD $(git default-branch))
   last = log -1 HEAD --stat
-	rebase-main = !git-rebase-main
+  rebase-main = !git-rebase-main
   wip = !git add . && git commit -m 'Work in progress'
 
