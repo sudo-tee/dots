@@ -77,16 +77,18 @@ map('x', '<Tab>', '>gv|', { desc = 'Indent Left' })
 map('x', '<S-Tab>', '<gv', { desc = 'Indent Right' })
 
 -- Keep viewport centered
-map('n', '<C-d>', '<C-d>zz', { desc = 'Scroll down' })
-map('n', '<C-u>', '<C-u>zz', { desc = 'Scroll down' })
-map('n', '<C-o>', '<C-o>zz', { desc = 'Previous position' })
-map('n', '<C-i>', '<C-i>zz', { desc = 'Next position' })
-map('n', '<C-f>', '<C-f>zz', { desc = 'Scroll forward' })
-map('n', '<C-b>', '<C-b>zz', { desc = 'Scroll backward' })
-map('n', 'G', 'Gzz')
+-- TODO: Add zz mappings when this issue is fixed
+-- Issue: https://github.com/neovim/neovim/issues/28106
+map('n', '<C-d>', '<C-d>M', { desc = 'Scroll down' })
+map('n', '<C-u>', '<C-u>M', { desc = 'Scroll down' })
+map('n', '<C-o>', '<C-o>M', { desc = 'Previous position' })
+map('n', '<C-i>', '<C-i>M', { desc = 'Next position' })
+map('n', '<C-f>', '<C-f>M', { desc = 'Scroll forward' })
+map('n', '<C-b>', '<C-b>M', { desc = 'Scroll backward' })
+map('n', 'G', 'GM')
 
 -- Utilities to replace text
--- map('n', 'g*', '*Ncgn', { desc = 'Change word with . repeat' })
+map('n', '<leader>*', '*Ncgn', { desc = 'Change word with . repeat' })
 map('x', '<leader>rv', cmd('ReplaceSelection'), { desc = '[R]eplace [v]isually selected text' })
 map('n', '<leader>rw', cmd('ReplaceWord'), { desc = '[R]eplace [w]ord under cursor' })
 
@@ -117,7 +119,7 @@ map('n', '<leader>`', bufnav('e #'), { desc = 'Switch to alternate ' })
 map('n', '<leader>bo', bufnav('CloseOtherBuffers'), { desc = 'Close [o]ther [b]uffers' })
 
 --Profiling
-map('n', '<leader>uz', ':ToggleProfile<cr>', { silent = false, noremap = true, desc = 'Start a profilling session' })
+map('n', '<leader>uz', cmd('ToggleProfile'), { silent = false, noremap = true, desc = 'Start a profilling session' })
 -- highlights under cursor
 map('n', '<leader>ui', vim.show_pos, { desc = '[I]nspect Pos' })
 
