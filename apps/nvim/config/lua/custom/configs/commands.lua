@@ -54,17 +54,3 @@ end, {})
 command('JiraLink', function(ticket)
   require('custom.lib.jira').create_jira_link(ticket.fargs[1])
 end, { nargs = '*' })
-
-command('CloseOtherBuffers', function()
-  local bufs = vim.api.nvim_list_bufs()
-  local current_buf = vim.api.nvim_get_current_buf()
-
-  for _, bufnr in ipairs(bufs) do
-    local listed = vim.bo[bufnr].buflisted
-    if bufnr ~= current_buf and listed then
-      vim.api.nvim_buf_delete(bufnr, {})
-    end
-  end
-
-  vim.cmd([[ redrawtabline ]])
-end, {})
