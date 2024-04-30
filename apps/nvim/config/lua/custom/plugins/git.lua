@@ -44,6 +44,9 @@ return {
         changedelete = { text = '█' },
         untracked = { text = '█' },
       },
+      preview_config = {
+        border = 'rounded',
+      },
       on_attach = function(buffer)
         local gs = package.loaded.gitsigns
 
@@ -59,8 +62,9 @@ return {
         map("n",          "<leader>ghS", gs.stage_buffer,                               "[S]tage Buffer")
         map("n",          "<leader>ghu", gs.undo_stage_hunk,                            "[U]ndo Stage Hunk")
         map("n",          "<leader>ghR", gs.reset_buffer,                               "[R]eset Buffer")
-        map("n",          "<leader>ghp", gs.preview_hunk_inline,                        "[P]review [H]unk Inline")
+        map("n",          "<leader>ghp", gs.preview_hunk,                               "[P]review [H]unk")
         map("n",          "<leader>ghb", function() gs.blame_line({ full = true }) end, "[B]lame Line")
+        map('n',          "<leader>ghB", gs.toggle_current_line_blame,                  "[B]lame Line (Toggle)")
         map("n",          "<leader>ghd", gs.diffthis,                                   "[D]iff This")
         map("n",          "<leader>ghD", function() gs.diffthis("~") end,               "[G]it [D]iff This ~")
         map({ "o", "x" }, "ih",          ":<C-U>Gitsigns select_hunk<CR>",              "Select [H]unk")
@@ -95,8 +99,6 @@ return {
             { 'n', '<Leader>rc', u.cmd('Grc'),           { desc = 'Git Rebase Continue' } },
             { 'n', '<Leader>rm', u.cmd('Grm'),           { desc = 'Git Rebase master/main' } },
             { 'n', '<Leader>\\', actions.cycle_layout,   { desc = 'Cycle layout' } },
-            -- { 'n', '<S-Left>', '<nop>',   { desc = '' } },
-            -- { 'n', '<S-Right>', '<nop>',   { desc = '' } },
           },
           file_panel = {
             { 'n', 'q',          u.cmd('DiffviewClose'), { desc = 'Close' } },
@@ -110,15 +112,11 @@ return {
             { 'n', '<Leader>rm', u.cmd('Grm'),           { desc = 'Git Rebase master/main' } },
             { 'n', 'h',          actions.prev_entry,     { desc = 'Previuos entry' } },
             { 'n', '<Leader>\\', actions.cycle_layout,   { desc = 'Cycle layout' } },
-            -- { 'n', '<S-Left>', '<nop>',   { desc = '' } },
-            -- { 'n', '<S-Right>', '<nop>',   { desc = '' } },
           },
           file_history_panel = {
             { 'n', 'q',          u.cmd('DiffviewClose'), { desc = 'Close' }},
             { 'n', '<A-q>',      u.cmd('DiffviewClose'), { desc = 'Close' }},
             { 'n', '<Leader>\\', actions.cycle_layout,   { desc = 'Cycle layout' } },
-            -- { 'n', '<S-Left>', '<nop>',   { desc = '' } },
-            -- { 'n', '<S-Right>', '<nop>',   { desc = '' } },
           },
           -- stylua: ignore end
         },
