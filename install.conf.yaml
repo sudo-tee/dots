@@ -9,6 +9,11 @@
 - clean: ["~"]
 
 - shell:
+    - [CONFIG="apps/brew/install.yaml" ./install]
+    - [CONFIG="apps/nvr/install.yaml" ./install]
+    - [CONFIG="apps/fdfind/install.yaml" ./install]
+
+- shell:
     - [CONFIG="stages/links.yaml" ./install]
 
 - shell:

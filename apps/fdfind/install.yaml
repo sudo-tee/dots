@@ -1,0 +1,17 @@
+- defaults:
+    shell:
+      stdout: true
+      stderr: true
+      quiet: true
+
+- shell:
+    - description: "💫💫💫 Installing fdfind 💫💫💫"
+      command: |
+        if  [ -e ".state/fdfind.skip" ]; then
+          echo "😎 Skipping fdfind install"
+        else
+          echo "⌛ Installing fdfind "
+          brew install fd && \
+          ln -s $(which fd) ~/.local/bin/fdfind && \
+          touch .state/fdfind.skip
+        fi
