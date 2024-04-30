@@ -1,0 +1,5 @@
+require('custom.configs.options')
+require('custom.configs.keymaps')
+require('custom.configs.autocommands')
+require('custom.configs.commands')
+require('custom.lib.marks').setup()

@@ -1,0 +1,123 @@
+--- @see https://github.com/nvim-telescope/telescope.nvim/issues/2014
+-- Modifies telescope pickers with path after file like vscode
+local function filename_first_path_display(_, path)
+  local plenary_path = require('plenary.path')
+  local tail = vim.fs.basename(path)
+  local parent = vim.fs.dirname(path)
+  if parent == '.' then
+    return tail
+  end
+  local relative_parent = plenary_path.new(parent):make_relative()
+  return string.format('%s\t\t%s', tail, relative_parent)
+end
+
+--- Highlight the path part of the file as comment
+vim.api.nvim_create_autocmd('FileType', {
+  pattern = 'TelescopeResults',
+  callback = function(ctx)
+    vim.api.nvim_buf_call(ctx.buf, function()
+      vim.fn.matchadd('TelescopeParent', '\t\t.*$')
+      vim.api.nvim_set_hl(0, 'TelescopeParent', { link = 'Comment' })
+    end)
+  end,
+})
+
+local function cmd(command)
+  return string.format('<cmd>%s<cr>', command)
+end
+
+local function find_project_overlay()
+  require('telescope.builtin').find_files({
+    hidden = true,
+    find_command = { 'find-overlays' },
+    prompt_title = 'Project overlays',
+  })
+end
+
+local function current_buffer_fuzzy()
+  require('telescope.builtin').current_buffer_fuzzy_find(require('telescope.themes').get_dropdown({
+    winblend = 10,
+    previewer = false,
+  }))
+end
+
+local function grep_open_files()
+  require('telescope.builtin').live_grep({
+    grep_open_files = true,
+    prompt_title = 'Live Grep in Open Files',
+  })
+end
+
+local function neovim_files()
+  require('telescope.builtin').find_files({ cwd = vim.fn.stdpath('config') })
+end
+
+return { -- Fuzzy Finder (files, lsp, etc)
+  'nvim-telescope/telescope.nvim',
+  branch = '0.1.x',
+  lazy = true,
+  dependencies = {
+    'nvim-lua/plenary.nvim',
+    { -- If encountering errors, see telescope-fzf-native README for install instructions
+      'nvim-telescope/telescope-fzf-native.nvim',
+      build = 'make',
+    },
+    { 'nvim-telescope/telescope-ui-select.nvim' },
+    { 'nvim-tree/nvim-web-devicons' },
+  },
+  cmd = { 'Telescope' },
+  -- stylua: ignore
+  keys = {
+    { '<leader>sh', cmd('Telescope help_tags'),  { desc = '[S]earch [H]elp' } },
+    { '<leader>sk', cmd('Telescope keymaps'),    { desc = '[S]earch [K]eymaps' } },
+    { '<leader>sf', cmd('Telescope find_files'), { desc = '[S]earch [F]iles' } },
+    { '<C-p>'     , cmd('Telescope find_files'), { desc = '[S]earch [F]iles' } },
+    { '<leader>ss', cmd('Telescope builtin'),    { desc = '[S]earch [S]elect Telescope' } },
+    { '<leader>sw', cmd('Telescope grep_string'),{ desc = '[S]earch current [W]ord' } },
+    { '<leader>sg', cmd('Telescope live_grep'),  { desc = '[S]earch by [G]rep' } },
+    { '<leader>sd', cmd('Telescope diagnostics'),{ desc = '[S]earch [D]iagnostics' } },
+    { '<leader>sl', cmd('Telescope resume'),     { desc = '[S]earch resume [l]ast picker' } },
+    { '<leader>sM', cmd('Telescope marks'),      { desc = '[S]earch all [M]ark' } },
+    { '<leader>s.', cmd('Telescope oldfiles'),   { desc = '[S]earch Recent Files ("." for repeat)' } },
+    { '<leader>\\', cmd('Telescope oldfiles'),   { desc = '[S]earch Recent Files' } },
+    { '<leader><leader>', cmd('Telescope buffers'),    { desc = '[ ] Find existing buffers' } },
+    { '<leader>po', find_project_overlay,        { desc = '[P]roject [O]verlay' } },
+    { '<leader>/' , current_buffer_fuzzy,        { desc = '[/] Fuzzily search in current buffer' } },
+    { '<leader>s/', grep_open_files,             { desc = '[S]earch [/] in Open Files' } },
+    { '<leader>sn', neovim_files,                { desc = '[S]earch [N]eovim files' } }
+  },
+  opts = {
+    defaults = {
+      cwd = vim.loop.cwd(),
+      path_display = filename_first_path_display,
+      mappings = {
+        i = {
+          ['<esc>'] = 'close',
+          ['<C-Down>'] = 'cycle_history_next',
+          ['<C-Up>'] = 'cycle_history_prev',
+        },
+      },
+    },
+    pickers = {
+      oldfiles = {
+        cwd_only = true,
+      },
+    },
+  },
+  config = function(_, opts)
+    -- Two important keymaps to use while in telescope are:
+    --  - Insert mode: <c-/>
+    --  - Normal mode: ?
+    opts.extensions = {
+      ['ui-select'] = {
+        require('telescope.themes').get_dropdown(),
+      },
+    }
+
+    require('telescope').setup(opts)
+
+    -- Enable telescope extensions, if they are installed
+    pcall(require('telescope').load_extension, 'fzf')
+    pcall(require('telescope').load_extension, 'ui-select')
+  end,
+}
