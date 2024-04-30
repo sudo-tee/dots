@@ -173,3 +173,6 @@ map("n", "g!", ":put=execute('')<Left><Left>", { desc = "Paste Command" })
 map("v", "<localleader>jl", ':JiraLink <C-R>"<CR>', { desc = "Create a jira link in markdown" })
 
 map("n", "<localleader>jl", ":JiraLink ", { desc = "Create a jira link in markdown" })
+map("n", "<localleader>jl", ":JiraLink ", { noremap = true, desc = "Create a jira link in markdown" })
+
+map("n", "<leader>uz", ":ToggleProfile<cr>", { noremap = true, desc = "Start a profilling session" })
