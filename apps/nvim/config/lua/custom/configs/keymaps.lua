@@ -3,6 +3,9 @@ local cmd = u.cmd
 local map = u.map
 local map_pair = u.map_pair
 
+-- Release for surround
+map('n', 's', '<Nop>')
+
 --file related maps
 map('n', '<leader>fn', cmd('enew'), { desc = '[N]ew File' })
 
