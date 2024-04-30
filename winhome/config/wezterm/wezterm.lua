@@ -48,7 +48,7 @@ wezterm.on("format-tab-title", function(tab, tabs, panes, config, hover, max_wid
 
     local prog = pane.user_vars.PROG or pane.user_vars.WEZTERM_PROG or ""
     if prog:len() > 0 then
-      return u.basename(pane.user_vars.PROG or pane.user_vars.WEZTERM_PROG)
+      return (pane.user_vars.PROG or pane.user_vars.WEZTERM_PROG)
     end
 
     local cwd = pane.current_working_dir
@@ -59,7 +59,13 @@ wezterm.on("format-tab-title", function(tab, tabs, panes, config, hover, max_wid
     return tab_info.active_pane.title
   end
 
+  local zoom_indicator = { Text = "" }
+  if tab.active_pane.is_zoomed then
+    zoom_indicator = { Text = " " .. wezterm.nerdfonts.cod_screen_full .. " " }
+  end
+
   return {
+    zoom_indicator,
     { Text = " " .. tab_title(tab) .. " |" },
   }
 end)
@@ -70,6 +76,7 @@ return {
   use_fancy_tab_bar = false,
   status_update_interval = 2000,
   default_domain = "WSL:Ubuntu",
+  -- default_domain = "dev",
   show_tab_index_in_tab_bar = false,
   show_new_tab_button_in_tab_bar = false,
   enable_scroll_bar = false,
