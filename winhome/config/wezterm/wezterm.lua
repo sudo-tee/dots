@@ -24,10 +24,13 @@ wezterm.on("update-status", function(window, pane)
   local cwd = cwd_dir and u.basename(cwd_dir.path) or ""
 
   window:set_left_status(wezterm.format({
-    { Foreground = { Color = colors.custom.workspace_name } },
-    { Text = "  " },
-    { Text = wezterm.nerdfonts.oct_table .. "  " .. workspace },
-    { Text = " :: " },
+    { Attribute = { Intensity = "Bold" } },
+    { Foreground = { Color = colors.custom.workspace_background } },
+    { Background = { Color = colors.custom.workspace_foreground } },
+    { Text = " " .. wezterm.nerdfonts.dev_terminal_badge .. " " },
+    { Background = { Color = colors.custom.workspace_background } },
+    { Foreground = { Color = colors.custom.workspace_foreground } },
+    { Text = " " .. workspace .. " " },
   }))
 
   window:set_right_status(wezterm.format({
@@ -36,6 +39,17 @@ wezterm.on("update-status", function(window, pane)
     { Text = " " },
   }))
 end)
+
+local prog_icons = {
+  nvim = wezterm.nerdfonts.custom_neovim,
+  ["t watch"] = wezterm.nerdfonts.dev_nodejs_small,
+  ["nr dev"] = wezterm.nerdfonts.dev_nodejs_small,
+  ["nr start"] = wezterm.nerdfonts.dev_nodejs_small,
+  ["ni"] = wezterm.nerdfonts.dev_npm,
+  ["title"] = wezterm.nerdfonts.md_format_title,
+  ["working_dir"] = wezterm.nerdfonts.oct_terminal,
+  ["default_prog"] = wezterm.nerdfonts.md_application,
+}
 
 wezterm.on("format-tab-title", function(tab, tabs, panes, config, hover, max_width)
   local function tab_title(tab_info)
@@ -48,24 +62,27 @@ wezterm.on("format-tab-title", function(tab, tabs, panes, config, hover, max_wid
 
     local prog = pane.user_vars.PROG or pane.user_vars.WEZTERM_PROG or ""
     if prog:len() > 0 then
-      return (pane.user_vars.PROG or pane.user_vars.WEZTERM_PROG)
+      local icon = prog_icons[prog] or prog_icons["default_prog"]
+      return icon .. " " .. prog
     end
 
     local cwd = pane.current_working_dir
     if cwd then
-      return u.basename(cwd.path)
+      return prog_icons["working_dir"] .. " " .. u.basename(cwd.path)
     end
 
     return tab_info.active_pane.title
   end
 
-  local zoom_indicator = { Text = "" }
+  local zoom_indicator = ""
   if tab.active_pane.is_zoomed then
-    zoom_indicator = { Text = " " .. wezterm.nerdfonts.cod_screen_full .. " " }
+    zoom_indicator = " " .. wezterm.nerdfonts.cod_screen_full
   end
 
   return {
-    zoom_indicator,
+    { Foreground = { Color = colors.custom.zoom_indicator } },
+    { Text = zoom_indicator },
+    "ResetAttributes",
     { Text = " " .. tab_title(tab) .. " |" },
   }
 end)
@@ -74,6 +91,7 @@ return {
   max_fps = 144,
   window_decorations = "RESIZE",
   use_fancy_tab_bar = false,
+  tab_max_width = 24,
   status_update_interval = 2000,
   default_domain = "WSL:Ubuntu",
   -- default_domain = "dev",
@@ -157,8 +175,8 @@ return {
       action = wezterm.action_callback(actions.create_new_workspace),
     },
     {
-      mods = "ALT",
       key = "Delete",
+      mods = "ALT|SHIFT",
       action = wezterm.action_callback(actions.kill_current_wokspace),
     },
     -- move between split panes

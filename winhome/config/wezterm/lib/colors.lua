@@ -26,7 +26,9 @@ M.kanagawa = {
 }
 
 M.custom = {
-  workspace_name = "#fb4ca",
+  workspace_foreground = "#223249",
+  workspace_background = "#7e9cd8",
+  zoom_indicator = "#ff5d62",
 }
 
 return M
