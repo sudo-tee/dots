@@ -24,7 +24,7 @@ vim.opt.showmode = false
 -- Sync clipboard between OS and Neovim.
 --  Remove this option if you want your OS clipboard to remain independent.
 --  See `:help 'clipboard'`
-vim.opt.clipboard = 'unnamedplus'
+vim.opt.clipboard = '' -- use the osc52 plugin
 
 -- Enable break indent
 vim.opt.breakindent = true
