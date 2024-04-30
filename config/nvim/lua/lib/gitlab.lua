@@ -15,21 +15,28 @@ M.open_git_remote = function()
 end
 
 M.open_git_mr = function()
+  local wez = require("lib/wezterm")
   print("Opening MR for branch")
 
   local cmd_output = vim.fn.system("glab api -X GET projects/:id/merge_requests  --field source_branch=:branch")
   local success, json = pcall(vim.json.decode, cmd_output)
-
+  local web_url = ""
   if not success or json == nil or json[1] == nil then
-    print("Creating a new MR for branch")
-    os.execute("glab mr new -f -w")
+    local utils = require("lib/utils")
 
-    return
+    local sucess, mr_outpout = pcall(vim.fn.system, "glab mr new -f -w")
+    print(sucess, mr_outpout)
+    if not sucess then
+      print(mr_outpout)
+      return
+    end
+    print("Creating a new MR for branch")
+    web_url = utils.read_file("/tmp/xdg-open-url") or ""
   else
-    local web_url = json[1].web_url
-    os.execute("xdg-open '" .. vim.fn.shellescape(web_url) .. "'")
-    vim.fn.setreg("+", web_url)
+    web_url = json[1].web_url
   end
+  wez.open_url(web_url)
+  vim.fn.setreg("+", web_url)
 end
 
 M.generate_chat_message_for_mr = function()
