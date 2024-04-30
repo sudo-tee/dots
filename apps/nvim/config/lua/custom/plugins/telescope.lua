@@ -1,3 +1,4 @@
+local u = require('custom.lib.utils')
 --- @see https://github.com/nvim-telescope/telescope.nvim/issues/2014
 -- Modifies telescope pickers with path after file like vscode
 local function filename_first_path_display(_, path)
@@ -21,10 +22,6 @@ vim.api.nvim_create_autocmd('FileType', {
     end)
   end,
 })
-
-local function cmd(command)
-  return string.format('<cmd>%s<cr>', command)
-end
 
 local function find_project_overlay()
   require('telescope.builtin').find_files({
@@ -50,6 +47,13 @@ end
 
 local function neovim_files()
   require('telescope.builtin').find_files({ cwd = vim.fn.stdpath('config') })
+end
+
+local function project_links()
+  local pl = require('custom.lib.project-links')
+  local select_menu = require('custom.lib.select-menu')
+  local menu = select_menu.create_select_menu('Project links', pl.get_links())
+  menu()
 end
 
 return { -- Fuzzy Finder (files, lsp, etc)
@@ -80,23 +84,24 @@ return { -- Fuzzy Finder (files, lsp, etc)
   cmd = { 'Telescope' },
   -- stylua: ignore
   keys = {
-    { '<C-p>'     , cmd('Telescope smart_open'), { desc = '[S]earch [F]iles' } },
-    { '<leader>sh', cmd('Telescope help_tags'),  { desc = '[S]earch [H]elp' } },
-    { '<leader>sk', cmd('Telescope keymaps'),    { desc = '[S]earch [K]eymaps' } },
-    { '<leader>sf', cmd('Telescope find_files'), { desc = '[S]earch [F]iles' } },
-    { '<leader>ss', cmd('Telescope builtin'),    { desc = '[S]earch [S]elect Telescope' } },
-    { '<leader>sw', cmd('Telescope grep_string'),{ desc = '[S]earch current [W]ord' } },
-    { '<leader>sg', cmd('Telescope live_grep'),  { desc = '[S]earch by [G]rep' } },
-    { '<leader>sd', cmd('Telescope diagnostics'),{ desc = '[S]earch [D]iagnostics' } },
-    { '<leader>sl', cmd('Telescope resume'),     { desc = '[S]earch resume [l]ast picker' } },
-    { '<leader>sM', cmd('Telescope marks'),      { desc = '[S]earch all [M]ark' } },
-    { '<leader>s.', cmd('Telescope oldfiles'),   { desc = '[S]earch Recent Files ("." for repeat)' } },
-    { '<leader>\\', cmd('Telescope oldfiles'),   { desc = '[S]earch Recent Files' } },
-    { '<leader><leader>', cmd('Telescope buffers'),    { desc = '[ ] Find existing buffers' } },
-    { '<leader>po', find_project_overlay,        { desc = '[P]roject [O]verlay' } },
-    { '<leader>/' , current_buffer_fuzzy,        { desc = '[/] Fuzzily search in current buffer' } },
-    { '<leader>s/', grep_open_files,             { desc = '[S]earch [/] in Open Files' } },
-    { '<leader>sn', neovim_files,                { desc = '[S]earch [N]eovim files' } },
+    { '<leader><leader>', u.cmd('Telescope buffers'),    { desc = '[ ] Find existing buffers' } },
+    { '<C-p>'     ,       u.cmd('Telescope smart_open'), { desc = '[S]earch [F]iles' } },
+    { '<leader>sh',       u.cmd('Telescope help_tags'),  { desc = '[S]earch [H]elp' } },
+    { '<leader>sk',       u.cmd('Telescope keymaps'),    { desc = '[S]earch [K]eymaps' } },
+    { '<leader>sf',       u.cmd('Telescope find_files'), { desc = '[S]earch [F]iles' } },
+    { '<leader>ss',       u.cmd('Telescope builtin'),    { desc = '[S]earch [S]elect Telescope' } },
+    { '<leader>sw',       u.cmd('Telescope grep_string'),{ desc = '[S]earch current [W]ord' } },
+    { '<leader>sg',       u.cmd('Telescope live_grep'),  { desc = '[S]earch by [G]rep' } },
+    { '<leader>sd',       u.cmd('Telescope diagnostics'),{ desc = '[S]earch [D]iagnostics' } },
+    { '<leader>sl',       u.cmd('Telescope resume'),     { desc = '[S]earch resume [l]ast picker' } },
+    { '<leader>sM',       u.cmd('Telescope marks'),      { desc = '[S]earch all [M]ark' } },
+    { '<leader>s.',       u.cmd('Telescope oldfiles'),   { desc = '[S]earch Recent Files ("." for repeat)' } },
+    { '<leader>\\',       u.cmd('Telescope oldfiles'),   { desc = '[S]earch Recent Files' } },
+    { '<leader>po',       find_project_overlay,          { desc = '[P]roject [O]verlay' } },
+    { '<leader>/' ,       current_buffer_fuzzy,          { desc = '[/] Fuzzily search in current buffer' } },
+    { '<leader>s/',       grep_open_files,               { desc = '[S]earch [/] in Open Files' } },
+    { '<leader>sn',       neovim_files,                  { desc = '[S]earch [N]eovim files' } },
+    { '<leader>pl',       project_links ,                { desc = '[P]roject [l]links' }}
   },
   opts = {
     defaults = {

@@ -88,12 +88,6 @@ map('n', '<leader>uz', ':ToggleProfile<cr>', { silent = false, noremap = true, d
 map('n', '!', ':Sh ', { desc = 'Execute Shell Command in the floating term', silent = false })
 
 -- Work/Workflow specific keymaps
-map('n', '<leader>pl', function()
-  local pl = require('custom.lib.project-links')
-  local select_menu = require('custom.lib.select-menu')
-  local menu = select_menu.create_select_menu('Project links', pl.get_links())
-  menu()
-end, { desc = 'Project links' })
 
 -- Helper to create a jira link
 map('v', '<leader>pj', ':JiraLink <C-R>"<CR>', { silent = false, desc = 'Create a jira link in markdown' })
