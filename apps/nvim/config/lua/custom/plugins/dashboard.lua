@@ -22,20 +22,18 @@ return {
     local opts = {
       theme = 'doom',
       hide = {
-        -- this is taken care of by lualine
-        -- enabling this messes up the actual laststatus setting after loading a file
         statusline = false,
       },
       config = {
         header = vim.split(logo, '\n'),
           -- stylua: ignore
           center = {
-            { action = "Telescope smart_open",                                     desc = " Find file",       icon = " ", key = "f" },
-            { action = "Telescope oldfiles",                                       desc = " Recent files",    icon = " ", key = "e" },
-            { action = "ene | startinsert",                                        desc = " New file",        icon = " ", key = "n" },
-            { action = "Telescope live_grep",                                      desc = " Find text",       icon = " ", key = "g" },
-            { action = "Lazy",                                                     desc = " Lazy",            icon = "󰒲 ", key = "l" },
-            { action = "qa",                                                       desc = " Quit",            icon = " ", key = "q" },
+            { action = "Telescope smart_open",  desc = " Find file",    icon = " ", key = "f" },
+            { action = "Telescope oldfiles",    desc = " Recent files", icon = " ", key = "e" },
+            { action = "ene | startinsert",     desc = " New file",     icon = " ", key = "n" },
+            { action = "Telescope live_grep",   desc = " Find text",    icon = " ", key = "g" },
+            { action = "Lazy",                  desc = " Lazy",         icon = "󰒲 ", key = "l" },
+            { action = "qa",                    desc = " Quit",         icon = " ", key = "q" },
           },
         footer = function()
           local stats = require('lazy').stats()

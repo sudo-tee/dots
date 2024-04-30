@@ -65,7 +65,7 @@ return {
       {
         mode = { 'v', 'n' },
         '<leader>cca',
-        ':CopilotChatActions<cr>',
+        '<cmd>CopilotChatActions<cr>',
         desc = '[C]opilot[C]hat - [P]rompt actions',
       },
       {

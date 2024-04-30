@@ -56,6 +56,7 @@ return {
           MiniStatuslineCustomDiagnosticWarn = { fg = '#ff9a3b', bg = theme.ui.bg_m3 },
           MiniStatuslineCustomDiagnosticInfo = { fg = '#659584', bg = theme.ui.bg_m3 },
           MiniStatuslineCustomDiagnosticHint = { fg = '#6a9589', bg = theme.ui.bg_m3 },
+
           -- mini tabline
           MiniTablineModifiedVisible = { fg = '#bada55', bg = '#2a2a37' },
           MiniTablineModifiedCurrent = { fg = '#bada55', bg = '#2a2a37' },

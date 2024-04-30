@@ -1,5 +1,5 @@
 ---@module 'custom.lib.utils'
-local u = require('custom.lib.utils')
+local u = lazy_require('custom.lib.utils')
 
 return { -- LSP Configuration & Plugins
   'neovim/nvim-lspconfig',

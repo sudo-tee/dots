@@ -1,3 +1,7 @@
+---@module 'custom.lib.utils'
+local u = lazy_require('custom.lib.utils')
+local cmd = vim.api.nvim_create_user_command
+
 vim.cmd('command! Gc  :Sh git commit')
 vim.cmd('command! Grc :Sh GIT_EDITOR=true git rebase --continue')
 vim.cmd('command! Gca :Sh git commit --amend')
@@ -8,6 +12,10 @@ vim.cmd('command! Grim :Sh git rim')
 vim.cmd('command! Grbm :Sh git rbm')
 vim.cmd('command! -nargs=?  Gri :R git rebase -i <args>')
 
+cmd('GitDiffMain', function()
+  vim.cmd('DiffviewOpen origin/' .. require('custom.lib.utils').git_default_branch() .. '...HEAD')
+end, {})
+
 return {
   { 'tpope/vim-fugitive', lazy = true, event = 'VeryLazy', cmd = { 'G' } },
   {
@@ -16,7 +24,7 @@ return {
     event = 'VeryLazy',
     cmd = { 'Flog', 'FlogSplit' },
     keys = {
-      { '<leader>gfl', '<cmd>Flog<cr>', desc = 'Open Git log graph' },
+      { '<leader>glg', u.cmd('Flog'), desc = '[G]it [l]og [g]raph' },
     },
   },
   { -- Adds git related signs to the gutter, as well as utilities for managing changes
@@ -40,18 +48,19 @@ return {
         end
 
         -- stylua: ignore start
-        map("n", "]h", gs.next_hunk, "Next Hunk")
-        map("n", "[h", gs.prev_hunk, "Prev Hunk")
-        map({ "n", "v" }, "<leader>ghs", ":Gitsigns stage_hunk<CR>", "Stage Hunk")
-        map({ "n", "v" }, "<leader>ghr", ":Gitsigns reset_hunk<CR>", "Reset Hunk")
-        map("n", "<leader>ghS", gs.stage_buffer, "Stage Buffer")
-        map("n", "<leader>ghu", gs.undo_stage_hunk, "Undo Stage Hunk")
-        map("n", "<leader>ghR", gs.reset_buffer, "Reset Buffer")
-        map("n", "<leader>ghp", gs.preview_hunk_inline, "Preview Hunk Inline")
-        map("n", "<leader>ghb", function() gs.blame_line({ full = true }) end, "Blame Line")
-        map("n", "<leader>ghd", gs.diffthis, "Diff This")
-        map("n", "<leader>ghD", function() gs.diffthis("~") end, "Diff This ~")
-        map({ "o", "x" }, "ih", ":<C-U>Gitsigns select_hunk<CR>", "GitSigns Select Hunk")
+        map("n",          "]h",          gs.next_hunk,                                  "[N]ext [H]unk")
+        map("n",          "[h",          gs.prev_hunk,                                  "[P]rev [H]unk")
+        map({ "n", "v" }, "<leader>ghs", u.cmd('Gitsigns stage_hunk'),                  "[S]tage [H]unk")
+        map({ "n", "v" }, "<leader>ghr", u.cmd('Gitsigns reset_hunk'),                  "[R]eset [H]unk")
+        map("n",          "<leader>ghS", gs.stage_buffer,                               "[S]tage Buffer")
+        map("n",          "<leader>ghu", gs.undo_stage_hunk,                            "[U]ndo Stage Hunk")
+        map("n",          "<leader>ghR", gs.reset_buffer,                               "[R]eset Buffer")
+        map("n",          "<leader>ghp", gs.preview_hunk_inline,                        "[P]review [H]unk Inline")
+        map("n",          "<leader>ghb", function() gs.blame_line({ full = true }) end, "[B]lame Line")
+        map("n",          "<leader>ghd", gs.diffthis,                                   "[D]iff This")
+        map("n",          "<leader>ghD", function() gs.diffthis("~") end,               "[G]it [D]iff This ~")
+        map({ "o", "x" }, "ih",          ":<C-U>Gitsigns select_hunk<CR>",              "Select [H]unk")
+        -- stylua: ignore end
       end,
     },
   },
@@ -61,15 +70,11 @@ return {
     lazy = true,
     cmd = { 'DiffviewOpen', 'DiffviewFileHistory' },
     keys = {
-      { '<leader>gd', '<cmd>DiffviewOpen<CR>', desc = 'Git Diff View' },
-      {
-        '<leader>gmd',
-        function()
-          vim.cmd('DiffviewOpen origin/' .. require('custom.lib.utils').git_default_branch() .. '...HEAD')
-        end,
-        desc = 'Git Diff MAIN',
-      },
-      { '<leader>gfh', '<cmd>DiffviewFileHistory<CR>', desc = 'Git Diff File History' },
+      -- stylua: ignore start
+      { '<leader>gd',  u.cmd('DiffviewOpen'),        desc = '[G]it [D]iff View' },
+      { '<leader>gmd', u.cmd('GitDiffMain'),         desc = '[G]it [D]iff [M]AIN' },
+      { '<leader>gfh', u.cmd('DiffviewFileHistory'), desc = '[G]it [F]ile [H]istory' },
+      -- stylua: ignore end
     },
     opts = function()
       local actions = require('diffview.actions')
@@ -77,30 +82,32 @@ return {
       return {
         enhanced_diff_hl = true, -- See ':h diffview-config-enhanced_diff_hl'
         keymaps = {
+          -- stylua: ignore start
           view = {
-            { 'n', 'q', '<cmd>DiffviewClose<CR>', { desc = 'Close' } },
-            { 'n', '<A-q>', '<cmd>DiffviewClose<CR>', { desc = 'Close' } },
-            { 'n', '<Leader>rc', '<cmd>Grc<CR>', { desc = 'Git Rebase Continue' } },
-            { 'n', '<Leader>rm', '<cmd>Grm<CR>', { desc = 'Git Rebase master/main' } },
-            { 'n', '<Leader>\\', actions.cycle_layout },
+            { 'n', 'q',          u.cmd('DiffviewClose'), { desc = 'Close' } },
+            { 'n', '<A-q>',      u.cmd('DiffviewClose'), { desc = 'Close' } },
+            { 'n', '<Leader>rc', u.cmd('Grc'),           { desc = 'Git Rebase Continue' } },
+            { 'n', '<Leader>rm', u.cmd('Grm'),           { desc = 'Git Rebase master/main' } },
+            { 'n', '<Leader>\\', actions.cycle_layout,   { desc = 'Cycle layout' } },
           },
           file_panel = {
-            { 'n', 'q', '<cmd>DiffviewClose<CR>', { desc = 'Close' } },
-            { 'n', '<A-q>', '<cmd>DiffviewClose<CR>', { desc = 'Close' } },
-            { 'n', 'c', '<cmd>Gc<CR>', { desc = 'Git Commit' } },
-            { 'n', 'A', '<cmd>Gca<CR>', { desc = 'Git Commit Amend' } },
-            { 'n', 'p', '<cmd>Gp<CR>', { desc = 'Git Push' } },
-            { 'n', 'F', '<cmd>Gpl<CR>', { desc = 'Git Push Force (with lease)' } },
-            { 'n', '<Leader>rc', '<cmd>Grc<CR>', { desc = 'Git Rebase Continue' } },
-            { 'n', '<Leader>rm', '<cmd>Grm<CR>', { desc = 'Git Rebase master/main' } },
-            { 'n', 'h', actions.prev_entry({ desc = 'Previuos entry' }) },
-            { 'n', '<Leader>\\', actions.cycle_layout },
+            { 'n', 'q',          u.cmd('DiffviewClose'), { desc = 'Close' } },
+            { 'n', '<A-q>',      u.cmd('DiffviewClose'), { desc = 'Close' } },
+            { 'n', 'c',          u.cmd('Gc'),            { desc = 'Git Commit' } },
+            { 'n', 'A',          u.cmd('Gca'),           { desc = 'Git Commit Amend' } },
+            { 'n', 'p',          u.cmd('Gp'),            { desc = 'Git Push' } },
+            { 'n', 'F',          u.cmd('Gpl'),           { desc = 'Git Push Force (with lease)' } },
+            { 'n', '<Leader>rc', u.cmd('Grc'),           { desc = 'Git Rebase Continue' } },
+            { 'n', '<Leader>rm', u.cmd('Grm'),           { desc = 'Git Rebase master/main' } },
+            { 'n', 'h',          actions.prev_entry,     { desc = 'Previuos entry' } },
+            { 'n', '<Leader>\\', actions.cycle_layout,   { desc = 'Cycle layout' } },
           },
           file_history_panel = {
-            { 'n', 'q', '<cmd>DiffviewClose<CR>' },
-            { 'n', '<A-q>', '<cmd>DiffviewClose<CR>' },
-            { 'n', '<Leader>\\', actions.cycle_layout },
+            { 'n', 'q',          u.cmd('DiffviewClose'), { desc = 'Close' }},
+            { 'n', '<A-q>',      u.cmd('DiffviewClose'), { desc = 'Close' }},
+            { 'n', '<Leader>\\', actions.cycle_layout,   { desc = 'Cycle layout' } },
           },
+          -- stylua: ignore end
         },
       }
     end,

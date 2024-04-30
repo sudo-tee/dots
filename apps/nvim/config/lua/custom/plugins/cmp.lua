@@ -32,21 +32,12 @@ return { -- Autocompletion
       completion = { completeopt = 'menu,menuone,noinsert' },
 
       mapping = cmp.mapping.preset.insert({
-        ['<CR>'] = cmp.mapping.confirm({ select = true }), -- Accept currently selected item. Set `select` to `false` to only confirm explicitly selected items.
+        ['<CR>'] = cmp.mapping.confirm({ select = true }),
         ['<S-CR>'] = cmp.mapping.confirm({
           behavior = cmp.ConfirmBehavior.Replace,
           select = true,
         }), -- Accept currently selected item. Set `select` to `false` to only confirm explicitly selected items.
-
-        -- Manually trigger a completion from nvim-cmp.
         ['<C-Space>'] = cmp.mapping.complete({}),
-
-        -- Think of <c-l> as moving to the right of your snippet expansion.
-        --  So if you have a snippet that's like:
-        --  function $name($args)
-        --    $body
-        --  end
-        --
         -- <c-l> will move you to the right of each of the expansion locations.
         -- <c-h> is similar, except moving you backwards.
         ['<C-l>'] = cmp.mapping(function()
