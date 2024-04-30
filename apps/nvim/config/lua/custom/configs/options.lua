@@ -72,7 +72,18 @@ vim.opt.laststatus = 3
 
 vim.opt.cmdheight = 0
 
+-- display mini bufferline
 vim.opt.showtabline = 2
+
+vim.opt.completeopt = 'menu,menuone,noselect'
+
+-- Confirm to save changes before exiting modified buffer
+vim.opt.confirm = true
+
+vim.opt.autowrite = true
+
+-- Dont show mode since we have a statusline
+vim.opt.showmode = false
 
 -- Allow misspellings
 vim.cmd.cnoreabbrev('qw', 'wq')

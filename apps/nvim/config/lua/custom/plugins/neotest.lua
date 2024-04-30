@@ -4,6 +4,7 @@ return {
     lazy = true,
     dependencies = {
       {
+        'nvim-neotest/nvim-nio',
         'nvim-treesitter/nvim-treesitter',
         'nvim-neotest/neotest-jest',
         'sudo-tee/neotest-vitest',
@@ -36,6 +37,10 @@ return {
         cwd = function(file)
           local util = require('neotest-vitest.util')
           if string.find(file, '/packages/') then
+            return string.match(file, '(.-/[^/]+/)src')
+          end
+
+          if string.find(file, '/plugins/') then
             return string.match(file, '(.-/[^/]+/)src')
           end
 

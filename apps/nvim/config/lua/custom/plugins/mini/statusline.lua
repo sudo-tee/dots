@@ -6,7 +6,7 @@ require('mini.statusline').setup({
       local mode, mode_hl = MiniStatusline.section_mode({ trunc_width = 120 })
       local macro = MiniStatusline.macro()
       local git = MiniStatusline.section_git({ trunc_width = 75 })
-      local diagnostics = MiniStatusline.section_diagnostics({ trunc_width = 75 })
+      local diagnostics = MiniStatusline.custom_diagnostics({ trunc_width = 75 })
       local filename = MiniStatusline.section_filename({ trunc_width = 140 })
       local fileinfo = MiniStatusline.section_fileinfo({ trunc_width = 120 })
       local updates = MiniStatusline.updates()
@@ -16,10 +16,14 @@ require('mini.statusline').setup({
       -- Usage of `MiniStatusline.combine_groups()` ensures highlighting and
       -- correct padding with spaces between groups (accounts for 'missing'
       -- sections, etc.)
-      return MiniStatusline.combine_groups({
+      local groups = {
         { hl = 'IncSearch', strings = { search } },
         { hl = mode_hl, strings = { mode } },
-        { hl = 'MiniStatuslineDevinfo', strings = { git, diagnostics } },
+        { hl = 'MiniStatuslineDevinfo', strings = { git } },
+        diagnostics.error,
+        diagnostics.warn,
+        diagnostics.info,
+        diagnostics.hint,
         '%<', -- Mark general truncate point
         { hl = 'MiniStatuslineFilename', strings = { filename } },
         '%=', -- End left alignment
@@ -27,10 +31,27 @@ require('mini.statusline').setup({
         { hl = 'CustomUpdatesStatus', strings = { updates } },
         { hl = 'MiniStatuslineFileinfo', strings = { fileinfo } },
         { hl = mode_hl, strings = { location } },
-      })
+      }
+
+      return MiniStatusline.combine_groups(groups)
     end,
   },
 })
+
+MiniStatusline.custom_diagnostics = function(opts)
+  local diagnostics = MiniStatusline.section_diagnostics(opts)
+  local error = diagnostics:match('E%d+') or ''
+  local info = diagnostics:match('I%d+') or ''
+  local warn = diagnostics:match('W%d+') or ''
+  local hint = diagnostics:match('H%d+') or ''
+
+  return {
+    error = { hl = 'CustomDiagnosticError', strings = { error:gsub('E', ' ') } },
+    warn = { hl = 'CustomDiagnosticWarn', strings = { warn:gsub('W', ' ') } },
+    info = { hl = 'CustomDiagnosticInfo', strings = { info:gsub('W', '󰋼 ') } },
+    hint = { hl = 'CustomDiagnosticHint', strings = { hint:gsub('H', '󰌵 ') } },
+  }
+end
 
 MiniStatusline.macro = function(_)
   local reg = vim.fn.reg_recording()

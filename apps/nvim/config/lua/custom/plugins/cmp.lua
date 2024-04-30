@@ -50,8 +50,11 @@ return { -- Autocompletion
         -- Accept ([y]es) the completion.
         --  This will auto-import if your LSP supports it.
         --  This will expand snippets if the LSP sent a snippet.
-        ['<CR>'] = cmp.mapping.confirm({ select = true, behavior = cmp.ConfirmBehavior.Replace }),
-        ['<C-y>'] = cmp.mapping.confirm({ select = true }),
+        ['<CR>'] = cmp.mapping.confirm({ select = true }), -- Accept currently selected item. Set `select` to `false` to only confirm explicitly selected items.
+        ['<S-CR>'] = cmp.mapping.confirm({
+          behavior = cmp.ConfirmBehavior.Replace,
+          select = true,
+        }), -- Accept currently selected item. Set `select` to `false` to only confirm explicitly selected items.
 
         -- Manually trigger a completion from nvim-cmp.
         --  Generally you don't need this, because nvim-cmp will display
@@ -81,28 +84,6 @@ return { -- Autocompletion
         { name = 'nvim_lsp' },
         { name = 'luasnip' },
         { name = 'path' },
-      },
-    })
-
-    cmp.setup.cmdline(':', {
-      mapping = cmp.mapping.preset.cmdline({
-        ['<C-Down>'] = { c = cmp.mapping.select_next_item({ behavior = cmp.SelectBehavior.Insert }) },
-        ['<C-Up>'] = { c = cmp.mapping.select_prev_item({ behavior = cmp.SelectBehavior.Insert }) },
-      }),
-      sources = cmp.config.sources({
-        { name = 'path' },
-      }, {
-        { name = 'cmdline', keyword_length = 3 },
-      }),
-    })
-
-    cmp.setup.cmdline('/', {
-      mapping = cmp.mapping.preset.cmdline({
-        ['<C-Down>'] = { c = cmp.mapping.select_next_item({ behavior = cmp.SelectBehavior.Insert }) },
-        ['<C-Up>'] = { c = cmp.mapping.select_prev_item({ behavior = cmp.SelectBehavior.Insert }) },
-      }),
-      sources = {
-        { name = 'buffer' },
       },
     })
   end,

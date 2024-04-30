@@ -1,18 +1,33 @@
 -- [[ Basic Autocommands ]]
 --  See :help lua-guide-autocommands
 
+local function augroup(name)
+  return vim.api.nvim_create_augroup('sudo_tee/' .. name, { clear = true })
+end
+
+-- Check if we need to reload the file when it changed
+vim.api.nvim_create_autocmd({ 'FocusGained', 'TermClose', 'TermLeave' }, {
+  group = augroup('checktime'),
+  callback = function()
+    if vim.o.buftype ~= 'nofile' then
+      vim.cmd('checktime')
+    end
+  end,
+})
+
+--
 -- Highlight when yanking (copying) text
 --  Try it with `yap` in normal mode
 --  See `:help vim.highlight.on_yank()`
 vim.api.nvim_create_autocmd('TextYankPost', {
   desc = 'Highlight when yanking (copying) text',
-  group = vim.api.nvim_create_augroup('sudo_tee/highlight-yank', { clear = true }),
+  group = augroup('sudo_tee/highlight-yank'),
   callback = function()
     vim.highlight.on_yank()
   end,
 })
 
-local focus_cmd_group = vim.api.nvim_create_augroup('sudo_tee/focus_commands', { clear = true })
+local focus_cmd_group = augroup('focus_commands')
 
 -- Disable mouse when not in focus so it never ends in visual mode when clicking the neovim window
 -- FocusGained autocommand
@@ -36,7 +51,7 @@ vim.api.nvim_create_autocmd('FocusLost', {
 })
 
 vim.api.nvim_create_autocmd('FileType', {
-  group = vim.api.nvim_create_augroup('sudo_tee/close_with_q', { clear = true }),
+  group = augroup('close_with_q'),
   desc = 'Close with <q>',
   pattern = {
     'fugitive',

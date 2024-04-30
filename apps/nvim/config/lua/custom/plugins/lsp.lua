@@ -2,16 +2,35 @@ return { -- LSP Configuration & Plugins
   'neovim/nvim-lspconfig',
   event = 'VeryLazy',
   dependencies = {
-    -- Automatically install LSPs and related tools to stdpath for neovim
-    { 'folke/neodev.nvim', opts = {} },
+    {
+      'folke/neodev.nvim',
+      opts = {},
+    },
     'williamboman/mason.nvim',
     'williamboman/mason-lspconfig.nvim',
     'WhoIsSethDaniel/mason-tool-installer.nvim',
-    -- Useful status updates for LSP.
   },
-  config = function()
+  opts = {
+    diagnostics = {
+      underline = true,
+      update_in_insert = false,
+      virtual_text = {
+        spacing = 20,
+        source = 'if_many',
+      },
+      severity_sort = true,
+      signs = {
+        text = {
+          [vim.diagnostic.severity.ERROR] = '',
+          [vim.diagnostic.severity.WARN] = '',
+          [vim.diagnostic.severity.HINT] = '󰌵',
+          [vim.diagnostic.severity.INFO] = '󰋼',
+        },
+      },
+    },
+  },
+  config = function(_, opts)
     require('lspconfig.ui.windows').default_options.border = 'rounded'
-
     vim.lsp.handlers['textDocument/hover'] = vim.lsp.with(vim.lsp.handlers.hover, {
       border = 'rounded',
     })
@@ -50,8 +69,8 @@ return { -- LSP Configuration & Plugins
 
         -- Rename the variable under your cursor
         --  Most Language Servers support renaming across files, etc.
-        map('<leader>rn', require('custom.lib.ui').rename, '[R]e[n]ame')
-        map('<F2>', require('custom.lib.ui').rename, '[R]e[n]ame')
+        map('<leader>rn', vim.lsp.buf.rename, '[R]e[n]ame')
+        map('<F2>', vim.lsp.buf.rename, '[R]e[n]ame')
 
         -- Execute a code action, usually your cursor needs to be on top of an error
         -- or a suggestion from your LSP for this to activate.
@@ -82,6 +101,7 @@ return { -- LSP Configuration & Plugins
             callback = vim.lsp.buf.clear_references,
           })
         end
+        vim.diagnostic.config(vim.deepcopy(opts.diagnostics))
       end,
     })
 
