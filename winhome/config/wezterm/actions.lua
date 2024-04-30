@@ -3,6 +3,7 @@ local act = wezterm.action
 local mux = wezterm.mux
 local u = require("lib.utils")
 local wez = require("lib.wez")
+local print = wezterm.log_info
 
 local M = {}
 
@@ -13,18 +14,18 @@ function M.split_pane(direction)
 
     local new_pane = pane:split({
       direction = direction,
-      cwd = cwd.path,
+      cwd = cwd.path or cwd,
     })
 
-    wez.ensure_cwd(new_pane, cwd.path)
+    wez.ensure_cwd(new_pane, cwd.path or cwd)
   end
 end
 
 function M.create_new_tab(window, pane, line)
   local cwd = pane:get_current_working_dir()
 
-  local _, new_pane = window:mux_window():spawn_tab { cwd = cwd }
-  wez.ensure_cwd(new_pane, cwd.path)
+  local _, new_pane = window:mux_window():spawn_tab({ cwd = cwd })
+  wez.ensure_cwd(new_pane, cwd.path or cwd)
 end
 
 function M.switch_to_open_workspace(window, pane)
@@ -84,19 +85,22 @@ function M.open_project_workspace(window, pane, line)
 end
 
 function M.create_new_workspace(window, pane, line)
-  window:perform_action(act.PromptInputLine({
-    description = wezterm.format({
-      { Attribute = { Intensity = "Bold" } },
-      { Foreground = { AnsiColor = "Fuchsia" } },
-      { Text = "Enter name for new workspace" },
-    }),
+  window:perform_action(
+    act.PromptInputLine({
+      description = wezterm.format({
+        { Attribute = { Intensity = "Bold" } },
+        { Foreground = { AnsiColor = "Fuchsia" } },
+        { Text = "Enter name for new workspace" },
+      }),
 
-    action = wezterm.action_callback(function(window, pane, line)
-      if line then
-        wez.switch_workspace(line, window, pane)
-      end
-    end),
-  }), pane)
+      action = wezterm.action_callback(function(window, pane, line)
+        if line then
+          wez.switch_workspace(line, window, pane)
+        end
+      end),
+    }),
+    pane
+  )
 end
 
 function M.kill_current_wokspace(window, pane, line)

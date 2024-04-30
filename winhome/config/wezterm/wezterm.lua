@@ -6,6 +6,7 @@ local u = require("lib.utils")
 local smart_splits = require("lib.smart-splits")
 local user_commands = require("user-commands")
 local colors = require("lib.colors")
+local print = wezterm.log_info
 
 wezterm.on("user-var-changed", function(window, pane, name, value)
   if name == "uc" then
@@ -21,7 +22,7 @@ wezterm.on("update-status", function(window, pane)
   local workspace = window:active_workspace()
 
   local cwd_dir = pane:get_current_working_dir()
-  local cwd = cwd_dir and u.basename(cwd_dir.path) or ""
+  local cwd = cwd_dir and u.basename(cwd_dir.path or cwd_dir) or ""
 
   window:set_left_status(wezterm.format({
     { Foreground = { Color = colors.custom.workspace_name } },
@@ -52,7 +53,7 @@ wezterm.on("format-tab-title", function(tab, tabs, panes, config, hover, max_wid
 
     local cwd = pane.current_working_dir
     if cwd then
-      return u.basename(cwd.path)
+      return u.basename(cwd.path or cwd)
     end
 
     return tab_info.active_pane.title
