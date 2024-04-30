@@ -52,7 +52,7 @@ end
 local function project_links()
   local pl = require('custom.lib.project-links')
   local select_menu = require('custom.lib.select-menu')
-  local menu = select_menu.create_select_menu('Project links', pl.get_links())
+  local menu = select_menu.create_select_menu('Project links', pl.get_links(), { add_numbers = true })
   menu()
 end
 
