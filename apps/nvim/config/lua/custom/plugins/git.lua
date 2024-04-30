@@ -21,6 +21,10 @@ cmd('GitDiffMain', function()
   vim.cmd('DiffviewOpen origin/' .. git.default_branch() .. '...HEAD')
 end, {})
 
+cmd('GitDiffBranch', function(args)
+  vim.cmd('DiffviewOpen origin/' .. args.fargs[1] .. '...HEAD')
+end, { nargs = '*' })
+
 u.map('n', '<leader>grm', u.cmd('Grbm'), { desc = '[r]ebase [m]main/master' })
 u.map('n', '<leader>grc', u.cmd('Grc'), { desc = '[r]ebase [c]ontinue' })
 u.map('n', '<leader>gcc', u.cmd('Gc'), { desc = '[c]ommit' })
@@ -96,7 +100,7 @@ return {
     },
     init = function()
       vim.api.nvim_create_autocmd({ 'FocusGained', 'TermClose', 'TermLeave' }, {
-        group = u.augroup('sudo_tee/diffview/refresh'),
+        group = u.augroup('diffview/refresh'),
         callback = function()
           local view = require('diffview.lib').get_current_view()
           if view then
