@@ -1,0 +1,15 @@
+- defaults:
+    shell:
+      stdout: true
+      stderr: true
+      quiet: true
+
+- shell:
+    - description: "💫💫💫 Sync WINHOME back to dotfiles 💫💫💫"
+      command: |
+        if  [ -e "$HOME/winhome" ]; then
+          echo "📁 Copying config files from winhome wezterm"
+          cp -r  ~/winhome/.config/wezterm/* winhome/config/wezterm/
+        else
+          echo "Nothing to do"
+        fi

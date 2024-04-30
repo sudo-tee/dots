@@ -5,7 +5,7 @@
       quiet: true
 
 - shell:
-    - description: "💫💫💫  WINHOME 💫💫💫"
+    - description: "💫💫💫 WINHOME 💫💫💫"
       command: |
         if  [ -e "$HOME/winhome" ]; then
           mkdir -p  ~/winhome/.config/wezterm/
