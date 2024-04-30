@@ -9,9 +9,10 @@ vim.cmd('command! Grbm :Sh git rbm')
 vim.cmd('command! -nargs=?  Gri :R git rebase -i <args>')
 
 return {
-  { 'tpope/vim-fugitive', event = 'VeryLazy', cmd = { 'G' } },
+  { 'tpope/vim-fugitive', lazy = true, event = 'VeryLazy', cmd = { 'G' } },
   {
     'rbong/vim-flog',
+    lazy = true,
     event = 'VeryLazy',
     cmd = { 'Flog', 'FlogSplit' },
     keys = {
@@ -20,6 +21,7 @@ return {
   },
   { -- Adds git related signs to the gutter, as well as utilities for managing changes
     'lewis6991/gitsigns.nvim',
+    lazy = true,
     event = 'VeryLazy',
     opts = {
       signs = {

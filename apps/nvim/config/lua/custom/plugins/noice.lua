@@ -9,8 +9,14 @@ end
 
 return {
   'folke/noice.nvim',
+  lazy = true,
   event = 'VeryLazy',
   opts = {
+    cmdline = {
+      format = {
+        shell = { pattern = '^:%s*Sh ', icon = '$', lang = 'bash' },
+      },
+    },
     lsp = {
       override = {
         ['vim.lsp.util.convert_input_to_markdown_lines'] = true,

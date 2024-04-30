@@ -1,5 +1,6 @@
 return {
   'chrisgrieser/nvim-recorder',
+  lazy = true,
   event = 'VeryLazy',
   opts = {
     mapping = {

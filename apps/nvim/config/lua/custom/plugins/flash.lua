@@ -1,5 +1,6 @@
 return {
   'folke/flash.nvim',
+  lazy = true,
   event = 'VeryLazy',
   opts = {
     modes = {
@@ -10,7 +11,7 @@ return {
   },
   keys = {
     {
-      '<CR>',
+      '<leader><CR>',
       mode = { 'n', 'x', 'o' },
       function()
         require('flash').jump()

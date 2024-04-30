@@ -3,6 +3,6 @@
 --
 -- See the kickstart.nvim README for more information
 return {
-  { 'tpope/vim-sleuth', event = 'VeryLazy' }, -- Detect tabstop and shiftwidth automatically
-  { 'justinsgithub/wezterm-types', event = 'VeryLazy' },
+  { 'tpope/vim-sleuth', lazy = true, event = 'VeryLazy' }, -- Detect tabstop and shiftwidth automatically
+  { 'justinsgithub/wezterm-types', lazy = true, event = 'VeryLazy' },
 }
