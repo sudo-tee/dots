@@ -94,6 +94,20 @@ return {
         desc = "Grep (root dir)",
       },
       {
+        "<leader>ss",
+        function()
+          require("lib.pretty-pickers").lsp_document_symbols()
+        end,
+        desc = "Document symbols",
+      },
+      {
+        "<leader>sS",
+        function()
+          require("lib.pretty-pickers").lsp_dynamic_workspace_symbols()
+        end,
+        desc = "Workspace symbols",
+      },
+      {
         "<leader>fp",
         function()
           require("lib.pretty-pickers").find_files({
