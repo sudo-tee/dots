@@ -89,15 +89,40 @@ cmd("StopProfile", function()
   vim.cmd("e profile-lua.log")
 end, {})
 
-local isProfiling = false
+local is_profiling = false
 cmd("ToggleProfile", function()
-  if isProfiling then
+  if is_profiling then
     vim.cmd("StopProfile")
-    isProfiling = false
+    is_profiling = false
   else
     vim.cmd("StartProfile")
-    isProfiling = true
+    is_profiling = true
   end
+end, {})
+
+-- Edit quickfix
+cmd("RemoveQFItem", function()
+  local curqfidx = vim.fn.line(".")
+  local qfall = vim.fn.getqflist()
+
+  -- Return if there are no items to remove
+  if #qfall == 0 then
+    return
+  end
+
+  -- Remove the item from the quickfix list
+  table.remove(qfall, curqfidx)
+  vim.fn.setqflist(qfall, "r")
+
+  -- Reopen quickfix window to refresh the list
+  vim.cmd("copen")
+
+  -- If not at the end of the list, stay at the same index, otherwise, go one up.
+  local new_idx = curqfidx < #qfall and curqfidx or math.max(curqfidx - 1, 1)
+
+  -- Set the cursor position directly in the quickfix window
+  local winid = vim.fn.win_getid() -- Get the window ID of the quickfix window
+  vim.api.nvim_win_set_cursor(winid, { new_idx, 0 })
 end, {})
 
 -- vim.cmd("command! -nargs=1 JiraLink lua _G.create_jira_link(<f-args>)")

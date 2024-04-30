@@ -45,8 +45,17 @@ vim.api.nvim_create_autocmd("FileType", {
     "startuptime",
     "lazy",
     "checkhealth",
+    "flog",
   },
   callback = function()
     vim.keymap.set({ "n" }, "<ESC>", "<cmd>close<CR>", { silent = true, buffer = true })
+  end,
+})
+
+-- Quickfix list filter
+vim.api.nvim_create_autocmd("FileType", {
+  pattern = { "qf" },
+  callback = function()
+    vim.keymap.set({ "n" }, "dd", "<cmd>RemoveQFItem<cr>", { silent = true, buffer = true })
   end,
 })
