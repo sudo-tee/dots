@@ -1,6 +1,8 @@
 local M = {}
 
 M.open_git_remote = function()
+  local wez = require("lib/wezterm")
+
   local cmd_output = vim.fn.system("git config --get remote.origin.url 2> /dev/null"):gsub("\n", "")
   local remote_url = cmd_output:gsub(":", "/"):gsub("git@", "https://")
 
