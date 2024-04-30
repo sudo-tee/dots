@@ -1,0 +1,114 @@
+#!/bin/bash
+main() {
+	local command="$1"
+	case "$command" in
+	"send") ;;
+	"switch-workspace")
+		local workspace="$2"
+		local flag="$3"
+
+		switch-workspace "$workspace" "$flag"
+		;;
+	"list-workspaces")
+		list-workspaces
+		;;
+	"kill-workspace")
+		local workspace="$2"
+		kill-workspace "$workspace"
+		;;
+	"kill-current-workspace")
+		local workspace=$(wz get-workspace)
+		kill-workspace "$workspace"
+		;;
+	"get-workspace")
+		get-workspace
+		;;
+	*)
+		printf "Error: Invalid command [$command] \n\n"
+		usage
+		exit 1
+		;;
+	esac
+}
+
+list-workspaces() {
+	_list_query '.[].workspace' | uniq
+}
+
+get-workspace() {
+	_list_query ".[] | select(.pane_id == $WEZTERM_PANE  ) | .workspace"
+}
+
+kill-workspace() {
+	local workspace
+
+	if [ -z "$1" ]; then
+		workspace=$(_list_query '.[].workspace' | uniq | fzf)
+	else
+		workspace="$1"
+	fi
+
+	[[ -z "$workspace" ]] && return 1
+
+	echo "Killing workspace [$workspace]"
+
+	_list_query ".[] | select(.workspace == \"$workspace\"  ) | .pane_id" | xargs -I {pane} wezterm cli kill-pane --pane-id="{pane}"
+}
+
+switch-workspace() {
+	local workspace="$1"
+	local flag="$2"
+
+	if [ "$flag" == '--spawn' ]; then
+		wezterm cli spawn wz switch-workspace "$workspace"
+		exit 0
+	fi
+
+	_set_user_var uc "$(printf '{"c":"w.open","v":"%s"}' "$workspace")"
+
+}
+
+send() {
+	_set_user_var uc "YOOOOOOO"
+}
+
+send-user-command() {
+	local command=$1
+	local value=$2
+
+	_set_user_var uc "YOOOOOOO"
+}
+
+_list_query() {
+	local query="$1"
+	wezterm cli list --format json | jq -r "$query"
+}
+
+# This function emits an OSC 1337 sequence to set a user var
+# associated with the current terminal pane.
+# It requires the `base64` utility to be available in the path.
+# This function is included in the wezterm shell integration script, but
+# is reproduced here for clarity
+_set_user_var() {
+	if hash base64 2>/dev/null; then
+		if [[ -z "${TMUX}" ]]; then
+			printf "\033]1337;SetUserVar=%s=%s\007" "$1" $(echo -n "$2" | base64)
+		else
+			# <https://github.com/tmux/tmux/wiki/FAQ#what-is-the-passthrough-escape-sequence-and-how-do-i-use-it>
+			# Note that you ALSO need to add "set -g allow-passthrough on" to your tmux.conf
+			printf "\033Ptmux;\033\033]1337;SetUserVar=%s=%s\007\033\\" "$1" $(echo -n "$2" | base64)
+		fi
+	fi
+}
+
+usage() {
+	echo "Usage: wz <command>"
+	echo "This tool facilitates interacting with wezterm"
+	echo "Commands:"
+	echo "  send <command> <args> Send a user command to wezterm"
+	echo "  switch <workspace>  Switch or open running session with fzf"
+	echo "  kill-workspace <workspace>  Kill all the panes associates to a workspace"
+	echo "  get-workspace get the name of the current workspace"
+}
+
+main "$@"
