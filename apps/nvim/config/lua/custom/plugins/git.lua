@@ -54,8 +54,8 @@ return {
         -- stylua: ignore start
         map("n",          "]h",          gs.next_hunk,                                  "[N]ext [H]unk")
         map("n",          "[h",          gs.prev_hunk,                                  "[P]rev [H]unk")
-        map({ "n", "v" }, "<leader>ghs", u.cmd('Gitsigns stage_hunk'),                  "[S]tage [H]unk")
-        map({ "n", "v" }, "<leader>ghr", u.cmd('Gitsigns reset_hunk'),                  "[R]eset [H]unk")
+        map({ "n", "v" }, "<leader>ghs", gs.stage_hunk,                                 "[S]tage [H]unk")
+        map({ "n", "v" }, "<leader>ghr", gs.reset_hunk,                                 "[R]eset [H]unk")
         map("n",          "<leader>ghS", gs.stage_buffer,                               "[S]tage Buffer")
         map("n",          "<leader>ghu", gs.undo_stage_hunk,                            "[U]ndo Stage Hunk")
         map("n",          "<leader>ghR", gs.reset_buffer,                               "[R]eset Buffer")
@@ -75,8 +75,8 @@ return {
     cmd = { 'DiffviewOpen', 'DiffviewFileHistory' },
     keys = {
       -- stylua: ignore start
-      { '<leader>gd',  u.cmd('DiffviewOpen'),        desc = '[G]it [D]iff View' },
-      { '<leader>gmd', u.cmd('GitDiffMain'),         desc = '[G]it [D]iff [M]AIN' },
+      { '<leader>gg',  u.cmd('DiffviewOpen'),        desc = '[G]it DiffView' },
+      { '<leader>gdm', u.cmd('GitDiffMain'),         desc = '[G]it [D]iff [M]AIN' },
       { '<leader>gfh', u.cmd('DiffviewFileHistory'), desc = '[G]it [F]ile [H]istory' },
       -- stylua: ignore end
     },
