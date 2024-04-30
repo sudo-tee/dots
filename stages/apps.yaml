@@ -14,6 +14,7 @@
     - [./Taskfile app fnm]
     - [./Taskfile app rust]
     - [./Taskfile app bob]
+    - [./Taskfile app special_node]
     - [./Taskfile app nvim]
     - [./Taskfile app fswatch]
     - [./Taskfile app fzf]
