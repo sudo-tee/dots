@@ -16,23 +16,12 @@
         then
           cd "$HOME/Projects/$PROJECT" 
           git pull;
-        else 
+        else
+          if [ -z "$PROJECT_GIT" ]; then
+            PROJECT_GIT=$(cat "${DOT_ENV}/projects/${PROJECT}/git.repo")
+          fi
           git clone $PROJECT_GIT "$HOME/Projects/$PROJECT";
         fi
-
-- shell:
-    - description: "📦 Pre install"
-      command: |
-        if [ -f ${DOT_ENV}/projects/${PROJECT}/pre-install.yaml ]; then 
-          CONFIG="${DOT_ENV}/projects/${PROJECT}/pre-install.yaml" ./install
-        else
-          echo "No pre install file ${DOT_ENV}/projects/${PROJECT}/pre-install.yaml"
-        fi
-- shell:
-    - description: "📦 Installing"
-      command: |
-        cd ~/Projects/${PROJECT}
-        ni
 
 - link:
     ~/Projects/${PROJECT}/:
@@ -45,6 +34,24 @@
       glob: true
       force: true
       path: $DOT_ENV/projects/${PROJECT}/overlays/**/.*
+
+- shell:
+    - description: "📦 Pre install"
+      command: |
+        if [ -f ${DOT_ENV}/projects/${PROJECT}/pre-install.yaml ]; then 
+          CONFIG="${DOT_ENV}/projects/${PROJECT}/pre-install.yaml" ./install
+        else
+          echo "No pre install file ${DOT_ENV}/projects/${PROJECT}/pre-install.yaml"
+        fi
+
+- shell:
+    - description: "📦 Installing"
+      command: |
+        if [ -f ~/Projects/${PROJECT}/package.json ]; then 
+          cd ~/Projects/${PROJECT}
+          ni
+        fi
+
 
 - shell:
     - description: "📦 Post install"
