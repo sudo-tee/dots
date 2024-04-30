@@ -56,6 +56,7 @@ map("x", "<Leader>d", '""Y""Pgv', { desc = "Duplicate selection" })
 map("n", "<S-A-Down>", 'm`""Y""P``', { desc = "Duplicate line" })
 map("x", "<S-A-Down>", '""Y""Pgv', { desc = "Duplicate selection" })
 
+map("n", "<leader>C", "_C", { desc = "Cut line from the start" })
 -- Move Lines
 map("n", "<A-Down>", ":m .+1<CR>==", { desc = "Move line down" })
 map("n", "<A-Up>", ":m .-2<CR>==", { desc = "Move line up" })
@@ -168,7 +169,7 @@ map({ "v", "x" }, "<leader>vn", ":norm ", { silent = false })
 
 -- Helper to create a jira link
 map("v", "<localleader>jl", ':JiraLink <C-R>"<CR>', { silent = false, desc = "Create a jira link in markdown" })
-map("n", "<localleader>jl", ":JiraLink<CR>", { silent = false, desc = "Create a jira link in markdown" })
+map("n", "<localleader>jl", ":JiraLink", { silent = false, desc = "Create a jira link in markdown" })
 
 map("n", "<leader>uz", ":ToggleProfile<cr>", { silent = false, noremap = true, desc = "Start a profilling session" })
 
@@ -177,6 +178,6 @@ local surrounds = { "{", "}", "[", "]", "(", ")", "'", '"', "`" }
 for _, char in ipairs(surrounds) do
   map("v", char, function()
     local c = vim.api.nvim_replace_termcodes(char, true, false, true)
-    vim.api.nvim_feedkeys("aaa" .. c, "v", true)
+    vim.api.nvim_feedkeys("gsa" .. c, "v", true)
   end, {})
 end
