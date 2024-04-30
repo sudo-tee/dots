@@ -1,0 +1,20 @@
+- defaults:
+    link:
+      create: true
+      relink: true
+    shell:
+      stdout: true
+      stderr: true
+      quiet: true
+
+- clean: ["~"]
+- shell:
+    - description: "💫💫💫  Installing watchman 💫💫💫"
+      command: |
+        if  [ -e ".state/watchman.skip" ]; then
+          echo "😎 Skipping watchman install"
+        else
+          echo "⌛ Installing watchman"
+          brew install watchman
+          touch .state/watchman.skip
+        fi
