@@ -53,8 +53,42 @@ end
 
 function M.is_buffer_in_split()
   local total_wins = vim.fn.tabpagewinnr(vim.fn.tabpagenr(), "$")
+  local unlisted = M.get_bufs_unlisted()
 
-  return total_wins > 1
+  return (total_wins - #unlisted) > 1
+end
+
+function M.get_bufs_unlisted()
+  local bufs_loaded = {}
+
+  for _, bufnr in ipairs(vim.api.nvim_list_bufs()) do
+    local winnr = vim.fn.bufwinnr(bufnr)
+    local listed = vim.bo[bufnr].buflisted
+    if vim.api.nvim_buf_is_loaded(bufnr) and winnr >= 1 and listed == false then
+      local inf = vim.fn.getbufinfo(bufnr)
+      table.insert(bufs_loaded, {
+        type = vim.bo[bufnr].filetype,
+        name = inf[1].name,
+        listed = listed,
+        win = winnr,
+      })
+    end
+  end
+
+  return bufs_loaded
+end
+
+function M.smart_close()
+  if M.has_float_window() then
+    return M.close_float_windows()
+  end
+
+  if M.is_buffer_in_split() then
+    vim.cmd("quit")
+    return
+  end
+
+  require("mini.bufremove").delete(0, false)
 end
 
 M.read_file = function(path)
