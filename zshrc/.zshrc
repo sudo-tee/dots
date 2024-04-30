@@ -1,3 +1,4 @@
+# zmodload zsh/zprof
 # Created by Zap installer
 [ -f "${XDG_DATA_HOME:-$HOME/.local/share}/zap/zap.zsh" ] && source "${XDG_DATA_HOME:-$HOME/.local/share}/zap/zap.zsh"
 plug "zsh-users/zsh-autosuggestions"
@@ -6,8 +7,8 @@ plug "zap-zsh/zap-prompt"
 plug "zsh-users/zsh-syntax-highlighting"
 
 # Load and initialise completion system
-autoload -Uz compinit
-compinit
+[ ! "$(find ~/.zcompdump -mtime 1)" ] || compinit
+compinit -C
 
 path=(
  ~/.local/bin 
@@ -32,4 +33,8 @@ export VISUAL='nvim'
 [[ -f "$HOME/.config/local/zsh/local.sh" ]] && source "$HOME/.config/local/zsh/local.sh"
 [[ -f "$HOME/.config/zsh/aliases.sh" ]] && source "$HOME/.config/zsh/aliases.sh"
 
+for file in $HOME/.config/zsh/includes/_*; do
+    source "$file"
+done
 
+# zprof
