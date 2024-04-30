@@ -32,21 +32,18 @@ return {
   end,
 
   [M.commands.Open] = function(window, pane, cmd_context)
-    local wezterm_dir = os.getenv("WEZTERM_CONFIG_DIR")
+    local home = os.getenv("HOME")
 
-    local url = utils.read_file(utils.path_join(wezterm_dir, "xdg-open-url"))
+    local url = utils.read_file(home .. "\\.config\\wezterm\\xdg-open-url")
 
     wezterm.log_info("OPENING URL:" .. url)
-    if utils.is_windows() then
-      wezterm.open_with(url)
-    else
-      os.execute("open " .. url)
-    end
+
+    wezterm.open_with(url)
   end,
 
   [M.commands.Start] = function(window, pane, cmd_context)
-    local wezterm_dir = os.getenv("WEZTERM_CONFIG_DIR")
-    local url = utils.read_file(utils.path_join(wezterm_dir, "xdg-start"))
+    local home = os.getenv("HOME")
+    local url = utils.read_file(home .. "\\.config\\wezterm\\xdg-start")
 
     wezterm.log_info("OPENING :" .. url)
 

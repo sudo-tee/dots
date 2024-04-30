@@ -6,7 +6,6 @@ local u = require("lib.utils")
 local smart_splits = require("lib.smart-splits")
 local user_commands = require("user-commands")
 local colors = require("lib.colors")
-local print = wezterm.log_info
 
 wezterm.on("user-var-changed", function(window, pane, name, value)
   if name == "uc" then
@@ -22,7 +21,7 @@ wezterm.on("update-status", function(window, pane)
   local workspace = window:active_workspace()
 
   local cwd_dir = pane:get_current_working_dir()
-  local cwd = cwd_dir and u.basename(cwd_dir.path or cwd_dir) or ""
+  local cwd = cwd_dir and u.basename(cwd_dir.path) or ""
 
   window:set_left_status(wezterm.format({
     { Foreground = { Color = colors.custom.workspace_name } },
@@ -47,13 +46,14 @@ wezterm.on("format-tab-title", function(tab, tabs, panes, config, hover, max_wid
       return title
     end
 
-    if pane.user_vars.PROG then
-      return u.basename(pane.user_vars.PROG)
+    local prog = pane.user_vars.PROG or pane.user_vars.WEZTERM_PROG or ""
+    if prog:len() > 0 then
+      return u.basename(pane.user_vars.PROG or pane.user_vars.WEZTERM_PROG)
     end
 
     local cwd = pane.current_working_dir
     if cwd then
-      return u.basename(cwd.path or cwd)
+      return u.basename(cwd.path)
     end
 
     return tab_info.active_pane.title
@@ -65,18 +65,18 @@ wezterm.on("format-tab-title", function(tab, tabs, panes, config, hover, max_wid
 end)
 
 return {
-  max_fps = 120,
+  max_fps = 144,
   window_decorations = "RESIZE",
   use_fancy_tab_bar = false,
   status_update_interval = 2000,
-  --wezterm ls-fonts --list-system
-  default_domain = "dev",
+  default_domain = "WSL:Ubuntu",
   show_tab_index_in_tab_bar = false,
   show_new_tab_button_in_tab_bar = false,
   enable_scroll_bar = false,
   window_close_confirmation = "NeverPrompt",
   exit_behavior = "Close",
   font = wezterm.font("Rec Mono Duotone", { weight = "Regular", stretch = "Normal", style = "Normal" }),
+  -- font = wezterm.font("UbuntuMono Nerd Font", { weight = "Regular", stretch = "Normal", style = "Normal" }),
   warn_about_missing_glyphs = false,
   font_size = 11,
   front_end = "WebGpu",
@@ -109,44 +109,44 @@ return {
       action = wezterm.action_callback(actions.split_pane("Bottom")),
     },
     {
-      key = "t",
-      mods = "CTRL|SHIFT",
+      key = "T",
+      mods = "ALT",
       action = wezterm.action_callback(actions.create_new_tab),
     },
     {
       key = "LeftArrow",
-      mods = "CTRL|SHIFT",
+      mods = "SHIFT|ALT",
       action = act.ActivateTabRelative(-1),
     },
     {
       key = "RightArrow",
-      mods = "CTRL|SHIFT",
+      mods = "SHIFT|ALT",
       action = act.ActivateTabRelative(1),
     },
     -- WORKSPACE Management
     {
       key = "K",
-      mods = "CTRL|SHIFT",
+      mods = "ALT",
       action = act.ShowLauncherArgs({ flags = "FUZZY|WORKSPACES" }),
     },
     {
       key = "J",
-      mods = "CTRL|SHIFT",
+      mods = "ALT",
       action = wezterm.action_callback(actions.switch_to_open_workspace),
     },
     {
       key = "O",
-      mods = "CTRL|SHIFT",
+      mods = "ALT",
       action = wezterm.action_callback(actions.open_project_workspace),
     },
     {
       key = "N",
-      mods = "CTRL|SHIFT",
+      mods = "ALT",
       action = wezterm.action_callback(actions.create_new_workspace),
     },
     {
+      mods = "ALT",
       key = "Delete",
-      mods = "CTRL|SHIFT",
       action = wezterm.action_callback(actions.kill_current_wokspace),
     },
 
