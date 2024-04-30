@@ -10,7 +10,7 @@
         if  [ -e "$HOME/winhome" ]; then
           mkdir -p  ~/winhome/.config/wezterm/
           echo "📁 Copying config files for wezterm"
-          cp -r config/wezterm/* ~/winhome/.config/wezterm/
+          cp -r winhome/config/wezterm/* ~/winhome/.config/wezterm/
                     
           mkdir -p  ~/winhome/.config/projects/
           cp -r $DOT_ENV/config/projects/* ~/winhome/.config/projects/

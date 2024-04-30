@@ -10,7 +10,7 @@ wezterm.on("user-var-changed", function(window, pane, name, value)
 	if name == "uc" then
 		local cmd_context = wezterm.json_parse(value)
 
-		wezterm.log_info("DE:", cmd_context)
+		wezterm.log_info("UC:", cmd_context)
 		user_commands[cmd_context.c](window, pane, cmd_context)
 		return
 	end
@@ -20,33 +20,15 @@ wezterm.on("update-status", function(window, pane)
 	-- Workspace name
 	local stat = window:active_workspace()
 	local stat_color = "#58a6ff"
-	-- It's a little silly to have workspace name all the time
-	-- Utilize this to display LDR or current key table name
-	if window:active_key_table() then
-		stat = window:active_key_table()
-		stat_color = "#7dcfff"
-	end
-	if window:leader_is_active() then
-		stat = "LDR"
-		stat_color = "#bb9af7"
-	end
 
-	-- Current working directory
-	local basename = function(s)
-		-- Nothing a little regex can't fix
-		return string.gsub(s, "(.*[/\\])(.*)", "%2")
-	end
 	-- CWD and CMD could be nil (e.g. viewing log using Ctrl-Alt-l). Not a big deal, but check in case
 	local cwd = pane:get_current_working_dir()
-	cwd = cwd and basename(cwd) or ""
+	cwd = cwd and u.basename(cwd) or ""
 	-- Current command
 	local vars = pane:get_user_vars()
 	local cmd = pane:get_foreground_process_name()
-	cmd = cmd and basename(cmd)
+	cmd = cmd and u.basename(cmd)
 	cmd = cmd or vars["PROG"] or ""
-
-	-- Time
-	local time = wezterm.strftime("%H:%M")
 
 	-- Left status (left of the tab line)
 	window:set_left_status(wezterm.format({
@@ -58,8 +40,6 @@ wezterm.on("update-status", function(window, pane)
 
 	-- Right status
 	window:set_right_status(wezterm.format({
-		-- Wezterm has a built-in nerd fonts
-		-- https://wezfurlong.org/wezterm/config/lua/wezterm/nerdfonts.html
 		{ Text = wezterm.nerdfonts.md_folder .. "  " .. cwd },
 		{ Text = " | " },
 		{ Foreground = { Color = "#e0af68" } },
@@ -74,7 +54,6 @@ return {
 	status_update_interval = 1000,
 	window_background_opacity = 0.9,
 	default_domain = "dev",
-	--	hide_tab_bar_if_only_one_tab = true,
 	show_tab_index_in_tab_bar = false,
 	show_new_tab_button_in_tab_bar = false,
 	window_close_confirmation = "NeverPrompt",
@@ -98,7 +77,7 @@ return {
 			remote_address = "dev",
 			username = "francis",
 			connect_automatically = true,
-			multiplexing = "None",
+			multiplexing = "WezTerm",
 		},
 	},
 	window_padding = {

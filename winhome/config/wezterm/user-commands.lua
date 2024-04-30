@@ -5,10 +5,13 @@ local u = require("lib.utils")
 
 local M = {}
 
-function M.switch_workspace(name, win, pane)
+function M.switch_workspace(name, win, pane, layout)
 	win:perform_action(
 		act.SwitchToWorkspace({
 			name = name,
+			spawn = {
+				cwd = layout and layout.cwd or "",
+			},
 		}),
 		pane
 	)
@@ -34,38 +37,36 @@ function M.load_layout(name, window, pane)
 
 		wezterm.log_info("Starting workspace ", layout.name)
 
-		local workspace_win = M.switch_workspace(layout.name, window, pane)
+		local workspace_win = M.switch_workspace(layout.name, window, pane, layout)
+		wezterm.sleep_ms(100)
 
 		if workspace_exists then
 			return
 		end
 
 		if workspace_win then
-			M.apply_layout(window, layout)
+			M.apply_layout(workspace_win, layout)
 		end
 	end
 end
 
 function M.apply_layout(win, layout)
-	wezterm.sleep_ms(1000)
-
 	local main_pane = win:active_pane()
-
-	main_pane:send_text("cd " .. layout.cwd .. "\n")
-	main_pane:send_text(layout.command .. "\n")
 
 	local current_pane = main_pane
 	for _, pane_config in pairs(layout.panes) do
+		local cwd = pane_config.cwd or layout.cwd
 		current_pane = current_pane:split({
 			size = pane_config.size,
 			direction = pane_config.direction,
+			cwd = cwd,
 		})
 
-		local cwd = pane_config.cwd or layout.cwd
-		current_pane:send_text("cd " .. cwd .. "\n")
+		wezterm.sleep_ms(100)
 		current_pane:send_text(pane_config.command .. "\n")
 	end
-
+	wezterm.sleep_ms(100)
+	main_pane:send_text(layout.command .. "\n")
 	main_pane:activate()
 end
 

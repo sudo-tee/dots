@@ -1,12 +1,5 @@
 local w = require("wezterm")
 
--- Equivalent to POSIX basename(3)
--- Given "/foo/bar" returns "bar"
--- Given "c:\\foo\\bar" returns "bar"
-local function basename(s)
-	return string.gsub(s, "(.*[/\\])(.*)", "%2")
-end
-
 local function is_vim(pane)
 	local vars = pane:get_user_vars()
 	local is_nvim = vars["IS_NVIM"]
