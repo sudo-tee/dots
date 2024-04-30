@@ -15,6 +15,7 @@
     - [./Taskfile app rust]
     - [./Taskfile app bob]
     - [./Taskfile app nvim]
+    - [./Taskfile app fswatch]
     - [./Taskfile app fzf]
     - [./Taskfile app nvr]
     - [./Taskfile app fdfind]
