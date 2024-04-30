@@ -1,6 +1,6 @@
 #!/bin/bash
 
 (
-	cd $HOME/dots
-	./Taskfile $@
+  cd "$HOME/dots" || exit
+  ./Taskfile "$@"
 )

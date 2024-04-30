@@ -1,88 +1,104 @@
 #!/bin/bash -ue
 
 install:pre() {
-	sudo apt install zsh
-	chsh -s $(which zsh)
-	sudo apt install git build-essential
+  sudo apt install zsh
+  chsh -s $(which zsh)
+  sudo apt install git build-essential
 }
 
 install() {
-	install:pre &&
-		./install
+  install:pre &&
+    ./install
 }
 
 app() {
-	local APP="$1"
-	local FLAG="${2:-}"
+  local APP="$1"
+  local FLAG="${2:-}"
 
-	export CONFIG="apps/$APP/install.yaml"
+  export CONFIG="apps/$APP/install.yaml"
 
-	if [ "$FLAG" == "-f" ]; then
-		rm -f .state/$APP.skip
-		echo "Deleted .state/$APP.skip"
-	fi
+  if [ "$FLAG" == "-f" ]; then
+    rm -f ".state/$APP.skip"
+    echo "Deleted .state/$APP.skip"
+  fi
 
-	./install
+  ./install
 
 }
 
 project() {
-	export PROJECT=$1
-	export PROJECT_GIT=${2-}
-	export CONFIG="stages/project.yaml"
-	local FLAG="${2:-}"
+  export PROJECT=$1
+  export PROJECT_GIT=${2-}
+  export CONFIG="stages/project.yaml"
+  local FLAG="${3:-}"
 
-	if [ "$FLAG" == "-f" ]; then
-		rm -f .state/$APP.skip
-		echo "Deleted .state/$PROJECT-pre-install.skip"
-		echo "Deleted .state/$PROJECT-post-install.skip"
-	fi
+  if [ "$FLAG" == "-f" ]; then
+    rm -f ".state/$APP.skip"
+    echo "Deleted .state/$PROJECT-pre-install.skip"
+    echo "Deleted .state/$PROJECT-post-install.skip"
+  fi
 
-	./install
+  ./install
+}
+
+project:new() {
+  export PROJECT=$1
+  export PROJECT_GIT=${2-}
+  local FLAG="${3:-}"
+
+  mkdir -p "${DOT_ENV}/projects/${PROJECT}/overlays"
+  cp "config/taskfile/Taskfile.template" "${DOT_ENV}/projects/${PROJECT}/overlays/Taskfile"
+  chmod +x "${DOT_ENV}/projects/${PROJECT}/overlays/Taskfile"
+
+  echo "$PROJECT_GIT" >"${DOT_ENV}/projects/${PROJECT}/git.repo"
+
+  if [ "$FLAG" == "-i" ]; then
+    ./Taskfile project "$PROJECT"
+  fi
 }
 
 links() {
-	CONFIG="stages/links.yaml" ./install
+  CONFIG="stages/links.yaml" ./install
 }
 
 apps() {
-	CONFIG="stages/apps.yaml" ./install
+  CONFIG="stages/apps.yaml" ./install
 }
 
 winhome() {
-	CONFIG="winhome/install.yaml" ./install
+  CONFIG="winhome/install.yaml" ./install
 }
 
 winhome:sync() {
-	CONFIG="winhome/sync.yaml" ./install
+  CONFIG="winhome/sync.yaml" ./install
 }
 
 npm() {
-	export CONFIG="stages/npm.yaml"
-	local FLAG="${1:-}"
+  export CONFIG="stages/npm.yaml"
+  local FLAG="${1:-}"
 
-	if [ "$FLAG" == "-f" ]; then
-		rm -f .state/npm.skip
-		echo "Deleted .state/npm.skip"
-	fi
+  if [ "$FLAG" == "-f" ]; then
+    rm -f .state/npm.skip
+    echo "Deleted .state/npm.skip"
+  fi
 
-	./install
+  ./install
 }
 
 projects:run() {
-	local cmd=${@:-pwd}
-	find ~/Projects/ -maxdepth 1 -mindepth 1 -type d | while read d; do
-		(
-			cd $d/
-			echo "Running command in $(pwd)"
-			eval "$cmd"
-		)
+  local cmd=${@:-pwd}
+  find ~/Projects/ -maxdepth 1 -mindepth 1 -type d | while read d; do
+    (
+      cd $d/
+      echo "Running command in $(pwd)"
+      eval "$cmd"
+    )
 
-	done
+  done
 }
 
 projects:update() {
-	projects:run "git pull && ni"
+  projects:run "git pull && ni"
 }
 
 TIMEFORMAT="Task completed in %3lR"
