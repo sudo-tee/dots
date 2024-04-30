@@ -9,6 +9,10 @@ M.re_require = function(name)
   return require(name)
 end
 
+function M.first_to_upper(str)
+  return (str:gsub("^%l", string.upper))
+end
+
 function M.starts_with(str, start)
   return str:sub(1, #start) == start
 end

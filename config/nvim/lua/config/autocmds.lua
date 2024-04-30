@@ -35,20 +35,6 @@ local function set_buf_option(filetypes, option, value)
   end
 end
 
--- Define the autocommand function
-function _G.setup_git_buffer_settings()
-  set_buf_option({ "gitcommit", "gitrebase", "gitconfig", "gitsendmail" }, "bufhidden", "delete")
-end
-
-local gitGrp = vim.api.nvim_create_augroup("GitSettings", { clear = true })
-vim.api.nvim_create_autocmd("FileType", {
-  pattern = "gitcommit,gitrebase,gitconfig,gitsendmail",
-  command = "silent! lua _G.setup_git_buffer_settings()",
-  group = gitGrp,
-})
-
-vim.cmd([[autocmd CursorHold <buffer> lua vim.diagnostic.open_float({focusable = false})]])
-
 -- Use `<ESC>` to conveniently close special windows
 vim.api.nvim_create_autocmd("FileType", {
   pattern = {

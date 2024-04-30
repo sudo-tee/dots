@@ -1,5 +1,4 @@
 ---@return boolean
-local map = vim.keymap.set
 local function at_top_edge()
   return vim.fn.winnr() == vim.fn.winnr("k")
 end
