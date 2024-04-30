@@ -1,7 +1,14 @@
 #!/bin/bash -ue
 
+install:pre() {
+	sudo apt install zsh
+	chsh -s $(which zsh)
+	sudo apt install git build-essential
+}
+
 install() {
-	./install
+	install:pre &&
+		./install
 }
 
 app() {
@@ -16,6 +23,7 @@ app() {
 	fi
 
 	./install
+
 }
 
 project() {
@@ -35,6 +43,10 @@ project() {
 
 links() {
 	CONFIG="stages/links.yaml" ./install
+}
+
+apps() {
+	CONFIG="stages/apps.yaml" ./install
 }
 
 npm() {

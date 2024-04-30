@@ -1,0 +1,1 @@
+/home/francis/dots/apps/zoxide/_zoxide.sh

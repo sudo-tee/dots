@@ -8,7 +8,8 @@
       quiet: true
 
 - shell:
-    - [./Taskfile app brew]
+    - [./Taskfile app zap]
+    - [sudo ./Taskfile app brew]
     - [./Taskfile app fnm]
     - [./Taskfile app rust]
     - [./Taskfile app bob]
