@@ -13,9 +13,6 @@ local M = {}
 --                    The number is used for the sorting purpose and will be replaced by vim.ui.select() numbering
 --]]
 M.create_select_menu = function(prompt, options_table)
-  -- Or M.create_select_menu = function(prompt, options_table)
-
-  -- Given the table of options, populate a list with option display names
   local option_names = {}
   local n = 0
   for i, _ in pairs(options_table) do
@@ -26,28 +23,19 @@ M.create_select_menu = function(prompt, options_table)
 
   -- Return the prompt function. These global function var will be used when assigning keybindings
   local menu = function()
-    vim.ui.select(
-      option_names, --> the list we populated above
-
-      {
-        prompt = prompt, --> Prompt passed as the argument
-        format_item = function(item)
-          return item:gsub("%d. ", "")
-        end,
-      },
-
-      function(choice)
-        local action = options_table[choice]
-        -- When user inputs ESC or q, don't take any actions
-        if action ~= nil then
-          if type(action) == "string" then
-            vim.cmd(action)
-          elseif type(action) == "function" then
-            action()
-          end
+    vim.ui.select(option_names, {
+      prompt = prompt,
+    }, function(choice)
+      local action = options_table[choice]
+      -- When user inputs ESC or q, don't take any actions
+      if action ~= nil then
+        if type(action) == "string" then
+          vim.cmd(action)
+        elseif type(action) == "function" then
+          action()
         end
       end
-    )
+    end)
   end
 
   return menu
