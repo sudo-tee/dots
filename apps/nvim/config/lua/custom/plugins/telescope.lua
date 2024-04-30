@@ -101,12 +101,13 @@ return { -- Fuzzy Finder (files, lsp, etc)
       'nvim-telescope/telescope-fzf-native.nvim',
       build = 'make',
     },
-    { 'nvim-telescope/telescope-ui-select.nvim' },
+    { 'stevearc/dressing.nvim', opts = {} },
     { 'nvim-tree/nvim-web-devicons' },
 
     {
       'danielfalk/smart-open.nvim',
       branch = '0.2.x',
+      commit = '32e23af',
       dependencies = {
         'kkharji/sqlite.lua',
         { 'nvim-telescope/telescope-fzy-native.nvim' },
