@@ -12,7 +12,7 @@ vim.api.nvim_create_autocmd("FocusGained", {
   pattern = "*",
   callback = function()
     vim.defer_fn(function()
-      vim.api.nvim_set_option("mouse", "a")
+      vim.api.nvim_set_option_value("mouse", "a", { scope = "global" })
     end, 500)
   end,
 })
@@ -22,15 +22,15 @@ vim.api.nvim_create_autocmd("FocusLost", {
   group = augroup,
   pattern = "*",
   callback = function()
-    vim.api.nvim_set_option("mouse", "")
+    vim.api.nvim_set_option_value("mouse", "", { scope = "global" })
   end,
 })
 
 -- Define the function to set buffer option
 local function set_buf_option(filetypes, option, value)
   for _, ft in ipairs(filetypes) do
-    for _, buf in ipairs(vim.fn.getbufinfo({ filetype = ft })) do
-      vim.api.nvim_buf_set_option(buf.bufnr, option, value)
+    for _, buf in ipairs(vim.fn.getbufinfo({ filetype = ft }) or {}) do
+      vim.api.nvim_set_option_value(option, value, { buf = buf.bufnr })
     end
   end
 end

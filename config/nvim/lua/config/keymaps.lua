@@ -97,7 +97,7 @@ map("n", "%", "%zz")
 
 -- Macros
 -- Disable default macro key the plugin will set it up to <F4>
--- map("n", "q", "<Nop>")
+map("n", "q", "<Nop>")
 map("n", "<leader>fm", function()
   require("lib.macros").find_defined_macro()
 end, { desc = "Find predefined macros" })
