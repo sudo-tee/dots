@@ -85,6 +85,12 @@ local function paste_from_register()
   vim.api.nvim_feedkeys(ctrl_r_key .. quote_key, 'n', true)
 end
 
+local function open_with_diff_view(bufnr)
+  require('telescope.actions').close(bufnr)
+  local value = require('telescope.actions.state').get_selected_entry().value
+  vim.cmd('DiffviewOpen ' .. value .. '~1..' .. value)
+end
+
 return { -- Fuzzy Finder (files, lsp, etc)
   'nvim-telescope/telescope.nvim',
   branch = '0.1.x',
@@ -149,6 +155,20 @@ return { -- Fuzzy Finder (files, lsp, etc)
     pickers = {
       oldfiles = {
         cwd_only = true,
+      },
+      git_commits = {
+        mappings = {
+          i = {
+            ['<a-d>'] = open_with_diff_view,
+          },
+        },
+      },
+      git_bcommits = {
+        mappings = {
+          i = {
+            ['<a-d>'] = open_with_diff_view,
+          },
+        },
       },
     },
   },
