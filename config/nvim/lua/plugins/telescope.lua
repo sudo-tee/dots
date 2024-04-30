@@ -65,8 +65,6 @@ local function paste_from_register()
   vim.api.nvim_feedkeys(ctrl_r_key .. quote_key, "n", true)
 end
 
-local ignored = "{.git,.bzr,.svn,.hg,node_modules,dist,deps,build,.cache,.next,out}"
-
 return {
   {
     "nvim-telescope/telescope.nvim",
@@ -196,15 +194,6 @@ return {
 
     opts = {
       defaults = {
-        -- fzy_native = {
-        --   override_generic_sorter = false,
-        --   override_file_sorter = true,
-        -- },
-        preview = {
-          treesitter = false,
-          filesize_limit = 0.1, -- MB
-          highlight_limit = 0.1,
-        },
         hidden = false,
         path_display = { "truncate" },
         sorting_strategy = "ascending",
