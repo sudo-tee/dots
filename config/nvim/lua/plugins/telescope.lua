@@ -105,7 +105,10 @@ return {
       {
         "<leader>fp",
         function()
-          require("telescope.builtin").find_files({ cwd = require("lazy.core.config").options.root })
+          require("telescope.builtin").find_files({
+            cwd = require("lazy.core.config").options.root,
+            prompt_title = "Plugin files",
+          })
         end,
         desc = "Find Plugin File",
       },
@@ -114,7 +117,7 @@ return {
         function()
           require("telescope").extensions.menufacture.grep_string()
         end,
-        desc = "Find file under cursor",
+        desc = "Find word under cursor",
       },
       {
         "<leader><localleader>",
@@ -126,7 +129,11 @@ return {
       {
         "<leader>fa",
         function()
-          require("telescope").extensions.menufacture.find_files({ hidden = true, no_ignore = true })
+          require("telescope").extensions.menufacture.find_files({
+            hidden = true,
+            no_ignore = true,
+            prompt_title = "All files",
+          })
         end,
         desc = "Find All Files",
       },
@@ -143,6 +150,17 @@ return {
           require("telescope").extensions.menufacture.find_files({ cwd = false })
         end,
         desc = "Find files",
+      },
+      {
+        "<leader>fl",
+        function()
+          require("telescope.builtin").find_files({
+            hidden = true,
+            find_command = { "find-overlays" },
+            prompt_title = "Project overlays",
+          })
+        end,
+        desc = "Find project overlays",
       },
       {
         "<leader>fh",
@@ -218,11 +236,18 @@ return {
             end,
             ["<a-a>"] = function()
               local Util = require("lazyvim.util")
-              Util.telescope("find_files", { hidden = true, no_ignore = true })()
+              Util.telescope("find_files", { hidden = true, no_ignore = true, prompt_title = "All files" })()
             end,
-            ["<a-o>"] = function()
+            ["<a-l>"] = function()
               local Util = require("lazyvim.util")
               Util.telescope("oldfiles", { only_cwd = true })()
+            end,
+            ["<a-o>"] = function()
+              require("telescope.builtin").find_files({
+                hidden = true,
+                find_command = { "find-overlays" },
+                prompt_title = "Project overlays",
+              })
             end,
             ["<c-h>"] = "which_key",
             ["<esc>"] = "close",
