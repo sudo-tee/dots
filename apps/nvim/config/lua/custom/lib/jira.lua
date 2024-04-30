@@ -5,11 +5,11 @@ local function _get_jira_url()
   return project_links.get_url_by_label('Jira', 'https://my-jira-url/browse/')
 end
 
-function M.get_issue_link()
-  local jira_issue = M.get_ticket_from_branch()
+function M.get_issue_link(ticket)
+  ticket = ticket or M.get_ticket_from_branch()
 
-  if jira_issue then
-    return _get_jira_url() .. 'jira/browse/' .. jira_issue
+  if ticket then
+    return _get_jira_url() .. 'jira/browse/' .. ticket
   end
 
   return nil
@@ -32,7 +32,7 @@ function M.create_jira_link(ticket)
     print('Please provide a jira ticket')
     return
   end
-  local jira_url = _get_jira_url()
+  local jira_url = M.get_issue_link(ticket)
 
   local link = string.format('[%s](%s%s)', ticket, jira_url, ticket)
 
