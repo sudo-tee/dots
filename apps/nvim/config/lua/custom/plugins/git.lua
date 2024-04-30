@@ -8,12 +8,13 @@ local cmd = vim.api.nvim_create_user_command
 vim.cmd('command! Gc  :Sh git commit')
 vim.cmd('command! Grc :Sh GIT_EDITOR=true git rebase --continue')
 vim.cmd('command! Gca :Sh git commit --amend')
+vim.cmd('command! Gan :Sh git commit --amend --no-edit')
 vim.cmd('command! Gaf :Sh git commit --amend --no-edit && git push --force-with-lease')
 vim.cmd('command! Gp  :Sh git push')
 vim.cmd('command! Gpl :Sh git push --force-with-lease')
 vim.cmd('command! Grim :Sh git rim')
 vim.cmd('command! Grbm :Sh git rbm')
-vim.cmd('command! -nargs=?  Gri :R git rebase -i <args>')
+vim.cmd('command! -nargs=?  Gri :Sh git rebase -i <args>')
 
 cmd('GitDiffMain', function()
   vim.cmd('DiffviewOpen origin/' .. git.default_branch() .. '...HEAD')
@@ -97,7 +98,8 @@ return {
             { 'n', 'q',          u.cmd('DiffviewClose'), { desc = 'Close' } },
             { 'n', '<A-q>',      u.cmd('DiffviewClose'), { desc = 'Close' } },
             { 'n', 'c',          u.cmd('Gc'),            { desc = 'Git Commit' } },
-            { 'n', 'A',          u.cmd('Gca'),           { desc = 'Git Commit Amend' } },
+            { 'n', 'a',          u.cmd('Gca'),           { desc = 'Git Commit Amend' } },
+            { 'n', 'A',          u.cmd('Gan'),           { desc = 'Git Commit Amend No Edit' } },
             { 'n', 'p',          u.cmd('Gp'),            { desc = 'Git Push' } },
             { 'n', 'F',          u.cmd('Gpl'),           { desc = 'Git Push Force (with lease)' } },
             { 'n', '<Leader>rc', u.cmd('Grc'),           { desc = 'Git Rebase Continue' } },

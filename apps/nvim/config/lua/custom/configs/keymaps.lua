@@ -114,17 +114,17 @@ map('n', '!', ':Sh ', { desc = 'Execute Shell Command in the floating term', sil
 -- Work/Workflow specific keymaps
 
 -- Helper to create a jira link
-map('v', '<leader>pj', 'y:JiraLink <C-R>"<CR>', { silent = false, desc = 'Create a jira link in markdown' })
-map('n', '<leader>pj', ':JiraLink', { silent = false, desc = 'Create a jira link in markdown' })
+map('v', '<leader>pj', 'y:JiraLink <C-R>"<CR>', { silent = false, desc = 'Create a [j]ira link in markdown' })
+map('n', '<leader>pj', ':JiraLink', { silent = false, desc = 'Create a [j]ira link in markdown' })
 
 -- Gitlab shortcuts
 map('n', '<leader>glo', function()
   require('custom.lib.gitlab').open_git_remote()
-end, { desc = 'Open Git remote for project' })
+end, { desc = '[O]pen [G]itab remote for project' })
 
 map('n', '<leader>glm', function()
   require('custom.lib.gitlab').open_git_mr()
-end, { desc = 'Open Git mr for branch' })
+end, { desc = '[O]pen [G]itlab mr for branch' })
 
 map('n', '<leader>glc', function()
   require('custom.lib.gitlab').generate_chat_message_for_mr()

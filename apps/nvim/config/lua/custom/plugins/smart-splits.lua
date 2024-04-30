@@ -41,7 +41,7 @@ return {
       function()
         require('smart-splits').start_resize_mode()
       end,
-      { desc = 'Toggle resize window' },
+      desc = 'Toggle resize window',
     },
 
     -- move between splits
