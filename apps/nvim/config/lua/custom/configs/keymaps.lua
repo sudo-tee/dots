@@ -69,6 +69,9 @@ map_pair('n', 'e', diag.prev('E'), diag.next('E'), '[E]rror diagnostic')
 map_pair('n', 'w', diag.prev('W'), diag.next('W'), '[W]arning diagnostic')
 map_pair('n', 'i', diag.prev('I'), diag.next('I'), '[I]nfo diagnostic')
 
+-- quickfix list
+map_pair('n', 'q', cmd('cprev'), cmd('cnext'), '[q]uickfix item')
+
 map('n', '<S-l>', diag.float, { desc = 'Show diagnostic messages' })
 map('n', '<leader>q', vim.diagnostic.setloclist, { desc = 'Open diagnostic [Q]uickfix list' })
 
