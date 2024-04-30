@@ -1,0 +1,14 @@
+session: nvim
+
+root: ~/.config/nvim 
+
+before_start:
+  
+stop:
+
+
+windows:
+  - name: code
+    layout: main-horizontal
+    commands:
+      - nvim lua/core/plugins.lua 

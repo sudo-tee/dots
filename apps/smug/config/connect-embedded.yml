@@ -1,0 +1,22 @@
+session: connect-embedded
+
+root: ~/Projects/connect-embedded-test-app
+
+before_start:
+
+stop:
+
+windows:
+  - name: code
+    root: .
+    layout: main-horizontal
+    commands:
+      - nvim
+    panes:
+      - type: horizontal
+        commands:
+          - t watch
+      - type: vertical
+        commands:
+          - sh ~/.config/tmux/resize_term.sh
+        root: .

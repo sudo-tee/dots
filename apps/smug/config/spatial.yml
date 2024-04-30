@@ -1,0 +1,18 @@
+session: spatial-navigation
+
+root: /home/francis/Projects/spatial-navigation
+
+before_start:
+  
+stop:
+
+
+windows:
+  - name: code
+    layout: main-horizontal
+    commands:
+      - nvim
+    panes:
+      - type: horizontal
+        commands:
+          - echo "welcome"
