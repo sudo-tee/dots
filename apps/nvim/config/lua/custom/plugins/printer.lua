@@ -41,7 +41,7 @@ return {
   keys = {
     { mode = 'n', 'gP', '<Plug>(printer_print)iw', desc = '[P]rint debug line' },
     { mode = 'n', 'gpp', '<Plug>(insert_below)', desc = '[P]rint debug line below' },
-    { mode = 'n', 'gp', '<Plug>(printer_print)', desc = '[P]rint debug' },
+    { mode = { 'n', 'v' }, 'gp', '<Plug>(printer_print)', desc = '[P]rint debug' },
     {
       '<localleader>py',
       function()
