@@ -1,0 +1,16 @@
+#!/bin/bash -ue
+
+[[ -f "$HOME/.config/taskfile/MasterTaskfile" ]] && source "$HOME/.config/taskfile/MasterTaskfile"
+
+PATH=./node_modules/.bin:$PATH
+
+start() {
+	echo "start task not implemented"
+}
+
+_restart() {
+	echo "please implement _restart for your specific project"
+}
+
+TIMEFORMAT="Task completed in %3lR"
+time ${@:-help}
