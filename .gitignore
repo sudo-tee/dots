@@ -14,3 +14,4 @@ lpm.manifest.json
 .state/
 .dotbot/
 .dotbot*
+apps/nvim/config_old/
