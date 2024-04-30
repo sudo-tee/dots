@@ -12,15 +12,16 @@ return { -- LSP Configuration & Plugins
     'williamboman/mason.nvim',
     'williamboman/mason-lspconfig.nvim',
     'WhoIsSethDaniel/mason-tool-installer.nvim',
+    {
+      'yioneko/nvim-vtsls',
+      handlers = {},
+    },
   },
   opts = {
     diagnostics = {
       underline = true,
       update_in_insert = false,
-      virtual_text = {
-        spacing = 20,
-        source = 'if_many',
-      },
+      virtual_text = false,
       severity_sort = true,
       signs = {
         text = {
@@ -44,7 +45,6 @@ return { -- LSP Configuration & Plugins
         local map = function(mode, keys, func, desc)
           vim.keymap.set(mode, keys, func, { buffer = event.buf, desc = 'LSP: ' .. desc })
         end
-
         -- stylua: ignore start
         map('n', 'gd',         u.cmd('Telescope lsp_definitions'),               '[G]oto [D]efinition')
         map('n', 'gr',         u.cmd('Telescope lsp_references'),                '[G]oto [R]eferences')
@@ -110,7 +110,8 @@ return { -- LSP Configuration & Plugins
       --    https://github.com/pmizio/typescript-tools.nvim
       --
       -- But for many setups, the LSP (`tsserver`) will work just fine
-      tsserver = require('custom.plugins.lsp.servers.tsserver'),
+      -- tsserver = require('custom.plugins.lsp.servers.tsserver'),
+      vtsls = require('custom.plugins.lsp.servers.vtsls'),
       eslint = require('custom.plugins.lsp.servers.eslint'),
       lua_ls = require('custom.plugins.lsp.servers.luals'),
       bashls = {},
@@ -130,10 +131,12 @@ return { -- LSP Configuration & Plugins
     local ensure_installed = vim.tbl_keys(servers or {})
     vim.list_extend(ensure_installed, {
       'stylua',
-      'prettierd',
       'eslint',
+      'prettier',
+      'prettierd',
       'shellcheck',
       'shfmt',
+      'codelldb',
     })
     require('mason-tool-installer').setup({ ensure_installed = ensure_installed })
 
@@ -147,7 +150,9 @@ return { -- LSP Configuration & Plugins
             filetypes = server.filetypes,
             capabilities = vim.tbl_deep_extend('force', {}, capabilities, server.capabilities or {}),
             root_dir = server.root_dir,
+            single_file_support = server.single_file_support,
             on_init = server.on_init,
+            on_attach = server.on_attach,
             on_exit = server.on_exit,
           })
         end,
