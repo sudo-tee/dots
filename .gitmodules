@@ -1,13 +1,4 @@
 [submodule "dotbot"]
-	path = dotbot
+	path = .dotbot/dotbot
 	url = https://github.com/anishathalye/dotbot
-	ignore = dirty
-[submodule "dotbot-if"]
-	path = dotbot-if
-	url = https://github.com/wonderbeyond/dotbot-if.git
-[submodule "dotbot-npm"]
-	path = dotbot-npm
-	url = https://github.com/ameliagapin/dotbot-npm
-[submodule "dotbot-git"]
-        path = dotbot-git
-        url = https://github.com/DrDynamic/dotbot-git.git
+  ignore = dirty
