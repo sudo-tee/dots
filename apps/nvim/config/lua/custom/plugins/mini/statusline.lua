@@ -20,15 +20,15 @@ require('mini.statusline').setup({
         { hl = 'IncSearch', strings = { search } },
         { hl = mode_hl, strings = { mode } },
         { hl = 'MiniStatuslineDevinfo', strings = { git } },
-        diagnostics.error,
-        diagnostics.warn,
-        diagnostics.info,
-        diagnostics.hint,
+        { hl = 'MiniStatuslineCustomDiagnosticError', strings = { diagnostics.error } },
+        { hl = 'MiniStatuslineCustomDiagnosticWarn', strings = { diagnostics.warn } },
+        { hl = 'MiniStatuslineCustomDiagnosticInfo', strings = { diagnostics.info } },
+        { hl = 'MiniStatuslineCustomDiagnosticHint', strings = { diagnostics.hint } },
         '%<', -- Mark general truncate point
         { hl = 'MiniStatuslineFilename', strings = { filename } },
         '%=', -- End left alignment
-        { hl = 'CustomRecordingStatus', strings = { macro } },
-        { hl = 'CustomUpdatesStatus', strings = { updates } },
+        { hl = 'MiniStatuslineCustomRecordingStatus', strings = { macro } },
+        { hl = 'MiniStatuslineCustomUpdatesStatus', strings = { updates } },
         { hl = 'MiniStatuslineFileinfo', strings = { fileinfo } },
         { hl = mode_hl, strings = { location } },
       }
@@ -38,19 +38,19 @@ require('mini.statusline').setup({
   },
 })
 
+-- little hackish solution to dislay diagnostics icons and colors
 MiniStatusline.custom_diagnostics = function(opts)
   local diagnostics = MiniStatusline.section_diagnostics(opts)
-  local error = diagnostics:match('E%d+') or ''
-  local info = diagnostics:match('I%d+') or ''
-  local warn = diagnostics:match('W%d+') or ''
-  local hint = diagnostics:match('H%d+') or ''
+  local icons = { E = ' ', W = ' ', I = '󰋼 ', H = '󰌵 ' }
+  local sections = { error = 'E', warn = 'W', info = 'I', hint = 'H' }
 
-  return {
-    error = { hl = 'CustomDiagnosticError', strings = { error:gsub('E', ' ') } },
-    warn = { hl = 'CustomDiagnosticWarn', strings = { warn:gsub('W', ' ') } },
-    info = { hl = 'CustomDiagnosticInfo', strings = { info:gsub('W', '󰋼 ') } },
-    hint = { hl = 'CustomDiagnosticHint', strings = { hint:gsub('H', '󰌵 ') } },
-  }
+  local result = {}
+  for key, symbol in pairs(sections) do
+    local count = diagnostics:match(symbol .. '%d+') or ''
+    result[key] = count:gsub(symbol, icons[symbol])
+  end
+
+  return result
 end
 
 MiniStatusline.macro = function(_)
