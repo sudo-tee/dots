@@ -98,21 +98,14 @@ function M.is_thruty(value)
   return not M.is_falsy(value)
 end
 
-function M.some(val)
+function M.just(val)
   local t = { val = val }
 
   t.or_else = function(default)
     if M.is_falsy(t.val) then
-      return default
+      return M.just(default)
     end
-    return t.val
-  end
-
-  t.or_error = function(msg)
-    if M.is_falsy(t.val) then
-      error(msg)
-    end
-    return t.val
+    return M.just(t.val)
   end
 
   t.unwrap = function()
@@ -120,7 +113,7 @@ function M.some(val)
   end
 
   t.map = function(fn)
-    return M.some(M.is_falsy(t.val) and nil or fn(t.val))
+    return M.just(M.is_falsy(t.val) and nil or fn(t.val))
   end
 
   return t
@@ -144,6 +137,15 @@ function M.concat(...)
   return result
 end
 
+function M.some(predicate, tbl)
+  for i, v in ipairs(tbl) do
+    if predicate(v, i) then
+      return true
+    end
+  end
+  return false
+end
+
 function M.read_file(path)
   local success, file = pcall(io.open, path, 'rb')
 
@@ -153,19 +155,19 @@ function M.read_file(path)
     return content
   end
 
-  return M.some(success and file).map(read_file).or_else(nil)
+  return M.just(success and file).map(read_file).or_else(nil).unwrap()
 end
 
 function M.decode_json(cmd_output)
   local success, json = pcall(vim.json.decode, cmd_output)
 
-  return M.some(success and json).or_else(nil)
+  return M.just(success and json).or_else(nil).unwrap()
 end
 
 function M.get_current_branch()
   local cmd_output = vim.fn.system('git branch --show-current'):gsub('\n', '')
 
-  return M.some(cmd_output).or_else(nil)
+  return M.just(cmd_output).or_else(nil).unwrap()
 end
 
 function M.memoize(f)
@@ -179,72 +181,8 @@ function M.memoize(f)
   end
 end
 
-function M.restart_lsp(name, on_completed)
-  name = name or ''
-
-  local uv = vim.uv or vim.loop
-  if not vim.g.focus_lost then
-    local total_retries = 3
-    local duration = 1000
-
-    local timer = uv.new_timer()
-    if timer == nil then
-      print('Failed to create new timer')
-      return
-    end
-
-    local elapsed_retries = 0
-    local timer_callback
-    timer_callback = vim.schedule_wrap(function()
-      -- Check if the desired number of retries has been met
-      if elapsed_retries >= total_retries then
-        timer:stop()
-        timer:close()
-        if on_completed then
-          on_completed()
-        end
-        return
-      end
-
-      vim.cmd(':LspRestart ' .. name)
-
-      elapsed_retries = elapsed_retries + 1
-
-      timer:start(duration, 0, timer_callback)
-    end)
-
-    timer:start(duration, 0, timer_callback)
-  end
-end
-
-function M.set_timeout(cb, duration)
-  local timer = vim.loop.new_timer()
-  timer:start(
-    duration,
-    0,
-    vim.schedule_wrap(function()
-      timer:stop()
-      timer:close()
-      cb()
-    end)
-  )
-end
-
-function M.set_interval(cb, duration, repeat_interval)
-  repeat_interval = repeat_interval or duration
-  local timer = vim.loop.new_timer()
-  timer:start(
-    duration,
-    repeat_interval,
-    vim.schedule_wrap(function()
-      local result = cb()
-      if not result then
-        timer:stop()
-        timer:close()
-      end
-    end)
-  )
-  return timer
+function M.system(cmd)
+  return vim.fn.system(cmd):gsub('\n', '')
 end
 
 return M
