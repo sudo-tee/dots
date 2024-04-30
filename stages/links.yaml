@@ -27,12 +27,12 @@
       force: true
       path: config/.terminfo
     ~/.local/bin/t: config/taskfile/t.sh
-    ~/.local/bin/xdg-open:
+
+- link:
+    ~/.local/bin/:
       force: true
-      path: bin/xdg-open
-    ~/.local/bin/xdg-start:
-      force: true
-      path: bin/xdg-start
+      glob: true
+      path: bin/*
 - create:
     - ~/.config
     - ~/.config/local
