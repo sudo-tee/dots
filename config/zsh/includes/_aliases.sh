@@ -6,9 +6,13 @@ alias ...="cd ../.."
 alias .3="cd ../../.."
 alias .4="cd ../../../.."
 
+function pbpaste() {
+	curl -s $REMOTE_HOST:5173
+}
+
 alias nvim="IS_NVIM=true wezterm_run_prog nvim"
 
-alias up="sudo dnf distro-sync"
+alias up="sudo apt update && sudo apt dist-upgrade"
 
 if [[ -f "/usr/local/bin/win32yank.exe" ]]; then
 	alias pbcopy='win32yank.exe -i --crlf'
