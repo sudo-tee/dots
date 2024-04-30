@@ -39,8 +39,9 @@ return {
   -- dir = "~/Projects/_nvim/printer.nvim",
   lazy = true,
   keys = {
-    { mode = 'n', 'gP', '<Plug>(printer_print)iw' },
-    { mode = 'n', 'gpp', '<Plug>(insert_below)' },
+    { mode = 'n', 'gP', '<Plug>(printer_print)iw', desc = '[P]rint debug line' },
+    { mode = 'n', 'gpp', '<Plug>(insert_below)', desc = '[P]rint debug line below' },
+    { mode = 'n', 'gp', '<Plug>(printer_print)', desc = '[P]rint debug' },
     {
       '<localleader>py',
       function()
