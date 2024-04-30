@@ -1,9 +1,6 @@
 -- [[ Basic Autocommands ]]
 --  See :help lua-guide-autocommands
-
-local function augroup(name)
-  return vim.api.nvim_create_augroup('sudo_tee/' .. name, { clear = true })
-end
+local augroup = require('custom.lib.utils').augroup
 
 -- Check if we need to reload the file when it changed
 vim.api.nvim_create_autocmd({ 'FocusGained', 'TermClose', 'TermLeave' }, {

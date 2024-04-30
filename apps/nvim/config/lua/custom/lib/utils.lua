@@ -1,5 +1,9 @@
 local M = {}
 
+function M.augroup(name)
+  return vim.api.nvim_create_augroup('sudo_tee/' .. name, { clear = true })
+end
+
 M.reload = function(...)
   return require('plenary.reload').reload_module(...)
 end
