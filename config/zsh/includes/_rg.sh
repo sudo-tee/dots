@@ -1,0 +1,1 @@
+/home/francis/dots/apps/ripgrep/_ripgrep.sh

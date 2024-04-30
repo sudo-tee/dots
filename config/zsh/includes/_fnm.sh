@@ -1,0 +1,1 @@
+/home/francis/dots/apps/fnm/_fnm.sh
