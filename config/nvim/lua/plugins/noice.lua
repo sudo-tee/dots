@@ -1,6 +1,6 @@
 return {
   "folke/noice.nvim",
-  enabled = false,
+  -- enabled = false,
   opts = {
     cmdline = {
       format = {
@@ -32,6 +32,14 @@ return {
             { event = "msg_show", find = "%d+ more line" },
             { event = "notify", find = "Config Change" },
             { event = "notify", find = "Config file" },
+          },
+        },
+      },
+      {
+        opts = { skip = true },
+        filter = {
+          any = {
+            { event = "notify", find = "No information available" },
           },
         },
       },
