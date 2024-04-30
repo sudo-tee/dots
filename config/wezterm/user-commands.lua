@@ -10,10 +10,10 @@ M.commands = {
 	CreateWorkspace = "w:create",
 	Open = "open",
 	Start = "start",
+	ActivatePaneDirection = "p:activate",
 }
 
 return {
-
 	[M.commands.OpenWorkspace] = function(window, pane, cmd_context)
 		wezterm.log_info("SWITCHING WORKSPACE", cmd_context)
 		window:perform_action(
@@ -46,5 +46,10 @@ return {
 		wezterm.log_info("OPENING :" .. url)
 
 		os.execute("start " .. url)
+	end,
+
+	[M.commands.ActivatePaneDirection] = function(window, pane, cmd_context)
+		wezterm.log_info("ACTIVATE DIRECTION", cmd_context.v)
+		window:perform_action({ ActivatePaneDirection = cmd_context.v }, pane)
 	end,
 }
