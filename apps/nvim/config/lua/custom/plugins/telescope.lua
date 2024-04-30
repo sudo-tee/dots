@@ -56,6 +56,27 @@ local function project_links()
   menu()
 end
 
+local function merge_requests()
+  local mr_list = require('custom.lib.gitlab').get_mr_list()
+  local select_menu = require('custom.lib.select-menu')
+
+  if not mr_list then
+    vim.notify('No merge requests found', vim.log.levels.INFO, { title = 'Merge requests' })
+    return
+  end
+
+  local links = {}
+  for _, mr in ipairs(mr_list) do
+    table.insert(links, {
+      u.fixed_width(mr.detailed_merge_status, 14) .. ' | ' .. mr.title,
+      u.open_url_callback(mr.web_url),
+    })
+  end
+
+  local menu = select_menu.create_select_menu('Active merge requests', links, { add_numbers = true })
+  menu()
+end
+
 local function paste_from_register()
   local reg = '"'
   local ctrl_r_key = vim.api.nvim_replace_termcodes('<C-R>', true, false, true)
@@ -109,7 +130,8 @@ return { -- Fuzzy Finder (files, lsp, etc)
     { '<leader>/' ,       current_buffer_fuzzy,          { desc = '[/] Fuzzily search in current buffer' } },
     { '<leader>s/',       grep_open_files,               { desc = '[S]earch [/] in Open Files' } },
     { '<leader>sn',       neovim_files,                  { desc = '[S]earch [N]eovim files' } },
-    { '<leader>pl',       project_links ,                { desc = '[P]roject [l]links' }}
+    { '<leader>pl',       project_links ,                { desc = '[P]roject [l]links' }},
+    { '<leader>pm',       merge_requests ,                { desc = '[P]roject [m]erge requests' }}
   },
   opts = {
     defaults = {

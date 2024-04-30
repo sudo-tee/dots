@@ -1,26 +1,30 @@
-local u = require('custom.lib.utils')
+---@module 'custom.lib.utils'
+local u = lazy_require('custom.lib.utils')
+
+---@module 'custom.lib.git'
+local git = lazy_require('custom.lib.git')
+
+---@module 'custom.lib.wezterm'
+local wezterm = lazy_require('custom.lib.wezterm')
 
 local M = {}
 
 M.open_git_remote = function()
-  local wez = require('custom.lib.wezterm')
+  local repo = git.current_repo() or ''
 
-  local cmd_output = vim.fn.system('git config --get remote.origin.url 2> /dev/null'):gsub('\n', '')
-  local remote_url = cmd_output:gsub(':', '/'):gsub('git@', 'https://')
+  local remote_url = repo:gsub(':', '/'):gsub('git@', 'https://')
 
   if string.len(remote_url) == 0 then
-    print('Not in a git repository')
+    vim.notify('Not in a git repository', vim.log.levels.WARN)
     return
   end
 
   print('Opening git remote url:', remote_url)
-  wez.open_url(remote_url)
+  wezterm.open_url(remote_url)
   vim.fn.setreg('+', remote_url)
 end
 
 M.get_mr_details = function()
-  local u = require('custom.lib.utils')
-
   local cmd_output = vim.fn.system('glab api -X GET projects/:id/merge_requests  --field source_branch=:branch')
   local json = u.decode_json(cmd_output)
 
@@ -33,35 +37,40 @@ end
 
 M.get_current_mr_url = u.memoize(function(branch)
   print('Getting current MR url for branch', branch)
+
   local details = M.get_mr_details()
-  if details then
-    return details.web_url
-  end
+  return details and details.web_url or nil
 end)
 
 M.create_new_mr = function()
-  local utils = require('custom.lib.utils')
   local success, _ = pcall(vim.fn.system, 'glab mr new -f -w')
   if not success then
     return nil
   end
-  return utils.read_file('/tmp/xdg-open-url') or ''
+  return u.read_file('/tmp/xdg-open-url') or ''
 end
 
 M.open_git_mr = function()
-  local wez = require('custom.lib.wezterm')
-  local branch = require('custom.lib.utils').get_current_branch()
+  local branch = git.current_branch()
+
   print('Opening MR for branch')
 
   local web_url = M.get_current_mr_url(branch) or M.create_new_mr()
 
-  wez.open_url(web_url)
+  wezterm.open_url(web_url)
   vim.fn.setreg('+', web_url)
 end
 
 M.get_project_folder = function()
   local cwd = vim.loop.cwd()
   return string.match(cwd or '', '[^/]+$')
+end
+
+M.get_mr_list = function()
+  local cmd_output = vim.fn.system('glab mr list --output=json --author=fbelanger')
+  local json = u.decode_json(cmd_output)
+
+  return json
 end
 
 M.generate_chat_message_for_mr = function()
