@@ -7,7 +7,7 @@ vim.cmd("command! Gca :R git commit --amend")
 vim.cmd("command! Gaf :R git commit --amend --no-edit && git push --force-with-lease")
 vim.cmd("command! Gp  :R git push")
 vim.cmd("command! Gpl :R git push --force-with-lease")
-vim.cmd("command! Grm :R git_rebase_current_branch")
+vim.cmd("command! Grm :R git-rebase-main")
 vim.cmd("command! -nargs=?  Gri :R git rebase -i <args>")
 vim.cmd("command! Gtrack :R git push -u origin $(git symbolic-ref --short -q HEAD)")
 
@@ -32,19 +32,6 @@ return {
     cmd = { "Flog", "FlogSplit" },
     keys = {
       { "<leader>gfl", "<cmd>Flog<cr>", desc = "Open Git log graph" },
-    },
-  },
-  {
-    "lewis6991/gitsigns.nvim",
-    opts = {
-      signs = {
-        add = { text = "▐" },
-        change = { text = "▐" },
-        delete = { text = "" },
-        topdelete = { text = "" },
-        changedelete = { text = "▐" },
-        untracked = { text = "▐" },
-      },
     },
   },
   {
@@ -82,8 +69,7 @@ return {
             { "n", "q", "<cmd>DiffviewClose<CR>", { desc = "Close" } },
             { "n", "<A-q>", "<cmd>DiffviewClose<CR>", { desc = "Close" } },
             { "n", "c", "<cmd>Gc<CR>", { desc = "Git Commit" } },
-            { "n", "ac", "<cmd>Gca<CR>", { desc = "Git Commit Amend" } },
-            { "n", "AF", "<cmd>Gaf<CR>", { desc = "Git Commit Amend + Force" } },
+            { "n", "A", "<cmd>Gca<CR>", { desc = "Git Commit Amend" } },
             { "n", "p", "<cmd>Gp<CR>", { desc = "Git Push" } },
             { "n", "F", "<cmd>Gpl<CR>", { desc = "Git Push Force (with lease)" } },
             { "n", "<Leader>rc", "<cmd>Grc<CR>", { desc = "Git Rebase Continue" } },

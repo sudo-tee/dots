@@ -1,0 +1,22 @@
+#!/bin/bash
+set -u
+
+handle_rebase() {
+	MAIN_BRANCH=$(git default-branch)
+	git fetch origin $MAIN_BRANCH:$MAIN_BRANCH || {
+		echo "Fetch failed. Aborting rebase."
+		return 1
+	}
+	git rebase --autostash $MAIN_BRANCH
+}
+
+git-rebase-main() {
+	if [[ -n $(git status --porcelain) ]]; then
+		if [[ "\$1" != "--silent" ]]; then
+			echo "You have uncommitted changes. They will be stashed during the rebase."
+		fi
+	fi
+	handle_rebase
+}
+
+git-rebase-main "$@"

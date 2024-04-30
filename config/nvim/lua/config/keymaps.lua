@@ -161,6 +161,9 @@ map("n", "g*", "*Ncgn", { desc = "Change word with . repeat" })
 -- Put vim command output into buffer
 map("n", "g!", ":put=execute('')<Left><Left>", { silent = false, desc = "Paste Command" })
 
+-- Execute normal command on vidual selection
+map({ "v", "x" }, "<leader>vn", ":norm ", { silent = false })
+
 -- Helper to create a jira link
 map("v", "<localleader>jl", ':JiraLink <C-R>"<CR>', { silent = false, desc = "Create a jira link in markdown" })
 map("n", "<localleader>jl", ":JiraLink ", { silent = false, desc = "Create a jira link in markdown" })

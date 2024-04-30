@@ -11,3 +11,5 @@ yalc.lock
 lpm.manifest.json
 .ignore
 .state/
+dotbot/
+dotbot*

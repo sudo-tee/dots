@@ -66,9 +66,7 @@ function wezterm_run_prog() {
 	command "$@"
 }
 
-# should not be needed anymore.
-# Keeping it in case the mux server dont work after all
-# function cd() {
-# 	builtin cd "$@"
-# 	printf "\033]7;file://%s%s\033\\" "${HOSTNAME}" "${PWD}"
-# }
+function cd() {
+	builtin cd "$@"
+	printf "\033]7;file://%s%s\033\\" "${HOSTNAME}" "${PWD}"
+}

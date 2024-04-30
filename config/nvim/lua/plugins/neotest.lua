@@ -1,12 +1,13 @@
 return {
-  -- { dir = "~/Projects/neotest-vitest" },
+  { dir = "~/Projects/_nvim/neotest-vitest" },
   {
     "nvim-neotest/neotest",
     -- version = "v3.3.0",
     dependencies = {
       {
+        "nvim-treesitter/nvim-treesitter",
         "nvim-neotest/neotest-jest",
-        "sudo-tee/neotest-vitest",
+        -- "sudo-tee/neotest-vitest",
         "nvim-neotest/neotest-vim-test",
         "vim-test/vim-test",
         "nvim-neotest/neotest-plenary",
@@ -29,10 +30,9 @@ return {
       adapters = {
         ["neotest-vitest"] = {
           env = { CI = true },
-          -- vitestCommand = "pnpm test",
           vitestConfigFile = function(path)
             local util = require("neotest-vitest.util")
-            local vitestConfigPattern = util.root_pattern("{vitest,vite}.config.{local.fb.ts,local.fb.ts,js,ts}")
+            local vitestConfigPattern = util.root_pattern("{vitest,vite}.config.{fb.ts,fb.js,js,ts}")
             local rootPath = vitestConfigPattern(path)
 
             if not rootPath then
@@ -40,10 +40,8 @@ return {
             end
 
             local possible_files = {
-              "vitest.config.local.fb.ts",
-              -- "vitest.config.local.fb.js",
-              -- "vite.config.local.fb.ts",
-              -- "vite.config.local.fb.js",
+              -- "vite.config.fb.ts",
+              -- "vitest.config.fb.ts",
               "vitest.config.ts",
               "vitest.config.js",
               "vite.config.ts",
@@ -57,8 +55,7 @@ return {
               end
             end
           end,
-          cwd = function(path)
-            local file = vim.fn.expand("%:p")
+          cwd = function(file)
             if string.find(file, "/packages/") then
               return string.match(file, "(.-/[^/]+/)src")
             end

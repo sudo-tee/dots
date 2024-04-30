@@ -13,7 +13,11 @@ return {
     ---@type lspconfig.options
     servers = {
       -- tsserver will be automatically installed with mason and loaded with lspconfig
-      tsserver = {},
+      tsserver = {
+        settings = {
+          preferGoToSourceDefinition = true,
+        },
+      },
     },
     -- you can do any additional lsp server setup here
     -- return true if you don't want this server to be setup with lspconfig

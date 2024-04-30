@@ -144,6 +144,50 @@ return {
         end
       end,
     },
+    {
+      "<C-A-Left>",
+      function()
+        if at_left_edge() and is_full_width() then
+          local wez = require("lib.wezterm")
+          wez.resize_pane_direction("Left")
+        else
+          require("smart-splits").resize_left()
+        end
+      end,
+    },
+    {
+      "<C-A-Down>",
+      function()
+        if at_bottom_edge() and is_full_width() then
+          local wez = require("lib.wezterm")
+          wez.resize_pane_direction("Down")
+        else
+          require("smart-splits").resize_down()
+        end
+      end,
+    },
+    {
+      "<C-A-Up>",
+      function()
+        if at_top_edge() and is_full_width() then
+          local wez = require("lib.wezterm")
+          wez.resize_pane_direction("Up")
+        else
+          require("smart-splits").resize_up()
+        end
+      end,
+    },
+    {
+      "<C-A-Right>",
+      function()
+        if at_right_edge() and is_full_width() then
+          local wez = require("lib.wezterm")
+          wez.resize_pane_direction("Right")
+        else
+          require("smart-splits").resize_right()
+        end
+      end,
+    },
   },
   opts = {
     multiplexer_integration = false,

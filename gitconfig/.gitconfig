@@ -10,9 +10,16 @@
 [core]
   excludesfile = /home/francis/.gitignore
 [alias]
+  default-branch = !basename $(git symbolic-ref refs/remotes/origin/HEAD) |  tr -d '\\n\\r'
+  ac = commit --ammend
+  an = commit --ammend --no-edit
   co = checkout
   ll = log --oneline
-  F  = git push --force-with-lease
+  pf  = push --force-with-lease
+  rc = rebase --continue
+  rbm  =  !git-rebase-main --silent
   last = log -1 HEAD --stat
-	default-branch = !basename $(git symbolic-ref refs/remotes/origin/HEAD) |  tr -d '\\n\\r'
+  rim = !git rebase -i $(git merge-base HEAD $(git default-branch))
+	rebase-main = !git-rebase-main
+  wip = !git add . && git commit -m 'Work in progress'
 
