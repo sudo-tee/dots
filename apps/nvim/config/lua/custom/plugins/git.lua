@@ -69,8 +69,8 @@ return {
     },
   },
   {
-    dir = '/home/francis/Projects/_nvim/diffview.nvim',
-    -- 'sudo-tee/diffview.nvim',
+    -- dir = '/home/francis/Projects/_nvim/diffview.nvim',
+    'sudo-tee/diffview.nvim',
     -- 'sindrets/diffview.nvim',
     -- branch = 'main',
     lazy = true,
