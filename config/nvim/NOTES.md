@@ -28,7 +28,7 @@
 
 ## Plugins to check
 
-- typescript-tools
+- https://github.com/jellydn/hurl.nvim
 
 ## Dotfiles inspirations
 
