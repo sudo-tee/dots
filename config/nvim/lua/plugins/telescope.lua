@@ -227,6 +227,8 @@ return {
           "node_modules/.*",
           ".chageset/.*",
           "docs/.*",
+          "dotbot/.*",
+          "dotbot*",
         },
         mappings = {
           i = {
