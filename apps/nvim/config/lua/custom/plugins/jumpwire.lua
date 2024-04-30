@@ -3,21 +3,21 @@ return {
   lazy = true,
   keys = {
     {
-      '<M-t>',
+      '<leader>jt',
       function()
         require('jumpwire').jump('test')
       end,
       desc = 'Jump to alternate test',
     },
     {
-      '<M-i>',
+      '<leader>ji',
       function()
         require('jumpwire').jump('implementation')
       end,
       desc = 'Jump to alternate implementation',
     },
     {
-      '<M-T>',
+      '<leader>jT',
       function()
         vim.cmd(':vs ')
         require('jumpwire').jump('test')
@@ -25,7 +25,7 @@ return {
       desc = 'Split to alternate test',
     },
     {
-      '<M-I>',
+      '<leader>jI',
       function()
         vim.cmd(':vs ')
         require('jumpwire').jump('implementation')

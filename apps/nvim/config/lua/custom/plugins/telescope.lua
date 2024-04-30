@@ -52,6 +52,12 @@ local function neovim_files()
   require('telescope.builtin').find_files({ cwd = vim.fn.stdpath('config') })
 end
 
+local function smart_open()
+  require('telescope').extensions.smart_open.smart_open({
+    cwd_only = true,
+  })
+end
+
 return { -- Fuzzy Finder (files, lsp, etc)
   'nvim-telescope/telescope.nvim',
   branch = '0.1.x',
@@ -64,14 +70,26 @@ return { -- Fuzzy Finder (files, lsp, etc)
     },
     { 'nvim-telescope/telescope-ui-select.nvim' },
     { 'nvim-tree/nvim-web-devicons' },
+
+    {
+      'danielfalk/smart-open.nvim',
+      branch = '0.2.x',
+      dependencies = {
+        'kkharji/sqlite.lua',
+        { 'nvim-telescope/telescope-fzy-native.nvim' },
+      },
+      opts = {
+        match_algorithm = 'fzy',
+      },
+    },
   },
   cmd = { 'Telescope' },
   -- stylua: ignore
   keys = {
+    { '<C-p>'     , cmd('Telescope smart_open'), { desc = '[S]earch [F]iles' } },
     { '<leader>sh', cmd('Telescope help_tags'),  { desc = '[S]earch [H]elp' } },
     { '<leader>sk', cmd('Telescope keymaps'),    { desc = '[S]earch [K]eymaps' } },
     { '<leader>sf', cmd('Telescope find_files'), { desc = '[S]earch [F]iles' } },
-    { '<C-p>'     , cmd('Telescope find_files'), { desc = '[S]earch [F]iles' } },
     { '<leader>ss', cmd('Telescope builtin'),    { desc = '[S]earch [S]elect Telescope' } },
     { '<leader>sw', cmd('Telescope grep_string'),{ desc = '[S]earch current [W]ord' } },
     { '<leader>sg', cmd('Telescope live_grep'),  { desc = '[S]earch by [G]rep' } },
@@ -84,7 +102,7 @@ return { -- Fuzzy Finder (files, lsp, etc)
     { '<leader>po', find_project_overlay,        { desc = '[P]roject [O]verlay' } },
     { '<leader>/' , current_buffer_fuzzy,        { desc = '[/] Fuzzily search in current buffer' } },
     { '<leader>s/', grep_open_files,             { desc = '[S]earch [/] in Open Files' } },
-    { '<leader>sn', neovim_files,                { desc = '[S]earch [N]eovim files' } }
+    { '<leader>sn', neovim_files,                { desc = '[S]earch [N]eovim files' } },
   },
   opts = {
     defaults = {
@@ -112,6 +130,10 @@ return { -- Fuzzy Finder (files, lsp, etc)
       ['ui-select'] = {
         require('telescope.themes').get_dropdown(),
       },
+      ['smart_open'] = {
+        match_algorithm = 'fzy',
+        cwd_only = true,
+      },
     }
 
     require('telescope').setup(opts)
@@ -119,5 +141,6 @@ return { -- Fuzzy Finder (files, lsp, etc)
     -- Enable telescope extensions, if they are installed
     pcall(require('telescope').load_extension, 'fzf')
     pcall(require('telescope').load_extension, 'ui-select')
+    pcall(require('telescope').load_extension, 'smart_open')
   end,
 }

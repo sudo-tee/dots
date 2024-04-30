@@ -80,7 +80,7 @@ map('n', 'G', 'Gzz')
 
 -- Close anything order: floating window | splits | buffer
 map({ 'n', 'i', 't' }, '<A-q>', function()
-  require('custom.lib.utils').smart_close()
+  require('custom.lib.smart-close').close()
 end, { desc = 'Close floating windows' })
 
 --Profiling

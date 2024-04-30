@@ -30,8 +30,8 @@ return {
         header = vim.split(logo, '\n'),
           -- stylua: ignore
           center = {
+            { action = "Telescope smart_open",                                     desc = " Find file",       icon = " ", key = "f" },
             { action = "Telescope oldfiles",                                       desc = " Recent files",    icon = " ", key = "e" },
-            { action = "Telescope find_files",                                     desc = " Find file",       icon = " ", key = "f" },
             { action = "ene | startinsert",                                        desc = " New file",        icon = " ", key = "n" },
             { action = "Telescope live_grep",                                      desc = " Find text",       icon = " ", key = "g" },
             { action = "Lazy",                                                     desc = " Lazy",            icon = "󰒲 ", key = "l" },
