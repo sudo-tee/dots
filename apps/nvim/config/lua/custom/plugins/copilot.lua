@@ -47,6 +47,7 @@ return {
     lazy = true,
     even = 'VeryLazy',
     cmd = {
+      'CopilotChatTests',
       'CopilotChat',
       'CopilotChatActions',
       'CopilotChatHelpActions',
@@ -72,7 +73,8 @@ return {
       { mode = { 'n', 'v' }, '<leader>cca', '<cmd>CopilotChatActions<cr>',            desc = '[C]opilot[C]hat - [A]ctions' },
       {                      '<leader>ccc', '<cmd>CopilotChatCommitMessageFloat<cr>', desc = '[C]opilot[C]hat - [C]ommit message', },
       { mode = { 'n', 'v' }, '<leader>ccp', '<cmd>CopilotChat<cr>',                   desc = '[C]opilot[C]hat - [P]rompt' },
-      { mode = { 'n', 'v' }, '<leader>cco', '<cmd>CopilotChatOptimize<cr>',           desc = '[C]opilot[C]hat - [P]rompt' },
+      { mode = { 'n', 'v' }, '<leader>cco', '<cmd>CopilotChatOptimize<cr>',           desc = '[C]opilot[C]hat - [O]ptimize' },
+      { mode = { 'n', 'v' }, '<leader>cct', '<cmd>CopilotChatTests<cr>',              desc = '[C]opilot[C]hat - [T]ests' },
     },
     -- See Commands section for default commands if you want to lazy load on them
     config = function(_, opts)
