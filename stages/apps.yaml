@@ -10,6 +10,7 @@
 - shell:
     - [./Taskfile app zap]
     - [sudo ./Taskfile app brew]
+    - [./Taskfile app git]
     - [./Taskfile app fnm]
     - [./Taskfile app rust]
     - [./Taskfile app bob]
