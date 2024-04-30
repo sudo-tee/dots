@@ -23,7 +23,7 @@ main() {
 		get-workspace
 		;;
 	"send-user-command")
-		send-user-command
+		send-user-command "$@"
 		;;
 	*)
 		printf "Error: Invalid command [$command] \n\n"
