@@ -1,16 +1,4 @@
 local u = require('custom.lib.utils')
---- @see https://github.com/nvim-telescope/telescope.nvim/issues/2014
--- Modifies telescope pickers with path after file like vscode
-local function filename_first_path_display(_, path)
-  local plenary_path = require('plenary.path')
-  local tail = vim.fs.basename(path)
-  local parent = vim.fs.dirname(path)
-  if parent == '.' then
-    return tail
-  end
-  local relative_parent = plenary_path.new(parent):make_relative()
-  return string.format('%s\t\t%s', tail, relative_parent)
-end
 
 --- Highlight the path part of the file as comment
 vim.api.nvim_create_autocmd('FileType', {
@@ -93,7 +81,6 @@ end
 
 return { -- Fuzzy Finder (files, lsp, etc)
   'nvim-telescope/telescope.nvim',
-  branch = '0.1.x',
   lazy = true,
   dependencies = {
     'nvim-lua/plenary.nvim',
@@ -143,7 +130,11 @@ return { -- Fuzzy Finder (files, lsp, etc)
   opts = {
     defaults = {
       cwd = vim.loop.cwd(),
-      path_display = filename_first_path_display,
+      path_display = {
+        filename_first = {
+          reverse_directories = false,
+        },
+      },
       mappings = {
         i = {
           ['<esc>'] = 'close',
@@ -178,9 +169,6 @@ return { -- Fuzzy Finder (files, lsp, etc)
     --  - Insert mode: <c-/>
     --  - Normal mode: ?
     opts.extensions = {
-      ['ui-select'] = {
-        require('telescope.themes').get_dropdown(),
-      },
       ['smart_open'] = {
         match_algorithm = 'fzy',
         cwd_only = true,
@@ -191,7 +179,6 @@ return { -- Fuzzy Finder (files, lsp, etc)
 
     -- Enable telescope extensions, if they are installed
     pcall(require('telescope').load_extension, 'fzf')
-    pcall(require('telescope').load_extension, 'ui-select')
     pcall(require('telescope').load_extension, 'smart_open')
   end,
 }
