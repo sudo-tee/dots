@@ -49,5 +49,17 @@ require('lazy').setup({
   },
 })
 
+--- Lazy require a module
+---@see lazy-require.nvim 'https://github.com/tjdevries/lazy-require.nvim/blob/master/lua/lazy-require.lua'
+_G.lazy_require = function(require_path)
+  return setmetatable({}, {
+    __index = function(_, k)
+      return function(...)
+        return require(require_path)[k](...)
+      end
+    end,
+  })
+end
+
 -- The line beneath this is called `modeline`. See `:help modeline`
 -- vim: ts=2 sts=2 sw=2 et
