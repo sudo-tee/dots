@@ -13,6 +13,8 @@ function M.switch_workspace(name, win, pane)
 		pane
 	)
 
+	wezterm.sleep_ms(1000)
+
 	local workspace_win = u.find(mux.all_windows(), function(mux_window)
 		return mux_window:get_workspace() == mux.get_active_workspace()
 	end)
@@ -41,7 +43,7 @@ function M.load_layout(name, window, pane)
 		end
 
 		if workspace_win then
-			M.apply_layout(window, layout)
+			M.apply_layout(workspace_win, layout)
 		end
 	end
 end
