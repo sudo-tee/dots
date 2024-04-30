@@ -80,32 +80,33 @@ return {
           -- When you move your cursor, the highlights will be cleared (the second autocommand).
           local client = vim.lsp.get_client_by_id(event.data.client_id)
           if client and client.server_capabilities.documentHighlightProvider then
-            local augroup = u.augroup('sudo_tee/documentHighlight')
+            local highlight_augroup = vim.api.nvim_create_augroup('sudo_tee/documentHighlight', { clear = false })
 
             vim.api.nvim_create_autocmd({ 'CursorHold', 'CursorHoldI' }, {
-              group = augroup,
+              group = highlight_augroup,
               buffer = event.buf,
               callback = function()
-                if not vim.lsp.get_client_by_id(event.data.client_id) then
-                  vim.lsp.buf.clear_references()
-                  return true
-                end
                 vim.lsp.buf.document_highlight()
               end,
             })
 
             vim.api.nvim_create_autocmd({ 'CursorMoved', 'CursorMovedI' }, {
-              group = augroup,
+              group = highlight_augroup,
               buffer = event.buf,
               callback = function()
-                if not vim.lsp.get_client_by_id(event.data.client_id) then
-                  return true
-                end
                 vim.lsp.buf.clear_references()
               end,
             })
           end
           vim.diagnostic.config(vim.deepcopy(opts.diagnostics))
+        end,
+      })
+
+      vim.api.nvim_create_autocmd('LspDetach', {
+        group = vim.api.nvim_create_augroup('sudo_tee/lsp-detatch', { clear = true }),
+        callback = function(event)
+          vim.lsp.buf.clear_references()
+          vim.api.nvim_clear_autocmds({ group = 'sudo_tee/documentHighlight', buffer = event.buf })
         end,
       })
 
@@ -140,6 +141,7 @@ return {
         vtsls = require('custom.plugins.lsp.servers.vtsls'),
         eslint = require('custom.plugins.lsp.servers.eslint'),
         lua_ls = require('custom.plugins.lsp.servers.luals'),
+        graphql = require('custom.plugins.lsp.servers.graphql'),
         bashls = {},
         marksman = {},
       }
