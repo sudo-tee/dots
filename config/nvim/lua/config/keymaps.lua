@@ -46,7 +46,7 @@ map("i", "<Tab>", ">gv|", { desc = "Indent Left" })
 map("i", "<S-Tab>", "<gv", { desc = "Indent Right" })
 
 -- Start an external command with a single bang
-map("n", "!", ":R ", { desc = "Execute Shell Command in the floating term" })
+map("n", "!", ":R ", { desc = "Execute Shell Command in the floating term", silent = false })
 
 -- Duplicate lines without affecting PRIMARY and CLIPBOARD selections.
 map("n", "<Leader>d", 'm`""Y""P``', { desc = "Duplicate line" })
@@ -163,18 +163,16 @@ map(
   [[:%s/\<<C-r><C-w>\>/<C-r><C-w>/gI<Left><Left><Left>]],
   { silent = false, desc = "Replace all instances of word under cursor" }
 )
--- replace all instances selected with shift + *
+-- replace all instances selected with *
 map("n", "<Leader>rz", [[:%s///g<Left><Left>]], { silent = false, desc = "Replace all * search" })
-map("n", "g*", "*Ncgn", { desc = "Change word with . repeat" })
-
 map("x", "<Leader>rz", ":s///g<Left><Left>", { silent = false, desc = "Replace selected * search " })
+map("n", "g*", "*Ncgn", { desc = "Change word with . repeat" })
 
 -- Put vim command output into buffer
 map("n", "g!", ":put=execute('')<Left><Left>", { silent = false, desc = "Paste Command" })
 
 -- Helper to create a jira link
 map("v", "<localleader>jl", ':JiraLink <C-R>"<CR>', { silent = false, desc = "Create a jira link in markdown" })
-
 map("n", "<localleader>jl", ":JiraLink ", { silent = false, desc = "Create a jira link in markdown" })
 map("n", "<localleader>jl", ":JiraLink ", { silent = false, noremap = true, desc = "Create a jira link in markdown" })
 
