@@ -53,9 +53,6 @@ vim.opt.splitbelow = true
 vim.opt.list = true
 vim.opt.listchars = { tab = '» ', trail = '·', nbsp = '␣' }
 
--- Preview substitutions live, as you type!
-vim.opt.inccommand = 'split'
-
 -- Show which line your cursor is on
 vim.opt.cursorline = true
 
@@ -84,6 +81,11 @@ vim.opt.autowrite = true
 
 -- Dont show mode since we have a statusline
 vim.opt.showmode = false
+
+vim.opt.wrap = false
+
+-- Position cursor anywhere in visual block
+vim.opt.virtualedit = 'block'
 
 -- Allow misspellings
 vim.cmd.cnoreabbrev('qw', 'wq')
