@@ -11,6 +11,8 @@ return {
       cursorline = {
         'dashboard',
         'noice',
+        'lazy',
+        'FTerm',
         '',
       },
       cursorcolumn = {},
