@@ -9,7 +9,7 @@ function M.get_issue_link(ticket)
   ticket = ticket or M.get_ticket_from_branch()
 
   if ticket then
-    return _get_jira_url() .. 'jira/browse/' .. ticket
+    return _get_jira_url() .. 'browse/' .. ticket
   end
 
   return nil
