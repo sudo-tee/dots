@@ -30,6 +30,7 @@ return {
       adapters = {
         ["neotest-vitest"] = {
           env = { CI = true },
+          vitestCommand = "nr test",
           vitestConfigFile = function(path)
             local util = require("neotest-vitest.util")
             local vitestConfigPattern = util.root_pattern("{vitest,vite}.config.{fb.ts,fb.js,js,ts}")
