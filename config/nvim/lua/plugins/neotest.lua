@@ -1,13 +1,12 @@
 return {
-  { dir = "~/Projects/_nvim/neotest-vitest" },
+  -- { dir = "~/Projects/_nvim/neotest-vitest" },
   {
     "nvim-neotest/neotest",
-    -- version = "v3.3.0",
     dependencies = {
       {
         "nvim-treesitter/nvim-treesitter",
         "nvim-neotest/neotest-jest",
-        -- "sudo-tee/neotest-vitest",
+        "sudo-tee/neotest-vitest",
         "nvim-neotest/neotest-vim-test",
         "vim-test/vim-test",
         "nvim-neotest/neotest-plenary",
@@ -31,6 +30,15 @@ return {
       -- or a table of adapter names, mapped to adapter configs.
       -- The adapter will then be automatically loaded with the config.
       adapters = {
+        ["neotest-jest"] = {
+          env = { CI = true },
+          jestCommand = function()
+            if vim.g.jest_command then
+              return vim.g.jest_command
+            end
+            return "jest"
+          end,
+        },
         ["neotest-vitest"] = {
           env = { CI = true },
           vitestCommand = function()

@@ -23,6 +23,14 @@ function M.rpad(s, l, c)
   return res, res ~= s
 end
 
+function M.find(predicate, tbl)
+  for i, v in ipairs(tbl) do
+    if predicate(v, i) then
+      return i, v
+    end
+  end
+end
+
 M.close_float_windows = function()
   local closed_windows = {}
   vim.schedule(function()

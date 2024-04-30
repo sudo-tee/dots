@@ -25,12 +25,32 @@ function M.get_links()
     pos = pos + 1
   end
 
-  local mr_url = require("lib.gitlab").get_current_mr_url()
+  local gitlab = require("lib.gitlab")
+  local mr_url = gitlab.get_current_mr_url()
   if mr_url then
     links[u.rpad(pos .. ". MR", 9) .. " | " .. mr_url] = open_url(mr_url)
     pos = pos + 1
+  else
+    links[u.rpad(pos .. ". -- New MR -- ", 9)] = function()
+      gitlab.open_git_mr()
+    end
+    pos = pos + 1
   end
   return links
+end
+
+function M.get_url_by_label(label, default)
+  default = default or ""
+  local utils = require("lib.utils")
+  local links = vim.g.project_links or {}
+  local _, result = utils.find(function(value)
+    local _label = value[1]
+    return label == _label
+  end, links)
+  if result and result[2] then
+    return result[2]
+  end
+  return default
 end
 
 return M
