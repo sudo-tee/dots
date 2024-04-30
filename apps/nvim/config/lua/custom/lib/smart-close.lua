@@ -1,5 +1,11 @@
 local M = {}
-local function ignore_float_filter(filetype, _)
+
+local function ignore_float_filter(filetype, content)
+  -- this is lsp progress from noice
+  if filetype == 'noice' or content:find('Loading workspace') then
+    return true
+  end
+
   if filetype == 'mininotify' then
     return true
   end

@@ -1,5 +1,8 @@
 ---@module 'custom.lib.utils'
 local u = lazy_require('custom.lib.utils')
+---@module 'custom.lib.git'
+local git = lazy_require('custom.lib.git')
+
 local cmd = vim.api.nvim_create_user_command
 
 vim.cmd('command! Gc  :Sh git commit')
@@ -13,7 +16,7 @@ vim.cmd('command! Grbm :Sh git rbm')
 vim.cmd('command! -nargs=?  Gri :R git rebase -i <args>')
 
 cmd('GitDiffMain', function()
-  vim.cmd('DiffviewOpen origin/' .. require('custom.lib.utils').git_default_branch() .. '...HEAD')
+  vim.cmd('DiffviewOpen origin/' .. git.default_branch() .. '...HEAD')
 end, {})
 
 return {
