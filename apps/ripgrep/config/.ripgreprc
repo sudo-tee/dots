@@ -20,6 +20,15 @@ web:*.{html,css,js}*
 !tests/e2e/*
 
 --glob
+!pnpm-lock.yaml
+
+--glob
+!yarn.lock
+
+--glob
+!package-lock.json
+
+--glob
 !tests/e2e/**/*
 
 # Set the colors.
