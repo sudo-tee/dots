@@ -8,11 +8,10 @@ M.open_git_remote = function()
     print("Not in a git repository")
     return
   end
-  local wez = require("lib/wezterm")
+
   print("Opening git remote url:", remote_url)
+  os.execute("xdg-open '" .. vim.fn.shellescape(remote_url) .. "'")
   vim.fn.setreg("+", remote_url)
-  vim.api.nvim_command("silent! !xdg-open '" .. vim.fn.shellescape(remote_url) .. "'")
-  wez.send_user_command("open")
 end
 
 M.open_git_mr = function()
@@ -22,21 +21,13 @@ M.open_git_mr = function()
   local success, json = pcall(vim.json.decode, cmd_output)
 
   if not success or json == nil or json[1] == nil then
-    local utils = require("lib/utils")
-    local wez = require("lib/wezterm")
     print("Creating a new MR for branch")
+    os.execute("glab mr new -f -w")
 
-    vim.api.nvim_command("silent! !glab mr new -f -w")
-
-    -- hack xdg-open writes to a tmp file the url
-    local content = utils.read_file("/tmp/xdg-open-url")
-    wez.send_user_command("open")
-
-    vim.fn.setreg("+", content)
     return
   else
     local web_url = json[1].web_url
-    print(web_url)
+    os.execute("xdg-open '" .. vim.fn.shellescape(web_url) .. "'")
     vim.fn.setreg("+", web_url)
   end
 end
