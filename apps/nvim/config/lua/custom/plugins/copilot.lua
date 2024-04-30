@@ -72,7 +72,7 @@ return {
         '<leader>ccc',
         function()
           local chat = require('CopilotChat')
-          chat.open({
+          chat.ask(chat.config.prompts.CommitStaged.prompt, {
             clear_chat_on_new_prompt = true,
             window = {
               layout = 'float',
@@ -80,10 +80,8 @@ return {
               zindex = 50,
               width = 0.6,
             },
+            selection = chat.config.prompts.CommitStaged.selection,
           })
-          chat.reset()
-          local prompts = chat.prompts()
-          chat.ask(prompts.CommitStaged.prompt, prompts.CommitStaged)
         end,
         desc = '[C]opilot[C]hat - [C]ommit message',
       },
