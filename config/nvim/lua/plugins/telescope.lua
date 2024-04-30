@@ -157,7 +157,7 @@ return {
         desc = "Find files",
       },
       {
-        "<leader>fl",
+        "<leader>po",
         function()
           require("lib.pretty-pickers").find_files({
             hidden = true,
@@ -165,7 +165,17 @@ return {
             prompt_title = "Project overlays",
           })
         end,
-        desc = "Find project overlays",
+        desc = "Project overlays",
+      },
+      {
+        "<leader>pl",
+        function()
+          local pl = require("lib.project-links")
+
+          local menu = require("lib.select-menu").create_select_menu("Project links", pl.get_links())
+          menu()
+        end,
+        desc = "Project links",
       },
       {
         "<leader>fb",
@@ -218,26 +228,26 @@ return {
           height = 0.80,
           preview_cutoff = 120,
         },
-        file_ignore_patterns = {
-          "%.png",
-          "%.jpg",
-          "%.gif",
-          "%.exe",
-          "%.svg",
-          "%.ico",
-          "%.o",
-          "%.a",
-          "%.out",
-          "%.class",
-          "%.pdf",
-          "%.mkv",
-          "%.mp4",
-          "%.zip",
-          "package-lock.json",
-          "yarn.lock",
-          "pnpm-lock.yml",
-          "pnpm-lock.yaml",
-        },
+        -- file_ignore_patterns = {
+        --   "%.png",
+        --   "%.jpg",
+        --   "%.gif",
+        --   "%.exe",
+        --   "%.svg",
+        --   "%.ico",
+        --   "%.o",
+        --   "%.a",
+        --   "%.out",
+        --   "%.class",
+        --   "%.pdf",
+        --   "%.mkv",
+        --   "%.mp4",
+        --   "%.zip",
+        --   "package-lock.json",
+        --   "yarn.lock",
+        --   "pnpm-lock.yml",
+        --   "pnpm-lock.yaml",
+        -- },
         mappings = {
           i = {
             ["<a-p>"] = paste_from_register,

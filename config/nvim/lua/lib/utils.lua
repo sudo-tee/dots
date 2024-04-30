@@ -17,6 +17,12 @@ function M.starts_with(str, start)
   return str:sub(1, #start) == start
 end
 
+function M.rpad(s, l, c)
+  local res = s .. string.rep(c or " ", l - #s)
+
+  return res, res ~= s
+end
+
 M.close_float_windows = function()
   local closed_windows = {}
   vim.schedule(function()

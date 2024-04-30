@@ -1,7 +1,7 @@
 local M = {}
 
 M.open_git_remote = function()
-  local wez = require("lib/wezterm")
+  local wez = require("lib.wezterm")
 
   local cmd_output = vim.fn.system("git config --get remote.origin.url 2> /dev/null"):gsub("\n", "")
   local remote_url = cmd_output:gsub(":", "/"):gsub("git@", "https://")
@@ -16,15 +16,27 @@ M.open_git_remote = function()
   vim.fn.setreg("+", remote_url)
 end
 
+M.get_current_mr_url = function()
+  local cmd_output = vim.fn.system("glab api -X GET projects/:id/merge_requests  --field source_branch=:branch")
+  local success, json = pcall(vim.json.decode, cmd_output)
+
+  if success then
+    if json and json[1] then
+      return json[1].web_url
+    end
+  end
+  return nil
+end
+
 M.open_git_mr = function()
-  local wez = require("lib/wezterm")
+  local wez = require("lib.wezterm")
   print("Opening MR for branch")
 
   local cmd_output = vim.fn.system("glab api -X GET projects/:id/merge_requests  --field source_branch=:branch")
   local success, json = pcall(vim.json.decode, cmd_output)
   local web_url = ""
   if not success or json == nil or json[1] == nil then
-    local utils = require("lib/utils")
+    local utils = require("lib.utils")
 
     local sucess, mr_outpout = pcall(vim.fn.system, "glab mr new -f -w")
     print(sucess, mr_outpout)
