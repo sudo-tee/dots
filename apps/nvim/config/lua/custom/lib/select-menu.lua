@@ -12,12 +12,21 @@ local M = {}
 -- @arg options_table: Table of the form { [n. Display name] = lua-function/vim-cmd, ... }
 --                    The number is used for the sorting purpose and will be replaced by vim.ui.select() numbering
 --]]
-M.create_select_menu = function(prompt, options_table)
+M.create_select_menu = function(prompt, options_table, opts)
+  local u = require('custom.lib.utils')
+  opts = opts or {}
   local option_names = {}
-  local n = 0
-  for i, _ in pairs(options_table) do
-    n = n + 1
-    option_names[n] = i
+  local actions = {}
+  for i, v in ipairs(options_table) do
+    local prefix = ''
+    local title, action = unpack(v)
+
+    if opts.add_numbers then
+      prefix = u.rpad(i .. '. ', 3)
+    end
+
+    table.insert(option_names, prefix .. title)
+    table.insert(actions, action)
   end
   table.sort(option_names)
 
@@ -25,8 +34,8 @@ M.create_select_menu = function(prompt, options_table)
   local menu = function()
     vim.ui.select(option_names, {
       prompt = prompt,
-    }, function(choice)
-      local action = options_table[choice]
+    }, function(_, index)
+      local action = actions[index]
       -- When user inputs ESC or q, don't take any actions
       if action ~= nil then
         if type(action) == 'string' then
