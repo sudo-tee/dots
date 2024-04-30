@@ -8,7 +8,7 @@ return {
       function()
         return require("debugprint").debugprint()
       end,
-      desc = "debug print",
+      desc = "Debug print",
       expr = true,
     },
     {
@@ -17,20 +17,20 @@ return {
       function()
         return require("debugprint").debugprint({ variable = true })
       end,
-      desc = "debug print with variables",
+      desc = "Debug print with variables",
       expr = true,
     },
     {
-      "<localleader>dx",
+      "<localleader>ds",
       function()
         return require("debugprint").deleteprints()
       end,
-      desc = "remove all debug print for buffer",
+      desc = "Remove all debug print for buffer",
     },
     {
-      "<localleader>ds",
+      "<localleader>dx",
       ":g/" .. debugTag .. "/norm va(o$O_d",
-      desc = "delete all debug print for buffer",
+      desc = "Delete prints for buffer",
       silent = false,
     },
     {
@@ -38,7 +38,7 @@ return {
       function()
         require("telescope.builtin").live_grep({ default_text = debugTag })
       end,
-      desc = "delete all debug print for buffer",
+      desc = "Find all debug print for project",
       silent = false,
     },
     {
