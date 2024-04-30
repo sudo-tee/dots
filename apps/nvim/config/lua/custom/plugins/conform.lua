@@ -5,9 +5,7 @@ return { -- Autoformat
   opts = {
     notify_on_error = false,
     format_on_save = {
-      timeout_ms = 3000,
-      async = false,
-      quiet = false,
+      timeout_ms = 700,
       lsp_fallback = true,
     },
     formatters_by_ft = {
@@ -24,8 +22,9 @@ return { -- Autoformat
       sh = { 'shfmt' },
     },
     formatters = {
+      injected = { options = { ignore_errors = true } },
       shfmt = {
-        prepend_args = { '-i', '2', '-ci' },
+        prepend_args = { '-i', '2' },
       },
     },
   },
