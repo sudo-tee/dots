@@ -27,13 +27,13 @@ end
 
 return {
   { "tpope/vim-fugitive" },
-  -- {
-  --   "rbong/vim-flog",
-  --   cmd = { "Flog", "FlogSplit" },
-  --   keys = {
-  --     { "<leader>gfl", "<cmd>Flog<cr>", desc = { "Open Git log graph" } },
-  --   },
-  -- },
+  {
+    "rbong/vim-flog",
+    cmd = { "Flog", "FlogSplit" },
+    keys = {
+      { "<leader>gfl", "<cmd>Flog<cr>", desc = "Open Git log graph" },
+    },
+  },
   {
     "lewis6991/gitsigns.nvim",
     opts = {
