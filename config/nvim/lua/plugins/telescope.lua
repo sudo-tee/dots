@@ -22,15 +22,16 @@ vim.api.nvim_create_autocmd("FileType", {
   end,
 })
 
-local function open_with_diff_view(prompt_bufnr)
-  require("telescope.actions").close(prompt_bufnr)
-  local value = require("telescope.actions.state").get_selected_entry(prompt_bufnr).value
+local function open_with_diff_view(bufnr)
+  require("telescope.actions").close(bufnr)
+  local value = require("telescope.actions.state").get_selected_entry(bufnr).value
   vim.cmd("DiffviewOpen " .. value .. "~1.." .. value)
 end
 
-local function paste_from_register()
+local function paste_from_register(reg)
+  reg = reg or '"'
   local ctrl_r_key = vim.api.nvim_replace_termcodes("<C-R>", true, false, true)
-  local quote_key = vim.api.nvim_replace_termcodes('"', true, false, true)
+  local quote_key = vim.api.nvim_replace_termcodes(reg, true, false, true)
 
   vim.api.nvim_feedkeys(ctrl_r_key .. quote_key, "n", true)
 end
@@ -60,7 +61,7 @@ return {
         function()
           require("telescope.builtin").live_grep({
             cwd = false,
-            glob_pattern = "!{*.spec.*,*.test.*,*.md,pnpm-lock.yaml}",
+            glob_pattern = vim.g.grep_glob_pattern or "!{*.spec.*,*.test.*,pnpm-lock.yaml}",
           })
         end,
         desc = "Grep (root dir)",
