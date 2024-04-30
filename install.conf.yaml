@@ -24,7 +24,7 @@
     - ~/Projects
 
 - if:
-    cond: "grep -Eq WSL2 /proc/version"
+    cond: '[ -e "$HOME/winhome" ]'
     met:
       - create:
           - ~/winhome/.config/wezterm/
