@@ -34,7 +34,7 @@ function M.create_jira_link(ticket)
   end
   local jira_url = M.get_issue_link(ticket)
 
-  local link = string.format('[%s](%s%s)', ticket, jira_url, ticket)
+  local link = string.format('[%s](%s)', ticket, jira_url)
 
   local cursor_pos = vim.api.nvim_win_get_cursor(0)
   vim.api.nvim_put({ link }, 'c', true, true)
