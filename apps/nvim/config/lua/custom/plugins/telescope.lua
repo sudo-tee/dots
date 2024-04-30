@@ -52,12 +52,6 @@ local function neovim_files()
   require('telescope.builtin').find_files({ cwd = vim.fn.stdpath('config') })
 end
 
-local function smart_open()
-  require('telescope').extensions.smart_open.smart_open({
-    cwd_only = true,
-  })
-end
-
 return { -- Fuzzy Finder (files, lsp, etc)
   'nvim-telescope/telescope.nvim',
   branch = '0.1.x',
