@@ -1,9 +1,16 @@
-# Need to improve
+# Personal nvim Notes
+
+## Need to improve
 
 - `$` and `_` to go to the end or start of line
 - `/` need to press enter...
 
-# Irritating stuff
+## Recently discovered
+
+- J or "<S-J>" to join lines.
+- cc modify whole line
+
+## Irritating stuff
 
 - ~Monorepo and `tsserver` `telescope` `neotree` scoping~
 - Neotest-vitest:
@@ -11,14 +18,19 @@
   - tests in backticks don't work
   - tests with dynamic variables don't work
 - Rebase interactive from floating terminal don't work
-- colors are sometime broken
+- syntax colors are sometime broken
+  - Maybe LSPLogs
 - tsserver is slow with ThemeUI
 
-# Improvements to config
+## Improvements to config
 
 - Add ammed commit without asking for new message
 - Diffview auto-save file after conflict..
 
-# Plugins to check
+## Plugins to check
 
-- `tinygit`
+## Dotfiles inspirations
+
+- https://github.com/loctvl842/nvim
+- https://github.com/MariaSolOs/dotfiles
+- https://github.com/jesseleite/dotfiles
