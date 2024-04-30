@@ -28,54 +28,54 @@ M.get_current_mr_url = function()
   return nil
 end
 
+function M.create_new_mr()
+  local utils = require('custom.lib.utils')
+  local success, _ = pcall(vim.fn.system, 'glab mr new -f -w')
+  if not success then
+    return nil
+  end
+  return utils.read_file('/tmp/xdg-open-url') or ''
+end
+
 M.open_git_mr = function()
   local wez = require('custom.lib.wezterm')
   print('Opening MR for branch')
 
-  local cmd_output = vim.fn.system('glab api -X GET projects/:id/merge_requests  --field source_branch=:branch')
-  local success, json = pcall(vim.json.decode, cmd_output)
-  local web_url = ''
-  if not success or json == nil or json[1] == nil then
-    local utils = require('custom.lib.utils')
+  local web_url = M.get_mr_url()
 
-    local sucess, mr_outpout = pcall(vim.fn.system, 'glab mr new -f -w')
-    print(sucess, mr_outpout)
-    if not sucess then
-      print(mr_outpout)
-      return
-    end
-    print('Creating a new MR for branch')
-    web_url = utils.read_file('/tmp/xdg-open-url') or ''
-  else
-    web_url = json[1].web_url
+  if web_url == nil then
+    web_url = M.create_new_mr()
   end
+
   wez.open_url(web_url)
   vim.fn.setreg('+', web_url)
 end
 
+function M.get_project_folder()
+  local cwd = vim.loop.cwd()
+  return string.match(cwd or '', '[^/]+$')
+end
+
 M.generate_chat_message_for_mr = function()
+  local u = require('custom.lib.utils')
   local cmd_output = vim.fn.system('glab api -X GET projects/:id/merge_requests  --field source_branch=:branch')
 
   if cmd_output == nil or string.len(cmd_output) == 0 then
-    print('No merge request found')
+    vim.notify('No merge request found', vim.log.levels.INFO)
     return
   end
 
-  local success, json = pcall(vim.json.decode, cmd_output)
-
-  if not success then
-    print('Error decoding JSON')
+  local json = u.decode_json(cmd_output)
+  if json == nil or not json[1] then
     return
   end
 
-  local cwd = vim.loop.cwd()
-
-  local project_folder = string.match(cwd, '[^/]+$')
+  local project_folder = M.get_project_folder()
   local title = json[1].title
   local web_url = json[1].web_url
 
   local message = string.format('Ⓜ MR (%s) | %s \n%s', project_folder, title, web_url)
-  print('⚡ MR message copied to clipboard!')
+  vim.notify('⚡ MR message copied to clipboard!', vim.log.levels.INFO)
   vim.fn.setreg('+', message)
 end
 

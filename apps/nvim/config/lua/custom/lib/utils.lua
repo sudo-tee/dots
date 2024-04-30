@@ -21,6 +21,7 @@ function M.map_pair(mode, key, prev, next, desc)
   M.map(mode, ']' .. key, next, { desc = 'Next ' .. desc })
   M.map(mode, '[' .. key, prev, { desc = 'Previous ' .. desc })
 end
+
 function M.cmd(command)
   return string.format('<cmd>%s<cr>', command)
 end
@@ -72,6 +73,15 @@ function M.read_file(path)
   local content = file:read('*a') -- *a or *all reads the whole file
   file:close()
   return content
+end
+
+function M.decode_json(cmd_output)
+  local success, json = pcall(vim.json.decode, cmd_output)
+  if not success then
+    vim.notify('Error decoding JSON', vim.log.levels.ERROR)
+    return nil
+  end
+  return json
 end
 
 function M.git_default_branch()
