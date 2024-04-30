@@ -1,4 +1,5 @@
 require('mini.statusline').setup({
+  use_icons = true,
   set_vim_settings = false,
   content = {
     active = function()
@@ -85,5 +86,5 @@ end
 ---@diagnostic disable-next-line: duplicate-set-field
 MiniStatusline.section_location = function(_)
   -- Use virtual column number to allow update when past last column
-  return '%l:%v'
+  return '%2l:%-2v'
 end
