@@ -11,6 +11,7 @@ M.commands = {
 	Open = "open",
 	Start = "start",
 	ActivatePaneDirection = "p:activate",
+	ResizePaneDirection = "p:resize",
 }
 
 return {
@@ -51,5 +52,10 @@ return {
 	[M.commands.ActivatePaneDirection] = function(window, pane, cmd_context)
 		wezterm.log_info("ACTIVATE DIRECTION", cmd_context.v)
 		window:perform_action({ ActivatePaneDirection = cmd_context.v }, pane)
+	end,
+
+	[M.commands.ResizePaneDirection] = function(window, pane, cmd_context)
+		wezterm.log_info("RESIZE DIRECTION", cmd_context.v)
+		window:perform_action({ AdjustPaneSize = { cmd_context.v, 3 } }, pane)
 	end,
 }
