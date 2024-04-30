@@ -100,6 +100,16 @@ return {
         end,
         desc = "Project links",
       },
+      {
+        "<leader>fp",
+        function()
+          require("telescope.builtin").find_files({
+            cwd = require("lazy.core.config").options.root,
+            prompt_title = "Plugin files",
+          })
+        end,
+        desc = "Find Plugin File",
+      },
     },
     opts = {
       defaults = {
