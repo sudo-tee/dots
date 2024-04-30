@@ -1,4 +1,5 @@
 return {
+
   {
     'rebelot/kanagawa.nvim',
     enabled = true,
@@ -43,6 +44,11 @@ return {
           MiniStatuslineModeInsert = { fg = '#15161e', bg = '#9ece6a' },
           CustomRecordingStatus = { fg = '#ff9e3b', bg = theme.ui.bg_m3 },
           CustomUpdatesStatus = { fg = '#1abc9c', bg = theme.ui.bg_m3 },
+
+          -- mini tabline
+          MiniTablineModifiedVisible = { fg = '#bada55', bg = '#2a2a37' },
+          MiniTablineModifiedCurrent = { fg = '#bada55', bg = '#2a2a37' },
+          MiniTablineModifiedHidden = { fg = '#556327', bg = '#16161d' },
         }
       end
       require('kanagawa').setup(opts)
