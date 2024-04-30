@@ -69,12 +69,12 @@ return {
     },
     -- stylua: ignore
     keys = {
-      { mode = {'n'},        '<leader>cch', '<cmd>CopilotChatHelpActions<cr>',        desc = '[C]opilot[C]hat - [H]elp actions', },
-      { mode = { 'n', 'v' }, '<leader>cca', '<cmd>CopilotChatActions<cr>',            desc = '[C]opilot[C]hat - [A]ctions' },
-      {                      '<leader>ccc', '<cmd>CopilotChatCommitMessageFloat<cr>', desc = '[C]opilot[C]hat - [C]ommit message', },
-      { mode = { 'n', 'v' }, '<leader>ccp', '<cmd>CopilotChat<cr>',                   desc = '[C]opilot[C]hat - [P]rompt' },
-      { mode = { 'n', 'v' }, '<leader>cco', '<cmd>CopilotChatOptimize<cr>',           desc = '[C]opilot[C]hat - [O]ptimize' },
-      { mode = { 'n', 'v' }, '<leader>cct', '<cmd>CopilotChatTests<cr>',              desc = '[C]opilot[C]hat - [T]ests' },
+      { mode = {'n'},        '<leader>cch', '<cmd>CopilotChatHelpActions<cr>',        desc = '[H]elp actions', },
+      { mode = { 'n', 'v' }, '<leader>cca', '<cmd>CopilotChatActions<cr>',            desc = '[A]ctions' },
+      {                      '<leader>ccc', '<cmd>CopilotChatCommitMessageFloat<cr>', desc = '[C]ommit message', },
+      { mode = { 'n', 'v' }, '<leader>ccp', '<cmd>CopilotChat<cr>',                   desc = '[P]rompt' },
+      { mode = { 'n', 'v' }, '<leader>cco', '<cmd>CopilotChatOptimize<cr>',           desc = '[O]ptimize' },
+      { mode = { 'n', 'v' }, '<leader>cct', '<cmd>CopilotChatTests<cr>',              desc = '[T]ests' },
     },
     -- See Commands section for default commands if you want to lazy load on them
     config = function(_, opts)
