@@ -26,6 +26,13 @@ function M.cmd(command)
   return string.format('<cmd>%s<cr>', command)
 end
 
+function M.open_url_callback(url)
+  return function()
+    require('custom.lib.wezterm').open_url(url)
+    vim.fn.setreg('+', url)
+  end
+end
+
 function M.yank(text, title)
   title = title or 'Yanked'
   vim.fn.setreg('+', text)
@@ -46,20 +53,73 @@ function M.rpad(s, l, c)
   return res, res ~= s
 end
 
-function M.iif(cond, a, b)
+function M.lpad(s, l, c)
+  local res = string.rep(c or ' ', l - #s) .. s
+
+  return res, res ~= s
+end
+
+function M.truncate(str, len)
+  if #str > len then
+    return str:sub(1, len) .. '...'
+  end
+  return str
+end
+
+function M.fixed_width(str, width)
+  return M.rpad(M.truncate(str, width), width)
+end
+
+function M.iif(cond, is_thruty, is_falsy)
   if cond then
-    return a
+    return is_thruty
   else
-    return b
+    return is_falsy
   end
 end
 
-function M.l_if(cond, default)
-  if cond then
-    return cond
-  else
+function M.value_or(val, default)
+  if M.is_falsy(val) then
     return default
   end
+
+  return val
+end
+
+function M.is_falsy(value)
+  return value == false or value == nil or value == '' or value == 0
+end
+
+function M.is_thruty(value)
+  return not M.is_falsy(value)
+end
+
+function M.some(val)
+  local t = { val = val }
+
+  t.or_else = function(default)
+    if M.is_falsy(t.val) then
+      return default
+    end
+    return t.val
+  end
+
+  t.or_error = function(msg)
+    if M.is_falsy(t.val) then
+      error(msg)
+    end
+    return t.val
+  end
+
+  t.unwrap = function()
+    return t.val
+  end
+
+  t.map = function(fn)
+    return M.some(M.is_falsy(t.val) and nil or fn(t.val))
+  end
+
+  return t
 end
 
 function M.find(predicate, tbl)
@@ -81,34 +141,27 @@ function M.concat(...)
 end
 
 function M.read_file(path)
-  local open = io.open
-  local file = open(path, 'rb') -- r read mode and b binary mode
-  if not file then
-    return nil
+  local success, file = pcall(io.open, 'rb', path)
+
+  local function read_file(f)
+    local content = f:read('*a')
+    f:close()
+    return content
   end
-  local content = file:read('*a') -- *a or *all reads the whole file
-  file:close()
-  return content
+
+  return M.some(success and file).map(read_file).or_else(nil)
 end
 
 function M.decode_json(cmd_output)
   local success, json = pcall(vim.json.decode, cmd_output)
-  if not success then
-    return nil
-  end
-  return json
-end
 
-function M.git_default_branch()
-  local handle = io.popen("basename $(git symbolic-ref refs/remotes/origin/HEAD) | tr -d '\n\r'")
-  local result = handle:read('*a')
-  handle:close()
-  return result
+  return M.some(success and json).or_else(nil)
 end
 
 function M.get_current_branch()
   local cmd_output = vim.fn.system('git branch --show-current'):gsub('\n', '')
-  return cmd_output
+
+  return M.some(cmd_output).or_else(nil)
 end
 
 function M.memoize(f)
