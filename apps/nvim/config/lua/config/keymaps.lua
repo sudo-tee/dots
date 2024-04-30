@@ -26,18 +26,25 @@ map({ "n", "v" }, "g<Left>", "g^")
 map({ "n", "v" }, "g<Right>", "g$")
 
 -- Yank absolute path
-map("n", "<Leader>fY", function()
+map("n", "<Leader>yfP", function()
   local path = vim.fn.expand("%:p")
   vim.fn.setreg("+", path)
   vim.notify(path, vim.log.levels.INFO, { title = "Yanked absolute path" })
 end, { desc = "Yank absolute path" })
 
--- Yank buffer's relative path to clipboard
-map("n", "<Leader>fy", function()
+-- Yank buffer's relative path
+map("n", "<Leader>yfp", function()
   local path = vim.fn.expand("%:~:.")
   vim.fn.setreg("+", path)
   vim.notify(path, vim.log.levels.INFO, { title = "Yanked relative path" })
 end, { desc = "Yank relative path" })
+
+-- Yank buffer's filename
+map("n", "<Leader>yfn", function()
+  local path = vim.fn.expand("%:t")
+  vim.fn.setreg("+", path)
+  vim.notify(path, vim.log.levels.INFO, { title = "Yanked filename" })
+end, { desc = "Yank filename" })
 
 -- Use tab for indenting in visual/select mode
 map("x", "<Tab>", ">gv|", { desc = "Indent Left" })
@@ -49,8 +56,6 @@ map("i", "<S-Tab>", "<gv", { desc = "Indent Right" })
 
 -- Start an external command with a single bang
 map("n", "!", ":R ", { desc = "Execute Shell Command in the floating term", silent = false })
-
-map("n", "<localleader>g", ":G ", { silent = false })
 
 -- Duplicate lines without affecting PRIMARY and CLIPBOARD selections.
 map("n", "<Leader>d", 'm`""Y""P``', { desc = "Duplicate line" })
@@ -86,16 +91,13 @@ map("n", "<C-o>", "<C-o>zz", { desc = "Previous position" })
 map("n", "<C-i>", "<C-i>zz", { desc = "Next position" })
 map("n", "<C-f>", "<C-f>zz", { desc = "Scroll forward" })
 map("n", "<C-b>", "<C-b>zz", { desc = "Scroll backward" })
-map("n", "n", "nzzzv", { desc = "Next search results" })
-map("n", "N", "Nzzzv", { desc = "Prev search results" })
+-- map("n", "n", "nzzzv", { desc = "Next search results" })
+-- map("n", "N", "Nzzzv", { desc = "Prev search results" })
 map("n", "G", "Gzz")
-map("n", "gg", "ggzz")
 map("n", "]m", "]mzz")
 map("n", "[m", "[mzz")
 map("n", "{", "{zz")
 map("n", "}", "}zz")
-map("n", "*", "*zz")
-map("n", "%", "%zz")
 
 -- Macros
 -- Disable default macro key the plugin will set it up to <F4>
