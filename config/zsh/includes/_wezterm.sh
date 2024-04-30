@@ -14,11 +14,12 @@ wezterm_send_user_command() {
 }
 
 wezterm_write_to_temp_dir() {
-	local file_name = "msg.$RANDOM"
+	local file_name="msg.$RANDOM"
 
-	mkdir -p $WEZTERM_CONFIG_TMP_DIR
+	mkdir -p "$WEZTERM_CONFIG_TMP_DIR"
 
 	cat "$1" >"$WEZTERM_CONFIG_TMP_DIR/$file_name"
 
 	echo $file_name
 }
+
