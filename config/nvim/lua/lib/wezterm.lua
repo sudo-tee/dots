@@ -6,6 +6,7 @@ M.commands = {
   Open = "open",
   Start = "start",
   ActivatePaneDirection = "p:activate",
+  ResizePaneDirection = "p:resize",
 }
 
 local function base64_encode(data)
@@ -85,6 +86,10 @@ end
 
 function M.activate_pane_direction(direction)
   M.send_user_command(M.commands.ActivatePaneDirection, direction)
+end
+
+function M.resize_pane_direction(direction)
+  M.send_user_command(M.commands.ResizePaneDirection, direction)
 end
 
 function M.kill_workspace(workspace)
