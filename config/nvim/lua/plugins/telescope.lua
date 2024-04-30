@@ -74,7 +74,6 @@ return {
       {
         "nvim-lua/plenary.nvim",
         "debugloop/telescope-undo.nvim",
-        "molecule-man/telescope-menufacture",
         "radyz/telescope-gitsigns",
       },
     },
@@ -89,27 +88,17 @@ return {
       {
         "<leader>?",
         function()
-          require("telescope").extensions.menufacture.live_grep({
+          require("lib.pretty-pickers").live_grep({
             cwd = false,
             glob_pattern = "!{*.spec.*,*.test.*,*.md,pnpm-lock.yaml}",
           })
         end,
-        -- function()
-        --   require("telescope").extensions.menufacture.live_grep({
-        --     cwd = false,
-        --     glob_pattern = "!{*.spec.*,*.test.*,*.md,pnpm-lock.yaml}",
-        --   })()
-        --   -- require("lazyvim.util").telescope(
-        --   --   "live_grep",
-        --   --   { cwd = false, glob_pattern = "!{*.spec.*,*.test.*,*.md,pnpm-lock.yaml}" }
-        --   -- )()
-        -- end,
         desc = "Grep (root dir)",
       },
       {
         "<leader>fp",
         function()
-          require("telescope.builtin").find_files({
+          require("lib.pretty-pickers").find_files({
             cwd = require("lazy.core.config").options.root,
             prompt_title = "Plugin files",
           })
@@ -119,7 +108,7 @@ return {
       {
         "<leader>f*",
         function()
-          require("telescope").extensions.menufacture.grep_string()
+          require("lib.pretty-pickers").grep_string()
         end,
         desc = "Find word under cursor",
       },
@@ -133,7 +122,7 @@ return {
       {
         "<leader>fa",
         function()
-          require("telescope.builtin").find_files({
+          require("lib.pretty-pickers").find_files({
             hidden = true,
             no_ignore = true,
             prompt_title = "All files",
@@ -144,25 +133,48 @@ return {
       {
         "<leader><space>",
         function()
-          require("telescope.builtin").oldfiles({ cwd = vim.loop.cwd() })
+          require("lib.pretty-pickers").oldfiles({ cwd = vim.loop.cwd() })
         end,
         desc = "Last files",
       },
       {
         "<C-p>",
-        ":Telescope find_files<cr>",
+        function()
+          require("lib.pretty-pickers").find_files({ hidden = true })
+        end,
         desc = "Find files",
       },
       {
         "<leader>fl",
         function()
-          require("telescope.builtin").find_files({
+          require("lib.pretty-pickers").find_files({
             hidden = true,
             find_command = { "find-overlays" },
             prompt_title = "Project overlays",
           })
         end,
         desc = "Find project overlays",
+      },
+      {
+        "<leader>fb",
+        function()
+          require("lib.pretty-pickers").buffers()
+        end,
+        desc = "Open buffers",
+      },
+      {
+        "<leader>sw",
+        function()
+          require("lib.pretty-pickers").grep_string({ cwd = false, word_match = "-w" })
+        end,
+        desc = "Word (cwd)",
+      },
+      {
+        "<leader>sW",
+        function()
+          require("lib.pretty-pickers").grep_string({ word_match = "-w" })
+        end,
+        desc = "Word (root dir)",
       },
       {
         "<leader>fu",
@@ -228,19 +240,16 @@ return {
             ["<a-p>"] = paste_from_register,
             ["<a-d>"] = open_with_diff_view,
             ["<c-p>"] = function()
-              local Util = require("lazyvim.util")
-              Util.telescope("find_files", { hidden = true })()
+              require("lib.pretty-pickers").find_files({ hidden = true })
             end,
             ["<a-a>"] = function()
-              local Util = require("lazyvim.util")
-              Util.telescope("find_files", { hidden = true, no_ignore = true, prompt_title = "All files" })()
+              require("lib.pretty-pickers").find_files({ hidden = true, no_ignore = true, prompt_title = "All files" })
             end,
             ["<a-l>"] = function()
-              local Util = require("lazyvim.util")
-              Util.telescope("oldfiles", { only_cwd = true })()
+              require("lib.pretty-pickers").oldfiles({ only_cwd = true })
             end,
             ["<a-o>"] = function()
-              require("telescope.builtin").find_files({
+              require("lib.pretty-pickers").find_files({
                 hidden = true,
                 find_command = { "find-overlays" },
                 prompt_title = "Project overlays",
@@ -258,6 +267,7 @@ return {
         },
       },
       pickers = {
+        lsp_references = { path_display = { "tail" } },
         find_files = {
           cwd = false,
           -- find_command = {
@@ -329,18 +339,12 @@ return {
             },
           },
         },
-        menufacture = {
-          mappings = {
-            main_menu = { [{ "i", "n" }] = "<localleader><localleader>" },
-          },
-        },
       },
     },
     config = function(_, opts)
       require("telescope").load_extension("fzf")
       require("telescope").setup(opts)
       require("telescope").load_extension("undo")
-      require("telescope").load_extension("menufacture")
       require("telescope").load_extension("git_signs")
     end,
   },
