@@ -114,6 +114,11 @@ return {
       action = wezterm.action_callback(actions.create_new_tab),
     },
     {
+      key = "Z",
+      mods = "ALT",
+      action = act.TogglePaneZoomState,
+    },
+    {
       key = "LeftArrow",
       mods = "SHIFT|ALT",
       action = act.ActivateTabRelative(-1),
