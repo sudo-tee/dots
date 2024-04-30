@@ -17,14 +17,24 @@ end)
 
 return {
 	window_background_opacity = 0.9,
-	default_domain = "WSL:fedoraremix",
+	default_domain = "dev",
 	hide_tab_bar_if_only_one_tab = true,
 	window_close_confirmation = "NeverPrompt",
+	exit_behavior = "Close",
 	font = wezterm.font("JetBrains Mono"),
 	font_size = 11,
 	front_end = "WebGpu",
 	webgpu_power_preference = "HighPerformance",
 	color_scheme = "Catppuccin Mocha",
+	ssh_domains = {
+		{
+			name = "dev",
+			remote_address = "dev",
+			username = "francis",
+			connect_automatically = true,
+			multiplexing = "None",
+		},
+	},
 	window_padding = {
 		left = 0,
 		right = 0,
