@@ -1,3 +1,5 @@
+local command = vim.api.nvim_create_user_command
+
 return {
   {
     'zbirenbaum/copilot.lua',
@@ -44,49 +46,33 @@ return {
     'CopilotC-Nvim/CopilotChat.nvim',
     lazy = true,
     even = 'VeryLazy',
-    cmd = { 'CopilotChat', 'CopilotChatActions', 'CopilotChatOptimize', 'CopilotChatPrompt', 'CopilotChatCommitStaged' },
+    cmd = {
+      'CopilotChat',
+      'CopilotChatActions',
+      'CopilotChatHelpActions',
+      'CopilotChatOptimize',
+      'CopilotChatPrompt',
+      'CopilotChatCommitStaged',
+      'CopilotChatCommitMessageFloat',
+    },
     branch = 'canary',
     dependencies = {
       { 'zbirenbaum/copilot.lua' }, -- or github/copilot.vim
       { 'nvim-lua/plenary.nvim' }, -- for curl, log wrapper
     },
     opts = {
-      debug = false, -- Enable debugging
+      debug = false,
+      question_header = '## User ',
+      answer_header = '## Copilot ',
+      error_header = '## Error ',
     },
+    -- stylua: ignore
     keys = {
-      {
-        '<leader>cch',
-        function()
-          local actions = require('CopilotChat.actions')
-          require('CopilotChat.integrations.telescope').pick(actions.help_actions())
-        end,
-        desc = '[C]opilot[C]hat - [H]elp actions',
-      },
-      {
-        mode = { 'v', 'n' },
-        '<leader>cca',
-        '<cmd>CopilotChatActions<cr>',
-        desc = '[C]opilot[C]hat - [P]rompt actions',
-      },
-      {
-        '<leader>ccc',
-        function()
-          local chat = require('CopilotChat')
-          chat.ask(chat.config.prompts.CommitStaged.prompt, {
-            clear_chat_on_new_prompt = true,
-            window = {
-              layout = 'float',
-              title = 'Generate commit message',
-              zindex = 50,
-              width = 0.6,
-            },
-            selection = chat.config.prompts.CommitStaged.selection,
-          })
-        end,
-        desc = '[C]opilot[C]hat - [C]ommit message',
-      },
-      { mode = { 'n', 'v' }, '<leader>ccp', ':CopilotChat', desc = '[C]opilot[C]hat - [P]rompt' },
-      { mode = { 'n', 'v' }, '<leader>cco', ':CopilotChatOptimize', desc = '[C]opilot[C]hat - [P]rompt' },
+      { mode = {'n'},        '<leader>cch', '<cmd>CopilotChatHelpActions<cr>',        desc = '[C]opilot[C]hat - [H]elp actions', },
+      { mode = { 'n', 'v' }, '<leader>cca', '<cmd>CopilotChatActions<cr>',            desc = '[C]opilot[C]hat - [A]ctions' },
+      {                      '<leader>ccc', '<cmd>CopilotChatCommitMessageFloat<cr>', desc = '[C]opilot[C]hat - [C]ommit message', },
+      { mode = { 'n', 'v' }, '<leader>ccp', '<cmd>CopilotChat<cr>',                   desc = '[C]opilot[C]hat - [P]rompt' },
+      { mode = { 'n', 'v' }, '<leader>cco', '<cmd>CopilotChatOptimize<cr>',           desc = '[C]opilot[C]hat - [P]rompt' },
     },
     -- See Commands section for default commands if you want to lazy load on them
     config = function(_, opts)
@@ -94,15 +80,37 @@ return {
         return
       end
 
-      vim.api.nvim_create_user_command('CopilotChatActions', function()
-        local actions = require('CopilotChat.actions')
+      require('CopilotChat').setup(opts)
+
+      local telescope = require('CopilotChat.integrations.telescope')
+      local actions = require('CopilotChat.actions')
+      local select = require('CopilotChat.select')
+
+      command('CopilotChatActions', function()
         local selection = function(source)
-          return require('CopilotChat.select').visual(source) or require('CopilotChat.select').buffer(source)
+          return select.visual(source) or select.buffer(source)
         end
-        require('CopilotChat.integrations.telescope').pick(actions.prompt_actions({ selection = selection }))
+        telescope.pick(actions.prompt_actions({ selection = selection }))
       end, { range = true })
 
-      require('CopilotChat').setup(opts)
+      command('CopilotChatHelpActions', function()
+        telescope.pick(actions.help_actions())
+      end, { range = true })
+
+      command('CopilotChatCommitMessageFloat', function()
+        local chat = require('CopilotChat')
+        chat.ask(chat.config.prompts.CommitStaged.prompt, {
+          clear_chat_on_new_prompt = true,
+          window = {
+            layout = 'float',
+            title = 'Generate commit message',
+            zindex = 50,
+            width = 0.6,
+            border = 'rounded',
+          },
+          selection = chat.config.prompts.CommitStaged.selection,
+        })
+      end, {})
     end,
   },
 }
