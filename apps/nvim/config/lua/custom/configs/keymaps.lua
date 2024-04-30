@@ -78,7 +78,8 @@ end, { desc = 'Close floating windows' })
 -- buffer navigation
 map('n', '<S-Right>', cmd('bnext'), { desc = 'Prev [B]uffer' })
 map('n', '<S-Left>', cmd('bprev'), { desc = 'Next [B]uffer' })
-map_pair('n', 'b', cmd('bprev'), '<cmd>bnext<cr>', '[b]uffer')
+map_pair('n', 'b', cmd('bprev'), cmd('bnext'), '[b]uffer')
+map('n', '<leader>bo', cmd('CloseOtherBuffers'), { desc = 'Close [o]ther [b]uffers' })
 
 --Profiling
 map('n', '<leader>uz', ':ToggleProfile<cr>', { silent = false, noremap = true, desc = 'Start a profilling session' })
