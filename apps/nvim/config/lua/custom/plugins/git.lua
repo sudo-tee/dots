@@ -1,5 +1,4 @@
----@module 'custom.lib.utils'
-local u = lazy_require('custom.lib.utils')
+local u = require('custom.lib.utils')
 
 ---@module 'custom.lib.git'
 local git = lazy_require('custom.lib.git')
@@ -13,6 +12,7 @@ vim.cmd('command! Gan :Sh git commit --amend --no-edit')
 vim.cmd('command! Gaf :Sh git commit --amend --no-edit && git push --force-with-lease')
 vim.cmd('command! Gp  :Sh git push')
 vim.cmd('command! Gpl :Sh git push --force-with-lease')
+vim.cmd('command! Gpr :Sh git pull --rebase')
 vim.cmd('command! Grim :Sh git rim')
 vim.cmd('command! Grbm :Sh git rbm')
 vim.cmd('command! -nargs=?  Gri :Sh git rebase -i <args>')
@@ -20,6 +20,13 @@ vim.cmd('command! -nargs=?  Gri :Sh git rebase -i <args>')
 cmd('GitDiffMain', function()
   vim.cmd('DiffviewOpen origin/' .. git.default_branch() .. '...HEAD')
 end, {})
+
+u.map('n', '<leader>grm', u.cmd('Grm'), { desc = '[r]ebase [m]main/master' })
+u.map('n', '<leader>grc', u.cmd('Grc'), { desc = '[r]ebase [c]ontinue' })
+u.map('n', '<leader>gcc', u.cmd('Gc'), { desc = '[c]ommit' })
+u.map('n', '<leader>gpr', u.cmd('Gpr'), { desc = '[p]ull [r]ebase' })
+u.map('n', '<leader>gpl', u.cmd('Gpl'), { desc = '[p]ush force lease' })
+u.map('n', '<leader>gpp', u.cmd('Gp'), { desc = '[p]ush' })
 
 return {
   { 'tpope/vim-fugitive', lazy = true, event = 'VeryLazy', cmd = { 'G' } },
@@ -108,8 +115,6 @@ return {
           view = {
             { 'n', 'q',          u.cmd('DiffviewClose'), { desc = 'Close' } },
             { 'n', '<A-q>',      u.cmd('DiffviewClose'), { desc = 'Close' } },
-            { 'n', '<Leader>rc', u.cmd('Grc'),           { desc = 'Git Rebase Continue' } },
-            { 'n', '<Leader>rm', u.cmd('Grm'),           { desc = 'Git Rebase master/main' } },
             { 'n', '<Leader>\\', actions.cycle_layout,   { desc = 'Cycle layout' } },
           },
           file_panel = {
