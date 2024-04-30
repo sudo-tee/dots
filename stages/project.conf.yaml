@@ -1,0 +1,46 @@
+- defaults:
+    link:
+      create: true
+      relink: true
+    shell:
+      stdout: true
+      stderr: true
+      quiet: true
+
+- shell:
+    - echo "✨✨✨ Configuring Project ${PROJECT} ✨✨✨"
+- shell:
+    - description: "📦 Cloning or Pulling"
+      command: |
+        if  [ -d "$HOME/Projects/$PROJECT" ]; 
+        then
+          cd "$HOME/Projects/$PROJECT" 
+          echo "pulling $(pwd)"
+          git pull;
+        else 
+          echo "cloning $(pwd)"
+          git clone $PROJECT_GIT "$HOME/Projects/$PROJECT";
+        fi
+
+- shell:
+    - description: "📦 Installing"
+      command: |
+        cd ~/Projects/${PROJECT}
+        ni
+
+- link:
+    ~/Projects/${PROJECT}/:
+      glob: true
+      path: $DOT_ENV/overlays/${PROJECT}/*
+
+- shell:
+    - description: "📦 Post install"
+      command: |
+        if [ -f ${DOT_ENV}/_${PROJECT}.yaml ]; then 
+          CONFIG="${DOT_ENV}/_${PROJECT}.yaml" ./install
+        else
+          echo "No Post install file ${DOT_ENV}/_${PROJECT}.yaml"
+        fi
+
+- shell:
+    - echo "✨✨✨ End Configuring Project ${PROJECT} ✨✨✨"

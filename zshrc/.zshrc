@@ -9,9 +9,6 @@ plug "zsh-users/zsh-syntax-highlighting"
 autoload -Uz compinit
 compinit
 
-[[ -f "$HOME/.config/zsh/aliases.sh" ]] && source "$HOME/.config/zsh/aliases.sh"
-[[ -f "$HOME/.config/work/work.sh" ]] && source "$HOME/.config/work/work.sh"
-
 path=(
  ~/.local/bin 
  ~/.local/share/fnm
@@ -33,5 +30,6 @@ export EDITOR='nvim'
 export VISUAL='nvim'
 
 
+[[ -f "$HOME/.config/local/zsh/local.sh" ]] && source "$HOME/.config/local/zsh/local.sh"
 
 

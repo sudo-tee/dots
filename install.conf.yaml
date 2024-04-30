@@ -2,8 +2,9 @@
     link:
       create: true
       relink: true
-    include:
-      isolated: False
+    shell:
+      stdout: true
+      quiet: true
 
 - clean: ["~"]
 - link:
@@ -19,49 +20,50 @@
     ~/.zshenv:
       force: true
       path: zshrc/.zshenv
+    ~/.gitconfig:
+      force: true
+      path: gitconfig/.gitconfig
+    ~/.gitignore:
+      force: true
+      path: gitconfig/.gitignore
     ~/.local/bin/t: config/taskfile/t.sh
 - create:
     - ~/.config
-    - ~/.config/work
+    - ~/.config/local
+    - ~/.config/local/zsh
     - ~/.local/bin
     - ~/Projects
 
-- npm:
-    - "@antfu/ni pnpm eslint prettier node-ts typescript yarn jsdom vitest npkill"
+- shell:
+    - description: "💫💫💫  NPM Packages 💫💫💫"
+      command: |
+        if  [ -e ".state/npm.skip" ]; then
+          echo "😎 Skipping npm install"
+        else
+          echo "⌛ Installing global npm packages"
+          npm install -g @antfu/ni pnpm eslint prettier node-ts typescript yarn jsdom vitest npkill
+        fi
 
-- if:
-    cond: '[ -e "$HOME/winhome" ]'
-    met:
-      - create:
-          - ~/winhome/.config/wezterm/
-      - shell:
-          - echo "📁 Copying config files for wezterm"
-          - cp -r config/wezterm/* ~/winhome/.config/wezterm/
+- shell:
+    - description: "💫💫💫  WINHOME 💫💫💫"
+      command: |
+        if  [ -e "$HOME/winhome" ]; then
+          mkdir -p  ~/winhome/.config/wezterm/
+          echo "📁 Copying config files for wezterm"
+          cp -r config/wezterm/* ~/winhome/.config/wezterm/
+        else
+          echo "Nothing to do"
+        fi
 
-# WORK enviroment specific files
-- if:
-    cond: '[ "$DOT_ENV" = "work" ]'
-    met:
-      - shell:
-          - echo "⚒  Work enviroment detected"
-      - link:
-          ~/.gitconfig:
-            force: true
-            path: work/gitconfig/.gitconfig
-          ~/.gitignore:
-            force: true
-            path: work/gitconfig/.gitignore
-          ~/.config/work/:
-            glob: true
-            path: work/config/*
-    unmet:
-      - link:
-          ~/.gitconfig:
-            force: true
-            path: gitconfig/.gitconfig
-          ~/.gitignore:
-            force: true
-            path: gitconfig/.gitignore
+- shell:
+    - description: "💫💫💫 Running $DOT_ENV install file 💫💫💫"
+      command: |
+        echo "⚒  [${DOT_ENV}] enviroment detected"
+        if [ -d $DOT_ENV ]; then
+          CONFIG=${DOT_ENV}/install.conf.yaml ./install
+        else
+          echo "⚠️ ⚒  No installation file for env [${DOT_ENV}]"
+        fi
 
 - shell:
     - [git submodule update --init --recursive, Installing submodules]

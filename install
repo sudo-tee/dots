@@ -1,8 +1,7 @@
 #!/usr/bin/env bash
 
 set -e
-
-CONFIG="install.conf.yaml"
+CONFIG_FILE="${CONFIG:-install.conf.yaml}"
 DOTBOT_DIR="dotbot"
 
 DOTBOT_BIN="bin/dotbot"
@@ -12,11 +11,4 @@ cd "${BASEDIR}"
 git -C "${DOTBOT_DIR}" submodule sync --quiet --recursive
 git submodule update --init --recursive
 
-"${BASEDIR}/${DOTBOT_DIR}/${DOTBOT_BIN}" -d "${BASEDIR}" -c "${CONFIG}" -p "dotbot-if/if.py" -p "dotbot-npm/npm.py" -p "dotbot-git/git.py" "${@}"
-
-if [ -f "$DOT_ENV/$CONFIG" ]; then
-	echo "🧰 Installing conf files for env $DOT_ENV"
-	"${BASEDIR}/${DOTBOT_DIR}/${DOTBOT_BIN}" -d "${BASEDIR}" -c "${DOT_ENV}/${CONFIG}" -p "dotbot-if/if.py" -p "dotbot-npm/npm.py" -p "dotbot-git/git.py" "${@}"
-else
-	echo "⛔ file $DOT_ENV/$CONFIG does not exist"
-fi
+"${BASEDIR}/${DOTBOT_DIR}/${DOTBOT_BIN}" -d "${BASEDIR}" -c "${CONFIG_FILE}" -p "dotbot-npm/npm.py" -p "dotbot-git/git.py" "${@}"

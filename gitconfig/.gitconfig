@@ -1,6 +1,5 @@
-[user]
-	email = francis.belanger@gmail.com
-	name = francis.belanger@gmail.com
+[include]
+    path = .gitconfig.local
 [pull]
 	rebase = true
 	autoStash = true
