@@ -21,5 +21,7 @@
         else
           echo "⌛ Installing bob"
           cargo install bob-nvim
+          bob install nightly
+          bob use nightly
           touch .state/bob.skip
         fi
