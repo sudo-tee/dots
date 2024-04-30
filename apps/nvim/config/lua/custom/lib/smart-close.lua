@@ -20,8 +20,7 @@ M.close_float_windows = function()
   end)
 end
 
-M.has_float_window = function(ignore_float)
-  -- stylua: ignore
+function M.has_float_window(ignore_float)
   ignore_float = ignore_float or ignore_float_filter
 
   for _, win in ipairs(vim.api.nvim_list_wins()) do
@@ -35,12 +34,13 @@ M.has_float_window = function(ignore_float)
         local first_line = vim.api.nvim_buf_get_lines(bufnr, 0, 1, false)[1]
 
         if ignore_float(file_type, first_line) then
-          return false
+          goto continue
         end
 
         return true
       end
     end
+    ::continue::
   end
   return false
 end

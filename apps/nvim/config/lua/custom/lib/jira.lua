@@ -1,6 +1,6 @@
 local M = {}
 
-function _get_jira_url()
+local function _get_jira_url()
   local project_links = require('custom.lib.project-links')
   return project_links.get_url_by_label('Jira', 'https://my-jira-url/browse/')
 end
