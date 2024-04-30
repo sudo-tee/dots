@@ -8,7 +8,7 @@ require('mini.statusline').setup({
       local macro = MiniStatusline.macro()
       local git = MiniStatusline.section_git({ trunc_width = 75 })
       local diagnostics = MiniStatusline.custom_diagnostics({ trunc_width = 75 })
-      local filename = MiniStatusline.section_filename({ trunc_width = 140 })
+      local filename = MiniStatusline.section_filename({ trunc_width = 120 })
       local fileinfo = MiniStatusline.section_fileinfo({ trunc_width = 120 })
       local lazy_updates = MiniStatusline.updates()
 
@@ -18,8 +18,8 @@ require('mini.statusline').setup({
       local groups = {
         { hl = 'IncSearch', strings = { search } },
         { hl = mode_hl, strings = { mode } },
-        { hl = 'MiniStatuslineCopilot' .. copilot_status, strings = { '' } },
         { hl = 'MiniStatuslineDevinfo', strings = { git } },
+        { hl = 'MiniStatuslineCopilot' .. copilot_status, strings = { '' } },
         { hl = 'MiniStatuslineCustomDiagnosticError', strings = { diagnostics.error } },
         { hl = 'MiniStatuslineCustomDiagnosticWarn', strings = { diagnostics.warn } },
         { hl = 'MiniStatuslineCustomDiagnosticInfo', strings = { diagnostics.info } },
