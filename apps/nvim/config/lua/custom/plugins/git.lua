@@ -1,5 +1,6 @@
 ---@module 'custom.lib.utils'
 local u = lazy_require('custom.lib.utils')
+
 ---@module 'custom.lib.git'
 local git = lazy_require('custom.lib.git')
 
@@ -86,6 +87,17 @@ return {
       { '<leader>gfh', u.cmd('DiffviewFileHistory'), desc = '[G]it [F]ile [H]istory' },
       -- stylua: ignore end
     },
+    init = function()
+      vim.api.nvim_create_autocmd({ 'FocusGained', 'TermClose', 'TermLeave' }, {
+        group = u.augroup('sudo_tee/diffview/refresh'),
+        callback = function()
+          local view = require('diffview.lib').get_current_view()
+          if view then
+            vim.cmd('DiffviewRefresh')
+          end
+        end,
+      })
+    end,
     opts = function()
       local actions = require('diffview.actions')
 
