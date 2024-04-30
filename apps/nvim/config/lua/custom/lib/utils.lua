@@ -175,7 +175,9 @@ function M.memoize(f)
   end
 end
 
-function M.auto_restart_lsp(name)
+function M.restart_lsp(name, on_completed)
+  name = name or ''
+
   local uv = vim.uv or vim.loop
   if not vim.g.focus_lost then
     local total_retries = 3
@@ -194,10 +196,13 @@ function M.auto_restart_lsp(name)
       if elapsed_retries >= total_retries then
         timer:stop()
         timer:close()
+        if on_completed then
+          on_completed()
+        end
         return
       end
 
-      vim.cmd(':LspStart ' .. name)
+      vim.cmd(':LspRestart ' .. name)
 
       elapsed_retries = elapsed_retries + 1
 
@@ -206,6 +211,36 @@ function M.auto_restart_lsp(name)
 
     timer:start(duration, 0, timer_callback)
   end
+end
+
+function M.set_timeout(cb, duration)
+  local timer = vim.loop.new_timer()
+  timer:start(
+    duration,
+    0,
+    vim.schedule_wrap(function()
+      timer:stop()
+      timer:close()
+      cb()
+    end)
+  )
+end
+
+function M.set_interval(cb, duration, repeat_interval)
+  repeat_interval = repeat_interval or duration
+  local timer = vim.loop.new_timer()
+  timer:start(
+    duration,
+    repeat_interval,
+    vim.schedule_wrap(function()
+      local result = cb()
+      if not result then
+        timer:stop()
+        timer:close()
+      end
+    end)
+  )
+  return timer
 end
 
 return M
