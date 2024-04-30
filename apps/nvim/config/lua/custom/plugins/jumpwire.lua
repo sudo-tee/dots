@@ -39,11 +39,20 @@ return {
         ['ts'] = {
           test = { type = 'fileExtension', data = 'spec.ts' },
         },
+        ['tsx'] = {
+          test = { type = 'fileExtension', data = 'spec.tsx' },
+        },
         ['spec.ts'] = {
           implementation = { type = 'fileExtension', data = 'ts' },
         },
+        ['spec.tsx'] = {
+          implementation = { type = 'fileExtension', data = 'tsx' },
+        },
         ['test.ts'] = {
           implementation = { type = 'fileExtension', data = 'ts' },
+        },
+        ['test.tsx'] = {
+          implementation = { type = 'fileExtension', data = 'tsx' },
         },
       },
     })
