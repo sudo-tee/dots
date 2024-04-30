@@ -14,8 +14,6 @@ return {
     servers = {
       -- tsserver will be automatically installed with mason and loaded with lspconfig
       tsserver = {
-        enabled = false,
-        autostart = false,
         settings = {
           preferGoToSourceDefinition = true,
         },
