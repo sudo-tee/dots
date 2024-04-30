@@ -13,7 +13,7 @@
           cp -r winhome/config/wezterm/* ~/winhome/.config/wezterm/
                     
           mkdir -p  ~/winhome/.config/projects/
-          cp -r $DOT_ENV/projects/* ~/winhome/.config/projects/
+          cp -r $DOT_ENV/config/projects/* ~/winhome/.config/projects/
         else
           echo "Nothing to do"
         fi

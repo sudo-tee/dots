@@ -78,7 +78,7 @@ return {
   font = wezterm.font("Rec Mono Duotone", { weight = "Regular", stretch = "Normal", style = "Normal" }),
   -- font = wezterm.font("UbuntuMono Nerd Font", { weight = "Regular", stretch = "Normal", style = "Normal" }),
   warn_about_missing_glyphs = false,
-  font_size = 11,
+  font_size = 10.7,
   front_end = "WebGpu",
   webgpu_power_preference = "HighPerformance",
   colors = colors.kanagawa,
@@ -149,7 +149,6 @@ return {
       key = "Delete",
       action = wezterm.action_callback(actions.kill_current_wokspace),
     },
-
     -- move between split panes
     smart_splits.split_nav("move", "h"),
     smart_splits.split_nav("move", "j"),

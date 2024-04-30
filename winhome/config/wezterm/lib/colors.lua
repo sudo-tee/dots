@@ -18,7 +18,7 @@ M.kanagawa = {
   selection_bg = "#0d0c0c",
 
   scrollbar_thumb = "#16161d",
-  split = "#16161d",
+  split = "#766b90",
 
   ansi = { "#090618", "#c34043", "#76946a", "#c0a36e", "#7e9cd8", "#957fb8", "#6a9589", "#c8c093" },
   brights = { "#727169", "#e82424", "#98bb6c", "#e6c384", "#7fb4ca", "#938aa9", "#7aa89f", "#dcd7ba" },
@@ -26,8 +26,7 @@ M.kanagawa = {
 }
 
 M.custom = {
-  workspace_name = "#fb4ca"
+  workspace_name = "#fb4ca",
 }
 
 return M
-
