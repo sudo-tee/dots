@@ -1,0 +1,19 @@
+- defaults:
+    link:
+      create: true
+      relink: true
+    shell:
+      stdout: true
+      stderr: true
+      quiet: true
+
+- shell:
+    - description: "💫💫💫 Rust toolchain 💫💫💫"
+      command: |
+        if  [ -e ".state/rust.skip" ]; then
+          echo "😎 Skipping rust install"
+        else
+          echo "⌛ Installing rust"
+          curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
+          touch .state/rust.skip
+        fi
