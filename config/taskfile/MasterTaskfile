@@ -22,15 +22,15 @@ _run() {
 
 	if ! _fn_exists $1; then
 		echo -e "${RED}Task, [$1] does not exist !${NC}${NC}${RED}"
-		exit -1
+		exit 1
 	fi
 
 	cmd_output=("$@")
 	return_value=$?
-	echo $cmd_output
+	echo "${cmd_output[*]}"
 	if [ $return_value != 0 ]; then
 		echo "${RED}Command $1 failed${NC}${RED}"
-		exit -1
+		exit 1
 	else
 		echo -e "${WHITE}---------------${NC}${CYAN}"
 	fi
@@ -38,7 +38,7 @@ _run() {
 }
 
 _fn_exists() {
-	[ $(type -t $1)"" == 'function' ]
+	[ "$(type -t "$1")" == 'function' ]
 }
 
 _restart() {

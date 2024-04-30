@@ -9,4 +9,4 @@ start() {
 }
 
 TIMEFORMAT="Task completed in %3lR"
-time ${@:-help}
+time "${@:-help}"
