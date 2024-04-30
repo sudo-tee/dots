@@ -139,10 +139,27 @@ function M.set_keymaps()
   map('n', '<leader>sm', M.telescope_get_user_marks, { desc = '[S]earch user [m]arks' })
 end
 
+function M.get_cwd_marks()
+  local u = require('custom.lib.utils')
+
+  local all_marks = vim.fn.getmarklist()
+  local cwd = vim.fn.getcwd()
+
+  local cwd_marks = {}
+  for _, mark in ipairs(all_marks) do
+    local filename = vim.fs.normalize(mark.file)
+    if filename and u.starts_with(filename, cwd) then
+      table.insert(cwd_marks, mark)
+    end
+  end
+
+  return cwd_marks
+end
+
 function M.get_user_marks()
   local user_marks = {}
   local mark_list = vim.fn.getmarklist('%')
-  vim.list_extend(mark_list, vim.fn.getmarklist())
+  vim.list_extend(mark_list, M.get_cwd_marks())
 
   for _, mark_data in ipairs(mark_list) do
     local mark = get_mark_name(mark_data)
@@ -187,32 +204,36 @@ end
 
 function M.telescope_get_user_marks(opts)
   opts = opts or {}
-  local bufnr = vim.api.nvim_get_current_buf()
   local conf = require('telescope.config').values
+  local bufnr = vim.api.nvim_get_current_buf()
   local bufname = vim.api.nvim_buf_get_name(bufnr)
+
+  local results_data = {}
   local results = {}
 
   local format_result = function(mark_data)
-    local _, lnum, col, _ = unpack(mark_data.pos)
+    local _, lnum, col = unpack(mark_data.pos)
 
-    local display_text = ''
+    local text = ''
     if mark_data.file then -- this is a global mark
-      display_text = conf.path_display(nil, mark_data.file)
+      text = conf.path_display(nil, mark_data.file)
     else
-      display_text = vim.api.nvim_buf_get_lines(bufnr, lnum - 1, lnum, false)[1]
+      text = vim.api.nvim_buf_get_lines(bufnr, lnum - 1, lnum, false)[1]
     end
 
-    return string.format('%s %6d %4d %s', get_mark_name(mark_data), lnum, col - 1, display_text)
+    return string.format('%s %6d %4d %s', get_mark_name(mark_data), lnum, col - 1, text)
   end
 
   for _, mark_data in ipairs(M.get_user_marks()) do
-    local _, lnum, col, _ = unpack(mark_data.pos)
+    local _, lnum, col = unpack(mark_data.pos)
     table.insert(results, {
       line = format_result(mark_data),
       lnum = lnum,
       col = col,
       filename = vim.fs.normalize(mark_data.file or bufname),
     })
+
+    table.insert(results_data, { mark = get_mark_name(mark_data) })
   end
 
   require('telescope.pickers')
@@ -224,6 +245,22 @@ function M.telescope_get_user_marks(opts)
       }),
       sorter = conf.generic_sorter(opts),
       previewer = conf.grep_previewer(opts),
+      attach_mappings = function(buf, map)
+        map('i', '<C-x>', function()
+          local entry = require('telescope.actions.state').get_selected_entry()
+          local mark = results_data[entry.index]
+
+          require('telescope.actions').close(buf)
+          delete_mark(mark.mark, bufnr)
+
+          vim.schedule(function()
+            M.telescope_get_user_marks(opts)
+          end)
+
+          vim.notify('Deleted mark [' .. mark.mark .. ']', vim.log.levels.INFO)
+        end, { desc = 'Delete mark' })
+        return true
+      end,
     })
     :find()
 end
