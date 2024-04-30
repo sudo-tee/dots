@@ -1,3 +1,5 @@
+--       Error  13:21:05 notify.error method textDocument/documentHighlight is not supported by any of the servers registered for the current buffer
+
 -- Map arrow keys for wildmenu completion
 -- It makes the command pallent more usable
 vim.api.nvim_set_keymap('c', '<Down>', 'v:lua.get_wildmenu_key("<right>", "<down>")', { expr = true })
@@ -55,8 +57,11 @@ return {
             { find = '^%d+ fewer lines;?' },
             { find = '^%d+ more lines?;?' },
             { find = '^%d+ line less;?' },
-            { find = '^%d+ lines .ed %d+ times?$' },
             { find = '^%d+ lines yanked$' },
+            { find = '^%d+ lines moved$' },
+            { find = '^%d+ lines indented$' },
+            { find = '^%d+ lines changed$' },
+            { find = '^%d+ lines .ed %d+ times?$' },
             { kind = 'emsg', find = 'E490' },
           },
         },
