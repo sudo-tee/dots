@@ -21,7 +21,7 @@ cmd('GitDiffMain', function()
   vim.cmd('DiffviewOpen origin/' .. git.default_branch() .. '...HEAD')
 end, {})
 
-u.map('n', '<leader>grm', u.cmd('Grm'), { desc = '[r]ebase [m]main/master' })
+u.map('n', '<leader>grm', u.cmd('Grbm'), { desc = '[r]ebase [m]main/master' })
 u.map('n', '<leader>grc', u.cmd('Grc'), { desc = '[r]ebase [c]ontinue' })
 u.map('n', '<leader>gcc', u.cmd('Gc'), { desc = '[c]ommit' })
 u.map('n', '<leader>gpr', u.cmd('Gpr'), { desc = '[p]ull [r]ebase' })
