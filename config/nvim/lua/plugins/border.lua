@@ -18,26 +18,27 @@ return {
   -- lazyvim.plugins.editor
   {
     "which-key.nvim",
-    opts = { window = { border = BORDER_STYLE } },
+    opts = { window = { border = BORDER_STYLE.border } },
   },
   {
     "gitsigns.nvim",
-    opts = { preview_config = { border = BORDER_STYLE } },
+    opts = { preview_config = { border = BORDER_STYLE.border } },
   },
   -- lazyvim.plugins.lsp
   {
     "nvim-lspconfig",
     opts = function(_, opts)
       -- Set LspInfo border
-      require("lspconfig.ui.windows").default_options.border = BORDER_STYLE
+      require("lspconfig.ui.windows").default_options.border = BORDER_STYLE.border
+
       vim.lsp.handlers["textDocument/hover"] = vim.lsp.with(vim.lsp.handlers.hover, {
-        border = "rounded",
+        border = BORDER_STYLE.border,
       })
 
       vim.diagnostic.open_float = (function(orig)
         return function(opts)
           opts = opts or {}
-          opts.border = "rounded"
+          opts.border = BORDER_STYLE.border
           opts.header = false
 
           orig(opts)
@@ -54,7 +55,7 @@ return {
   {
     "mason.nvim",
     opts = {
-      ui = { border = BORDER_STYLE },
+      ui = { border = BORDER_STYLE.border },
     },
   },
   -- lazyvim.plugins.ui
@@ -62,14 +63,6 @@ return {
     "noice.nvim",
     opts = {
       presets = { lsp_doc_border = true },
-    },
-  },
-  {
-    "gitsigns.nvim",
-    opts = {
-      preview_config = {
-        border = "rounded",
-      },
     },
   },
 }
