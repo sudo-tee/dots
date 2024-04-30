@@ -58,9 +58,11 @@ end, { nargs = '*' })
 command('CloseOtherBuffers', function()
   local bufs = vim.api.nvim_list_bufs()
   local current_buf = vim.api.nvim_get_current_buf()
-  for _, i in ipairs(bufs) do
-    if i ~= current_buf then
-      vim.api.nvim_buf_delete(i, {})
+
+  for _, bufnr in ipairs(bufs) do
+    local listed = vim.bo[bufnr].buflisted
+    if bufnr ~= current_buf and listed then
+      vim.api.nvim_buf_delete(bufnr, {})
     end
   end
 
