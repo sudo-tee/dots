@@ -45,10 +45,8 @@ vim.cmd.cnoreabbrev("bD", "bd")
 vim.cmd.cnoreabbrev("bD", "bd")
 vim.cmd.cnoreabbrev("Q", "q")
 
-print("[🧭][1]: options.lua:47 (after vim.cmd.cnoreabbrev(Q, q))", vim.fn.executable("nvr"), vim.env.PATH)
 if vim.fn.executable("nvr") == 1 then
   local nvr = "nvr --servername " .. vim.v.servername .. " "
-  print("[🧭][1]: options.lua:49: nvr=" .. vim.inspect(nvr))
 
   vim.env.GIT_EDITOR = nvr .. " +'setl bh=delete' --remote-wait"
   vim.env.EDITOR = nvr .. "-l --remote" -- (Optional)
