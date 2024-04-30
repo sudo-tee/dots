@@ -9,11 +9,12 @@
 
 - clean: ["~"]
 - create:
-    - "$HOME/.config/wezterm"
+    - "~/.config/wezterm"
 - link:
-    ~/.tmux.conf:
+    ~/.config/wezterm/wezterm.lua:
       force: true
-      path: apps/wezterm/wezterm.lua
+      relink: true
+      path: apps/wezterm/config/wezterm.lua
 
 - shell:
     - description: "💫💫💫  Installing wezterm [server] 💫💫💫"
