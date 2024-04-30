@@ -4,14 +4,19 @@
       relink: true
 
 - clean: ["~"]
-
 - link:
     ~/.config/:
       glob: true
       path: config/*
-    ~/.zshrc: zshrc/.zshrc
-    ~/.zprofile: zshrc/.zprofile
-    ~/.zshenv: zshrc/.zshenv
+    ~/.zshrc:
+      force: true
+      path: zshrc/.zshrc
+    ~/.zprofile:
+      force: true
+      path: zshrc/.zprofile
+    ~/.zshenv:
+      force: true
+      path: zshrc/.zshenv
     ~/.local/bin/t: config/taskfile/t.sh
 - create:
     - ~/.config
