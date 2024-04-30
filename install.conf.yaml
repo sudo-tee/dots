@@ -27,6 +27,8 @@
       force: true
       path: gitconfig/.gitignore
     ~/.local/bin/t: config/taskfile/t.sh
+    ~/.local/bin/xdg-open: bin/xdg-open
+    ~/.local/bin/xdg-start: bin/xdg-start
 - create:
     - ~/.config
     - ~/.config/local
@@ -34,24 +36,23 @@
     - ~/.local/bin
     - ~/Projects
     - .state
-
-- shell:
-    - [CONFIG="stages/npm.conf.yaml" ./install]
-
-- shell:
-    - [CONFIG="stages/winhome.conf.yaml" ./install]
-
-- shell:
-    - description: "💫💫💫 Running $DOT_ENV install file 💫💫💫"
-      command: |
-        echo "⚒  [${DOT_ENV}] enviroment detected"
-        if [ -d "./$DOT_ENV" ]; then
-          CONFIG=${DOT_ENV}/install.conf.yaml ./install
-        else
-          echo "⚠️ ⚒  No installation file for env [${DOT_ENV}]"
-        fi
-
-- shell:
-    - [git submodule update --init --recursive, Installing submodules]
-    - [chmod u+x -R ~/.local/bin]
-    - [source ~/.zshrc]
+# - shell:
+#     - [CONFIG="stages/npm.yaml" ./install]
+#
+# - shell:
+#     - [CONFIG="stages/winhome.yaml" ./install]
+#
+# - shell:
+#     - description: "💫💫💫 Running $DOT_ENV install file 💫💫💫"
+#       command: |
+#         echo "⚒  [${DOT_ENV}] enviroment detected"
+#         if [ -d "./$DOT_ENV" ]; then
+#           CONFIG=${DOT_ENV}/install.yaml ./install
+#         else
+#           echo "⚠️ ⚒  No installation file for env [${DOT_ENV}]"
+#         fi
+#
+# - shell:
+#     - [git submodule update --init --recursive, Installing submodules]
+#     - [chmod u+x -R ~/.local/bin]
+#     - [source ~/.zshrc]

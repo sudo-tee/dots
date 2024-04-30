@@ -70,6 +70,8 @@ function M.send_user_command(command, payload)
   M.send_user_var("uc", json_payload)
 end
 
+function M.open_url() end
+
 function M.switch_workspace(workspace)
   M.send_user_command(M.commands.OpenWorkspace, workspace)
 end

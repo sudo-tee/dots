@@ -2,25 +2,42 @@ local M = {}
 
 M.open_git_remote = function()
   local cmd_output = vim.fn.system("git config --get remote.origin.url 2> /dev/null"):gsub("\n", "")
-
   local remote_url = cmd_output:gsub(":", "/"):gsub("git@", "https://")
+
   if string.len(remote_url) == 0 then
     print("Not in a git repository")
     return
   end
+  local wez = require("lib/wezterm")
   print("Opening git remote url:", remote_url)
   vim.fn.setreg("+", remote_url)
-  vim.api.nvim_command("silent! xdg-open '" .. vim.fn.shellescape(remote_url) .. "'")
+  vim.api.nvim_command("silent! !xdg-open '" .. vim.fn.shellescape(remote_url) .. "'")
+  wez.send_user_command("open")
 end
 
 M.open_git_mr = function()
   print("Opening MR for branch")
-  local view_mr = os.execute("glab mr view 1> /dev/null")
-  if view_mr == 0 then
-    vim.api.nvim_command("silent! !glab mr view -w")
-  else
+
+  local cmd_output = vim.fn.system("glab api -X GET projects/:id/merge_requests  --field source_branch=:branch")
+  local success, json = pcall(vim.json.decode, cmd_output)
+
+  if not success or json == nil or json[1] == nil then
+    local utils = require("lib/utils")
+    local wez = require("lib/wezterm")
     print("Creating a new MR for branch")
+
     vim.api.nvim_command("silent! !glab mr new -f -w")
+
+    -- hack xdg-open writes to a tmp file the url
+    local content = utils.read_file("/tmp/xdg-open-url")
+    wez.send_user_command("open")
+
+    vim.fn.setreg("+", content)
+    return
+  else
+    local web_url = json[1].web_url
+    print(web_url)
+    vim.fn.setreg("+", web_url)
   end
 end
 
