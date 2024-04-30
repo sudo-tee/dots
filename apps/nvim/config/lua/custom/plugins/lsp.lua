@@ -146,6 +146,9 @@ return { -- LSP Configuration & Plugins
             settings = server.settings,
             filetypes = server.filetypes,
             capabilities = vim.tbl_deep_extend('force', {}, capabilities, server.capabilities or {}),
+            root_dir = server.root_dir,
+            on_init = server.on_init,
+            on_exit = server.on_exit,
           })
         end,
       },
