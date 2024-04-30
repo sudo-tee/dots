@@ -13,6 +13,7 @@
     - [./app fnm]
     - [./app rust]
     - [./app bob]
+    - [./app nvim]
     - [./app fzf]
     - [./app nvr]
     - [./app fdfind]
