@@ -21,7 +21,7 @@ task() {
 }
 
 init() {
-	cp /home/francis/.config/taskfile/Taskfile.template ./Taskfile &&
+	cp $HOME/.config/taskfile/Taskfile.template ./Taskfile &&
 		chmod u+x ./Taskfile
 }
 

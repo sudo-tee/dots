@@ -83,7 +83,7 @@ alias urle="urlencode"
 ucd() {
 	local search_term="${1:-}"
 	local command="${2:-cd}"
-	local dir="$(fdfind "$search_term" /home/francis/Projects -t d -t l -d 1 --exclude .git | fzf --reverse --select-1)"
+	local dir="$(fdfind "$search_term" "$HOME/Projects" -t d -t l -d 1 --exclude .git | fzf --reverse --select-1)"
 	if [ -n "$dir" ]; then
 		"$command" "$dir"
 	fi
