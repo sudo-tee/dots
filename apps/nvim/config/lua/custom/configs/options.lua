@@ -103,3 +103,5 @@ if vim.fn.executable('nvr') == 1 then
   vim.env.EDITOR = nvr .. '-l --remote' -- (Optional)
   vim.env.VISUAL = nvr .. '-l --remote' -- (Optional)
 end
+
+vim.g.disable_copilot = os.getenv('DISABLE_COPILOT') == 'true'

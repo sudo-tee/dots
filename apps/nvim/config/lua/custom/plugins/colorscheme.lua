@@ -1,5 +1,4 @@
 return {
-
   {
     'rebelot/kanagawa.nvim',
     enabled = true,
@@ -44,6 +43,14 @@ return {
           MiniStatuslineModeInsert = { fg = '#15161e', bg = '#9ece6a' },
           MiniStatuslineCustomRecordingStatus = { fg = '#ff9e3b', bg = theme.ui.bg_m3 },
           MiniStatuslineCustomUpdatesStatus = { fg = '#1abc9c', bg = theme.ui.bg_m3 },
+
+          MiniStatuslineCopilot = { fg = '#1abc9c', bg = theme.ui.bg_m3 },
+          MiniStatuslineCopilotDisabled = { fg = '#997370', bg = theme.ui.bg_m3 },
+          MiniStatuslineCopilotOffline = { fg = '#997370', bg = theme.ui.bg_m3 },
+          MiniStatuslineCopilotIdle = { fg = '#54546d', bg = theme.ui.bg_m3 },
+          MiniStatuslineCopilotNormal = { fg = '#7aa2f7', bg = theme.ui.bg_m3 },
+          MiniStatuslineCopilotInProgress = { fg = '#9ece6a', bg = theme.ui.bg_m3 },
+          MiniStatuslineCopilotWarning = { fg = '#ff9a3b', bg = theme.ui.bg_m3 },
 
           MiniStatuslineCustomDiagnosticError = { fg = '#e82424', bg = theme.ui.bg_m3 },
           MiniStatuslineCustomDiagnosticWarn = { fg = '#ff9a3b', bg = theme.ui.bg_m3 },

@@ -12,6 +12,7 @@ require('mini.statusline').setup({
       local updates = MiniStatusline.updates()
 
       local location = MiniStatusline.section_location({ trunc_width = 75 })
+      local copilot_status = MiniStatusline.copilot_status()
 
       -- Usage of `MiniStatusline.combine_groups()` ensures highlighting and
       -- correct padding with spaces between groups (accounts for 'missing'
@@ -19,6 +20,7 @@ require('mini.statusline').setup({
       local groups = {
         { hl = 'IncSearch', strings = { search } },
         { hl = mode_hl, strings = { mode } },
+        { hl = 'MiniStatuslineCopilot' .. copilot_status, strings = { '' } },
         { hl = 'MiniStatuslineDevinfo', strings = { git } },
         { hl = 'MiniStatuslineCustomDiagnosticError', strings = { diagnostics.error } },
         { hl = 'MiniStatuslineCustomDiagnosticWarn', strings = { diagnostics.warn } },
@@ -38,7 +40,25 @@ require('mini.statusline').setup({
   },
 })
 
+MiniStatusline.copilot_status = function()
+  if vim.g.disable_copilot then
+    return 'Disabled'
+  end
+
+  if package.loaded['copilot'] == nil then
+    return 'Offline'
+  end
+
+  local status = require('copilot.api').status.data.status
+  if status == '' then
+    return 'Idle'
+  end
+
+  return status
+end
+
 -- little hackish solution to dislay diagnostics icons and colors
+
 MiniStatusline.custom_diagnostics = function(opts)
   local diagnostics = MiniStatusline.section_diagnostics(opts)
   local icons = { E = ' ', W = ' ', I = '󰋼 ', H = '󰌵 ' }
