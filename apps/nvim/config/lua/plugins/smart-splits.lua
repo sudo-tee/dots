@@ -24,6 +24,12 @@ local function is_full_width(winnr)
   return vim.api.nvim_win_get_width(winnr or 0) == vim.o.columns
 end
 
+---@param winnr number|nil window ID, defaults to current window
+---@return boolean
+local function is_full_height(winnr)
+  return vim.api.nvim_win_get_height(winnr or 0) == vim.o.lines - 1 --status line
+end
+
 return {
   "mrjones2014/smart-splits.nvim",
   lazy = false,
@@ -114,7 +120,7 @@ return {
     {
       "<C-A-j>",
       function()
-        if at_bottom_edge() and is_full_width() then
+        if at_bottom_edge() and is_full_height() then
           local wez = require("lib.wezterm")
           wez.resize_pane_direction("Down")
         else
@@ -125,7 +131,7 @@ return {
     {
       "<C-A-k>",
       function()
-        if at_top_edge() and is_full_width() then
+        if at_top_edge() and is_full_height() then
           local wez = require("lib.wezterm")
           wez.resize_pane_direction("Up")
         else
@@ -158,7 +164,7 @@ return {
     {
       "<C-A-Down>",
       function()
-        if at_bottom_edge() and is_full_width() then
+        if at_bottom_edge() and is_full_height() then
           local wez = require("lib.wezterm")
           wez.resize_pane_direction("Down")
         else
@@ -169,7 +175,7 @@ return {
     {
       "<C-A-Up>",
       function()
-        if at_top_edge() and is_full_width() then
+        if at_top_edge() and is_full_height() then
           local wez = require("lib.wezterm")
           wez.resize_pane_direction("Up")
         else
