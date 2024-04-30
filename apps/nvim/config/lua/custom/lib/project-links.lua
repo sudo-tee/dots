@@ -44,8 +44,9 @@ end
 
 local function get_mr_link()
   local links = {}
+  local branch = u.get_current_branch()
 
-  local mr_url = gitlab.get_current_mr_url()
+  local mr_url = gitlab.get_current_mr_url(branch)
   if mr_url then
     table.insert(links, { format_link('MR', mr_url), open_url(mr_url) })
   else

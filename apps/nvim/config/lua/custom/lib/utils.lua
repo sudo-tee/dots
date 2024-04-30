@@ -100,4 +100,20 @@ function M.git_default_branch()
   return result
 end
 
+function M.get_current_branch()
+  local cmd_output = vim.fn.system('git branch --show-current'):gsub('\n', '')
+  return cmd_output
+end
+
+function M.memoize(f)
+  local mem = {}
+  return function(...)
+    local key = vim.inspect({ ... })
+    if not mem[key] then
+      mem[key] = f(...)
+    end
+    return mem[key]
+  end
+end
+
 return M

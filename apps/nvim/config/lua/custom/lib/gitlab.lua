@@ -1,3 +1,5 @@
+local u = require('custom.lib.utils')
+
 local M = {}
 
 M.open_git_remote = function()
@@ -18,6 +20,7 @@ end
 
 M.get_mr_details = function()
   local u = require('custom.lib.utils')
+
   local cmd_output = vim.fn.system('glab api -X GET projects/:id/merge_requests  --field source_branch=:branch')
   local json = u.decode_json(cmd_output)
 
@@ -28,12 +31,13 @@ M.get_mr_details = function()
   return nil
 end
 
-M.get_current_mr_url = function()
+M.get_current_mr_url = u.memoize(function(branch)
+  print('Getting current MR url for branch', branch)
   local details = M.get_mr_details()
   if details then
     return details.web_url
   end
-end
+end)
 
 M.create_new_mr = function()
   local utils = require('custom.lib.utils')
@@ -46,9 +50,10 @@ end
 
 M.open_git_mr = function()
   local wez = require('custom.lib.wezterm')
+  local branch = require('custom.lib.utils').get_current_branch()
   print('Opening MR for branch')
 
-  local web_url = M.get_current_mr_url() or M.create_new_mr()
+  local web_url = M.get_current_mr_url(branch) or M.create_new_mr()
 
   wez.open_url(web_url)
   vim.fn.setreg('+', web_url)
