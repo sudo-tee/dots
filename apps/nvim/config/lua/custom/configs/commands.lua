@@ -19,10 +19,6 @@ command('ReplaceWord', function()
   replace_text(selected_text)
 end, {})
 
-command('Sh', function(command)
-  require('FTerm').scratch({ cmd = command.args })
-end, { nargs = '*' })
-
 -- start profiling
 command('StartProfile', function()
   vim.cmd([[profile start profile.log]])
