@@ -9,6 +9,22 @@ M.re_require = function(name)
   return require(name)
 end
 
+function M.map(mode, lhs, rhs, opts)
+  local options = { noremap = true, silent = true }
+  if opts then
+    options = vim.tbl_extend('force', options, opts)
+  end
+  vim.keymap.set(mode, lhs, rhs, options)
+end
+
+function M.map_pair(mode, key, prev, next, desc)
+  M.map(mode, ']' .. key, next, { desc = 'Next ' .. desc })
+  M.map(mode, '[' .. key, prev, { desc = 'Previous ' .. desc })
+end
+function M.cmd(command)
+  return string.format('<cmd>%s<cr>', command)
+end
+
 function M.first_to_upper(str)
   return (str:gsub('^%l', string.upper))
 end

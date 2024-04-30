@@ -1,6 +1,6 @@
 local cmd = vim.api.nvim_create_user_command
 
-cmd('R', function(command)
+cmd('Sh', function(command)
   require('FTerm').scratch({ cmd = command.args })
 end, { nargs = '*' })
 

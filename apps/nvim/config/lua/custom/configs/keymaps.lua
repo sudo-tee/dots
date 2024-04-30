@@ -1,20 +1,12 @@
-local function map(mode, lhs, rhs, opts)
-  local options = { noremap = true, silent = true }
-  if opts then
-    options = vim.tbl_extend('force', options, opts)
-  end
-  vim.keymap.set(mode, lhs, rhs, options)
-end
-
-local function map_pair(mode, key, prev, next, desc)
-  map(mode, ']' .. key, next, { desc = 'Next ' .. desc })
-  map(mode, '[' .. key, prev, { desc = 'Previous ' .. desc })
-end
+local u = require('custom.lib.utils')
+local cmd = u.cmd
+local map = u.map
+local map_pair = u.map_pair
 
 --file related maps
-map('n', '<leader>fn', '<cmd>enew<cr>', { desc = 'New File' })
+map('n', '<leader>fn', cmd('enew'), { desc = 'New File' })
 
-map('n', '<Esc>', '<cmd>nohlsearch<CR>')
+map('n', '<Esc>', cmd('nohlsearch'))
 
 -- I hate the "q:" I will use <C-f> in command mode if needed
 map('n', 'q:', '<Nop>')
@@ -83,17 +75,22 @@ map({ 'n', 'i', 't' }, '<A-q>', function()
   require('custom.lib.smart-close').close()
 end, { desc = 'Close floating windows' })
 
+-- buffer navigation
+map('n', '<S-Right>', cmd('bnext'), { desc = 'Prev [B]uffer' })
+map('n', '<S-Left>', cmd('bprev'), { desc = 'Next [B]uffer' })
+map_pair('n', 'b', cmd('bprev'), '<cmd>bnext<cr>', '[b]uffer')
+
 --Profiling
 map('n', '<leader>uz', ':ToggleProfile<cr>', { silent = false, noremap = true, desc = 'Start a profilling session' })
 
 -- run quick shell cmd
-map('n', '!', ':R ', { desc = 'Execute Shell Command in the floating term', silent = false })
+map('n', '!', ':Sh ', { desc = 'Execute Shell Command in the floating term', silent = false })
 
 -- Work/Workflow specific keymaps
 map('n', '<leader>pl', function()
   local pl = require('custom.lib.project-links')
   local select_menu = require('custom.lib.select-menu')
-  local menu = select_menu.creat_select_menu('Project links', pl.get_links())
+  local menu = select_menu.create_select_menu('Project links', pl.get_links())
   menu()
 end, { desc = 'Project links' })
 
