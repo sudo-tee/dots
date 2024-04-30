@@ -6,6 +6,8 @@ alias ...="cd ../.."
 alias .3="cd ../../.."
 alias .4="cd ../../../.."
 
+alias g=git
+
 function pbpaste() {
 	curl -s $REMOTE_HOST:5173
 }
