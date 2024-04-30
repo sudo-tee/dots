@@ -57,41 +57,55 @@ return {
           local map = function(mode, keys, func, desc)
             vim.keymap.set(mode, keys, func, { buffer = event.buf, desc = 'LSP: ' .. desc })
           end
-        -- stylua: ignore start
-        map('n', 'gd',         u.cmd('Telescope lsp_definitions'),               '[G]oto [D]efinition')
-        map('n', 'gr',         u.cmd('Telescope lsp_references'),                '[G]oto [R]eferences')
-        map('n', 'gI',         u.cmd('Telescope lsp_implementations'),           '[G]oto [I]mplementation')
-        map('n', 'gy',         u.cmd('Telescope lsp_type_definitions'),          'T[y]pe Definition')
-        map('n', '<leader>sy', u.cmd('Telescope lsp_document_symbols'),          'Document [Sy]mbols')
-        map('n', '<leader>sY', u.cmd('Telescope lsp_dynamic_workspace_symbols'), 'Workspace [Sy]mbols')
-        map('n', '<leader>rn', vim.lsp.buf.rename,                               '[R]e[n]ame')
-        map('n', '<F2>',       vim.lsp.buf.rename,                               '[R]e[n]ame')
-        map('n', '<leader>ca', vim.lsp.buf.code_action,                          '[C]ode [A]ction')
-        map('n', 'K',          vim.lsp.buf.hover,                                'Hover Documentation')
-        map('n', 'gK',         vim.lsp.buf.signature_help,                       'Signatiure Help')
-        map('i', '<M-k>',      vim.lsp.buf.signature_help,                       'Signatiure Help')
-        map('n', 'gD',         vim.lsp.buf.declaration,                          '[G]oto [D]eclaration')
-        -- stylua: ignore stop
+          -- stylua: ignore start
+          map('n', 'gd',         u.cmd('Telescope lsp_definitions'),               '[G]oto [D]efinition')
+          map('n', 'gr',         u.cmd('Telescope lsp_references'),                '[G]oto [R]eferences')
+          map('n', 'gI',         u.cmd('Telescope lsp_implementations'),           '[G]oto [I]mplementation')
+          map('n', 'gy',         u.cmd('Telescope lsp_type_definitions'),          'T[y]pe Definition')
+          map('n', '<leader>sy', u.cmd('Telescope lsp_document_symbols'),          'Document [Sy]mbols')
+          map('n', '<leader>sY', u.cmd('Telescope lsp_dynamic_workspace_symbols'), 'Workspace [Sy]mbols')
+          map('n', '<leader>rn', vim.lsp.buf.rename,                               '[R]e[n]ame')
+          map('n', '<F2>',       vim.lsp.buf.rename,                               '[R]e[n]ame')
+          map('n', '<leader>ca', vim.lsp.buf.code_action,                          '[C]ode [A]ction')
+          map('n', 'K',          vim.lsp.buf.hover,                                'Hover Documentation')
+          map('n', 'gK',         vim.lsp.buf.signature_help,                       'Signatiure Help')
+          map('i', '<M-k>',      vim.lsp.buf.signature_help,                       'Signatiure Help')
+          map('n', 'gD',         vim.lsp.buf.declaration,                          '[G]oto [D]eclaration')
+          -- stylua: ignore end
 
+          -- The following two autocommands are used to highlight references of the
+          -- word under your cursor when your cursor rests there for a little while.
+          --    See `:help CursorHold` for information about when this is executed
+          --
+          -- When you move your cursor, the highlights will be cleared (the second autocommand).
+          local client = vim.lsp.get_client_by_id(event.data.client_id)
+          if client and client.server_capabilities.documentHighlightProvider then
+            local augroup = u.augroup('sudo_tee/documentHighlight')
 
-        -- The following two autocommands are used to highlight references of the
-        -- word under your cursor when your cursor rests there for a little while.
-        --    See `:help CursorHold` for information about when this is executed
-        --
-        -- When you move your cursor, the highlights will be cleared (the second autocommand).
-        local client = vim.lsp.get_client_by_id(event.data.client_id)
-        if client and client.server_capabilities.documentHighlightProvider then
-          vim.api.nvim_create_autocmd({ 'CursorHold', 'CursorHoldI' }, {
-            buffer = event.buf,
-            callback = vim.lsp.buf.document_highlight,
-          })
+            vim.api.nvim_create_autocmd({ 'CursorHold', 'CursorHoldI' }, {
+              group = augroup,
+              buffer = event.buf,
+              callback = function()
+                if not vim.lsp.get_client_by_id(event.data.client_id) then
+                  vim.lsp.buf.clear_references()
+                  return true
+                end
+                vim.lsp.buf.document_highlight()
+              end,
+            })
 
-          vim.api.nvim_create_autocmd({ 'CursorMoved', 'CursorMovedI' }, {
-            buffer = event.buf,
-            callback = vim.lsp.buf.clear_references,
-          })
-        end
-        vim.diagnostic.config(vim.deepcopy(opts.diagnostics))
+            vim.api.nvim_create_autocmd({ 'CursorMoved', 'CursorMovedI' }, {
+              group = augroup,
+              buffer = event.buf,
+              callback = function()
+                if not vim.lsp.get_client_by_id(event.data.client_id) then
+                  return true
+                end
+                vim.lsp.buf.clear_references()
+              end,
+            })
+          end
+          vim.diagnostic.config(vim.deepcopy(opts.diagnostics))
         end,
       })
 
