@@ -8,3 +8,6 @@
 [submodule "dotbot-npm"]
 	path = dotbot-npm
 	url = https://github.com/ameliagapin/dotbot-npm
+[submodule "dotbot-git"]
+        path = dotbot-git
+        url = https://github.com/DrDynamic/dotbot-git.git
