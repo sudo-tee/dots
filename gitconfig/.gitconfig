@@ -3,5 +3,7 @@
 [pull]
 	rebase = true
 	autoStash = true
+[rebase]
+	autoStash = true
 [core]
   excludesfile = /home/francis/.gitignore
