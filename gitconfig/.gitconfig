@@ -1,5 +1,7 @@
 [include]
     path = .gitconfig.local
+[includeIf "hasconfig:remote.*.url:git@github.com*/**"]
+    path = .gitconfig.github
 [pull]
   rebase = true
   autoStash = true

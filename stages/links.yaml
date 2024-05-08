@@ -21,6 +21,9 @@
     ~/.gitconfig:
       force: true
       path: gitconfig/.gitconfig
+    ~/.gitconfig.github:
+      force: true
+      path: gitconfig/.gitconfig.github
     ~/.gitignore:
       force: true
       path: gitconfig/.gitignore
