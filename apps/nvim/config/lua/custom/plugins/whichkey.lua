@@ -18,6 +18,7 @@ return { -- Useful plugin to show you pending keybinds.
       ['<leader>g'] = { name = '[G]it', _ = 'which_key_ignore' },
       ['<leader>gp'] = { name = '[P]ush/[P]ull', _ = 'which_key_ignore' },
       ['<leader>gr'] = { name = '[R]ebase', _ = 'which_key_ignore' },
+      ['<leader>gb'] = { name = '[B]ranch', _ = 'which_key_ignore' },
       ['<leader>gc'] = { name = '[C]ommit', _ = 'which_key_ignore' },
       ['<leader>gf'] = { name = '[F]ile', _ = 'which_key_ignore' },
       ['<leader>gh'] = { name = '[H]unk', _ = 'which_key_ignore' },

@@ -107,25 +107,37 @@ return { -- Fuzzy Finder (files, lsp, etc)
   cmd = { 'Telescope' },
   -- stylua: ignore
   keys = {
-    { '<leader><leader>', u.cmd('Telescope buffers'),    desc = '[ ] Find existing buffers' },
-    { '<C-p>'     ,       u.cmd('Telescope smart_open'), desc = '[S]earch [F]iles' },
-    { '<leader>sh',       u.cmd('Telescope help_tags'),  desc = '[S]earch [H]elp' },
-    { '<leader>sk',       u.cmd('Telescope keymaps'),    desc = '[S]earch [K]eymaps' },
-    { '<leader>sf',       u.cmd('Telescope find_files'), desc = '[S]earch [F]iles' },
-    { '<leader>ss',       u.cmd('Telescope builtin'),    desc = '[S]earch [S]elect Telescope' },
-    { '<leader>sw',       u.cmd('Telescope grep_string'),desc = '[S]earch current [W]ord' },
-    { '<leader>sg',       u.cmd('Telescope live_grep'),  desc = '[S]earch by [G]rep' },
-    { '<leader>sd',       u.cmd('Telescope diagnostics'),desc = '[S]earch [D]iagnostics' },
-    { '<leader>sl',       u.cmd('Telescope resume'),     desc = '[S]earch resume [l]ast picker' },
-    { '<leader>sM',       u.cmd('Telescope marks'),      desc = '[S]earch all [M]ark' },
-    { '<leader>s.',       u.cmd('Telescope oldfiles'),   desc = '[S]earch Recent Files ("." for repeat)' },
-    { '<leader>\\',       u.cmd('Telescope oldfiles'),   desc = '[S]earch Recent Files' },
-    { '<leader>po',       find_project_overlay,          desc = '[P]roject [O]verlay' },
-    { '<leader>/' ,       current_buffer_fuzzy,          desc = '[/] Fuzzily search in current buffer' },
-    { '<leader>s/',       grep_open_files,               desc = '[S]earch [/] in Open Files' },
-    { '<leader>sn',       neovim_files,                  desc = '[S]earch [N]eovim files' },
-    { '<leader>pl',       project_links ,                desc = '[P]roject [l]links'},
-    { '<leader>pm',       merge_requests ,               desc = '[P]roject [m]erge requests'}
+
+    -- [S]earch
+    { '<leader>sb',       u.cmd('Telescope buffers'),      desc = '[B]uffers' },
+    { '<leader><leader>', u.cmd('Telescope buffers'),      desc = '[ ] buffers' },
+    { '<C-p>'     ,       u.cmd('Telescope smart_open'),   desc = '[F]iles' },
+    { '<leader>sh',       u.cmd('Telescope help_tags'),    desc = '[H]elp' },
+    { '<leader>sk',       u.cmd('Telescope keymaps'),      desc = '[K]eymaps' },
+    { '<leader>sf',       u.cmd('Telescope find_files'),   desc = '[F]iles' },
+    { '<leader>ss',       u.cmd('Telescope builtin'),      desc = '[S]elect Telescope' },
+    { '<leader>sw',       u.cmd('Telescope grep_string'),  desc = 'Current [W]ord' },
+    { '<leader>sg',       u.cmd('Telescope live_grep'),    desc = 'by [G]rep' },
+    { '<leader>sd',       u.cmd('Telescope diagnostics'),  desc = '[D]iagnostics' },
+    { '<leader>sl',       u.cmd('Telescope resume'),       desc = 'resume [l]ast picker' },
+    { '<leader>sM',       u.cmd('Telescope marks'),        desc = 'all [M]ark' },
+    { '<leader>s.',       u.cmd('Telescope oldfiles'),     desc = 'Recent Files ("." for repeat)' },
+    { '<leader>\\',       u.cmd('Telescope oldfiles'),     desc = 'Recent Files' },
+    { '<leader>sn',       neovim_files,                    desc = '[N]eovim files' },
+    { '<leader>s/',       grep_open_files,                 desc = '[/] in Open Files' },
+    { '<leader>po',       find_project_overlay,            desc = '[P]roject [O]verlay' },
+    { '<leader>/' ,       current_buffer_fuzzy,            desc = '[/] Fuzzily search in current buffer' },
+
+    -- [P]roject
+    { '<leader>pl',       project_links ,                  desc = '[P]roject [l]links'},
+    { '<leader>pm',       merge_requests ,                 desc = '[P]roject [m]erge requests'},
+
+    -- [G]it
+    { '<leader>gbb',      u.cmd('Telescope git_bcommits'), desc = '[B]commits' },
+    { '<leader>gbc',      u.cmd('Telescope git_branches'), desc = '[C]heckout' },
+    { '<leader>gfc',      u.cmd('Telescope git_bcommits'), desc = '[C]ommits' },
+    { '<leader>gcl',      u.cmd('Telescope git_commits'),  desc = '[L]og' },
+
   },
   opts = {
     defaults = {
