@@ -8,7 +8,18 @@ return {
     lazy = true,
     build = ':Copilot auth',
     opts = {
-      suggestion = { enabled = true, auto_trigger = true },
+      suggestion = {
+        enabled = true,
+        auto_trigger = true,
+        keymap = {
+          accept = '<M-l>',
+          accept_word = '<M-w>',
+          accept_line = '<M-o>',
+          next = '<M-]>',
+          prev = '<M-[>',
+          dismiss = '<M-BS>',
+        },
+      },
       panel = {
         enabled = true,
         keymap = {
@@ -66,6 +77,11 @@ return {
       question_header = '## User ',
       answer_header = '## Copilot ',
       error_header = '## Error ',
+      prompts = {
+        Tests = {
+          prompt = '/COPILOT_GENERATE Please generate tests for my code using vitest. The test should be wrapped in a `describe` block. Each test case should be in an `it` block. Generate all the test cases',
+        },
+      },
     },
     -- stylua: ignore
     keys = {
