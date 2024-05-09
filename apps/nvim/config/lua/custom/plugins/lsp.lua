@@ -1,5 +1,4 @@
----@module 'custom.lib.utils'
-local u = lazy_require('custom.lib.utils')
+local u = require('custom.lib.utils')
 local rust = require('custom.plugins.lsp.servers.rust-analyzer')
 
 return {
@@ -19,7 +18,9 @@ return {
     dependencies = {
       {
         'folke/neodev.nvim',
-        opts = {},
+        opts = { library = {
+          plugin = true,
+        } },
       },
       'williamboman/mason.nvim',
       'williamboman/mason-lspconfig.nvim',
@@ -30,7 +31,11 @@ return {
       },
     },
     opts = {
+      ---@type vim.diagnostic.Opts
       diagnostics = {
+        float = {
+          border = 'rounded',
+        },
         underline = true,
         update_in_insert = false,
         virtual_text = false,
@@ -142,6 +147,7 @@ return {
         eslint = require('custom.plugins.lsp.servers.eslint'),
         lua_ls = require('custom.plugins.lsp.servers.luals'),
         graphql = require('custom.plugins.lsp.servers.graphql'),
+        -- cssls = {},
         bashls = {},
         marksman = {},
       }
