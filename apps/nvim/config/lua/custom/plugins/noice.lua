@@ -1,5 +1,5 @@
 -- Map arrow keys for wildmenu completion
--- It makes the command pallent more usable
+-- It makes the command pallet more usable
 vim.api.nvim_set_keymap('c', '<Down>', 'v:lua.get_wildmenu_key("<right>", "<down>")', { expr = true })
 vim.api.nvim_set_keymap('c', '<Up>', 'v:lua.get_wildmenu_key("<left>", "<up>")', { expr = true })
 
