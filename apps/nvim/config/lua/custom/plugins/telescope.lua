@@ -37,6 +37,11 @@ local function neovim_files()
   require('telescope.builtin').find_files({ cwd = vim.fn.stdpath('config') })
 end
 
+local function plugin_files()
+  local lazypath = vim.fn.stdpath('data') .. '/lazy/'
+  require('telescope.builtin').find_files({ cwd = lazypath, file_ignore_patterns = { '.git' } })
+end
+
 local function project_links()
   local pl = require('custom.lib.project-links')
   local select_menu = require('custom.lib.select-menu')
@@ -121,8 +126,8 @@ return { -- Fuzzy Finder (files, lsp, etc)
     { '<leader>sd',       u.cmd('Telescope diagnostics'),  desc = '[D]iagnostics' },
     { '<leader>sl',       u.cmd('Telescope resume'),       desc = 'resume [l]ast picker' },
     { '<leader>sM',       u.cmd('Telescope marks'),        desc = 'all [M]ark' },
-    { '<leader>s.',       u.cmd('Telescope oldfiles'),     desc = 'Recent Files ("." for repeat)' },
-    { '<leader>\\',       u.cmd('Telescope oldfiles'),     desc = 'Recent Files' },
+    { '<leader>so',       u.cmd('Telescope oldfiles'),     desc = '[O]ld Files' },
+    { '<leader>sp',       plugin_files,                    desc = '[P]lugin Files' },
     { '<leader>sn',       neovim_files,                    desc = '[N]eovim files' },
     { '<leader>s/',       grep_open_files,                 desc = '[/] in Open Files' },
     { '<leader>po',       find_project_overlay,            desc = '[P]roject [O]verlay' },
