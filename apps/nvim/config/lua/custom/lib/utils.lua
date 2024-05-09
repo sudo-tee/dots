@@ -51,21 +51,24 @@ function M.starts_with(str, start)
   return str:sub(1, #start) == start
 end
 
-function M.rpad(s, l, c)
-  local res = s .. string.rep(c or ' ', l - #s)
+function M.rpad(str, l, c)
+  str = str or ''
+  local res = str .. string.rep(c or ' ', l - #str)
 
-  return res, res ~= s
+  return res, res ~= str
 end
 
-function M.lpad(s, l, c)
-  local res = string.rep(c or ' ', l - #s) .. s
+function M.lpad(str, l, c)
+  str = str or ''
+  local res = string.rep(c or ' ', l - #str) .. str
 
-  return res, res ~= s
+  return res, res ~= str
 end
 
 function M.truncate(str, len)
-  if #str > len then
-    return str:sub(1, len) .. '...'
+  str = str or ''
+  if #str > 0 and #str > len then
+    return str:sub(1, len) .. '…'
   end
   return str
 end
