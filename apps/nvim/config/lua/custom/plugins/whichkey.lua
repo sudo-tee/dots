@@ -14,6 +14,7 @@ return { -- Useful plugin to show you pending keybinds.
       ['<leader>f'] = { name = '[F]ile', _ = 'which_key_ignore' },
       ['<leader>fy'] = { name = '[Y]ank', _ = 'which_key_ignore' },
       ['<leader>b'] = { name = '[B]uffer', _ = 'which_key_ignore' },
+      ['<leader>T'] = { name = '[T]ab', _ = 'which_key_ignore' },
       ['<leader>j'] = { name = '[J]ump', _ = 'which_key_ignore' },
       ['<leader>g'] = { name = '[G]it', _ = 'which_key_ignore' },
       ['<leader>gp'] = { name = '[P]ush/[P]ull', _ = 'which_key_ignore' },
@@ -25,12 +26,16 @@ return { -- Useful plugin to show you pending keybinds.
       ['<leader>gl'] = { name = 'Git[l]ab', _ = 'which_key_ignore' },
       ['<leader>gd'] = { name = '[D]iff' },
       ['<leader>m'] = { name = '[M]acro', _ = 'which_key_ignore' },
+      ['<leader>n'] = { name = '[N]otes', _ = 'which_key_ignore' },
       ['<leader>p'] = { name = '[P]roject', _ = 'which_key_ignore' },
       ['<leader>r'] = { name = '[R]ename/[R]eplace', _ = 'which_key_ignore' },
       ['<leader>s'] = { name = '[S]earch', _ = 'which_key_ignore' },
       ['<leader>t'] = { name = '[T]est', _ = 'which_key_ignore' },
       ['<leader>u'] = { name = '[U]ui', _ = 'which_key_ignore' },
       ['<leader>w'] = { name = '[W]orkspace', _ = 'which_key_ignore' },
+      ['<leader>x'] = { name = 'E[x]ecute', _ = 'which_key_ignore' },
     })
+
+    vim.cmd('doautocmd User WhichKeyAttach')
   end,
 }
