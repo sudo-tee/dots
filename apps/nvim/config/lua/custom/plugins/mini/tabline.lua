@@ -1,1 +1,7 @@
-require('mini.tabline').setup()
+local M = {}
+
+M.setup = function()
+  require('mini.tabline').setup()
+end
+
+return M
