@@ -1,3 +1,31 @@
+local kind_icons = {
+  Text = 'Ξ',
+  Method = '󰆧',
+  Function = '󰊕',
+  Constructor = '',
+  Field = '',
+  Variable = '󰂡',
+  Class = '󰠱',
+  Interface = '',
+  Module = '',
+  Property = '󰜢',
+  Unit = '',
+  Value = '󰎠',
+  Enum = '',
+  Keyword = '󰌋',
+  Snippet = '',
+  Color = '󰏘',
+  File = '󰈙',
+  Reference = '',
+  Folder = '󰉋',
+  EnumMember = '',
+  Constant = '󰏿',
+  Struct = '',
+  Event = '',
+  Operator = '󰆕',
+  TypeParameter = '󰅲',
+}
+
 return { -- Autocompletion
   'hrsh7th/nvim-cmp',
   event = 'InsertEnter',
@@ -14,12 +42,24 @@ return { -- Autocompletion
   },
   config = function()
     -- See `:help cmp`
+    local u = require('custom.lib.utils')
     local cmp = require('cmp')
     local luasnip = require('luasnip')
     local bordered = require('cmp.config.window').bordered
 
     luasnip.config.setup({})
     cmp.setup({
+      formatting = {
+        fields = { cmp.ItemField.Kind, cmp.ItemField.Abbr, cmp.ItemField.Menu },
+        format = function(entry, vim_item)
+          vim_item.menu = vim_item.menu or ''
+
+          vim_item.abbr = u.fixed_width(vim_item.abbr, 25)
+          vim_item.menu = u.fixed_width(vim_item.menu, 12)
+          vim_item.kind = u.rpad(kind_icons[vim_item.kind] or vim_item.kind, 4)
+          return vim_item
+        end,
+      },
       snippet = {
         expand = function(args)
           luasnip.lsp_expand(args.body)
