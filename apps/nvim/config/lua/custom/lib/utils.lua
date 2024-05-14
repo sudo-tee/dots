@@ -4,6 +4,30 @@ function M.augroup(name)
   return vim.api.nvim_create_augroup('sudo_tee/' .. name, { clear = true })
 end
 
+function M.autocmd(event, pattern, callback, desc)
+  vim.api.nvim_create_autocmd(event, {
+    pattern = pattern,
+    callback = callback,
+    desc = desc,
+  })
+end
+
+function M.lazy_bind(func)
+  return function(...)
+    local args = { ... }
+    return function()
+      return func(unpack(args))
+    end
+  end
+end
+
+function M.lazy_return(...)
+  local args = { ... }
+  return function()
+    return unpack(args)
+  end
+end
+
 M.reload = function(...)
   return require('plenary.reload').reload_module(...)
 end
