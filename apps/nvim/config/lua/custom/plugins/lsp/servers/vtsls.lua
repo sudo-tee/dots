@@ -34,14 +34,14 @@ return {
     },
     javascript = {
       updateImportsOnFileMove = 'always',
-      preferGoToSourceDefinition = true,
+      -- preferGoToSourceDefinition = true,
       format = {
         enabled = false,
       },
     },
     typescript = {
       updateImportsOnFileMove = 'always',
-      preferGoToSourceDefinition = true,
+      -- preferGoToSourceDefinition = true,
       tsserver = {
         maxTsServerMemory = 8096,
         -- log = 'verbose',
