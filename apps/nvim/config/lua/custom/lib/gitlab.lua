@@ -9,6 +9,26 @@ local wezterm = lazy_require('custom.lib.wezterm')
 
 local M = {}
 
+M.status_icons = {
+  not_approved = '🟡',
+  mergeable = '✅',
+  conflicts = '⛔',
+  need_rebase = '🔁',
+  draft_status = '📝',
+  ci_must_pass = '❕',
+  ci_must_still_running = '🕐',
+  discussions_not_resolved = '💬',
+}
+
+M.pipeline_icons = {
+  success = '🟢',
+  failed = '🔴',
+  running = '🕐',
+  pending = '🟡',
+  canceled = '🚫',
+  skipped = '⏭️',
+}
+
 M.open_git_remote = function()
   local repo = git.current_repo() or ''
 

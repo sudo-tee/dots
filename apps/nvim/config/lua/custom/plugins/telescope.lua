@@ -49,8 +49,19 @@ local function project_links()
   menu()
 end
 
+local function notes()
+  local notes_path = os.getenv('HOME') .. '/Projects/notes'
+  require('telescope.builtin').find_files({ cwd = notes_path, file_ignore_patterns = { '.git', '.obsidian' } })
+end
+
+local function grep_notes()
+  local notes_path = os.getenv('HOME') .. '/Projects/notes'
+  require('telescope.builtin').live_grep({ cwd = notes_path, file_ignore_patterns = { '.git', '.obsidian' } })
+end
+
 local function merge_requests()
-  local mr_list = require('custom.lib.gitlab').get_mr_list()
+  local glab = require('custom.lib.gitlab')
+  local mr_list = glab.get_mr_list()
   local select_menu = require('custom.lib.select-menu')
 
   if not mr_list then
@@ -60,8 +71,10 @@ local function merge_requests()
 
   local links = {}
   for _, mr in ipairs(mr_list) do
+    local status_icon = glab.status_icons[mr.detailed_merge_status] or '❔'
     table.insert(links, {
-      u.fixed_width(mr.detailed_merge_status, 14) .. ' | ' .. mr.title,
+      status_icon .. u.fixed_width(mr.detailed_merge_status, 11) .. ' | ' .. mr.title .. ' (' .. mr.user_notes_count .. ')',
+
       u.open_url_callback(mr.web_url),
     })
   end
