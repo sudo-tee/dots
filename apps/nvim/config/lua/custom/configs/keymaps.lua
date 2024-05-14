@@ -41,6 +41,9 @@ map('v', 'X', '"_X')
 map('n', '<Del>', '"_x')
 map('v', '<Del>', '"_x')
 
+-- Source current file
+map('n', '<leader>xs', cmd('w | source %'), { desc = '[S]ource file' })
+
 -- Duplicate lines without affecting PRIMARY and CLIPBOARD selections.
 map('n', '<localleader>d', 'm`""Y""P``', { desc = 'Duplicate line' })
 map('x', '<localleader>d', '""Y""Pgv', { desc = 'Duplicate selection' })
@@ -101,10 +104,11 @@ map({ 'n', 'i', 't' }, '<A-q>', function()
   require('custom.lib.smart-close').close()
 end, { desc = 'Close floating windows' })
 
+-- BUFFER navigation
+
 -- buffer navigation, only for listed buffers
 -- so it does not navigate to files on unwanted layout buffers
 -- like (floating windows, diffview, neotest, etc)
-
 local function bufnav(command)
   return function()
     if vim.bo.buflisted then
@@ -114,13 +118,25 @@ local function bufnav(command)
 end
 
 map('n', '<S-Right>', bufnav('bnext'), { desc = 'Prev [B]uffer' })
-
 map('n', '<S-Left>', bufnav('bprev'), { desc = 'Next [B]uffer' })
 
 -- ]b [b
 map_pair('n', 'b', bufnav('bprev'), bufnav('bnext'), '[b]uffer')
-map('n', '<leader>`', bufnav('e #'), { desc = 'Switch to alternate ' })
+
 map('n', '<leader>bo', bufnav('%bd|edit#|bd#'), { desc = 'Close [o]ther [b]uffers' })
+map('n', '<leader>bd', bufnav('bd'), { desc = 'Close [c]urrent [b]uffer' })
+
+-- TABS navigation
+map('n', '<S-Down>', cmd('tabnext'), { desc = 'Next [T]ab' })
+map('n', '<S-Up>', cmd('tabprevious'), { desc = 'Prev [T]ab' })
+
+-- ]t [t
+map_pair('n', 't', cmd('tabprev'), cmd('tabnext'), '[t]ab')
+
+map('n', '<leader>To', cmd('tabonly'), { desc = 'Close [o]ther [T]abs' })
+map('n', '<leader>Td', cmd('tabclose'), { desc = 'Close [c]urrent [T]ab' })
+
+map('n', '<leader>`', bufnav('e #'), { desc = 'Switch to alternate ' })
 
 -- Custom UI keymaps
 
