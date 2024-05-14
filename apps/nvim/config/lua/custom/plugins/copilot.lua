@@ -91,6 +91,7 @@ return {
       { mode = { 'n', 'v' }, '<leader>ccp', '<cmd>CopilotChat<cr>',                   desc = '[P]rompt' },
       { mode = { 'n', 'v' }, '<leader>cco', '<cmd>CopilotChatOptimize<cr>',           desc = '[O]ptimize' },
       { mode = { 'n', 'v' }, '<leader>cct', '<cmd>CopilotChatTests<cr>',              desc = '[T]ests' },
+      { mode = { 'n' },      '<leader>ccq', '<cmd>CopilotChatQuick<cr>',             desc = '[]ests' },
     },
     -- See Commands section for default commands if you want to lazy load on them
     config = function(_, opts)
@@ -109,6 +110,19 @@ return {
           return select.visual(source) or select.buffer(source)
         end
         telescope.pick(actions.prompt_actions({ selection = selection }))
+      end, { range = true })
+
+      command('CopilotChatQuick', function()
+        local input = vim.fn.input('Quick Chat: ')
+        if input == '' then
+          return
+        end
+
+        local selection = function(source)
+          return select.visual(source) or select.buffer(source)
+        end
+
+        require('CopilotChat').ask(input, { selection = selection })
       end, { range = true })
 
       command('CopilotChatHelpActions', function()
