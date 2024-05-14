@@ -10,7 +10,7 @@ return {
   },
   -- stylua: ignore
   keys = {
-    {'<leader>ft', function() require('FTerm').open() end }
+    {'<M-t>', function() require('FTerm').open() end, { desc = 'Open FTerm' }},
   },
   init = function()
     vim.api.nvim_create_user_command('Sh', function(command)
