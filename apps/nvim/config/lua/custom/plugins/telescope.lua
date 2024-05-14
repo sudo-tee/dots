@@ -156,6 +156,10 @@ return { -- Fuzzy Finder (files, lsp, etc)
     { '<leader>gfc',      u.cmd('Telescope git_bcommits'), desc = '[C]ommits' },
     { '<leader>gcl',      u.cmd('Telescope git_commits'),  desc = '[L]og' },
 
+    -- [N]otes
+    { '<leader>nn',       notes,                           desc = '[N]otes' },
+    { '<leader>ng',       grep_notes,                      desc = '[G]rep Notes' },
+
   },
   opts = {
     defaults = {
