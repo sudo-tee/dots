@@ -1,7 +1,10 @@
+---@type Wezterm
 local wezterm = require("wezterm")
 local wez = require("lib.wez")
 local utils = require("lib.utils")
 local act = wezterm.action
+
+local print = wezterm.log_info
 
 local M = {}
 
@@ -12,7 +15,6 @@ M.commands = {
   Start = "start",
   ActivatePaneDirection = "p:activate",
   ResizePaneDirection = "p:resize",
-  GetClipboard = "getclip",
 }
 
 return {
@@ -38,7 +40,9 @@ return {
 
     wezterm.log_info("OPENING URL:" .. url)
 
-    wezterm.open_with(url)
+    if url then
+      wezterm.open_with(url)
+    end
   end,
 
   [M.commands.Start] = function(window, pane, cmd_context)

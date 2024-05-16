@@ -1,5 +1,5 @@
-local w = require("wezterm")
-local print = w.log_info
+---@type Wezterm
+local wezterm = require("wezterm")
 local function is_vim(pane)
   local vars = pane:get_user_vars()
   local is_nvim = vars["IS_NVIM"] == "true" or vars["WEZTERM_PROG"] == "nvim"
@@ -34,7 +34,7 @@ function M.split_nav(resize_or_move, key)
   return {
     key = key,
     mods = resize_or_move == "resize" and "CTRL|ALT" or "CTRL",
-    action = w.action_callback(function(win, pane, tab)
+    action = wezterm.action_callback(function(win, pane)
       if is_vim(pane) then
         -- pass the keys through to vim/nvim
         local send_key = key

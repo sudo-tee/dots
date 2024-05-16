@@ -1,3 +1,4 @@
+---@type Wezterm
 local wezterm = require("wezterm")
 local act = wezterm.action
 local mux = wezterm.mux
@@ -49,6 +50,8 @@ function M.load_workspace(name, window, pane)
   end
 end
 
+---@param win Window
+---@param layout table
 function M.apply_layout(win, layout)
   local main_pane = win:active_pane()
 

@@ -1,13 +1,9 @@
+local wezterm = require("wezterm")
+
 local M = {}
 
-function M.filter(tbl, func)
-  local newtbl = {}
-  for i, v in pairs(tbl) do
-    if func(v) then
-      table.insert(newtbl, v)
-    end
-  end
-  return newtbl
+function M.starts_with(str, start)
+  return str:sub(1, #start) == start
 end
 
 function M.file_exists(name)
@@ -38,8 +34,19 @@ end
 -- Equivalent to POSIX basename(3)
 -- Given "/foo/bar" returns "bar"
 -- Given "c:\\foo\\bar" returns "bar"
+---@param s string
 function M.basename(s)
   return string.gsub(s, "(.*[/\\])(.*)", "%2")
+end
+
+function M.filter(tbl, func)
+  local newtbl = {}
+  for i, v in pairs(tbl) do
+    if func(v) then
+      table.insert(newtbl, v)
+    end
+  end
+  return newtbl
 end
 
 function M.contains(tbl, value)
@@ -60,12 +67,33 @@ function M.find(tbl, callback)
   return nil
 end
 
+function M.map(tbl, func)
+  local newtbl = {}
+  for i, v in pairs(tbl) do
+    newtbl[i] = func(v)
+  end
+  return newtbl
+end
+
 function M.split(s, delimiter)
   local result = {}
   for match in (s .. delimiter):gmatch("(.-)" .. delimiter) do
     table.insert(result, match)
   end
   return result
+end
+
+function M.concat(starting_table, ...)
+  local merged = starting_table or {}
+  local args = { ... }
+  for i, v in pairs(args) do
+    print("🧭 ❱ utils.lua:89 ❱ ƒ(M.concat) ❱ v =", vim.inspect(v))
+    if v then
+      table.insert(merged, v)
+    end
+  end
+
+  return merged
 end
 
 function M.tail(tbl)
@@ -76,6 +104,9 @@ function M.head(tbl)
   return tbl[1]
 end
 
+---comment
+---@param path string
+---@return string|nil
 M.read_file = function(path)
   local open = io.open
   local file = open(path, "rb") -- r read mode and b binary mode
@@ -85,6 +116,25 @@ M.read_file = function(path)
   local content = file:read("*a") -- *a or *all reads the whole file
   file:close()
   return content
+end
+
+function M.ucfirst(str)
+  return (str:gsub("^%l", string.upper))
+end
+
+function M.format_label(text, foreground, background)
+  local color_type = function(color)
+    return (color and string.sub(color, 1, 1) == "#") and "Color" or "AnsiColor"
+  end
+
+  return (
+    M.concat(
+      {},
+      foreground and { Foreground = { [color_type(foreground)] = foreground } },
+      background and { Background = { [color_type(background)] = background } },
+      { Text = text }
+    )
+  )
 end
 
 return M
