@@ -34,13 +34,15 @@ u.map('n', '<leader>gpp', u.cmd('Gp'), { desc = '[p]ush' })
 
 return {
   { 'tpope/vim-fugitive', lazy = true, event = 'VeryLazy', cmd = { 'G' } },
+  -- TODO check back later
+  -- {'SuperBo/fugit2.nvim'},
   {
     'rbong/vim-flog',
     lazy = true,
     event = 'VeryLazy',
     cmd = { 'Flog', 'FlogSplit' },
     keys = {
-      { '<leader>glg', u.cmd('Flog'), desc = '[G]it [l]og [g]raph' },
+      { '<leader>gf', u.cmd('Flog'), desc = '[G]it log graph (f)' },
     },
   },
   { -- Adds git related signs to the gutter, as well as utilities for managing changes
@@ -113,7 +115,13 @@ return {
       local actions = require('diffview.actions')
 
       return {
-        enhanced_diff_hl = true, -- See ':h diffview-config-enhanced_diff_hl'
+        enhanced_diff_hl = true, -- See ':h diffview-config-enhanced_diff_hl',
+        view = {
+          merge_tool = {
+            layout = 'diff3_mixed',
+            disable_diagnostics = true,
+          },
+        },
         keymaps = {
           -- stylua: ignore start
           view = {
