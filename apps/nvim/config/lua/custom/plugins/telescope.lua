@@ -112,7 +112,6 @@ return { -- Fuzzy Finder (files, lsp, etc)
     {
       'danielfalk/smart-open.nvim',
       branch = '0.2.x',
-      commit = '32e23af',
       dependencies = {
         'kkharji/sqlite.lua',
         { 'nvim-telescope/telescope-fzy-native.nvim' },
@@ -182,6 +181,9 @@ return { -- Fuzzy Finder (files, lsp, etc)
       oldfiles = {
         cwd_only = true,
       },
+      grep_string = {
+        word_match = '-w',
+      },
       git_commits = {
         mappings = {
           i = {
@@ -202,17 +204,19 @@ return { -- Fuzzy Finder (files, lsp, etc)
     -- Two important keymaps to use while in telescope are:
     --  - Insert mode: <c-/>
     --  - Normal mode: ?
+    --
+
     opts.extensions = {
-      ['smart_open'] = {
+      smart_open = {
         match_algorithm = 'fzy',
         cwd_only = true,
       },
     }
 
     require('telescope').setup(opts)
+    pcall(require('telescope').load_extension, 'fzy')
+    pcall(require('telescope').load_extension, 'smart_open')
 
     -- Enable telescope extensions, if they are installed
-    pcall(require('telescope').load_extension, 'fzf')
-    pcall(require('telescope').load_extension, 'smart_open')
   end,
 }
