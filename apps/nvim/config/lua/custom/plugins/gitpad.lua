@@ -20,7 +20,7 @@ return {
     {
       '<leader>nv',
       function()
-        require('gitpad').toggle_gitpad()
+        require('gitpad').toggle_gitpad({})
       end,
       desc = '',
     },
@@ -29,6 +29,9 @@ return {
       function()
         require('gitpad').toggle_gitpad({
           filename = project_name .. '.md',
+          default_text = function(current)
+            return current .. '\n\n' .. '%%%\n#' .. project_name .. '\n%%%'
+          end,
         })
       end,
       desc = '[p]roject',

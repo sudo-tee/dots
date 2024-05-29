@@ -10,7 +10,9 @@ M.setup = function()
         local mode, mode_hl = MiniStatusline.section_mode({ trunc_width = 120 })
         local macro = MiniStatusline.macro()
         local git = MiniStatusline.section_git({ trunc_width = 75 })
+        local lsp = MiniStatusline.section_lsp({ trunc_width = 75 })
         local diagnostics = MiniStatusline.custom_diagnostics({ trunc_width = 75 })
+        local notes = MiniStatusline.section_notes()
         local filename = MiniStatusline.section_filename({ trunc_width = 120 })
         local fileinfo = MiniStatusline.section_fileinfo({ trunc_width = 120 })
         local lazy_updates = MiniStatusline.updates()
@@ -22,17 +24,18 @@ M.setup = function()
           { hl = 'IncSearch', strings = { search } },
           { hl = mode_hl, strings = { mode } },
           { hl = 'MiniStatuslineDevinfo', strings = { git } },
-          { hl = 'MiniStatuslineCopilot' .. copilot_status, strings = { '' } },
           { hl = 'MiniStatuslineCustomDiagnosticError', strings = { diagnostics.error } },
           { hl = 'MiniStatuslineCustomDiagnosticWarn', strings = { diagnostics.warn } },
           { hl = 'MiniStatuslineCustomDiagnosticInfo', strings = { diagnostics.info } },
           { hl = 'MiniStatuslineCustomDiagnosticHint', strings = { diagnostics.hint } },
+          { hl = 'MiniStatuslineCustomDiagnosticHint', strings = { notes } },
           '%<', -- Mark general truncate point
           { hl = 'MiniStatuslineFilename', strings = { filename } },
           '%=', -- End left alignment
           { hl = 'MiniStatuslineCustomRecordingStatus', strings = { macro } },
           { hl = 'MiniStatuslineCustomUpdatesStatus', strings = { lazy_updates } },
-          { hl = 'MiniStatuslineFileinfo', strings = { fileinfo } },
+          { hl = 'MiniStatuslineCopilot' .. copilot_status, strings = { '' } },
+          { hl = 'MiniStatuslineFileinfo', strings = { lsp, fileinfo } },
           { hl = mode_hl, strings = { location } },
         }
 
@@ -90,6 +93,23 @@ M.setup = function()
   MiniStatusline.section_location = function(_)
     -- Use virtual column number to allow update when past last column
     return '%2l:%-2v'
+  end
+
+  MiniStatusline.section_notes = function()
+    local utils = require('custom.lib.utils')
+    local notes_path = vim.g.notes_dir
+    local project_name = vim.fn.fnamemodify(vim.fn.getcwd(), ':t')
+
+    local filepath = vim.fn.expand('%:p')
+    local filename = (vim.fn.pathshorten(filepath, 2) .. '.md'):gsub('%s+', '-'):gsub('/', ':')
+
+    local path = utils.path_join(notes_path, project_name, filename)
+
+    if vim.fn.filereadable(path) == 1 then
+      return ''
+    else
+      return ''
+    end
   end
 end
 

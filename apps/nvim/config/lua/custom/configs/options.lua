@@ -116,3 +116,5 @@ if vim.fn.executable('nvr') == 1 then
 end
 
 vim.g.disable_copilot = os.getenv('DISABLE_COPILOT') == 'true'
+
+vim.g.notes_dir = os.getenv('HOME') .. '/Projects/notes/WorkDocs/scratch'
