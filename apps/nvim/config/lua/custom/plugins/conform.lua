@@ -19,6 +19,7 @@ return { -- Autoformat
       typescriptreact = { { 'prettierd', 'prettier' } },
       javascript = { { 'prettierd', 'prettier' } },
       typescript = { { 'prettierd', 'prettier' } },
+      html = { { 'prettierd', 'prettier' } },
       scss = { { 'prettierd', 'prettier' } },
       sh = { 'shfmt' },
     },
