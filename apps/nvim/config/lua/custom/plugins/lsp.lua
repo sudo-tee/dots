@@ -78,6 +78,8 @@ return {
           map('n', 'gD',         vim.lsp.buf.declaration,                          '[G]oto [D]eclaration')
           -- stylua: ignore end
 
+          vim.diagnostic.config(vim.deepcopy(opts.diagnostics))
+
           -- The following two autocommands are used to highlight references of the
           -- word under your cursor when your cursor rests there for a little while.
           --    See `:help CursorHold` for information about when this is executed
@@ -85,33 +87,28 @@ return {
           -- When you move your cursor, the highlights will be cleared (the second autocommand).
           local client = vim.lsp.get_client_by_id(event.data.client_id)
           if client and client.server_capabilities.documentHighlightProvider then
-            local highlight_augroup = vim.api.nvim_create_augroup('sudo_tee/documentHighlight', { clear = false })
+            local highlight_augroup = vim.api.nvim_create_augroup('sudo_tee/document-highlight', { clear = false })
 
             vim.api.nvim_create_autocmd({ 'CursorHold', 'CursorHoldI' }, {
               group = highlight_augroup,
               buffer = event.buf,
-              callback = function()
-                vim.lsp.buf.document_highlight()
-              end,
+              callback = vim.lsp.buf.document_highlight,
             })
 
             vim.api.nvim_create_autocmd({ 'CursorMoved', 'CursorMovedI' }, {
               group = highlight_augroup,
               buffer = event.buf,
-              callback = function()
+              callback = vim.lsp.buf.clear_references,
+            })
+
+            vim.api.nvim_create_autocmd('LspDetach', {
+              group = vim.api.nvim_create_augroup('sudo_tee/lsp-detatch', { clear = true }),
+              callback = function(event2)
                 vim.lsp.buf.clear_references()
+                vim.api.nvim_clear_autocmds({ group = 'sudo_tee/document-highlight', buffer = event2.buf })
               end,
             })
           end
-          vim.diagnostic.config(vim.deepcopy(opts.diagnostics))
-        end,
-      })
-
-      vim.api.nvim_create_autocmd('LspDetach', {
-        group = vim.api.nvim_create_augroup('sudo_tee/lsp-detatch', { clear = true }),
-        callback = function(event)
-          vim.lsp.buf.clear_references()
-          vim.api.nvim_clear_autocmds({ group = 'sudo_tee/documentHighlight', buffer = event.buf })
         end,
       })
 
