@@ -50,6 +50,13 @@ vim.api.nvim_create_autocmd('FocusLost', {
   end,
 })
 
+-- Open file at the last position it was edited earlier
+vim.api.nvim_create_autocmd('BufReadPost', {
+  desc = 'Open file at the last position it was edited earlier',
+  pattern = '*',
+  command = 'silent! normal! g`"zv',
+})
+
 vim.api.nvim_create_autocmd('FileType', {
   group = augroup('close_with_q'),
   desc = 'Close with <q>',
