@@ -33,6 +33,11 @@ map('n', 'q:', '<Nop>')
 -- Disable default macro key the plugin will set it up to <F4>
 map('n', 'q', '<Nop>')
 
+-- Mouse
+-- Disable auto visual mode on mouse select
+map('n', '<LeftDrag>', '')
+map('n', '<LeftRelease>', '')
+
 -- Don't yank on delete char
 map('n', 'x', '"_x')
 map('n', 'X', '"_X')
@@ -139,6 +144,10 @@ map('n', '<leader>Td', cmd('tabclose'), { desc = 'Close [c]urrent [T]ab' })
 map('n', '<leader>`', bufnav('e #'), { desc = 'Switch to alternate ' })
 
 -- Custom UI keymaps
+
+map('n', '<leader>uh', function()
+  vim.lsp.inlay_hint.enable(not vim.lsp.inlay_hint.is_enabled())
+end, { desc = 'toggle inlay [h]int mode' })
 
 --Profiling
 map('n', '<leader>up', cmd('ToggleProfile'), { silent = false, noremap = true, desc = 'Toggle [p]rofilling session' })
