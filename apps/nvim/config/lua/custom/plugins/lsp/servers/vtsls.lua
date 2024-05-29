@@ -33,6 +33,30 @@ return {
       },
     },
     javascript = {
+      inlayHints = {
+        parameterNames = {
+          enabled = 'all',
+          suppressWhenArgumentMatchesName = true,
+        },
+        parameterTypes = {
+          enabled = true,
+        },
+        variableTypes = {
+          enabled = true,
+          suppressWhenTypeMatchesName = true,
+        },
+        propertyDeclarationTypes = {
+          enabled = true,
+        },
+        functionLikeReturnTypes = {
+          enabled = true,
+        },
+        enumMemberValues = {
+          enabled = true,
+        },
+        includeCompletionsForImportStatements = true,
+      },
+      importModuleSpecifierPreference = 'non-relative',
       updateImportsOnFileMove = 'always',
       -- preferGoToSourceDefinition = true,
       format = {
@@ -40,6 +64,29 @@ return {
       },
     },
     typescript = {
+      inlayHints = {
+        parameterNames = {
+          enabled = 'all',
+          suppressWhenArgumentMatchesName = true,
+        },
+        parameterTypes = {
+          enabled = true,
+        },
+        variableTypes = {
+          enabled = true,
+          suppressWhenTypeMatchesName = true,
+        },
+        propertyDeclarationTypes = {
+          enabled = true,
+        },
+        functionLikeReturnTypes = {
+          enabled = true,
+        },
+        enumMemberValues = {
+          enabled = true,
+        },
+        includeCompletionsForImportStatements = true,
+      },
       updateImportsOnFileMove = 'always',
       -- preferGoToSourceDefinition = true,
       tsserver = {
