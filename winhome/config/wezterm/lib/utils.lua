@@ -2,8 +2,27 @@ local wezterm = require("wezterm")
 
 local M = {}
 
+function M.switch(case, options)
+  return (options[case] or options.default or function() end)()
+end
+
 function M.starts_with(str, start)
   return str:sub(1, #start) == start
+end
+
+function M.some(tbl, func)
+  for _, v in pairs(tbl) do
+    if func(v) then
+      return true
+    end
+  end
+  return false
+end
+
+function M.get_files(dir)
+  return M.map(wezterm.read_dir(dir), function(v)
+    return M.basename(v)
+  end)
 end
 
 function M.file_exists(name)
@@ -29,6 +48,10 @@ end
 function M.path_split(str)
   local separator = package.config:sub(1, 1) -- Get the path separator (either "/" or "\")
   return M.split(str, separator)
+end
+
+function M.strip_extension(file)
+  return string.sub(file, 1, -5)
 end
 
 -- Equivalent to POSIX basename(3)
@@ -86,8 +109,7 @@ end
 function M.concat(starting_table, ...)
   local merged = starting_table or {}
   local args = { ... }
-  for i, v in pairs(args) do
-    print("🧭 ❱ utils.lua:89 ❱ ƒ(M.concat) ❱ v =", vim.inspect(v))
+  for _, v in pairs(args) do
     if v then
       table.insert(merged, v)
     end

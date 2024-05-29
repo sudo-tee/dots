@@ -20,8 +20,8 @@ end)
 wezterm.on("update-status", function(window, pane)
   local workspace = window:active_workspace()
 
-  local cwd_dir = pane:get_current_working_dir()
-  local cwd = cwd_dir and u.basename(cwd_dir.path) or ""
+  local cwd_dir = pane and pane:get_current_working_dir() or nil
+  local cwd = cwd_dir and u.basename(cwd_dir.path)
 
   local key_table = window:active_key_table()
   if key_table then
@@ -46,8 +46,9 @@ wezterm.on("update-status", function(window, pane)
     { Foreground = { Color = colors.custom.workspace_background } },
     { Background = { Color = colors.custom.workspace_foreground } },
     { Text = key_table or "" },
-    { Text = " | " },
-    { Text = wezterm.nerdfonts.md_folder .. "  " .. cwd },
+    { Background = { Color = colors.kanagawa.tab_bar.background } },
+    { Foreground = { Color = colors.kanagawa.foreground } },
+    { Text = cwd and wezterm.nerdfonts.md_folder .. "  " .. cwd or "" },
     { Text = " " },
   }))
 end)

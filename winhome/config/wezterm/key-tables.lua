@@ -9,15 +9,16 @@ M.key_tables = {
     {
       key = "Enter",
       action = wezterm.action_callback(function(window, pane)
-        window:perform_action(act.PopKeyTable, pane)
+        wezterm.GLOBAL.ws_switcher_action = "select"
         window:perform_action(act.SendKey({ key = "Enter" }), pane)
       end),
     },
     {
-      key = "Delete",
+      key = "d",
+      mods = "CTRL",
       action = wezterm.action_callback(function(window, pane)
-        -- dont close the key table we use this as an indicator that we want to delete the workspace
-        -- This allows to know which element is selected
+        wezterm.GLOBAL.ws_switcher_action = "kill"
+        window:perform_action(act.PopKeyTable, pane)
         window:perform_action(act.SendKey({ key = "Enter" }), pane)
       end),
     },
@@ -25,8 +26,9 @@ M.key_tables = {
       key = "n",
       mods = "CTRL",
       action = wezterm.action_callback(function(window, pane)
+        wezterm.GLOBAL.ws_switcher_action = "new-workspace"
         window:perform_action(act.PopKeyTable, pane)
-        actions.create_new_workspace(window, pane)
+        window:perform_action(act.SendKey({ key = "Enter" }), pane)
       end),
     },
     -- Cancel the mode by pressing escape
@@ -43,7 +45,7 @@ M.key_tables = {
 M.details = {
   WS = {
     title = "",
-    legend = "<CR> select | <Del> kill | <C-n> new | <Esc> cancel",
+    legend = "<CR> select | <C-d> kill | <C-n> new | <Esc> cancel",
   },
 }
 
