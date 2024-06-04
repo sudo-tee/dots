@@ -16,12 +16,6 @@ return {
     'neovim/nvim-lspconfig',
     event = 'VeryLazy',
     dependencies = {
-      {
-        'folke/neodev.nvim',
-        opts = { library = {
-          plugin = true,
-        } },
-      },
       'williamboman/mason.nvim',
       'williamboman/mason-lspconfig.nvim',
       'WhoIsSethDaniel/mason-tool-installer.nvim',
