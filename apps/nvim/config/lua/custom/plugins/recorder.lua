@@ -1,7 +1,7 @@
 return {
   'chrisgrieser/nvim-recorder',
   lazy = true,
-  event = 'VeryLazy',
+  event = 'LazyFile',
   opts = {
     mapping = {
       startStopRecording = '<F4>',

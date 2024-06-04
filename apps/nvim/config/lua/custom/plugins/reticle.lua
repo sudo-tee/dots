@@ -1,6 +1,6 @@
 return {
   'tummetott/reticle.nvim',
-  event = 'VeryLazy',
+  event = 'LazyFile',
   opts = {
     on_startup = {
       cursorline = true,

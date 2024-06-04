@@ -1,7 +1,6 @@
 return {
   'numToStr/FTerm.nvim',
   lazy = true,
-  event = 'VeryLazy',
   cmd = { 'FTerm' },
   opts = {
     autoinsert = 1,

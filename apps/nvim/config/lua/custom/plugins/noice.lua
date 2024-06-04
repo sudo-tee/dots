@@ -10,7 +10,7 @@ end
 return {
   'folke/noice.nvim',
   lazy = true,
-  event = 'VeryLazy',
+  event = 'LazyFile',
   opts = {
     cmdline = {
       format = {

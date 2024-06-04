@@ -32,7 +32,8 @@ end
 
 return {
   'mrjones2014/smart-splits.nvim',
-  event = 'VeryLazy',
+  lazy = true,
+  event = 'LazyFile',
   keys = {
 
     -- resizing splits
