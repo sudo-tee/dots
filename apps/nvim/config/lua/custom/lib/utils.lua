@@ -185,6 +185,10 @@ function M.read_file(path)
   return M.just(success and file).map(read_file).or_else(nil).unwrap()
 end
 
+M.path_join = function(...)
+  return table.concat({ ... }, '/'):gsub('//', '/')
+end
+
 function M.decode_json(cmd_output)
   local success, json = pcall(vim.json.decode, cmd_output)
 
