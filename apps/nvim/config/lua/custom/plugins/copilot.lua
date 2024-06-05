@@ -43,7 +43,7 @@ return {
     'zbirenbaum/copilot-cmp',
     lazy = true,
     event = 'VeryLazy',
-    ebabled = false,
+    enabled = false,
     dependencies = 'copilot.lua',
     opts = {},
     config = function(_, opts)
@@ -73,9 +73,12 @@ return {
       { 'nvim-lua/plenary.nvim' }, -- for curl, log wrapper
     },
     opts = {
+      model = 'gpt-4',
+      temperature = 0.2,
+      context = 'buffers',
       debug = false,
-      question_header = '## User ',
-      answer_header = '## Copilot ',
+      question_header = '  User ',
+      answer_header = '  Copilot ',
       error_header = '## Error ',
       prompts = {
         Tests = {
