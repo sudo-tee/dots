@@ -9,6 +9,7 @@ local keys = require("keymaps")
 local colors = require("lib.colors")
 
 return {
+  freetype_load_flags = "NO_HINTING",
   max_fps = 144,
   window_decorations = "RESIZE",
   use_fancy_tab_bar = false,

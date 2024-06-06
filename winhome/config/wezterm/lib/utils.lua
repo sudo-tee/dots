@@ -141,7 +141,7 @@ M.read_file = function(path)
 end
 
 function M.ucfirst(str)
-  return (str:gsub("^%l", string.upper))
+  return str:lower():gsub("^%l", string.upper)
 end
 
 function M.format_label(text, foreground, background)

@@ -8,8 +8,9 @@ local wez = require("lib.wez")
 local switch = u.switch
 
 local file_to_label = function(file)
-  return u.ucfirst(u.strip_extension(file)):gsub("-", " ")
+  return u.ucfirst(file):gsub("-", " ")
 end
+
 local function format_label(label, color)
   return wezterm.format(u.format_label(label, color))
 end
@@ -22,13 +23,8 @@ end
 
 local function filter_projects(files, workspaces, current_ws)
   return u.filter(files, function(v)
-    local label = file_to_label(v)
-    return not (
-      u.starts_with(label, "_")
-      or u.starts_with(label, ".")
-      or u.contains(workspaces, label)
-      or label == current_ws
-    )
+    local name = file_to_label(v)
+    return not (u.contains(workspaces, name) or name == current_ws)
   end)
 end
 
@@ -60,6 +56,15 @@ function M.create_new_tab(window, pane, line)
   -- wez.ensure_cwd(new_pane, cwd.path)
 end
 
+function M.get_projects()
+  -- wezterm globals are userdata type, so we convert it
+  local projects_dir = {}
+  for _, project_name in ipairs(wezterm.GLOBAL.projects.list) do
+    projects_dir[#projects_dir + 1] = project_name
+  end
+  return projects_dir
+end
+
 ---@param window Window
 ---@param pane Pane
 function M.workspace_selector(window, pane)
@@ -68,8 +73,7 @@ function M.workspace_selector(window, pane)
   local current_ws = mux.get_active_workspace()
   local workspaces = filter_workspaces(mux.get_workspace_names(), current_ws)
 
-  local projects_dir = u.path_join(os.getenv("HOME"), ".config", "projects")
-  local unopened_projects = filter_projects(u.get_files(projects_dir), workspaces, current_ws)
+  local unopened_projects = filter_projects(M.get_projects(), workspaces, current_ws)
 
   local choices = {
     { id = current_ws, label = format_label("▶ " .. current_ws .. " (current)", "Blue") },
@@ -83,8 +87,6 @@ function M.workspace_selector(window, pane)
     choices[#choices + 1] = { id = file, label = "  " .. format_label(file_to_label(file), "Grey") }
   end
 
-  choices[#choices + 1] = { id = "new-workspace", label = "[NEW WORKSPACE]" }
-
   window:perform_action(act.ActivateKeyTable({ name = "WS", one_shot = false }), pane)
 
   window:perform_action(
@@ -95,8 +97,8 @@ function M.workspace_selector(window, pane)
           return
         end
 
-        local action = id == "new-workspace" or wezterm.GLOBAL.ws_switcher_action
-        local suffix = action == "select" and u.contains(unopened_projects, u.basename(id)) and "-load" or ""
+        local action = id == "new-workspace" and "new-workspace" or wezterm.GLOBAL.ws_switcher_action
+        local suffix = action == "select" and u.contains(unopened_projects, id) and "-load" or ""
 
         switch(action .. suffix, {
           ["kill"] = function()

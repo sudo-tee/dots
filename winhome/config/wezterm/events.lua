@@ -4,8 +4,25 @@ local u = require("lib.utils")
 local user_commands = require("user-commands")
 local colors = require("lib.colors")
 local prog_icons = require("lib.icons")
+local wez = require("lib.wez")
 
 local key_tables = require("key-tables")
+
+wezterm.on("gui-startup", function()
+  -- cache project list
+  local _, stdout = wez.run_child_process({ "ls", "-I", "_*", "/home/francis/Projects/" })
+  local projects = wezterm.split_by_newlines(stdout, "\n")
+  wezterm.GLOBAL.projects = { list = projects }
+end)
+
+wezterm.on("reload-config-request", function()
+  -- cache project list
+  local _, stdout = wez.run_child_process({ "ls", "-I", "_*", "/home/francis/Projects/" })
+  local projects = wezterm.split_by_newlines(stdout, "\n")
+  wezterm.GLOBAL.projects = { list = projects }
+
+  wezterm.reload_configuration()
+end)
 
 wezterm.on("user-var-changed", function(window, pane, name, value)
   if name == "uc" then

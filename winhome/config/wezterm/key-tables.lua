@@ -10,6 +10,7 @@ M.key_tables = {
       key = "Enter",
       action = wezterm.action_callback(function(window, pane)
         wezterm.GLOBAL.ws_switcher_action = "select"
+        window:perform_action(act.PopKeyTable, pane)
         window:perform_action(act.SendKey({ key = "Enter" }), pane)
       end),
     },

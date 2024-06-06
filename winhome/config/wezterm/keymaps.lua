@@ -14,10 +14,30 @@ return {
     end),
   },
   {
+    key = "?",
+    mods = "SHIFT|ALT",
+    action = wezterm.action_callback(function(window, pane)
+      local wez = require("lib.wez")
+
+      local _, stdout, _ = window:perform_action(
+        act.SpawnCommandInNewTab({
+          args = { "/usr/bin/ppp" },
+        }),
+        pane
+      )
+    end),
+  },
+  {
     key = [[|]],
     mods = "SHIFT|ALT",
     action = wezterm.action_callback(actions.split_pane("Right")),
   },
+  {
+    key = "R",
+    mods = "SHIFT|ALT",
+    action = act.EmitEvent("reload-config-request"),
+  },
+
   {
     key = [[_]],
     mods = "SHIFT|ALT",

@@ -6,13 +6,44 @@ local u = require("lib.utils")
 
 local M = {}
 
-function M.switch_workspace(name, win, pane, layout)
+M.default_layout = function(name)
+  return function()
+    return {
+      name = u.ucfirst(name),
+      cwd = wezterm.GLOBAL.project_path .. "/" .. name,
+      command = "nvim",
+      title = "editor",
+      panes = {
+        {
+          title = "watch",
+          direction = "Bottom",
+          size = 0.1,
+          cwd = wezterm.GLOBAL.project_path .. "/" .. name,
+          command = "t watch",
+        },
+        {
+          title = "shell",
+          direction = "Right",
+          size = 0.5,
+          command = "",
+        },
+      },
+    }
+  end
+end
+
+function M.run_child_process(args)
+  if wezterm.target_triple:find("windows") then
+    args = { "wsl.exe", "--exec", table.unpack(args) }
+  end
+
+  return wezterm.run_child_process(args)
+end
+
+function M.switch_workspace(name, win, pane)
   win:perform_action(
     act.SwitchToWorkspace({
       name = name,
-      -- spawn = {
-      --   cwd = layout and layout.cwd or "~",
-      -- },
     }),
     pane
   )
@@ -25,24 +56,15 @@ function M.switch_workspace(name, win, pane, layout)
 end
 
 function M.load_workspace(name, window, pane)
-  local projects_dir = u.path_join(os.getenv("HOME"), ".config", "projects")
-  local path = u.path_join(projects_dir, name)
+  wezterm.log_info("Starting workspace ", name)
+  local workspace_win = M.switch_workspace(u.ucfirst(name), window, pane)
+  -- wezterm.sleep_ms(300)
 
-  local layout_file = loadfile(path)
+  local sucess, stdout = M.run_child_process({ "cat", wezterm.GLOBAL.project_path .. "/" .. name .. "/.wezterm.lua" })
+  local layout_file = sucess and load(stdout) or M.default_layout(name)
+
   if layout_file then
     local layout = layout_file()
-
-    local workspaces = mux.get_workspace_names()
-    local workspace_exists = u.contains(workspaces, layout.name)
-
-    wezterm.log_info("Starting workspace ", layout.name)
-
-    local workspace_win = M.switch_workspace(layout.name, window, pane, layout)
-    wezterm.sleep_ms(300)
-
-    if workspace_exists then
-      return
-    end
 
     if workspace_win then
       M.apply_layout(workspace_win, layout)
@@ -54,9 +76,10 @@ end
 ---@param layout table
 function M.apply_layout(win, layout)
   local main_pane = win:active_pane()
+  M.ensure_cwd(main_pane, layout.cwd)
 
   local current_pane = main_pane
-  for _, pane_config in pairs(layout.panes) do
+  for _, pane_config in pairs(layout.panes or {}) do
     local cwd = pane_config.cwd or layout.cwd
     current_pane = current_pane:split({
       size = pane_config.size,
@@ -69,8 +92,6 @@ function M.apply_layout(win, layout)
     wezterm.sleep_ms(100)
     current_pane:send_text(pane_config.command .. "\n")
   end
-
-  M.ensure_cwd(main_pane, layout.cwd)
 
   wezterm.sleep_ms(100)
   main_pane:send_text(layout.command .. "\n")

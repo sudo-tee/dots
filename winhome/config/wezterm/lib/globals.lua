@@ -7,3 +7,5 @@ _G.vim = {}
 function _G.vim.inspect(x)
   return x
 end
+
+wezterm.GLOBAL.project_path = "/home/francis/Projects"
