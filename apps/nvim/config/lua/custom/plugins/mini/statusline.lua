@@ -13,8 +13,8 @@ M.setup = function()
         local lsp = MiniStatusline.section_lsp({ trunc_width = 75 })
         local diagnostics = MiniStatusline.custom_diagnostics({ trunc_width = 75 })
         local notes = MiniStatusline.section_notes()
-        local filename = MiniStatusline.section_filename({ trunc_width = 120 })
-        local fileinfo = MiniStatusline.section_fileinfo({ trunc_width = 120 })
+        local filename = MiniStatusline.section_filename({ trunc_width = 80 })
+        local fileinfo = MiniStatusline.section_fileinfo({ trunc_width = 75 })
         local lazy_updates = MiniStatusline.updates()
 
         local location = MiniStatusline.section_location({ trunc_width = 75 })
@@ -43,6 +43,17 @@ M.setup = function()
       end,
     },
   })
+
+  ---@diagnostic disable-next-line: duplicate-set-field
+  MiniStatusline.section_filename = function(args)
+    -- In terminal always use plain name
+    if vim.bo.buftype == 'terminal' then
+      return '%t'
+    else
+      -- Use relative path
+      return '%f%m%r'
+    end
+  end
 
   MiniStatusline.copilot_status = function()
     if vim.g.disable_copilot then
