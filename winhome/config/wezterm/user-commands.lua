@@ -1,10 +1,9 @@
 ---@type Wezterm
+---@diagnostic disable-next-line: assign-type-mismatch
 local wezterm = require("wezterm")
 local wez = require("lib.wez")
 local utils = require("lib.utils")
 local act = wezterm.action
-
-local print = wezterm.log_info
 
 local M = {}
 

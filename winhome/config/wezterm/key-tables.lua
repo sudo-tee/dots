@@ -1,5 +1,6 @@
+---@type Wezterm
 local wezterm = require("wezterm")
-local actions = require("actions")
+
 local act = wezterm.action
 
 local M = {}
@@ -32,6 +33,15 @@ M.key_tables = {
         window:perform_action(act.SendKey({ key = "Enter" }), pane)
       end),
     },
+    {
+      key = "r",
+      mods = "CTRL",
+      action = wezterm.action_callback(function(window, pane)
+        wezterm.GLOBAL.ws_switcher_action = "refresh"
+        window:perform_action(act.PopKeyTable, pane)
+        window:perform_action(act.SendKey({ key = "Enter" }), pane)
+      end),
+    },
     -- Cancel the mode by pressing escape
     {
       key = "Escape",
@@ -46,7 +56,7 @@ M.key_tables = {
 M.details = {
   WS = {
     title = "",
-    legend = "<CR> select | <C-d> kill | <C-n> new | <Esc> cancel",
+    legend = "<CR> select | <C-d> kill | <C-n> new | <C-r> refresh | <Esc> cancel",
   },
 }
 

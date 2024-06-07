@@ -1,4 +1,5 @@
 ---@type Wezterm
+---@diagnostic disable-next-line: assign-type-mismatch
 local wezterm = require("wezterm")
 local act = wezterm.action
 local mux = wezterm.mux
@@ -105,6 +106,27 @@ function M.ensure_cwd(pane, cwd)
   wezterm.sleep_ms(100)
   pane:send_text("cd " .. cwd .. "\n")
   pane:send_text("clear \n")
+end
+
+function M.kill_wokspace(workspace)
+  return function(window, pane, line)
+    local success, stdout = wezterm.run_child_process({ "wezterm.exe", "cli", "list", "--format=json" })
+
+    if success then
+      local json = wezterm.json_parse(stdout)
+      if not json then
+        return
+      end
+
+      local workspace_panes = u.filter(json, function(v)
+        return v.workspace == workspace
+      end)
+
+      for _, p in ipairs(workspace_panes) do
+        wezterm.run_child_process({ "wezterm.exe", "cli", "kill-pane", "--pane-id=" .. p.pane_id })
+      end
+    end
+  end
 end
 
 return M

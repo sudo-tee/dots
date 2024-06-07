@@ -1,4 +1,5 @@
 ---@type Wezterm
+---@diagnostic disable-next-line: assign-type-mismatch
 local wezterm = require("wezterm")
 local function is_vim(pane)
   local vars = pane:get_user_vars()
@@ -28,6 +29,7 @@ local vim_keys = {
   UpArrow = "UpArrow",
   RightArrow = "RightArrow",
 }
+
 local M = {}
 
 function M.split_nav(resize_or_move, key)
@@ -54,6 +56,31 @@ function M.split_nav(resize_or_move, key)
       end
     end),
   }
+end
+
+function M.setup(config, custom_configs)
+  local keys = {
+    M.split_nav("move", "h"),
+    M.split_nav("move", "j"),
+    M.split_nav("move", "k"),
+    M.split_nav("move", "l"),
+    M.split_nav("move", "LeftArrow"),
+    M.split_nav("move", "DownArrow"),
+    M.split_nav("move", "UpArrow"),
+    M.split_nav("move", "RightArrow"),
+    M.split_nav("resize", "h"),
+    M.split_nav("resize", "j"),
+    M.split_nav("resize", "k"),
+    M.split_nav("resize", "l"),
+    M.split_nav("resize", "LeftArrow"),
+    M.split_nav("resize", "DownArrow"),
+    M.split_nav("resize", "UpArrow"),
+    M.split_nav("resize", "RightArrow"),
+  }
+
+  for _, key in ipairs(keys) do
+    table.insert(config.keys, key)
+  end
 end
 
 return M
