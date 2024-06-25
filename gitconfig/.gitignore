@@ -5,7 +5,7 @@ yalc.lock
 *.local.fb.*
 *.fb.*
 .nvim.lua
-.wezterm.lua
+.wezterm_layout.lua
 .nvim/*
 .vscode/*
 .vscode/
