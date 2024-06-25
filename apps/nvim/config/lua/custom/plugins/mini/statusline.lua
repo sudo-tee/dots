@@ -106,6 +106,8 @@ M.setup = function()
     return '%2l:%-2v'
   end
 
+  local note_exists_cache = {}
+
   MiniStatusline.section_notes = function()
     local utils = require('custom.lib.utils')
     local notes_path = vim.g.notes_dir
@@ -116,9 +118,15 @@ M.setup = function()
 
     local path = utils.path_join(notes_path, project_name, filename)
 
+    if note_exists_cache[path] ~= nil then
+      return note_exists_cache[path]
+    end
+
     if vim.fn.filereadable(path) == 1 then
+      note_exists_cache[path] = ''
       return ''
     else
+      note_exists_cache[path] = ''
       return ''
     end
   end
