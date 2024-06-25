@@ -21,14 +21,30 @@ end
 ---@param pane Pane
 ---@param line string
 function M.create_new_tab(window, pane, line)
-  local cwd = pane:get_current_working_dir()
-  local _, new_pane = window:mux_window():spawn_tab({})
-  -- wez.ensure_cwd(new_pane, cwd.path)
+  window:mux_window():spawn_tab({})
 end
 
-function M.kill_current_wokspace(window, pane, line)
-  local wez = require("lib.wez")
-  return wez.kill_wokspace(window:active_workspace())(window, pane, line)
+---@param window Window
+function M.kill_current_wokspace(window)
+  local workspace_manager = require("lib.workspace-manager")
+  workspace_manager.kill_workspace(window:active_workspace())(window)
+
+  --prompt to select a new workspace
+  require("lib.workspace-switcher").workspace_selector(window, window:active_pane())
+end
+
+function M.rename_tab(window, pane, line)
+  window:perform_action(
+    wezterm.action.PromptInputLine({
+      description = "Rename tab:",
+      action = wezterm.action_callback(function(window, pane, line)
+        if line then
+          window:active_tab():set_title(line)
+        end
+      end),
+    }),
+    pane
+  )
 end
 
 return M

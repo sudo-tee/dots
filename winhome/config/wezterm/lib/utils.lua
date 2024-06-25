@@ -1,5 +1,3 @@
-local wezterm = require("wezterm")
-
 local M = {}
 
 function M.switch(case, options)
@@ -118,6 +116,42 @@ function M.concat(starting_table, ...)
   return merged
 end
 
+function M.deep_merge(t1, t2)
+  for k, v in pairs(t2) do
+    if type(v) == "table" then
+      if type(t1[k] or false) == "table" then
+        M.deep_merge(t1[k], t2[k])
+      else
+        t1[k] = v
+      end
+    else
+      t1[k] = v
+    end
+  end
+  return t1
+end
+
+function M.index_by(list, key)
+  local result = {}
+
+  for _, item in ipairs(list) do
+    result[item[key] or item] = item
+  end
+
+  return result
+end
+
+function M.keys(tbl)
+  local keyset = {}
+  local n = 0
+  for k, v in pairs(tbl) do
+    n = n + 1
+    keyset[n] = k
+  end
+  table.sort(keyset)
+  return keyset
+end
+
 function M.tail(tbl)
   return tbl[#tbl]
 end
@@ -129,7 +163,7 @@ end
 ---comment
 ---@param path string
 ---@return string|nil
-M.read_file = function(path)
+function M.read_file(path)
   local open = io.open
   local file = open(path, "rb") -- r read mode and b binary mode
   if not file then
@@ -144,19 +178,13 @@ function M.ucfirst(str)
   return str:lower():gsub("^%l", string.upper)
 end
 
-function M.format_label(text, foreground, background)
-  local color_type = function(color)
-    return (color and string.sub(color, 1, 1) == "#") and "Color" or "AnsiColor"
+function M.run_child_process(args)
+  -- assume that if the target triple contains "windows" then we want to run the process in wsl
+  if wezterm.target_triple:find("windows") then
+    args = { "wsl.exe", "--exec", table.unpack(args) }
   end
 
-  return (
-    M.concat(
-      {},
-      foreground and { Foreground = { [color_type(foreground)] = foreground } },
-      background and { Background = { [color_type(background)] = background } },
-      { Text = text }
-    )
-  )
+  return wezterm.run_child_process(args)
 end
 
 return M

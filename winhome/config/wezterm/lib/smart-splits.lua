@@ -1,6 +1,3 @@
----@type Wezterm
----@diagnostic disable-next-line: assign-type-mismatch
-local wezterm = require("wezterm")
 local function is_vim(pane)
   local vars = pane:get_user_vars()
   local is_nvim = vars["IS_NVIM"] == "true" or vars["WEZTERM_PROG"] == "nvim"
@@ -58,7 +55,7 @@ function M.split_nav(resize_or_move, key)
   }
 end
 
-function M.setup(config, custom_configs)
+function M.setup(config)
   local keys = {
     M.split_nav("move", "h"),
     M.split_nav("move", "j"),

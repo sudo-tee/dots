@@ -10,7 +10,7 @@ local M = {}
 M.default_layout = function(name)
   return function()
     return {
-      name = u.ucfirst(name),
+      name = name,
       cwd = wezterm.GLOBAL.project_path .. "/" .. name,
       command = "nvim",
       title = "editor",
@@ -34,6 +34,7 @@ M.default_layout = function(name)
 end
 
 function M.run_child_process(args)
+  -- assume that if the target triple contains "windows" then we want to run the process in wsl
   if wezterm.target_triple:find("windows") then
     args = { "wsl.exe", "--exec", table.unpack(args) }
   end
@@ -58,10 +59,11 @@ end
 
 function M.load_workspace(name, window, pane)
   wezterm.log_info("Starting workspace ", name)
-  local workspace_win = M.switch_workspace(u.ucfirst(name), window, pane)
+  local workspace_win = M.switch_workspace(name, window, pane)
   -- wezterm.sleep_ms(300)
 
-  local sucess, stdout = M.run_child_process({ "cat", wezterm.GLOBAL.project_path .. "/" .. name .. "/.wezterm.lua" })
+  local sucess, stdout =
+    M.run_child_process({ "cat", wezterm.GLOBAL.project_path .. "/" .. name .. "/.wezterm_layout.lua" })
   local layout_file = sucess and load(stdout) or M.default_layout(name)
 
   if layout_file then
@@ -110,7 +112,8 @@ end
 
 function M.kill_wokspace(workspace)
   return function(window, pane, line)
-    local success, stdout = wezterm.run_child_process({ "wezterm.exe", "cli", "list", "--format=json" })
+    workspace = workspace or window:get_active_workspace()
+    local success, stdout = wezterm.run_child_process({ "wezterm", "cli", "list", "--format=json" })
 
     if success then
       local json = wezterm.json_parse(stdout)
@@ -118,12 +121,12 @@ function M.kill_wokspace(workspace)
         return
       end
 
-      local workspace_panes = u.filter(json, function(v)
-        return v.workspace == workspace
+      local workspace_panes = u.filter(json, function(p)
+        return p.workspace == workspace
       end)
 
       for _, p in ipairs(workspace_panes) do
-        wezterm.run_child_process({ "wezterm.exe", "cli", "kill-pane", "--pane-id=" .. p.pane_id })
+        wezterm.run_child_process({ "wezterm", "cli", "kill-pane", "--pane-id=" .. p.pane_id })
       end
     end
   end

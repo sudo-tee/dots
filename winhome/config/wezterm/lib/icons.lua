@@ -1,6 +1,3 @@
----@type Wezterm
-local wezterm = require("wezterm")
-
 local prog_icons = {
   nvim = wezterm.nerdfonts.custom_neovim,
   ["t watch"] = wezterm.nerdfonts.dev_nodejs_small,

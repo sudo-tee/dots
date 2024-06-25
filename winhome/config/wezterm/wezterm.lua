@@ -1,60 +1,58 @@
 require("lib.globals")
-
----@type Wezterm
-local wezterm = require("wezterm")
+require("events")
 
 local keys = require("keymaps")
 local colors = require("lib.colors")
 local workspace_switcher = require("lib.workspace-switcher")
-local events = require("events")
+local workspace_manager = require("lib.workspace-manager")
 local smart_splits = require("lib.smart-splits")
+
+local projects = require("lib.projects")
 
 -- This table will hold the configuration.
 --- @class Config
-local config = {}
-
--- this will hold custom configurations
-local custom_config = {}
+local c = {}
 
 -- In newer versions of wezterm, use the config_builder which will
 -- help provide clearer error messages
 if wezterm.config_builder then
-  config = wezterm.config_builder()
+  c = wezterm.config_builder()
 end
 
-config.max_fps = 144
-config.window_decorations = "RESIZE"
-config.use_fancy_tab_bar = false
-config.tab_max_width = 24
-config.status_update_interval = 2000
-config.default_domain = "WSL:Ubuntu"
--- default_domain = "dev"
-config.show_tab_index_in_tab_bar = false
-config.show_new_tab_button_in_tab_bar = false
-config.enable_scroll_bar = false
-config.window_close_confirmation = "NeverPrompt"
-config.exit_behavior = "Close"
-config.font = wezterm.font("Rec Mono Duotone", { weight = "Regular", stretch = "Normal", style = "Normal" })
-config.freetype_load_flags = "NO_HINTING"
-config.warn_about_missing_glyphs = false
-config.font_size = 10.7
-config.front_end = "WebGpu"
-config.webgpu_power_preference = "HighPerformance"
-config.colors = colors.kanagawa
-config.cursor_blink_ease_in = "Constant"
-config.cursor_blink_ease_out = "Constant"
-config.window_padding = {
+c.max_fps = 144
+c.window_decorations = "RESIZE"
+c.use_fancy_tab_bar = false
+c.tab_max_width = 24
+c.status_update_interval = 2000
+c.default_domain = "WSL:Ubuntu"
+c.show_tab_index_in_tab_bar = false
+c.show_new_tab_button_in_tab_bar = false
+c.enable_scroll_bar = false
+c.window_close_confirmation = "NeverPrompt"
+c.exit_behavior = "Close"
+c.font = wezterm.font("Rec Mono Duotone", { weight = "Regular", stretch = "Normal", style = "Normal" })
+c.adjust_window_size_when_changing_font_size = false
+c.freetype_load_flags = "NO_HINTING"
+c.warn_about_missing_glyphs = false
+c.font_size = 10.7
+c.front_end = "WebGpu"
+c.webgpu_power_preference = "HighPerformance"
+c.colors = colors.kanagawa
+c.cursor_blink_ease_in = "Constant"
+c.cursor_blink_ease_out = "Constant"
+c.window_padding = {
   left = 0,
   right = 0,
   top = 0,
   bottom = 0,
 }
-config.key_tables = {}
-config.keys = keys
+c.key_tables = {}
+c.keys = keys
 
--- setup custom plugins and configurations
-workspace_switcher.setup(config, custom_config)
-smart_splits.setup(config, custom_config)
-events.setup(config, custom_config)
+-- setup custom plugins options
+smart_splits.setup(c)
 
-return config
+workspace_switcher.setup(c, { get_projects = projects.get_projects })
+workspace_manager.setup(c, { get_layout = projects.get_layout })
+
+return c
