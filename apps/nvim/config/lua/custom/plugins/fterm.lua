@@ -13,7 +13,9 @@ return {
   },
   init = function()
     vim.api.nvim_create_user_command('Sh', function(command)
-      require('FTerm').scratch({ cmd = 'source ~/.zshrc && ' .. command.args })
-    end, { nargs = '*' })
+      require('FTerm').scratch({
+        cmd = 'source ~/.zshrc && ' .. command.args,
+      })
+    end, { nargs = '*', bang = true })
   end,
 }
