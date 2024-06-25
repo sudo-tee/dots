@@ -1,8 +1,15 @@
 return {
   'nvimdev/dashboard-nvim',
-  dependencies = { { 'nvim-tree/nvim-web-devicons' } },
+  dependencies = { { 'juansalvatore/git-dashboard-nvim', 'nvim-tree/nvim-web-devicons' } },
   event = 'VimEnter',
   opts = function()
+    local git_dashboard = require('git-dashboard-nvim').setup({
+      centered = false,
+      top_padding = 10,
+      bottom_padding = 2,
+      show_contributions_count = true,
+    })
+
     local logo = [[
                          ██████████                       
                      ██████████████████                   
@@ -18,15 +25,14 @@ return {
                  ██    ██    ██    ██    ██               
     ]]
 
-    logo = string.rep('\n', 8) .. logo .. '\n\n'
-
     local opts = {
       theme = 'doom',
       hide = {
         statusline = false,
       },
       config = {
-        header = vim.split(logo, '\n'),
+
+        header = git_dashboard,
         -- stylua: ignore start
         center = {
           { action = "Telescope smart_open",  desc = " Find file",    icon = " ", key = "f" },
