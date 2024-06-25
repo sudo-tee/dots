@@ -6,6 +6,10 @@
       stdout: true
       stderr: true
       quiet: true
+- link:
+    ~/.config/zsh/includes/_fzf.sh:
+      force: true
+      path: apps/fzf/_fzf.sh
 - shell:
     - description: "💫💫💫 Installing fnm 💫💫💫"
       command: |
