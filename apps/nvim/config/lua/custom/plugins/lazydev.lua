@@ -9,8 +9,8 @@ return {
         -- Or relative, which means they will be resolved as a plugin
         -- "LazyVim",
         -- When relative, you can also provide a path to the library in the plugin dir
-        'luvit-meta/library', -- see below
-        '~/Projects/_nvim/wezterm-types',
+        { path = 'luvit-meta/library', words = { 'vim%.uv' } },
+        { path = '~/Projects/_nvim/wezterm-types', words = { 'wezterm.' }, mods = { 'wezterm' } },
       },
     },
   },
