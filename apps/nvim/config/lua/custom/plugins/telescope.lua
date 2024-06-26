@@ -120,6 +120,7 @@ return { -- Fuzzy Finder (files, lsp, etc)
         match_algorithm = 'fzy',
       },
     },
+    'debugloop/telescope-undo.nvim',
   },
   cmd = { 'Telescope' },
   -- stylua: ignore
@@ -139,6 +140,7 @@ return { -- Fuzzy Finder (files, lsp, etc)
     { '<leader>sl',       u.cmd('Telescope resume'),       desc = 'resume [l]ast picker' },
     { '<leader>sM',       u.cmd('Telescope marks'),        desc = 'all [M]ark' },
     { '<leader>so',       u.cmd('Telescope oldfiles'),     desc = '[O]ld Files' },
+    { '<leader>sh',       u.cmd('Telescope undo'),         desc = 'file [H]istory' },
     { '<leader>sp',       plugin_files,                    desc = '[P]lugin Files' },
     { '<leader>sn',       neovim_files,                    desc = '[N]eovim files' },
     { '<leader>s/',       grep_open_files,                 desc = '[/] in Open Files' },
@@ -162,6 +164,7 @@ return { -- Fuzzy Finder (files, lsp, etc)
   },
   opts = {
     defaults = {
+      file_sorter = require('telescope.sorters').get_fzy_sorter,
       cwd = vim.loop.cwd(),
       path_display = {
         filename_first = {
@@ -211,11 +214,24 @@ return { -- Fuzzy Finder (files, lsp, etc)
         match_algorithm = 'fzy',
         cwd_only = true,
       },
+
+      undo = {
+        entry_format = '⨀ #$ID [$STAT] \t\t$TIME',
+
+        mappings = {
+          i = {
+            ['<M-Right>'] = require('telescope-undo.actions').yank_additions,
+            ['<M-Left>'] = require('telescope-undo.actions').yank_deletions,
+            ['<C-r>'] = require('telescope-undo.actions').restore,
+          },
+        },
+      },
     }
 
     require('telescope').setup(opts)
     pcall(require('telescope').load_extension, 'fzy')
     pcall(require('telescope').load_extension, 'smart_open')
+    pcall(require('telescope').load_extension, 'undo')
 
     -- Enable telescope extensions, if they are installed
   end,
