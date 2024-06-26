@@ -38,6 +38,9 @@ return {
   -- {'SuperBo/fugit2.nvim'},
   {
     'rbong/vim-flog',
+    dependencies = {
+      'tpope/vim-fugitive',
+    },
     lazy = true,
     event = 'VeryLazy',
     cmd = { 'Flog', 'FlogSplit' },
