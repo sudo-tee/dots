@@ -10,17 +10,9 @@
 
 - shell:
     - [CONFIG="stages/apps.yaml" ./install]
-
-- shell:
     - [CONFIG="stages/links.yaml" ./install]
-
-- shell:
     - [CONFIG="stages/npm.yaml" ./install]
-
-- shell:
     - [CONFIG="stages/env.yaml" ./install]
-
-- shell:
     - [CONFIG="winhome/install.yaml" ./install]
 
 - shell:

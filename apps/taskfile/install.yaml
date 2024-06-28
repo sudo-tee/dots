@@ -1,0 +1,25 @@
+- defaults:
+    link:
+      create: true
+      relink: true
+    shell:
+      stdout: true
+      stderr: true
+      quiet: true
+
+- link:
+    ~/.config/taskfile/:
+      force: true
+      glob: true
+      path: apps/taskfile/config/*
+    ~/.local/bin/t: apps/taskfile/t.sh
+- shell:
+    - description: "💫💫💫 Installing rg 💫💫💫"
+      command: |
+        if  [ -e ".state/rg.skip" ]; then
+          echo "😎 Skipping rg install"
+        else
+          echo "⌛ Installing rg "
+          brew install rg && \
+          touch .state/rg.skip
+        fi

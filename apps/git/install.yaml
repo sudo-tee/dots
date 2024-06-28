@@ -6,6 +6,17 @@
       stdout: true
       stderr: true
       quiet: true
+- link:
+    ~/.gitconfig:
+      force: true
+      path: apps/git/config/.gitconfig
+    ~/.gitconfig.github:
+      force: true
+      path: apps/git/config/.gitconfig.github
+    ~/.gitignore:
+      force: true
+      path: apps/git/config/.gitignore
+
 - shell:
     - description: "💫💫💫 Installing git 💫💫💫"
       command: |

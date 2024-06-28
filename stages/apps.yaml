@@ -8,8 +8,10 @@
       quiet: true
 
 - shell:
+    - [./Taskfile app zsh]
     - [./Taskfile app zap]
     - [sudo ./Taskfile app brew]
+    - [./Taskfile app taskfile]
     - [./Taskfile app git]
     - [./Taskfile app fnm]
     - [./Taskfile app rust]

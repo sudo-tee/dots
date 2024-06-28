@@ -9,24 +9,6 @@
       glob: true
       force: true
       path: config/*
-    ~/.zshrc:
-      force: true
-      path: zshrc/.zshrc
-    ~/.zprofile:
-      force: true
-      path: zshrc/.zprofile
-    ~/.zshenv:
-      force: true
-      path: zshrc/.zshenv
-    ~/.gitconfig:
-      force: true
-      path: gitconfig/.gitconfig
-    ~/.gitconfig.github:
-      force: true
-      path: gitconfig/.gitconfig.github
-    ~/.gitignore:
-      force: true
-      path: gitconfig/.gitignore
     ~/.terminfo:
       force: true
       path: config/.terminfo
@@ -40,7 +22,6 @@
 - create:
     - ~/.config
     - ~/.config/local
-    - ~/.config/local/zsh
     - ~/.local/bin
     - ~/Projects
     - .state

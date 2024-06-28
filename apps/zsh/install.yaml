@@ -1,0 +1,32 @@
+- defaults:
+    link:
+      create: true
+      relink: true
+
+- create:
+    - ~/.config/local/zsh
+    - ~/.config/local/zsh/includes
+
+- link:
+    ~/.terminfo:
+      force: true
+      path: apps/zsh/config/.terminfo
+    ~/.config/zsh/ulimit.sh:
+      force: true
+      path: apps/zsh/config/ulimit.sh
+    ~/.config/zsh/aliases.sh:
+      force: true
+      path: apps/zsh/config/aliases.sh
+    ~/.config/zsh/wezterm.sh:
+      force: true
+      path: apps/zsh/config/wezterm.sh
+    ~/.zshrc:
+      force: true
+      path: apps/zsh/config/.zshrc
+    ~/.zprofile:
+      force: true
+      path: apps/zsh/config/.zprofile
+    ~/.zshenv:
+      force: true
+      path: apps/zsh/config/.zshenv
+
