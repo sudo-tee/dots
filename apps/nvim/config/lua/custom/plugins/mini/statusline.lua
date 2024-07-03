@@ -113,10 +113,15 @@ M.setup = function()
     local notes_path = vim.g.notes_dir
     local project_name = vim.fn.fnamemodify(vim.fn.getcwd(), ':t')
 
-    local filepath = vim.fn.expand('%:p')
-    local filename = (vim.fn.pathshorten(filepath, 2) .. '.md'):gsub('%s+', '-'):gsub('/', ':')
+    local filename = vim.fn.expand('%:t')
+    if filename == '' then
+      return ''
+    end
 
-    local path = utils.path_join(notes_path, project_name, filename)
+    local file_path = vim.fn.expand('%:p:h')
+    local note_filename = string.format('%s-%s.md', filename, utils.string_hash(file_path))
+
+    local path = utils.path_join(notes_path, project_name, note_filename)
 
     if note_exists_cache[path] ~= nil then
       return note_exists_cache[path]

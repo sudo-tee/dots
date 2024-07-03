@@ -216,4 +216,12 @@ function M.system(cmd)
   return vim.fn.system(cmd):gsub('\n', '')
 end
 
+function M.string_hash(str)
+  local h = 5381
+  for i = 1, #str do
+    h = ((h * 33) + string.byte(str, i)) % 0x100000000
+  end
+  return h
+end
+
 return M

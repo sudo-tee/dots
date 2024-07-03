@@ -1,10 +1,10 @@
-local notes_path = os.getenv('HOME') .. '/Projects/notes/WorkDocs/scratch'
-
-local project_name = vim.fn.fnamemodify(vim.fn.getcwd(), ':t')
 return {
   -- 'yujinyuz/gitpad.nvim',
   dir = '~/Projects/_nvim/gitpad.nvim',
   config = function()
+    local notes_path = os.getenv('HOME') .. '/Projects/notes/WorkDocs/scratch'
+    local project_name = vim.fn.fnamemodify(vim.fn.getcwd(), ':t')
+
     local u = require('custom.lib.utils')
     require('gitpad').setup({
       title = u.first_to_upper(project_name .. ' Notes'),
@@ -56,13 +56,15 @@ return {
     {
       '<leader>nf',
       function()
-        local filename = vim.fn.expand('%:p') -- or just use vim.fn.bufname()
+        local u = require('custom.lib.utils')
+        local filename = vim.fn.expand('%:t')
+        local path = vim.fn.expand('%:p:h')
         if filename == '' then
           vim.notify('empty bufname')
           return
         end
-        filename = vim.fn.pathshorten(filename, 2) .. '.md'
-        require('gitpad').toggle_gitpad({ filename = filename, title = 'Current file note' })
+        local note_filename = string.format('%s-%s.md', filename, u.string_hash(path))
+        require('gitpad').toggle_gitpad({ filename = note_filename, title = 'Current file note' })
       end,
       desc = 'current [f]ile',
     },
