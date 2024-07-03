@@ -16,4 +16,5 @@ return {
   map("<S-A-Enter>", workspace_switcher.workspace_selector),
   map("<S-A-Delete>", actions.kill_current_wokspace),
   map("<S-A-L>", act.ShowDebugOverlay),
+  map("<S-A-C>", act.ShowDebugOverlay),
 }

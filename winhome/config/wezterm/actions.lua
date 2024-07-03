@@ -33,6 +33,9 @@ function M.kill_current_wokspace(window)
   require("lib.workspace-switcher").workspace_selector(window, window:active_pane())
 end
 
+---@param window Window
+---@param pane Pane
+---@param line string
 function M.rename_tab(window, pane, line)
   window:perform_action(
     wezterm.action.PromptInputLine({

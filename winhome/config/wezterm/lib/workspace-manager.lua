@@ -75,12 +75,13 @@ function M.apply_layout(window, layout)
   end
 
   for _, tab_config in ipairs(layout.tabs or {}) do
-    local cwd = tab_config.cwd or layout.cwd
-    window:spawn_tab({
+    local cwd = tab_config.cwd or layout.cwd or "~"
+    local current_tab = window:spawn_tab({
       cwd = cwd,
       domain = tab_config.domain and { DomainName = tab_config.domain } or "CurrentPaneDomain",
     })
 
+    current_tab:set_title(tab_config.name)
     wezterm.emit("workspace-manager/on-tab-created", window, current_pane, tab_config, cwd)
 
     M.apply_layout(window, tab_config)
@@ -102,16 +103,6 @@ function M.ensure_cwd(pane, cwd)
   wezterm.sleep_ms(50)
   pane:send_text("cd " .. cwd .. "\n")
   pane:send_text("clear \n")
-end
-
-function M.kill_workspace(workspace_name)
-  return function(window)
-    workspace_name = workspace_name or wezterm.mux.get_active_workspace()
-    local workspace_panes = M.get_workspace_panes(workspace_name, window) or {}
-    for _, pane in ipairs(workspace_panes) do
-      M.kill_pane_by_id(pane.pane_id)
-    end
-  end
 end
 
 -- Lists all panes in the given workspace.
@@ -144,6 +135,16 @@ function M.kill_pane_by_id(pane_id)
   local success, _ = wezterm.run_child_process({ "wezterm", "cli", "kill-pane", "--pane-id=" .. pane_id })
   if not success then
     wezterm.log_error("Failed to kill pane with ID " .. pane_id)
+  end
+end
+
+function M.kill_workspace(workspace_name)
+  return function(window)
+    workspace_name = workspace_name or wezterm.mux.get_active_workspace()
+    local workspace_panes = M.get_workspace_panes(workspace_name) or {}
+    for _, pane in ipairs(workspace_panes) do
+      M.kill_pane_by_id(pane.pane_id)
+    end
   end
 end
 
