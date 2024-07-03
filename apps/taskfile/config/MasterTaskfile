@@ -1,79 +1,79 @@
 #!/bin/bash -e
 
-GREEN=$(tput setaf 2)
-RED=$(tput setaf 1)
-YELLOW=$(tput setaf 3) # -> yellow
-BLUE=$(tput setaf 4)   # -> blue
-PINK=$(tput setaf 5)   # -> pink
-CYAN=$(tput setaf 6)   # -> cyan
-WHITE=$(tput setaf 7)  # -> white
-NC=$(tput sgr0)
-
-help() {
-	echo "$0 <task> <args>"
-	echo "Tasks:"
-	compgen -A function | cat -n | grep -v help | grep -v "_"
-}
-
-_run() {
-	echo -e "${WHITE}---------------${NC}"
-	echo -e "${WHITE}Running task $1${NC}"
-	echo -e "${WHITE}---------------${NC}"
-
-	if ! _fn_exists $1; then
-		echo -e "${RED}Task, [$1] does not exist !${NC}${NC}${RED}"
-		exit 1
-	fi
-
-	cmd_output=("$@")
-	return_value=$?
-	echo "${cmd_output[*]}"
-	if [ $return_value != 0 ]; then
-		echo "${RED}Command $1 failed${NC}${RED}"
-		exit 1
-	else
-		echo -e "${WHITE}---------------${NC}${CYAN}"
-	fi
-	return $return_value
-}
-
-_fn_exists() {
-	[ "$(type -t "$1")" == 'function' ]
-}
-
-_restart() {
-	echo "please implement _restart for your specific project"
-}
+# GREEN=$(tput setaf 2)
+# RED=$(tput setaf 1)
+# YELLOW=$(tput setaf 3) # -> yellow
+# BLUE=$(tput setaf 4)   # -> blue
+# PINK=$(tput setaf 5)   # -> pink
+# CYAN=$(tput setaf 6)   # -> cyan
+# WHITE=$(tput setaf 7)  # -> white
+# NC=$(tput sgr0)
+#
+# help() {
+# 	echo "$0 <task> <args>"
+# 	echo "Tasks:"
+# 	compgen -A function | cat -n | grep -v help | grep -v "_"
+# }
+#
+# _run() {
+# 	echo -e "${WHITE}---------------${NC}"
+# 	echo -e "${WHITE}Running task $1${NC}"
+# 	echo -e "${WHITE}---------------${NC}"
+#
+# 	if ! _fn_exists $1; then
+# 		echo -e "${RED}Task, [$1] does not exist !${NC}${NC}${RED}"
+# 		exit 1
+# 	fi
+#
+# 	cmd_output=("$@")
+# 	return_value=$?
+# 	echo "${cmd_output[*]}"
+# 	if [ $return_value != 0 ]; then
+# 		echo "${RED}Command $1 failed${NC}${RED}"
+# 		exit 1
+# 	else
+# 		echo -e "${WHITE}---------------${NC}${CYAN}"
+# 	fi
+# 	return $return_value
+# }
+#
+# _fn_exists() {
+# 	[ "$(type -t "$1")" == 'function' ]
+# }
+#
+# _restart() {
+# 	echo "please implement _restart for your specific project"
+# }
 
 pack() {
-	lpm pack
+  lpm pack
 }
 
 build:pack() {
-	build && pack
+  build && pack
 }
 
 update() {
-	git pull &&
-		ni
+  git pull &&
+    ni
 }
 
 watch() {
-	lpm watch -s -c "./Taskfile start"
+  lpm watch -s -c "./Taskfile start"
 }
 
 lint() {
-	nr lint
+  nr lint
 }
 
 build() {
-	nr build
+  nr build
 }
 
 install() {
-	ni
+  ni
 }
 
 i() {
-	ni
+  ni
 }
