@@ -100,7 +100,7 @@ map('n', '<C-b>', '<C-b>zz', { desc = 'Scroll backward' })
 map('n', 'G', 'Gzz', { desc = 'Go to end' })
 
 -- Utilities to replace text
-map('n', '<leader>*', '*Ncgn', { desc = 'Change word with . repeat' })
+map('n', 'c*', 'g*Ncgn', { desc = 'Change word with . repeat' })
 map('x', '<leader>rv', cmd('ReplaceSelection'), { desc = '[R]eplace [v]isually selected text' })
 map('n', '<leader>rw', cmd('ReplaceWord'), { desc = '[R]eplace [w]ord under cursor' })
 
