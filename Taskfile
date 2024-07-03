@@ -73,6 +73,11 @@ winhome:sync() {
   CONFIG="winhome/sync.yaml" ./install
 }
 
+work() {
+  CONFIG="work/install.yaml" ./install
+
+}
+
 npm() {
   export CONFIG="stages/npm.yaml"
   local FLAG="${1:-}"
@@ -102,4 +107,4 @@ projects:update() {
 }
 
 TIMEFORMAT="Task completed in %3lR"
-time ${@:-help}
+time "${@:-help}"
