@@ -9,12 +9,6 @@
 
 - clean: ["~"]
 - shell:
-    - description: "💫💫💫  Installing fswatch 💫💫💫"
+    - description: "💿💿💿  Installing fswatch 💿💿💿"
       command: |
-        if  [ -e ".state/fswatch.skip" ]; then
-          echo "😎 Skipping fswatch install"
-        else
-          echo "⌛ Installing fswatch"
           brew install fswatch
-          touch .state/fswatch.skip
-        fi

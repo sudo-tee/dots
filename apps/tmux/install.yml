@@ -20,21 +20,9 @@
       path: apps/tmux/config/*
 
 - shell:
-    - description: "💫💫💫  Installing tmux tpm 💫💫💫"
+    - description: "💿💿💿  Installing tmux tpm 💿💿💿"
       command: |
-        if  [ -e ".state/tpm.skip" ]; then
-          echo "😎 Skipping tmp install"
-        else
-          echo "⌛ Installing tmp for tmux"
           git clone https://github.com/tmux-plugins/tpm ~/.tmux/plugins/tpm
-          touch .state/tpm.skip
-        fi
-    - description: "💫💫💫  Installing smug for tmux 💫💫💫"
+    - description: "💿💿💿  Installing smug for tmux 💿💿💿"
       command: |
-        if  [ -e ".state/smug.skip" ]; then
-          echo "😎 Skipping smug install"
-        else
-          echo "⌛ Installing smug for tmux"
           brew install smug
-          touch .state/smug.skip
-        fi

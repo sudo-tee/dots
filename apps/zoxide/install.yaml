@@ -11,14 +11,8 @@
       force: true
       path: apps/zoxide/_zoxide.sh
 - shell:
-    - description: "💫💫💫 Installing zoxide 💫💫💫"
+    - description: "💿💿💿 Installing zoxide 💿💿💿"
       command: |
-        if  [ -e ".state/zoxide.skip" ]; then
-          echo "😎 Skipping zoxide install"
-        else
-          echo "⌛ Installing zoxide "
           brew install zoxide
-          touch .state/zoxide.skip
-        fi
 - shell:
     - [source ~/.zshrc]

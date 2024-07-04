@@ -7,12 +7,6 @@
       stderr: true
       quiet: true
 - shell:
-    - description: "💫💫💫 Installing zap 💫💫💫"
+    - description: "💿💿💿 Installing zap 💿💿💿"
       command: |
-        if  [ -e ".state/zap.skip" ]; then
-          echo "😎 Skipping zap install"
-        else
-          echo "⌛ Installing zap "
           zsh <(curl -s https://raw.githubusercontent.com/zap-zsh/zap/master/install.zsh) --branch release-v1
-          touch .state/zap.skip
-        fi

@@ -9,12 +9,6 @@
 
 - clean: ["~"]
 - shell:
-    - description: "💫💫💫  Installing watchman 💫💫💫"
+    - description: "💿💿💿  Installing watchman 💿💿💿"
       command: |
-        if  [ -e ".state/watchman.skip" ]; then
-          echo "😎 Skipping watchman install"
-        else
-          echo "⌛ Installing watchman"
           brew install watchman
-          touch .state/watchman.skip
-        fi

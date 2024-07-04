@@ -7,12 +7,6 @@
       stderr: true
       quiet: true
 - shell:
-    - description: "💫💫💫 Installing python 💫💫💫"
+    - description: "💿💿💿 Installing python 💿💿💿"
       command: |
-        if  [ -e ".state/python.skip" ]; then
-          echo "😎 Skipping python install"
-        else
-          echo "⌛ Installing python "
           brew install python
-          touch .state/python.skip
-        fi

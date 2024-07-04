@@ -7,12 +7,6 @@
       stderr: true
       quiet: true
 - shell:
-    - description: "💫💫💫 Installing jq 💫💫💫"
+    - description: "💿💿💿 Installing jq 💿💿💿"
       command: |
-        if  [ -e ".state/jq.skip" ]; then
-          echo "😎 Skipping jq install"
-        else
-          echo "⌛ Installing jq "
           brew install jq
-          touch .state/jq.skip
-        fi

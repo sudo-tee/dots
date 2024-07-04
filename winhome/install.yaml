@@ -15,7 +15,7 @@
           echo "Nothing to do"
         fi
 - shell:
-    - description: "💫💫💫 INSTALLING win32Yank 💫💫💫"
+    - description: "💿💿💿 Installing win32Yank 💫💫💫"
       command: |
         cd /tmp
         wget https://github.com/equalsraf/win32yank/releases/download/v0.1.1/win32yank-x64.zip

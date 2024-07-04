@@ -11,17 +11,11 @@
       force: true
       path: apps/fnm/_fnm.sh
 - shell:
-    - description: "💫💫💫 Installing fnm 💫💫💫"
+    - description: "💿💿💿 Installing fnm 💿💿💿"
       command: |
-        if  [ -e ".state/fnm.skip" ]; then
-          echo "😎 Skipping fnm install"
-        else
-          echo "⌛ Installing fnm "
           brew install fnm
           source _fnm.sh
           fnm install --lts
           fnm install 18.18.1
           fnm default 18.18.1
           fnm use default
-          touch .state/fnm.skip
-        fi

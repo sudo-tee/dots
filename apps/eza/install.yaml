@@ -7,12 +7,6 @@
       stderr: true
       quiet: true
 - shell:
-    - description: "💫💫💫 Installing eza 💫💫💫"
+    - description: "💿💿💿 Installing eza 💿💿💿"
       command: |
-        if  [ -e ".state/eza.skip" ]; then
-          echo "😎 Skipping eza install"
-        else
-          echo "⌛ Installing eza "
           brew install eza
-          touch .state/eza.skip
-        fi

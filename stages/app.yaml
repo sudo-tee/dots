@@ -1,0 +1,15 @@
+- defaults:
+    shell:
+      stdout: true
+      stderr: true
+      quiet: true
+- shell:
+    - description: "📦📦📦 Application 📦📦📦"
+      command: |
+        if  [ -e ".state/${APP}.skip" ]; then
+          echo "🔁 Skipping ${APP} install 🔁 \n"
+          echo "file .state/${APP}.skip found\n"
+        else
+          CONFIG="apps/${APP}/install.yaml" ./install
+          touch .state/${APP}.skip
+        fi

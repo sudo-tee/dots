@@ -16,12 +16,6 @@
       force: true
       path: apps/taskfile/bin/t.sh
 - shell:
-    - description: "💫💫💫 Installing taskfile 💫💫💫"
+    - description: "💿💿💿 Installing taskfile 💿💿💿"
       command: |
-        if  [ -e ".state/taskfile.skip" ]; then
-          echo "😎 Skipping taskfile install"
-        else
-          echo "⌛ Installing taskfile "
           chmod u+x ~/.local/bin/t
-          touch .state/taskfile.skip
-        fi

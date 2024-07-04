@@ -18,12 +18,6 @@
       path: apps/git/config/.gitignore
 
 - shell:
-    - description: "💫💫💫 Installing git 💫💫💫"
+    - description: "💿💿💿 Installing git 💿💿💿"
       command: |
-        if  [ -e ".state/git.skip" ]; then
-          echo "😎 Skipping git install"
-        else
-          echo "⌛ Installing git "
           brew install git
-          touch .state/git.skip
-        fi

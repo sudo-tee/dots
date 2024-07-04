@@ -17,12 +17,6 @@
       path: apps/smug/config/*
 
 - shell:
-    - description: "💫💫💫  Installing smug for tmux 💫💫💫"
+    - description: "💿💿💿  Installing smug for tmux 💿💿💿"
       command: |
-        if  [ -e ".state/smug.skip" ]; then
-          echo "😎 Skipping smug install"
-        else
-          echo "⌛ Installing smug for tmux"
           brew install smug
-          touch .state/smug.skip
-        fi

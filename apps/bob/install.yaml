@@ -14,12 +14,6 @@
       force: true
       path: apps/bob/_bob.sh
 - shell:
-    - description: "💫💫💫  installing bob 💫💫💫"
+    - description: "💿💿💿 Installing bob 💿💿💿"
       command: |
-        if  [ -e ".state/bob.skip" ]; then
-          echo "😎 Skipping bob install"
-        else
-          echo "⌛ Installing bob"
           cargo install bob-nvim
-          touch .state/bob.skip
-        fi

@@ -6,17 +6,10 @@
       stdout: true
       stderr: true
       quiet: true
-
 - shell:
-    - description: "💫💫💫 Installing node with pointer comperssion 💫💫💫"
+    - description: "💿💿💿 Installing node with pointer comperssion 💿💿💿"
       command: |
-        if  [ -e ".state/special_node.skip" ]; then
-          echo "😎 Skipping special_node install"
-        else
-          echo "⌛ Installing special_node"
           cd /tmp
           wget https://unofficial-builds.nodejs.org/download/release/v20.12.1/node-v20.12.1-linux-x64-pointer-compression.tar.gz
           tar -xvf node-v20.12.1-linux-x64-pointer-compression.tar.gz -C ~/.local/share/
           rm  node-v20.12.1-linux-x64-pointer-compression.tar.gz
-          touch .state/special_node.skip
-        fi

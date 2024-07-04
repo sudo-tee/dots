@@ -16,13 +16,7 @@
       force: true
       path: apps/nvim/config
 - shell:
-    - description: "💫💫💫 installing nvim 💫💫💫"
+    - description: "💿💿💿 installing nvim"
       command: |
-        if  [ -e ".state/nvim.skip" ]; then
-          echo "😎 Skipping nvim install"
-        else
-          echo "⌛ Installing nvim"
           bob install nightly
           bob use nightly
-          touch .state/nvim.skip
-        fi

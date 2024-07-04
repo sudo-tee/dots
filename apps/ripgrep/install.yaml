@@ -18,12 +18,6 @@
       force: true
       path: apps/ripgrep/_ripgrep.sh
 - shell:
-    - description: "💫💫💫 Installing rg 💫💫💫"
+    - description: "💿💿💿 Installing rg 💿💿💿"
       command: |
-        if  [ -e ".state/rg.skip" ]; then
-          echo "😎 Skipping rg install"
-        else
-          echo "⌛ Installing rg "
-          brew install rg && \
-          touch .state/rg.skip
-        fi
+          brew install rg

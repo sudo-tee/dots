@@ -5,12 +5,6 @@
       quiet: true
 
 - shell:
-    - description: "💫💫💫  Installing nvr 💫💫💫"
+    - description: "💿💿💿  Installing nvr 💿💿💿"
       command: |
-        if  [ -e ".state/nvr.skip" ]; then
-          echo "😎 Skipping nvr install"
-        else
-          echo "⌛ Installing nvr"
           brew install nvr
-          touch .state/nvr.skip
-        fi

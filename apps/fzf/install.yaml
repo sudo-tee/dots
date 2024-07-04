@@ -11,12 +11,6 @@
       force: true
       path: apps/fzf/_fzf.sh
 - shell:
-    - description: "💫💫💫 Installing fnm 💫💫💫"
+    - description: "💿💿💿 Installing fnm 💿💿💿"
       command: |
-        if  [ -e ".state/fzf.skip" ]; then
-          echo "😎 Skipping fzf install"
-        else
-          echo "⌛ Installing fnm "
           brew install fzf
-          touch .state/fzf.skip
-        fi

@@ -1,18 +1,9 @@
 - defaults:
-    link:
-      create: true
-      relink: true
     shell:
       stdout: true
       stderr: true
       quiet: true
 - shell:
-    - description: "💫💫💫 Installing bat 💫💫💫"
+    - description: "💿💿💿 Installing bat 💿💿💿"
       command: |
-        if  [ -e ".state/bat.skip" ]; then
-          echo "😎 Skipping bat install"
-        else
-          echo "⌛ Installing bat "
-          brew install bat
-          touch .state/bat.skip
-        fi
+        brew install bat
