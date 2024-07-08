@@ -1,9 +1,10 @@
+local project_name
 return {
   -- 'yujinyuz/gitpad.nvim',
   dir = '~/Projects/_nvim/gitpad.nvim',
   config = function()
     local notes_path = os.getenv('HOME') .. '/Projects/notes/WorkDocs/scratch'
-    local project_name = vim.fn.fnamemodify(vim.fn.getcwd(), ':t')
+    project_name = vim.fn.fnamemodify(vim.fn.getcwd(), ':t')
 
     local u = require('custom.lib.utils')
     require('gitpad').setup({
