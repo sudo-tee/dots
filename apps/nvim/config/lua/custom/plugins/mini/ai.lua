@@ -24,15 +24,6 @@ local custom_textobjects = {
   },
 }
 
-u.autocmd('User', 'WhichKeyAttach', function()
-  local presets = require('which-key.plugins.presets')
-  for key, value in pairs(custom_textobjects) do
-    local desc = value[1]
-    presets.objects['a' .. key] = desc
-    presets.objects['i' .. key] = desc
-  end
-end, 'Attach to User WhichKeyAttach')
-
 M.setup = function()
   local textobjects = vim.tbl_map(function(value)
     return value[2]()
