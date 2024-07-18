@@ -12,25 +12,25 @@
 - shell:
     - description: "📦 Cloning or Pulling"
       command: |
-        if  [ -d "$HOME/Projects/$PROJECT" ]; 
+        if  [ -d "$HOME/Projects/$PROJECT_DIR" ]; 
         then
-          cd "$HOME/Projects/$PROJECT" 
+          cd "$HOME/Projects/$PROJECT_DIR" 
           git pull;
         else
           if [ -z "$PROJECT_GIT" ]; then
             PROJECT_GIT=$(cat "${DOT_ENV}/projects/${PROJECT}/git.repo")
           fi
-          git clone $PROJECT_GIT "$HOME/Projects/$PROJECT";
+          git clone $PROJECT_GIT "$HOME/Projects/$PROJECT_DIR";
         fi
 
 - link:
-    ~/Projects/${PROJECT}/:
+    ~/Projects/${PROJECT_DIR}/:
       glob: true
       force: true
       path: $DOT_ENV/projects/${PROJECT}/overlays/**/*
 
 - link:
-    ~/Projects/${PROJECT}/:
+    ~/Projects/${PROJECT_DIR}/:
       glob: true
       force: true
       path: $DOT_ENV/projects/${PROJECT}/overlays/**/.*
@@ -47,8 +47,8 @@
 - shell:
     - description: "📦 Installing"
       command: |
-        if [ -f ~/Projects/${PROJECT}/package.json ]; then 
-          cd ~/Projects/${PROJECT}
+        if [ -f ~/Projects/${PROJECT_DIR}/package.json ]; then 
+          cd ~/Projects/${PROJECT_DIR}
           ni
         fi
 
