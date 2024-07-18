@@ -20,6 +20,9 @@
     ~/.config/zsh/wezterm.sh:
       force: true
       path: apps/zsh/config/wezterm.sh
+    ~/.config/zsh/includes/_wezterm.sh:
+      force: true
+      path: apps/zsh/_wezterm.sh
     ~/.zshrc:
       force: true
       path: apps/zsh/config/.zshrc
