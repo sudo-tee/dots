@@ -7,10 +7,25 @@ return {
     project_name = vim.fn.fnamemodify(vim.fn.getcwd(), ':t')
 
     local u = require('custom.lib.utils')
+
+    local ui = vim.api.nvim_list_uis()[1]
+    local width = math.floor((ui.width * 0.8) + 0.5)
+    local height = math.floor((ui.height * 0.8) + 0.5)
+    local col = (ui.width - width) / 2
+    local row = (ui.height - height) / 2
+
     require('gitpad').setup({
       title = u.first_to_upper(project_name .. ' Notes'),
       border = 'rounded',
       dir = notes_path,
+      window_type = 'floating',
+      floating_win_opts = {
+        focusable = true,
+        width = width,
+        height = height,
+        row = row,
+        col = col,
+      },
       on_attach = function(bufnr)
         vim.api.nvim_buf_set_keymap(bufnr, 'n', 'q', '<Cmd>wq<CR>', { noremap = true, silent = true })
         vim.api.nvim_buf_set_keymap(bufnr, 'n', '<M-q>', '<Cmd>wq<CR>', { noremap = true, silent = true })
