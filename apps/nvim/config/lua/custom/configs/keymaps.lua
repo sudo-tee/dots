@@ -3,6 +3,8 @@ local cmd = u.cmd
 local map = u.map
 local map_pair = u.map_pair
 
+map('n', ' ', '<Nop>', { noremap = true, silent = true })
+
 -- Release for surround
 map('n', 's', '<Nop>')
 

@@ -216,7 +216,7 @@ function M.telescope_get_user_marks(opts)
 
     local text = ''
     if mark_data.file then -- this is a global mark
-      text = conf.path_display(nil, mark_data.file)
+      text = mark_data.file
     else
       text = vim.api.nvim_buf_get_lines(bufnr, lnum - 1, lnum, false)[1]
     end
