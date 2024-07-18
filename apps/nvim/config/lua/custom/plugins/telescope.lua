@@ -127,45 +127,45 @@ return { -- Fuzzy Finder (files, lsp, etc)
   keys = {
 
     -- [S]earch
-    { '<leader>sb',       u.cmd('Telescope buffers'),      desc = '[B]uffers' },
-    { '<leader><leader>', u.cmd('Telescope buffers'),      desc = '[ ] buffers' },
-    { '<C-p>'     ,       u.cmd('Telescope smart_open'),   desc = '[F]iles' },
-    { '<leader>sh',       u.cmd('Telescope help_tags'),    desc = '[H]elp' },
-    { '<leader>sk',       u.cmd('Telescope keymaps'),      desc = '[K]eymaps' },
-    { '<leader>sf',       u.cmd('Telescope find_files'),   desc = '[F]iles' },
-    { '<leader>ss',       u.cmd('Telescope builtin'),      desc = '[S]elect Telescope' },
+    { '<leader>sb',       u.cmd('Telescope buffers'),      desc = 'Buffers' },
+    { '<leader><leader>', u.cmd('Telescope buffers'),      desc = 'Buffers' },
+    { '<C-p>'     ,       u.cmd('Telescope smart_open'),   desc = 'Files' },
+    { '<leader>sh',       u.cmd('Telescope help_tags'),    desc = 'Help' },
+    { '<leader>sk',       u.cmd('Telescope keymaps'),      desc = 'Keymaps' },
+    { '<leader>sf',       u.cmd('Telescope find_files'),   desc = 'Files' },
+    { '<leader>ss',       u.cmd('Telescope builtin'),      desc = 'Select Telescope' },
     { '<leader>sw',       u.cmd('Telescope grep_string'),  desc = 'Current [W]ord' },
-    { '<leader>sg',       u.cmd('Telescope live_grep'),    desc = 'by [G]rep' },
-    { '<leader>sd',       u.cmd('Telescope diagnostics'),  desc = '[D]iagnostics' },
-    { '<leader>sl',       u.cmd('Telescope resume'),       desc = 'resume [l]ast picker' },
-    { '<leader>sM',       u.cmd('Telescope marks'),        desc = 'all [M]ark' },
-    { '<leader>so',       u.cmd('Telescope oldfiles'),     desc = '[O]ld Files' },
-    { '<leader>sh',       u.cmd('Telescope undo'),         desc = 'file [H]istory' },
-    { '<leader>sp',       plugin_files,                    desc = '[P]lugin Files' },
-    { '<leader>sn',       neovim_files,                    desc = '[N]eovim files' },
-    { '<leader>s/',       grep_open_files,                 desc = '[/] in Open Files' },
-    { '<leader>po',       find_project_overlay,            desc = '[P]roject [O]verlay' },
-    { '<leader>/' ,       current_buffer_fuzzy,            desc = '[/] Fuzzily search in current buffer' },
+    { '<leader>sg',       u.cmd('Telescope live_grep'),    desc = 'Grep' },
+    { '<leader>sd',       u.cmd('Telescope diagnostics'),  desc = 'Diagnostics' },
+    { '<leader>sl',       u.cmd('Telescope resume'),       desc = 'Resume last picker' },
+    { '<leader>sM',       u.cmd('Telescope marks'),        desc = 'Marks' },
+    { '<leader>so',       u.cmd('Telescope oldfiles'),     desc = 'Old Files' },
+    { '<leader>sh',       u.cmd('Telescope undo'),         desc = 'File History' },
+    { '<leader>sp',       plugin_files,                    desc = 'Plugin Files' },
+    { '<leader>sn',       neovim_files,                    desc = 'Neovim files' },
+    { '<leader>s/',       grep_open_files,                 desc = 'Grep Open Files' },
+    { '<leader>po',       find_project_overlay,            desc = 'Project Overlay' },
+    { '<leader>/' ,       current_buffer_fuzzy,            desc = 'Fuzzily search in current buffer' },
 
     -- [P]roject
-    { '<leader>pl',       project_links ,                  desc = '[P]roject [l]links'},
-    { '<leader>pm',       merge_requests ,                 desc = '[P]roject [m]erge requests'},
+    { '<leader>pl',       project_links ,                  desc = 'Project links'},
+    { '<leader>pm',       merge_requests ,                 desc = 'Project merge requests'},
 
     -- [G]it
-    { '<leader>gbb',      u.cmd('Telescope git_bcommits'), desc = '[B]commits' },
-    { '<leader>gbc',      u.cmd('Telescope git_branches'), desc = '[C]heckout' },
-    { '<leader>gfc',      u.cmd('Telescope git_bcommits'), desc = '[C]ommits' },
-    { '<leader>gcl',      u.cmd('Telescope git_commits'),  desc = '[L]og' },
+    { '<leader>gbb',      u.cmd('Telescope git_bcommits'), desc = 'Bcommits' },
+    { '<leader>gbc',      u.cmd('Telescope git_branches'), desc = 'Checkout' },
+    { '<leader>gfc',      u.cmd('Telescope git_bcommits'), desc = 'Commits' },
+    { '<leader>gcl',      u.cmd('Telescope git_commits'),  desc = 'Log' },
 
     -- [N]otes
-    { '<leader>nn',       notes,                           desc = '[N]otes' },
-    { '<leader>ng',       grep_notes,                      desc = '[G]rep Notes' },
+    { '<leader>nn',       notes,                           desc = 'Notes' },
+    { '<leader>ng',       grep_notes,                      desc = 'Grep Notes' },
 
   },
   opts = {
     defaults = {
       file_sorter = require('telescope.sorters').get_fzy_sorter,
-      cwd = vim.loop.cwd(),
+      cwd = vim.uv.cwd(),
       path_display = {
         filename_first = {
           reverse_directories = false,
@@ -228,10 +228,10 @@ return { -- Fuzzy Finder (files, lsp, etc)
       },
     }
 
-    require('telescope').setup(opts)
     pcall(require('telescope').load_extension, 'fzy')
     pcall(require('telescope').load_extension, 'smart_open')
     pcall(require('telescope').load_extension, 'undo')
+    require('telescope').setup(opts)
 
     -- Enable telescope extensions, if they are installed
   end,
