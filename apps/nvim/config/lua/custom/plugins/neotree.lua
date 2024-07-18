@@ -36,6 +36,7 @@ return {
             '.git',
             'node_modules',
             '.vscode',
+            '.obsidian',
           },
           hide_by_pattern = { -- uses glob style patterns
             --"*.meta",
