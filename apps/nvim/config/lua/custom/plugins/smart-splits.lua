@@ -38,7 +38,7 @@ return {
 
     -- resizing splits
     {
-      '<leader>wr',
+      '<leader>ur',
       function()
         require('smart-splits').start_resize_mode()
       end,
@@ -51,48 +51,56 @@ return {
       function()
         require('smart-splits').move_cursor_down()
       end,
+      desc = 'Move to split down',
     },
     {
       '<C-k>',
       function()
         require('smart-splits').move_cursor_up()
       end,
+      desc = 'Move to split up',
     },
     {
       '<C-l>',
       function()
         require('smart-splits').move_cursor_right()
       end,
+      desc = 'Move to split right',
     },
     {
       '<C-h>',
       function()
         require('smart-splits').move_cursor_left()
       end,
+      desc = 'Move to split left',
     },
     {
       '<C-Left>',
       function()
         require('smart-splits').move_cursor_left()
       end,
+      desc = 'Move to split left',
     },
     {
       '<C-Down>',
       function()
         require('smart-splits').move_cursor_down()
       end,
+      desc = 'Move to split down',
     },
     {
       '<C-Up>',
       function()
         require('smart-splits').move_cursor_up()
       end,
+      desc = 'Move to split up',
     },
     {
       '<C-Right>',
       function()
         require('smart-splits').move_cursor_right()
       end,
+      desc = 'Move to split right',
     },
     {
       '<C-A-h>',
