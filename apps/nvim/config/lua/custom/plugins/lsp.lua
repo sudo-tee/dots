@@ -23,6 +23,7 @@ return {
         'yioneko/nvim-vtsls',
         handlers = {},
       },
+      'b0o/schemastore.nvim',
     },
     opts = {
       ---@type vim.diagnostic.Opts
@@ -138,6 +139,7 @@ return {
         eslint = require('custom.plugins.lsp.servers.eslint'),
         lua_ls = require('custom.plugins.lsp.servers.luals'),
         graphql = require('custom.plugins.lsp.servers.graphql'),
+        jsonls = require('custom.plugins.lsp.servers.jsonls'),
         -- cssls = {},
         bashls = {},
         marksman = {},
