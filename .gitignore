@@ -18,3 +18,5 @@ lpm.manifest.json
 .dotbot*
 apps/nvim/config_old/
 work/
+_work/
+work
