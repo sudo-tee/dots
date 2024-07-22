@@ -1,11 +1,6 @@
 local opts = {}
--- Copy to clipboard only when yanking
-vim.keymap.set('n', '<Leader>y', function()
-  local content = vim.fn.getreg('"')
-  vim.fn.setreg('+', content)
-end, { silent = true, desc = 'Sync to system clipboard' })
 
-vim.g.is_wsl = vim.fn.has('unix') and vim.fn.has('wsl') and vim.fn.executable('win32yank.exe') == 1 and vim.loop.os_uname().sysname == 'Linux'
+vim.g.is_wsl = vim.fn.has('unix') and vim.fn.has('wsl') and vim.fn.executable('win32yank.exe') == 1 and vim.uv.os_uname().sysname == 'Linux'
 
 -- disable clipboard is to slow
 vim.g.is_wsl = false
