@@ -66,6 +66,7 @@ return {
       'CopilotChatPrompt',
       'CopilotChatCommitStaged',
       'CopilotChatCommitMessageFloat',
+      'CopilotChatModels',
     },
     branch = 'canary',
     dependencies = {
