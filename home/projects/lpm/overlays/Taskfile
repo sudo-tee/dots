@@ -5,12 +5,8 @@
 PATH=./node_modules/.bin:$PATH
 
 start() {
-	echo "start task not implemented"
-}
-
-_restart() {
-	echo "please implement _restart for your specific project"
+  echo "start task not implemented"
 }
 
 TIMEFORMAT="Task completed in %3lR"
-time ${@:-help}
+time "${@:-help}"
