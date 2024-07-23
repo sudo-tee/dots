@@ -33,25 +33,71 @@ u.map('n', '<leader>gpl', u.cmd('Gpl'), { desc = '[p]ush force lease' })
 u.map('n', '<leader>gpp', u.cmd('Gp'), { desc = '[p]ush' })
 
 return {
-  { 'tpope/vim-fugitive', lazy = true, event = 'VeryLazy', cmd = { 'G' } },
-  -- TODO check back later
-  -- {'SuperBo/fugit2.nvim'},
+  { 'tpope/vim-fugitive', lazy = true, cmd = { 'G', 'Gwrite', 'Gdiff', 'Gedit' } },
+  {
+    'SuperBo/fugit2.nvim',
+    opts = {
+      width = 90,
+      libgit2_path = '/home/linuxbrew/.linuxbrew/Cellar/libgit2/1.7.2/lib/libgit2.so.1.7.2',
+      external_diffview = true,
+    },
+    dependencies = {
+      'MunifTanjim/nui.nvim',
+      'nvim-tree/nvim-web-devicons',
+      'nvim-lua/plenary.nvim',
+    },
+    build = function() end,
+    cmd = { 'Fugit2', 'Fugit2Diff', 'Fugit2Graph' },
+    keys = {
+      { '<leader>gFF', mode = 'n', '<cmd>Fugit2<cr>', desc = 'Status' },
+      { '<leader>gFG', mode = 'n', '<cmd>Fugit2Graph<cr>', desc = 'Graph' },
+    },
+    init = function()
+      u.ft_map({ 'fugit2*', 'diff' }, function(_, map)
+        map('n', '<C-Right>', 'l', {})
+        map('n', '<C-Left>', 'h', {})
+      end)
+    end,
+  },
   {
     'rbong/vim-flog',
     dependencies = {
       'tpope/vim-fugitive',
+      'sindrets/diffview.nvim',
     },
     lazy = true,
-    event = 'VeryLazy',
     cmd = { 'Flog', 'FlogSplit' },
     keys = {
-      { '<leader>gf', u.cmd('Flog'), desc = '[G]it log graph (f)' },
+      { '<leader>gG', u.cmd('Flog'), desc = 'Graph' },
     },
+    opts = function()
+      vim.g.flog_default_opts = {
+        date = 'format:%Y-%m-%d %H:%M',
+      }
+      vim.g.flog_use_internal_lua = true
+    end,
+    -- stylua: ignore start
+    config = function()
+      ---HACK: This is a hack to prevent the command from being called twice and keep focus on Diffview
+      vim.api.nvim_create_user_command('FlogDiffHack', u.throttle(function(args)
+          vim.cmd('DiffviewOpen ' .. args.fargs[1])
+        end, 2),
+        { nargs = '*' }
+      )
+
+      u.ft_map('floggraph', function(_, map)
+        local exec = ':<C-U>exec flog#Exec(flog#Format("%s"), 0, 1, 1)<CR>'
+
+        map('n', '<leader>d', exec:format('FlogDiffHack %h~1..%h'))
+        map('v', '<leader>d', exec:format("FlogDiffHack %(h'<)..%(h'>)"))
+      end)
+    end,
+    -- stylua: ignore end
   },
-  { -- Adds git related signs to the gutter, as well as utilities for managing changes
+  {
     'lewis6991/gitsigns.nvim',
     lazy = true,
-    event = 'VeryLazy',
+    event = 'LazyFile',
     opts = {
       signs = {
         add = { text = '█' },
@@ -90,17 +136,14 @@ return {
     },
   },
   {
-    -- dir = '/home/francis/Projects/_nvim/diffview.nvim',
-    'sudo-tee/diffview.nvim',
-    -- 'sindrets/diffview.nvim',
-    -- branch = 'main',
+    'sindrets/diffview.nvim',
     lazy = true,
     cmd = { 'DiffviewOpen', 'DiffviewFileHistory' },
     keys = {
       -- stylua: ignore start
-      { '<leader>gg',  u.cmd('DiffviewOpen'),        desc = '[G]it DiffView' },
-      { '<leader>gdm', u.cmd('GitDiffMain'),         desc = '[G]it [D]iff [M]AIN' },
-      { '<leader>gfh', u.cmd('DiffviewFileHistory'), desc = '[G]it [F]ile [H]istory' },
+      { '<leader>gg',  u.cmd('DiffviewOpen'),        desc = 'Status' },
+      { '<leader>gdm', u.cmd('GitDiffMain'),         desc = 'Diff MAIN' },
+      { '<leader>gfh', u.cmd('DiffviewFileHistory'), desc = 'File History' },
       -- stylua: ignore end
     },
     init = function()
@@ -130,7 +173,7 @@ return {
           view = {
             { 'n', 'q',          u.cmd('DiffviewClose'), { desc = 'Close' } },
             { 'n', '<A-q>',      u.cmd('DiffviewClose'), { desc = 'Close' } },
-            { 'n', '<Leader>\\', actions.cycle_layout,   { desc = 'Cycle layout' } },
+            { 'n', '<Leader>l', actions.cycle_layout,   { desc = 'Cycle layout' } },
           },
           file_panel = {
             { 'n', 'q',          u.cmd('DiffviewClose'), { desc = 'Close' } },
@@ -143,24 +186,14 @@ return {
             { 'n', '<Leader>rc', u.cmd('Grc'),           { desc = 'Git Rebase Continue' } },
             { 'n', '<Leader>rm', u.cmd('Grm'),           { desc = 'Git Rebase master/main' } },
             { 'n', 'h',          actions.prev_entry,     { desc = 'Previuos entry' } },
-            { 'n', '<Leader>\\', actions.cycle_layout,   { desc = 'Cycle layout' } },
+            { 'n', '<Leader>l', actions.cycle_layout,   { desc = 'Cycle layout' } },
           },
           file_history_panel = {
             { 'n', 'q',          u.cmd('DiffviewClose'), { desc = 'Close' }},
             { 'n', '<A-q>',      u.cmd('DiffviewClose'), { desc = 'Close' }},
-            { 'n', '<Leader>\\', actions.cycle_layout,   { desc = 'Cycle layout' } },
+            { 'n', '<Leader>l', actions.cycle_layout,   { desc = 'Cycle layout' } },
           },
           -- stylua: ignore end
-        },
-        file_panel = {
-          components = {
-            working = {
-              auto_hide = false,
-            },
-            staged = {
-              auto_hide = false,
-            },
-          },
         },
       }
     end,

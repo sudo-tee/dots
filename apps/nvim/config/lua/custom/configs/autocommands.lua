@@ -63,6 +63,8 @@ vim.api.nvim_create_autocmd('FileType', {
   pattern = {
     'fugitive',
     'fugitiveblame',
+    'floggraph',
+    'git',
     'lspinfo',
     'help',
     'man',

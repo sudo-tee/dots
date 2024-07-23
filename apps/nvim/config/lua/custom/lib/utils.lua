@@ -50,6 +50,23 @@ function M.map_pair(mode, key, prev, next, desc)
   M.map(mode, '[' .. key, prev, { desc = 'Previous ' .. desc })
 end
 
+---Map to a specific buffer for a FileType
+---@param pattern string|table
+---@param cb fun(args: table, map: fun(mode: string, lhs: string, rhs: string, opts?: table))
+function M.ft_map(pattern, cb)
+  vim.api.nvim_create_autocmd('FileType', {
+    group = M.augroup('filetype_keymap'),
+    pattern = pattern,
+    callback = function(args)
+      local map = function(mode, lhs, rhs, opts)
+        opts = opts or { silent = true, noremap = true }
+        vim.api.nvim_buf_set_keymap(args.buf, mode, lhs, rhs, opts)
+      end
+      cb(args, map)
+    end,
+  })
+end
+
 function M.cmd(command)
   return string.format('<cmd>%s<cr>', command)
 end
@@ -201,12 +218,12 @@ function M.get_current_branch()
   return M.just(cmd_output).or_else(nil).unwrap()
 end
 
-function M.memoize(f)
+function M.memoize(cb)
   local mem = {}
   return function(...)
     local key = vim.inspect({ ... })
     if not mem[key] then
-      mem[key] = f(...)
+      mem[key] = cb(...)
     end
     return mem[key]
   end
@@ -222,6 +239,19 @@ function M.string_hash(str)
     h = ((h * 33) + string.byte(str, i)) % 0x100000000
   end
   return h
+end
+
+function M.throttle(cb, treshold)
+  local callCount = 0
+  return function(...)
+    local args = { ... }
+    callCount = callCount + 1
+    if callCount % treshold == 1 then
+      vim.schedule(function()
+        cb(unpack(args))
+      end)
+    end
+  end
 end
 
 return M
