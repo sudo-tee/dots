@@ -7,7 +7,7 @@ local function replace_text(text, replacement)
 end
 
 command('ReplaceSelection', function()
-  vim.api.nvim_exec('normal! "ay', false)
+  vim.api.nvim_exec2('normal! "ay', {})
   local selected_text = vim.fn.getreg('a')
 
   replace_text(selected_text)
