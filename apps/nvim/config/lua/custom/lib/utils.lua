@@ -52,7 +52,7 @@ end
 
 ---Map to a specific buffer for a FileType
 ---@param pattern string|table
----@param cb fun(args: table, map: fun(mode: string, lhs: string, rhs: string, opts?: table))
+---@param cb fun(args: table, map: fun(mode: string, lhs: string, rhs: string|function, opts?: table))
 function M.ft_map(pattern, cb)
   vim.api.nvim_create_autocmd('FileType', {
     group = M.augroup('filetype_keymap'),

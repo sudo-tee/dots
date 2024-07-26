@@ -25,12 +25,28 @@ cmd('GitDiffBranch', function(args)
   vim.cmd('DiffviewOpen origin/' .. args.fargs[1] .. '...HEAD')
 end, { nargs = '*' })
 
-u.map('n', '<leader>grm', u.cmd('Grbm'), { desc = '[r]ebase [m]main/master' })
-u.map('n', '<leader>grc', u.cmd('Grc'), { desc = '[r]ebase [c]ontinue' })
-u.map('n', '<leader>gcc', u.cmd('Gc'), { desc = '[c]ommit' })
-u.map('n', '<leader>gpr', u.cmd('Gpr'), { desc = '[p]ull [r]ebase' })
-u.map('n', '<leader>gpl', u.cmd('Gpl'), { desc = '[p]ush force lease' })
-u.map('n', '<leader>gpp', u.cmd('Gp'), { desc = '[p]ush' })
+cmd('OpenCommitDiff', function()
+  local commit_hash = git.find_nearest_commit_hash()
+  vim.cmd('DiffviewOpen ' .. commit_hash .. '~1..' .. commit_hash)
+end, {})
+
+cmd('OpenCommitRangeDiff', function()
+  local last_commit_hash = git.find_nearest_commit_hash()
+
+  -- Move to the start of the visual selection
+  vim.cmd('normal! o')
+
+  local first_commit_hash = git.find_nearest_commit_hash()
+
+  vim.cmd('DiffviewOpen ' .. first_commit_hash .. '..' .. last_commit_hash)
+end, { range = true })
+
+u.map('n', '<leader>grm', u.cmd('Grbm'), { desc = 'rebase main/master' })
+u.map('n', '<leader>grc', u.cmd('Grc'), { desc = 'rebase continue' })
+u.map('n', '<leader>gcc', u.cmd('Gc'), { desc = 'commit' })
+u.map('n', '<leader>gpr', u.cmd('Gpr'), { desc = 'pull rebase' })
+u.map('n', '<leader>gpl', u.cmd('Gpl'), { desc = 'push force lease' })
+u.map('n', '<leader>gpp', u.cmd('Gp'), { desc = 'push' })
 
 return {
   { 'tpope/vim-fugitive', lazy = true, cmd = { 'G', 'Gwrite', 'Gdiff', 'Gedit' } },
@@ -54,8 +70,10 @@ return {
     },
     init = function()
       u.ft_map({ 'fugit2*', 'diff' }, function(_, map)
-        map('n', '<C-Right>', 'l', {})
-        map('n', '<C-Left>', 'h', {})
+        map('n', '<leader>d', u.cmd('OpenCommitDiff'))
+        map('v', '<leader>d', u.cmd('OpenCommitRangeDiff'))
+        map('n', '<C-Right>', 'l', { noremap = false })
+        map('n', '<C-Left>', 'h', { noremap = false })
       end)
     end,
   },
@@ -76,23 +94,12 @@ return {
       }
       vim.g.flog_use_internal_lua = true
     end,
-    -- stylua: ignore start
     config = function()
-      ---HACK: This is a hack to prevent the command from being called twice and keep focus on Diffview
-      vim.api.nvim_create_user_command('FlogDiffHack', u.throttle(function(args)
-          vim.cmd('DiffviewOpen ' .. args.fargs[1])
-        end, 2),
-        { nargs = '*' }
-      )
-
       u.ft_map('floggraph', function(_, map)
-        local exec = ':<C-U>exec flog#Exec(flog#Format("%s"), 0, 1, 1)<CR>'
-
-        map('n', '<leader>d', exec:format('FlogDiffHack %h~1..%h'))
-        map('v', '<leader>d', exec:format("FlogDiffHack %(h'<)..%(h'>)"))
+        map('n', '<leader>d', u.cmd('OpenCommitDiff'))
+        map('v', '<leader>d', u.cmd('OpenCommitRangeDiff'))
       end)
     end,
-    -- stylua: ignore end
   },
   {
     'lewis6991/gitsigns.nvim',

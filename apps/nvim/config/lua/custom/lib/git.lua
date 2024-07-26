@@ -21,4 +21,11 @@ function M.current_repo()
   return u.just(cmd_output).or_else(nil).unwrap()
 end
 
+function M.find_nearest_commit_hash()
+  local commit_hash_pattern = '\\<[0-9a-f]\\{7,40}\\>'
+  vim.cmd('normal! 0')
+  vim.fn.search(commit_hash_pattern)
+  return vim.fn.matchstr(vim.fn.getline('.'), commit_hash_pattern)
+end
+
 return M
