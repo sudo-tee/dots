@@ -4,6 +4,9 @@ return { -- Autoformat
   event = 'VeryLazy',
   opts = {
     notify_on_error = false,
+    default_format_opts = {
+      stop_after_first = true,
+    },
     format_on_save = {
       timeout_ms = 700,
       lsp_fallback = true,
@@ -15,12 +18,12 @@ return { -- Autoformat
       --
       -- You can use a sub-list to tell conform to run *until* a formatter
       -- is found.
-      javascriptreact = { { 'prettierd', 'prettier' } },
-      typescriptreact = { { 'prettierd', 'prettier' } },
-      javascript = { { 'prettierd', 'prettier' } },
-      typescript = { { 'prettierd', 'prettier' } },
-      html = { { 'prettierd', 'prettier' } },
-      scss = { { 'prettierd', 'prettier' } },
+      javascriptreact = { 'prettierd', 'prettier' },
+      typescriptreact = { 'prettierd', 'prettier' },
+      javascript = { 'prettierd', 'prettier' },
+      typescript = { 'prettierd', 'prettier' },
+      html = { 'prettierd', 'prettier' },
+      scss = { 'prettierd', 'prettier' },
       sh = { 'shfmt' },
     },
     formatters = {
