@@ -117,6 +117,7 @@ return { -- Fuzzy Finder (files, lsp, etc)
         { 'nvim-telescope/telescope-fzy-native.nvim' },
       },
       opts = {
+        cwd_only = true,
         match_algorithm = 'fzy',
       },
     },
