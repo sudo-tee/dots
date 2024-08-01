@@ -36,8 +36,6 @@ return { -- Useful plugin to show you pending keybinds.
       { '<leader>gp_', hidden = true },
       { '<leader>gr', group = 'Rebase' },
       { '<leader>gr_', hidden = true },
-      { '<leader>gF', group = 'Fugit2' },
-      { '<leader>gF_', hidden = true },
       { '<leader>j', group = 'Jump', icon = { icon = '🦘', color = 'blue' } },
       { '<leader>j_', hidden = true },
       { '<leader>m', group = 'Macro' },

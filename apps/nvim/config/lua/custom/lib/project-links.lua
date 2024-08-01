@@ -65,14 +65,12 @@ end
 function M.get_url_by_label(label, default)
   local links = vim.g.project_links or {}
 
-  local _, result = u.find(function(value)
-    local _label = value[1]
-    return label == _label
-  end, links)
-
-  if result and result[2] then
-    return result[2]
+  for _, value in ipairs(links) do
+    if label == value[1] then
+      return value[2]
+    end
   end
+
   return default or ''
 end
 
