@@ -1,0 +1,10 @@
+- defaults:
+    shell:
+      stdout: true
+      stderr: true
+      quiet: true
+- shell:
+    - description: "💿💿💿 Installing git crypt 💿💿💿"
+      command: |
+        brew install git-crypt
+        brew install gpg
