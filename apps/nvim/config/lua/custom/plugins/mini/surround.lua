@@ -8,6 +8,9 @@ local M = {}
 
 M.setup = function()
   require('mini.surround').setup()
+
+  -- Disable visual mode 's' key
+  vim.keymap.set('v', 's', '<nop>', { noremap = true })
   -- Surround shortcuts
   local surrounds = { '{', '}', '[', ']', '(', ')', "'", '"', '`' }
   for _, char in ipairs(surrounds) do
