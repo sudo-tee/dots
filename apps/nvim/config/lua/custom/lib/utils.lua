@@ -60,7 +60,12 @@ function M.ft_map(pattern, cb)
     callback = function(args)
       local map = function(mode, lhs, rhs, opts)
         opts = opts or { silent = true, noremap = true }
-        vim.api.nvim_buf_set_keymap(args.buf, mode, lhs, rhs, opts)
+
+        if type(rhs) == 'function' then
+          M.map(mode, lhs, rhs, vim.tbl_deep_extend('force', opts, { buffer = args.buf }))
+        else
+          vim.api.nvim_buf_set_keymap(args.buf, mode, lhs, rhs, opts)
+        end
       end
       cb(args, map)
     end,

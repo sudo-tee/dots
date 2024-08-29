@@ -27,7 +27,7 @@ end, { nargs = '*' })
 
 cmd('OpenCommitDiff', function()
   local commit_hash = git.find_nearest_commit_hash()
-  vim.cmd('DiffviewOpen ' .. commit_hash .. '~1..' .. commit_hash)
+  vim.cmd('DiffviewOpen ' .. commit_hash .. '^!')
 end, {})
 
 cmd('OpenCommitRangeDiff', function()
@@ -38,7 +38,7 @@ cmd('OpenCommitRangeDiff', function()
 
   local first_commit_hash = git.find_nearest_commit_hash()
 
-  vim.cmd('DiffviewOpen ' .. first_commit_hash .. '..' .. last_commit_hash)
+  vim.cmd('DiffviewOpen ' .. first_commit_hash .. '~1..' .. last_commit_hash)
 end, { range = true })
 
 u.map('n', '<leader>grm', u.cmd('Grbm'), { desc = 'rebase main/master' })
@@ -79,6 +79,59 @@ return {
       require('fugit2').setup(opts)
     end,
   },
+  {
+    'isakbm/gitgraph.nvim',
+    opts = {
+      symbols = {
+        merge_commit = '◉',
+        commit = '○',
+      },
+      format = {
+        timestamp = '%H:%M:%S %d-%m-%Y',
+        fields = { 'hash', 'timestamp', 'author', 'branch_name', 'tag' },
+      },
+      hooks = {
+        on_select_commit = function(commit)
+          vim.cmd(':DiffviewOpen ' .. commit.hash .. '^!')
+        end,
+        on_select_range_commit = function(from, to)
+          vim.cmd(':DiffviewOpen ' .. from.hash .. '~1..' .. to.hash)
+        end,
+      },
+    },
+    keys = {
+      {
+        '<leader>gL',
+        function()
+          require('gitgraph').draw({}, { all = true, max_count = 5000 })
+        end,
+        desc = 'GitGraph - Draw',
+      },
+      {
+        '<leader>gB',
+        function()
+          require('gitgraph').draw({}, { all = false, max_count = 5000 })
+        end,
+        desc = 'GitGraph - Draw',
+      },
+    },
+    config = function(_, opts)
+      u.ft_map('gitgraph', function(_, map)
+        map('n', 'q', u.cmd('bd!'))
+        map('n', '<leader>B', function()
+          vim.cmd('bd!')
+          require('gitgraph').draw({}, { all = false, max_count = 5000 })
+        end)
+        map('n', '<leader>A', function()
+          vim.cmd('bd!')
+          require('gitgraph').draw({}, { all = true, max_count = 5000 })
+        end)
+      end)
+
+      require('gitgraph').setup(opts)
+    end,
+  },
+
   {
     'rbong/vim-flog',
     dependencies = {
