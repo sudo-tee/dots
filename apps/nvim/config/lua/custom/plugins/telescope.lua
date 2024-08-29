@@ -221,19 +221,17 @@ return { -- Fuzzy Finder (files, lsp, etc)
 
         mappings = {
           i = {
-            ['<M-Right>'] = require('telescope-undo.actions').yank_additions,
-            ['<M-Left>'] = require('telescope-undo.actions').yank_deletions,
-            ['<C-r>'] = require('telescope-undo.actions').restore,
+            ['<C-y>'] = require('telescope-undo.actions').yank_additions,
+            ['<C-Y>'] = require('telescope-undo.actions').yank_deletions,
+            ['<C-cr>'] = require('telescope-undo.actions').restore,
           },
         },
       },
     }
 
+    require('telescope').setup(opts)
     pcall(require('telescope').load_extension, 'fzy')
     pcall(require('telescope').load_extension, 'smart_open')
     pcall(require('telescope').load_extension, 'undo')
-    require('telescope').setup(opts)
-
-    -- Enable telescope extensions, if they are installed
   end,
 }
