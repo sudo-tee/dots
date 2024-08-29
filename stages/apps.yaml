@@ -13,6 +13,7 @@
     - [sudo ./Taskfile app brew]
     - [./Taskfile app taskfile]
     - [./Taskfile app git]
+    - [./Taskfile app git-crypt]
     - [./Taskfile app fnm]
     - [./Taskfile app rust]
     - [./Taskfile app bob]
