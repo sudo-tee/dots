@@ -21,6 +21,12 @@ function M.current_repo()
   return u.just(cmd_output).or_else(nil).unwrap()
 end
 
+M.get_repo_url = function()
+  local repo = M.current_repo() or ''
+
+  return repo:gsub(':', '/'):gsub('git@', 'https://')
+end
+
 function M.find_nearest_commit_hash()
   local commit_hash_pattern = '\\<[0-9a-f]\\{7,40}\\>'
   vim.cmd('normal! 0')

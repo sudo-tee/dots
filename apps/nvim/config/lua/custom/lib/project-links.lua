@@ -29,9 +29,16 @@ end
 local function get_project_links()
   local links = {}
 
+  local repo_url = M.get_url_by_label('Repo') or M.get_url_by_label('Gitlab')
+  if #repo_url == 0 then
+    repo_url = git.get_repo_url()
+    table.insert(links, { format_link('Repo', repo_url), open_url(repo_url) })
+  end
+
   for _, link in pairs(vim.g.project_links or {}) do
     table.insert(links, { format_link(link[1], link[2]), open_url(link[2]) })
   end
+
   return links
 end
 

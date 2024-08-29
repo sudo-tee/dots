@@ -30,9 +30,7 @@ M.pipeline_icons = {
 }
 
 M.open_git_remote = function()
-  local repo = git.current_repo() or ''
-
-  local remote_url = repo:gsub(':', '/'):gsub('git@', 'https://')
+  local remote_url = git.get_repo_url()
 
   if string.len(remote_url) == 0 then
     vim.notify('Not in a git repository', vim.log.levels.WARN)
