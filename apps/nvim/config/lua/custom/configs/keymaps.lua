@@ -26,6 +26,9 @@ map('n', '<Leader>fyn', function()
   u.yank(vim.fn.expand('%:t'))
 end, { desc = '[n]ame' })
 
+-- Source current file
+map('n', '<leader>fs', cmd('w | source %'), { desc = '[S]ource file' })
+
 map('n', '<Esc>', cmd('nohlsearch'))
 
 -- I hate the "q:" I will use <C-f> in command mode if needed
@@ -47,9 +50,6 @@ map('v', 'x', '"_x')
 map('v', 'X', '"_X')
 map('n', '<Del>', '"_x')
 map('v', '<Del>', '"_x')
-
--- Source current file
-map('n', '<leader>xs', cmd('w | source %'), { desc = '[S]ource file' })
 
 -- Duplicate lines without affecting PRIMARY and CLIPBOARD selections.
 map('n', '<localleader>d', 'm`""Y""P``', { desc = 'Duplicate line' })
