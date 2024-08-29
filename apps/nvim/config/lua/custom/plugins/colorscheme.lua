@@ -63,6 +63,10 @@ return {
           MiniTablineModifiedVisible = { fg = '#bada55', bg = '#2a2a37' },
           MiniTablineModifiedCurrent = { fg = '#bada55', bg = '#2a2a37' },
           MiniTablineModifiedHidden = { fg = '#556327', bg = '#16161d' },
+
+          -- Gitgraph
+          GitGraphBranchMsg = { fg = '#D7D7BA' },
+          GitGraphTimestamp = { fg = '#727169' },
         }
       end
       require('kanagawa').setup(opts)
