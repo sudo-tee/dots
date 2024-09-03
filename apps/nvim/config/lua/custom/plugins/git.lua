@@ -206,9 +206,12 @@ return {
     cmd = { 'DiffviewOpen', 'DiffviewFileHistory' },
     keys = {
       -- stylua: ignore start
-      { '<leader>gg',  u.cmd('DiffviewOpen'),        desc = 'Status' },
-      { '<leader>gdm', u.cmd('GitDiffMain'),         desc = 'Diff MAIN' },
-      { '<leader>gfh', u.cmd('DiffviewFileHistory'), desc = 'File History' },
+      { '<leader>gg',  u.cmd('DiffviewOpen'),                               desc = 'Status' },
+      { '<leader>gdm', u.cmd('GitDiffMain'),                                desc = 'Diff MAIN' },
+      { '<leader>gfh', u.cmd('DiffviewFileHistory'),                        desc = 'File History' },
+      { '<leader>gfH', u.cmd('DiffviewFileHistory --follow %'),             desc = 'File History' },
+      { '<leader>glh', u.cmd('.DiffviewFileHistory --follow %'), desc = 'Line History' },
+      { '<leader>gvh', "<Esc><Cmd>'<,'>DiffviewFileHistory --follow %<CR>", desc = 'Range History', mode="v" },
       -- stylua: ignore end
     },
     init = function()
@@ -238,7 +241,7 @@ return {
           view = {
             { 'n', 'q',          u.cmd('DiffviewClose'), { desc = 'Close' } },
             { 'n', '<A-q>',      u.cmd('DiffviewClose'), { desc = 'Close' } },
-            { 'n', '<Leader>l', actions.cycle_layout,   { desc = 'Cycle layout' } },
+            { 'n', '<Leader>l',  actions.cycle_layout,   { desc = 'Cycle layout' } },
           },
           file_panel = {
             { 'n', 'q',          u.cmd('DiffviewClose'), { desc = 'Close' } },
@@ -254,9 +257,11 @@ return {
             { 'n', '<Leader>l', actions.cycle_layout,   { desc = 'Cycle layout' } },
           },
           file_history_panel = {
-            { 'n', 'q',          u.cmd('DiffviewClose'), { desc = 'Close' }},
-            { 'n', '<A-q>',      u.cmd('DiffviewClose'), { desc = 'Close' }},
-            { 'n', '<Leader>l', actions.cycle_layout,   { desc = 'Cycle layout' } },
+            { 'n', 'q',          u.cmd('DiffviewClose'),  { desc = 'Close' }},
+            { 'n', '<A-q>',      u.cmd('DiffviewClose'),  { desc = 'Close' }},
+            { 'n', '<Leader>l',  actions.cycle_layout,    { desc = 'Cycle layout' } },
+            { "n", "<Leader>d",  actions.open_in_diffview,{ desc = "Open in Diffview" } },
+
           },
           -- stylua: ignore end
         },
