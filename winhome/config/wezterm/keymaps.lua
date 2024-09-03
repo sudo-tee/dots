@@ -17,4 +17,5 @@ return {
   map("<S-A-Delete>", actions.kill_current_wokspace),
   map("<S-A-L>", act.ShowDebugOverlay),
   map("<S-A-C>", act.ShowDebugOverlay),
+  map("<S-A-W>", act.CloseCurrentPane({ confirm = true })),
 }
