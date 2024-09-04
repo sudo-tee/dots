@@ -9,6 +9,7 @@
 
 - shell:
     - [./Taskfile app zsh]
+    - [./Taskfile app build-essential]
     - [./Taskfile app zap]
     - [sudo ./Taskfile app brew]
     - [./Taskfile app taskfile]

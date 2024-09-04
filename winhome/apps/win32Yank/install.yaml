@@ -1,0 +1,13 @@
+- defaults:
+    shell:
+      stdout: true
+      stderr: true
+      quiet: true
+- shell:
+  - ["", 💿💿💿 Installing win32Yank 💿💿💿]
+  - [ wget https://github.com/equalsraf/win32yank/releases/download/v0.1.1/win32yank-x64.zip -O /tmp/win32yank-x64.zip ]
+  - [ cd /tmp && unzip -p win32yank-x64.zip win32yank.exe >win32yank.exe ]
+  - [ sudo cp /tmp/win32yank.exe /usr/local/bin ]
+  - [ sudo chmod +x /usr/local/bin/win32yank.exe ]
+  - [ rm /tmp/win32yank*]
+

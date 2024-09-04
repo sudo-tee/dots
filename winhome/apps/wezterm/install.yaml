@@ -1,0 +1,14 @@
+
+- defaults:
+    shell:
+      stdout: true
+      stderr: true
+      quiet: true
+- shell:
+  - ["", 💿💿💿 Installing Wezterm 💿💿💿]
+  - [ "CONFIG=winhome/apps/wezterm/conf.yaml ./Taskfile install" ]
+  - [ wget https://github.com/wez/wezterm/releases/download/nightly/WezTerm-nightly-setup.exe -O ~/winhome/WezTerm-nightly-setup.exe ]
+  - [ ~/winhome/WezTerm-nightly-setup.exe ]
+  - [ rm ~/winhome/WezTerm-nightly-setup.exe ]
+
+

@@ -1,0 +1,15 @@
+- defaults:
+    shell:
+      stdout: true
+      stderr: true
+      quiet: true
+    link:
+      create: true
+      relink: true
+
+- clean: ["~"]
+- link:
+    ~/winhome:
+      force: true
+      path: /mnt/c/Users/fbelanger/
+

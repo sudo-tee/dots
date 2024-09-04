@@ -9,7 +9,7 @@
       command: |
         if  [ -e "$HOME/winhome" ]; then
           echo "📁 Copying config files from winhome wezterm"
-          cp -r  ~/winhome/.config/wezterm/* winhome/config/wezterm/
+          cp -r  ~/winhome/.config/wezterm/* winhome/apps/wezterm/config/
         else
           echo "Nothing to do"
         fi

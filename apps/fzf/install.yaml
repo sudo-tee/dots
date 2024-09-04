@@ -11,6 +11,6 @@
       force: true
       path: apps/fzf/_fzf.sh
 - shell:
-    - description: "💿💿💿 Installing fnm 💿💿💿"
+    - description: "💿💿💿 Installing fzf 💿💿💿"
       command: |
           brew install fzf

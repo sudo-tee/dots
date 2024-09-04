@@ -1,0 +1,10 @@
+
+- defaults:
+    shell:
+      stdout: true
+      stderr: true
+      quiet: true
+- shell:
+  - ["", 💿💿💿 Installing Powertoys 💿💿💿]
+  - [ winget.exe install --id Microsoft.PowerToys --source winget  ]
+

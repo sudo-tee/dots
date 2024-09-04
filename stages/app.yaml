@@ -6,10 +6,11 @@
 - shell:
     - description: "📦📦📦 Application 📦📦📦"
       command: |
-        if  [ -e ".state/${APP}.skip" ]; then
+        if  [ -e ".state/${DOT_APP_PREFIX}${APP}${DOT_APP_FILENAME}.skip" ]; then
           echo "🔁 Skipping ${APP} install 🔁 \n"
-          echo "file .state/${APP}.skip found\n"
+          echo "file .state/${DOT_APP_PREFIX}${APP}${DOT_APP_FILENAME}.skip found\n"
         else
-          CONFIG="apps/${APP}/install.yaml" ./install
-          touch .state/${APP}.skip
+          CONFIG="${DOT_APP_PREFIX}apps/${APP}/${DOT_APP_FILENAME:-install}.yaml" ./install
+          mkdir -p .state/${DOT_APP_PREFIX}
+          touch .state/${DOT_APP_PREFIX}${APP}${DOT_APP_FILENAME}.skip
         fi

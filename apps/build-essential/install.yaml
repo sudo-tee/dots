@@ -1,0 +1,10 @@
+- defaults:
+    link:
+      create: true
+      relink: true
+    shell:
+      stdout: true
+      stderr: true
+      quiet: true
+- shell:
+  - [ sudo apt install git build-essential, "💿💿💿 Installing build-essential 💿💿💿" ]

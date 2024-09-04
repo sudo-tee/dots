@@ -7,6 +7,11 @@
     - ~/.config/local/zsh
     - ~/.config/local/zsh/includes
 
+- shell:
+   - [ sudo apt install zsh, 💿💿💿 Installing zsh 💿💿💿]
+   - [ chsh -s $(which zsh), Setting zsh to default shell ]
+
+
 - link:
     ~/.terminfo:
       force: true

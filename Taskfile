@@ -1,31 +1,42 @@
 #!/bin/bash -ue
 
-[[ -f "$HOME/.config/taskfile/MasterTaskfile" ]] && source "$HOME/.config/taskfile/MasterTaskfile"
-
-install:pre() {
-  sudo apt install zsh
-  chsh -s $(which zsh)
-  sudo apt install git build-essential
-}
-
 install() {
-  install:pre &&
-    ./install
+  ./install
 }
 
 app() {
-  local FLAG="${2:-}"
+  local prefix=""
+  local force_flag=""
+  local filename=""
+
+  while getopts "p:t:f" option; do
+    case ${option} in
+    p) prefix="${OPTARG}" ;;   # Prefix for the application
+    f) force_flag="f" ;;       # Force flag
+    t) filename="${OPTARG}" ;; # Filename
+    \?)
+      echo "Invalid option: ${OPTARG}" 1>&2
+      return 1
+      ;;
+    :)
+      echo "Option -${OPTARG} requires an argument." 1>&2
+      return 1
+      ;;
+    esac
+  done
+  shift $((OPTIND - 1))
 
   export APP="$1"
   export CONFIG="stages/app.yaml"
+  export DOT_APP_PREFIX="${prefix}/"
+  export DOT_APP_FILENAME="${filename}"
 
-  if [ "$FLAG" == "-f" ]; then
-    rm -f ".state/$APP.skip"
-    echo "Deleted .state/$APP.skip"
+  if [ "${force_flag}" == "f" ]; then
+    rm -f ".state/${DOT_APP_PREFIX}${APP}${DOT_APP_FILENAME}.skip"
+    echo "Deleted .state/${APP}${DOT_APP_FILENAME}.skip"
   fi
 
   ./install
-
 }
 
 project() {
@@ -36,7 +47,8 @@ project() {
   local FLAG="${3:-}"
 
   if [ "$FLAG" == "-f" ]; then
-    rm -f ".state/$APP.skip"
+    rm ".state/$PROJECT_DIR-pre-install.skip"
+    rm ".state/$PROJECT_DIR-post-install.skip"
     echo "Deleted .state/$PROJECT_DIR-pre-install.skip"
     echo "Deleted .state/$PROJECT_DIR-post-install.skip"
   fi
@@ -72,8 +84,12 @@ winhome() {
   CONFIG="winhome/install.yaml" ./install
 }
 
-winhome:sync() {
-  CONFIG="winhome/sync.yaml" ./install
+wezterm:sync() {
+  CONFIG="winhome/apps/wezterm/sync.yaml" ./install
+}
+
+wezterm:conf() {
+  CONFIG="winhome/apps/wezterm/conf.yaml" ./install
 }
 
 work() {
@@ -106,6 +122,12 @@ projects:run() {
 
 projects:update() {
   projects:run "git pull && ni"
+}
+
+help() {
+  echo "$0 <task> <args>"
+  echo "Tasks:"
+  compgen -A function | cat -n | grep -v help | grep -v "_"
 }
 
 TIMEFORMAT="Task completed in %3lR"

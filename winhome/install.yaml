@@ -4,21 +4,15 @@
       stderr: true
       quiet: true
 
+- link:
+    ~/winhome:
+      force: true
+      path: /mnt/c/Users/fbelanger/
+
 - shell:
-    - description: "💫💫💫 WINHOME 💫💫💫"
-      command: |
-        if  [ -e "$HOME/winhome" ]; then
-          mkdir -p  ~/winhome/.config/wezterm/
-          echo "📁 Copying config files for wezterm"
-          cp -r winhome/config/wezterm/* ~/winhome/.config/wezterm/
-        else
-          echo "Nothing to do"
-        fi
-- shell:
-    - description: "💿💿💿 Installing win32Yank 💫💫💫"
-      command: |
-        cd /tmp
-        wget https://github.com/equalsraf/win32yank/releases/download/v0.1.1/win32yank-x64.zip
-        unzip win32yank-x64.zip
-        sudo cp win32yank.exe /usr/local/bin
-        sudo chmod +x /usr/local/bin/win32yank.exe
+    - CONFIG=winhome/apps/wezterm/conf.yaml ./Taskfile install
+    - CONFIG=winhome/apps/wincompose/conf.yaml ./Taskfile install
+    - ./Taskfile app -p winhome wincompose
+    - ./Taskfile app -p winhome font
+    - ./Taskfile app -p winhome wezterm
+    - ./Taskfile app -p winhome win32Yank

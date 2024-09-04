@@ -1,0 +1,9 @@
+- defaults:
+    shell:
+      stdout: true
+      stderr: true
+      quiet: true
+
+
+- shell:
+  -  [ cp winhome/apps/wincompose/config/.XCompose ~/winhome/.XCompose, "📁 Copying config file for wincompose"]

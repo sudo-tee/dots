@@ -17,3 +17,5 @@
     - description: "💿💿💿 Installing bob 💿💿💿"
       command: |
           cargo install bob-nvim
+          source ~/.zshrc
+

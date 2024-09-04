@@ -1,0 +1,11 @@
+- defaults:
+    shell:
+      stdout: true
+      stderr: true
+      quiet: true
+
+- create:
+  - ~/winhome/.config/wezterm/
+
+- shell:
+  -  [ cp -r winhome/apps/wezterm/config/* ~/winhome/.config/wezterm/, "📁 Copying config files for wezterm"]

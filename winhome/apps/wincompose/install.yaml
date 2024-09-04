@@ -1,0 +1,11 @@
+
+- defaults:
+    shell:
+      stdout: true
+      stderr: true
+      quiet: true
+- shell:
+  - ["", 💿💿💿 Installing WinCompose 💿💿💿]
+  - [ "CONFIG=winhome/apps/wincompose/conf.yaml ./Taskfile install" ]
+  - [ winget.exe install WinCompose ]
+

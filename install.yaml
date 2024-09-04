@@ -9,6 +9,7 @@
 - clean: ["~"]
 
 - shell:
+    - [CONFIG="stages/pre-install.yaml" ./install]
     - [CONFIG="stages/apps.yaml" ./install]
     - [CONFIG="stages/links.yaml" ./install]
     - [CONFIG="stages/npm.yaml" ./install]
