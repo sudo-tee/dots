@@ -11,7 +11,7 @@ app() {
 
   while getopts "p:t:f" option; do
     case ${option} in
-    p) prefix="${OPTARG}" ;;   # Prefix for the application
+    p) prefix="${OPTARG}/" ;;  # Prefix for the application
     f) force_flag="f" ;;       # Force flag
     t) filename="${OPTARG}" ;; # Filename
     \?)
@@ -28,7 +28,7 @@ app() {
 
   export APP="$1"
   export CONFIG="stages/app.yaml"
-  export DOT_APP_PREFIX="${prefix}/"
+  export DOT_APP_PREFIX="${prefix}"
   export DOT_APP_FILENAME="${filename}"
 
   if [ "${force_flag}" == "f" ]; then
@@ -40,17 +40,37 @@ app() {
 }
 
 project() {
+
+  local directory=""
+  local force_flag=""
+  local filename=""
+
+  while getopts "d:t:f" option; do
+    case ${option} in
+    d) directory="${OPTARG}" ;; # Prefix for the application
+    f) force_flag="f" ;;        # Force flag
+    t) filename="${OPTARG}" ;;  # Filename
+    \?)
+      echo "Invalid option: ${OPTARG}" 1>&2
+      return 1
+      ;;
+    :)
+      echo "Option -${OPTARG} requires an argument." 1>&2
+      return 1
+      ;;
+    esac
+  done
+  shift $((OPTIND - 1))
+
   export PROJECT=$1
-  export PROJECT_DIR="${2:-$PROJECT}"
+  export PROJECT_DIR="${directory:-$PROJECT}"
 
   export CONFIG="stages/project.yaml"
   local FLAG="${3:-}"
 
   if [ "$FLAG" == "-f" ]; then
-    rm ".state/$PROJECT_DIR-pre-install.skip"
-    rm ".state/$PROJECT_DIR-post-install.skip"
-    echo "Deleted .state/$PROJECT_DIR-pre-install.skip"
-    echo "Deleted .state/$PROJECT_DIR-post-install.skip"
+    rm ".state/$PROJECT_DIR/*.skip"
+    echo "Deleted .state/$PROJECT_DIR/"
   fi
 
   ./install

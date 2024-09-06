@@ -7,6 +7,9 @@
       stderr: true
       quiet: true
 
+- create:
+  - ".state/${PROJECT_DIR}/"
+
 - shell:
     - echo "✨✨✨ Configuring Project ${PROJECT} ✨✨✨"
 - shell:
@@ -38,11 +41,17 @@
 - shell:
     - description: "📦 Pre install"
       command: |
-        if [ -f ${DOT_ENV}/projects/${PROJECT}/pre-install.yaml ]; then 
-          CONFIG="${DOT_ENV}/projects/${PROJECT}/pre-install.yaml" ./install
+        if  [ -e ".state/${PROJECT_DIR}/pre-install.skip" ]; then
+           echo "😎 Skipping pre install"
         else
-          echo "No pre install file ${DOT_ENV}/projects/${PROJECT}/pre-install.yaml"
+           if [ -f ${DOT_ENV}/projects/${PROJECT}/pre-install.yaml ]; then 
+             CONFIG="${DOT_ENV}/projects/${PROJECT}/pre-install.yaml" ./install
+           else
+             echo "No pre install file ${DOT_ENV}/projects/${PROJECT}/pre-install.yaml"
+           fi
+           touch .state/${PROJECT_DIR}/pre-install.skip
         fi
+ 
 
 - shell:
     - description: "📦 Installing"
@@ -56,11 +65,17 @@
 - shell:
     - description: "📦 Post install"
       command: |
-        if [ -f ${DOT_ENV}/projects/${PROJECT}/post-install.yaml ]; then
-          CONFIG="${DOT_ENV}/projects/${PROJECT}/post-install.yaml" ./install
+        if  [ -e ".state/${PROJECT_DIR}/post-install.skip" ]; then
+           echo "😎 Skipping post install"
         else
-          echo "No Post install file ${DOT_ENV}/projects/${PROJECT}/post-install.yaml"
+           if [ -f ${DOT_ENV}/projects/${PROJECT}/post-install.yaml ]; then
+             CONFIG="${DOT_ENV}/projects/${PROJECT}/post-install.yaml" ./install
+           else
+             echo "No Post install file ${DOT_ENV}/projects/${PROJECT}/post-install.yaml"
+           fi
+           touch .state/${PROJECT_DIR}/post-install.skip
         fi
+
 
 - shell:
     - echo "✨✨✨ End Configuring Project ${PROJECT} ✨✨✨"
