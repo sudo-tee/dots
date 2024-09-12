@@ -76,8 +76,6 @@ end
 
 function M.open_url(url)
   pcall(vim.fn.system, 'xdg-open ' .. url)
-  --
-  M.send_user_command 'open'
 end
 
 function M.write_to_wezterm_tmp_dir() end

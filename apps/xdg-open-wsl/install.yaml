@@ -1,0 +1,11 @@
+- defaults:
+    shell:
+      stdout: true
+      stderr: true
+      quiet: true
+
+- shell:
+    - description: "💿💿💿 Installing xdg-open-wsl 💿💿💿"
+      command: |
+        brew install pipx
+        pipx install git+https://github.com/cpbotha/xdg-open-wsl.git
