@@ -41,6 +41,14 @@ cmd('OpenCommitRangeDiff', function()
   vim.cmd('DiffviewOpen ' .. first_commit_hash .. '~1..' .. last_commit_hash)
 end, { range = true })
 
+cmd('StageHunk', function()
+  require('gitsigns').stage_hunk()
+end, {})
+
+cmd('StageVisualHunk', function()
+  require('gitsigns').stage_hunk({ vim.fn.line('.'), vim.fn.line('v') })
+end, {})
+
 u.map('n', '<leader>grm', u.cmd('Grbm'), { desc = 'rebase main/master' })
 u.map('n', '<leader>grc', u.cmd('Grc'), { desc = 'rebase continue' })
 u.map('n', '<leader>gcc', u.cmd('Gc'), { desc = 'commit' })
@@ -242,6 +250,8 @@ return {
             { 'n', 'q',          u.cmd('DiffviewClose'), { desc = 'Close' } },
             { 'n', '<A-q>',      u.cmd('DiffviewClose'), { desc = 'Close' } },
             { 'n', '<Leader>l',  actions.cycle_layout,   { desc = 'Cycle layout' } },
+            { 'n', '-',  u.cmd("StageHunk"),   { desc = 'Stage hunk' } },
+            { 'v', '-',  u.cmd("StageVisualHunk"),   { desc = 'Stage hunk' } },
           },
           file_panel = {
             { 'n', 'q',          u.cmd('DiffviewClose'), { desc = 'Close' } },
