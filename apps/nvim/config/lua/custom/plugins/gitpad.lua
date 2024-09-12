@@ -1,7 +1,7 @@
 local project_name
 return {
-  -- 'yujinyuz/gitpad.nvim',
-  dir = '~/Projects/_nvim/gitpad.nvim',
+  'sudo-tee/gitpad.nvim',
+  -- dir = '~/Projects/_nvim/gitpad.nvim',
   config = function()
     local notes_path = os.getenv('HOME') .. '/Projects/notes/WorkDocs/scratch'
     project_name = vim.fn.fnamemodify(vim.fn.getcwd(), ':t')
