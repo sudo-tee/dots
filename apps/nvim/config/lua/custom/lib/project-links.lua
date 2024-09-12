@@ -29,14 +29,18 @@ end
 local function get_project_links()
   local links = {}
 
+  local project_links = vim.g.project_links or {}
+  for _, link in pairs(project_links) do
+    local label, url, hidden = unpack(link)
+    if not hidden then
+      table.insert(links, { format_link(label, url), open_url(url) })
+    end
+  end
+
   local repo_url = M.get_url_by_label('Repo') or M.get_url_by_label('Gitlab')
   if #repo_url == 0 then
     repo_url = git.get_repo_url()
     table.insert(links, { format_link('Repo', repo_url), open_url(repo_url) })
-  end
-
-  for _, link in pairs(vim.g.project_links or {}) do
-    table.insert(links, { format_link(link[1], link[2]), open_url(link[2]) })
   end
 
   return links
@@ -45,9 +49,10 @@ end
 local function get_issue_link()
   local links = {}
 
-  local issue_link = jira.get_issue_link()
+  local ticket = jira.get_ticket_from_branch()
+  local issue_link = jira.get_issue_link(ticket)
   if issue_link then
-    table.insert(links, { format_link('Issue', issue_link), open_url(issue_link) })
+    table.insert(links, { format_link(ticket, issue_link), open_url(issue_link) })
   end
   return links
 end

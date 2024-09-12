@@ -10,16 +10,16 @@ function M.default_branch()
 end
 
 function M.current_branch()
-  local cmd_output = vim.fn.system('git branch --show-current'):gsub('\n', '')
+  local cmd_output = vim.b.gitsigns_head or vim.fn.system('git branch --show-current'):gsub('\n', '')
 
   return u.just(cmd_output).or_else(nil).unwrap()
 end
 
-function M.current_repo()
+M.current_repo = u.memoize(function()
   local cmd_output = vim.fn.system('git remote get-url origin'):gsub('\n', '')
 
   return u.just(cmd_output).or_else(nil).unwrap()
-end
+end)
 
 M.get_repo_url = function()
   local repo = M.current_repo() or ''

@@ -223,14 +223,20 @@ function M.get_current_branch()
   return M.just(cmd_output).or_else(nil).unwrap()
 end
 
-function M.memoize(cb)
-  local mem = {}
+local memoize_fnkey = {}
+local memoize_nil = {}
+
+function M.memoize(fn)
+  local cache = {}
   return function(...)
-    local key = vim.inspect({ ... })
-    if not mem[key] then
-      mem[key] = cb(...)
+    local c = cache
+    for i = 1, select('#', ...) do
+      local a = select(i, ...) or memoize_nil
+      c[a] = c[a] or {}
+      c = c[a]
     end
-    return mem[key]
+    c[memoize_fnkey] = c[memoize_fnkey] or { fn(...) }
+    return unpack(c[memoize_fnkey])
   end
 end
 
