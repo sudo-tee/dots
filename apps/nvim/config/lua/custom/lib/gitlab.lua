@@ -80,7 +80,7 @@ M.open_git_mr = function()
 end
 
 M.get_project_folder = function()
-  local cwd = vim.loop.cwd()
+  local cwd = vim.uv.cwd()
   return string.match(cwd or '', '[^/]+$')
 end
 

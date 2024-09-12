@@ -16,7 +16,7 @@ return {
      -- stylua: ignore
     keys = {
       { "<leader>tt", function() require("neotest").run.run(vim.fn.expand("%")) end, desc = "[T]est [F]ile" },
-      { "<leader>tT", function() require("neotest").run.run(vim.loop.cwd()) end, desc = "[T]est [A]ll Files" },
+      { "<leader>tT", function() require("neotest").run.run(vim.uv.cwd()) end, desc = "[T]est [A]ll Files" },
       { "<leader>tn", function() require("neotest").run.run() end, desc = "[T]est [N]earest" },
       { "<leader>tl", function() require("neotest").run.run_last() end, desc = "[T]est [L]ast" },
       { "<leader>ts", function() require("neotest").summary.toggle() end, desc = "[T]oggle [S]ummary" },
