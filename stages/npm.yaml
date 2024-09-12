@@ -14,6 +14,7 @@
           echo "😎 Skipping npm install"
         else
           echo "⌛ Installing global npm packages"
-          npm install -g @antfu/ni pnpm eslint prettier node-ts typescript yarn jsdom vitest npkill
+          npm install -g @antfu/ni eslint prettier node-ts typescript jsdom vitest npkill corepack
+          corepack enable
           touch .state/npm.skip
         fi

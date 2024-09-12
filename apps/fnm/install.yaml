@@ -16,6 +16,10 @@
           brew install fnm
           source _fnm.sh
           fnm install --lts
+          fnm install 18.18.0
+          fnm use 18.18.0
+          ./Taskfile npm
           fnm install 18.18.1
           fnm default 18.18.1
           fnm use default
+          ./Taskfile npm
