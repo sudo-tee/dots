@@ -32,14 +32,14 @@ local function base64_encode(data)
 end
 
 local function basename(file)
-  local file_name = file:match '^.+/(.+)$'
+  local file_name = file:match('^.+/(.+)$')
   return file_name:sub(0, #file_name - 4)
 end
 
 function M.project_files(dir_path)
-  local Path = require 'plenary.path'
-  local scan = require 'plenary.scandir'
-  dir_path = dir_path or Path:new(os.getenv 'HOME', '.config', 'projects').filename
+  local Path = require('plenary.path')
+  local scan = require('plenary.scandir')
+  dir_path = dir_path or Path:new(os.getenv('HOME'), '.config', 'projects').filename
   local files = {}
   for _, entry in ipairs(scan.scan_dir(dir_path)) do
     local file = basename(entry)
@@ -61,7 +61,7 @@ end
 
 function M.write_to_term(var)
   local success
-  if vim.fn.filewritable '/dev/fd/2' == 1 then
+  if vim.fn.filewritable('/dev/fd/2') == 1 then
     success = vim.fn.writefile({ var }, '/dev/fd/2', 'b') == 0
   else
     success = vim.fn.chansend(vim.v.stderr, var) > 0
