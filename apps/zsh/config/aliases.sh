@@ -33,6 +33,14 @@ mkcd() {
   cd "$1" || exit
 }
 
+zsh-fix-history() {
+  mv ~/.zsh_history ~/.zsh_history_bad
+  strings ~/.zsh_history_bad >~/.zsh_history
+  fc -R ~/.zsh_history
+  rm ~/.zsh_history_bad
+}
+
+# What the port
 wtp() {
   if [ -z "$1" ]; then
     echo "Usage: wtp [-p][-k] port_number"
@@ -72,64 +80,4 @@ hextorgb() {
 
 rgbtohex() {
   printf '#%02x%02x%02x\n' "$1" "$2" "$3"
-}
-
-git_branch() {
-  echo $(git symbolic-ref --short -q HEAD)
-}
-
-git_rebase_current_branch() {
-  # Check if there are unstaged changes
-  if [[ -n $(git status --porcelain) ]]; then
-
-    stash_name="main-rebase-stash-$(date +'%Y%m%d%H%M%S')-$(shuf -i 1000-9999 -n 1)"
-
-    # Prompt the user if they want to stash the changes
-    select choice in "Stash changes" "Abort rebase"; do
-      case $REPLY in
-        1)
-          # Stash the changes
-          git stash
-          break
-          ;;
-        2)
-          # Abort the rebase
-          echo "Aborting rebase."
-          return 1
-          ;;
-        *)
-          echo "Invalid choice. Please select a valid option."
-          ;;
-      esac
-    done </dev/tty
-  fi
-
-  # Check for existing branches (main or master)
-  if git rev-parse --verify --quiet master; then
-    MAIN_BRANCH="master"
-  else
-    if git rev-parse --verify --quiet main; then
-      MAIN_BRANCH="main"
-    else
-      echo "Neither 'master' nor 'main' branch found."
-      return 1
-    fi
-  fi
-
-  # Fetch the new changes from the upstream repository
-  git fetch origin $MAIN_BRANCH:$MAIN_BRANCH
-
-  # Rebase the current branch on top of the updated upstream branch
-  git rebase $MAIN_BRANCH
-
-  # Reapply the named stash if it exists
-  if [[ -n $stash_name ]]; then
-    git stash apply stash@{$stash_name}
-  fi
-}
-
-## set a custom version of node for nvim which reduce memory consumption
-## @see https://github.com/yioneko/vtsls/issues/136
-nvim() {
-  IS_NVIM=true PATH="$HOME/.local/share/node-v20.12.1-linux-x64-pointer-compression/bin:$PATH" ~/.local/share/bob/nvim-bin/nvim "$@"
 }

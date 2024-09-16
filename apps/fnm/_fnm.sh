@@ -1,1 +1,1 @@
-eval "$(fnm env --use-on-cd)"
+eval "$(fnm env --use-on-cd --corepack-enabled)"

@@ -15,6 +15,10 @@
     ~/.config/nvim/:
       force: true
       path: apps/nvim/config
+    ~/.config/zsh/includes/_nvim.sh:
+      force: true
+      path: apps/nvim/_nvim.sh
+    
 - shell:
     - description: "💿💿💿 installing nvim"
       command: |
