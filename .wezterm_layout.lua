@@ -8,7 +8,7 @@ return {
 		{
 			name = "work_dots",
 			cwd = "/home/francis/work-dots",
-			command = "nvim",
+			command = "sleep 1 && nvim",
 			title = "editor",
 			panes = {},
 		},
