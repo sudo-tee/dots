@@ -65,7 +65,6 @@ M.create_new_mr = function()
   if not success then
     return nil
   end
-  return u.read_file('/tmp/xdg-open-url') or ''
 end
 
 M.open_git_mr = function()
