@@ -25,3 +25,5 @@
   rebase-main = !git-rebase-main
   wip = !git add . && git commit -m 'Work in progress'
 
+[init]
+  defaultBranch = main
