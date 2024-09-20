@@ -5,9 +5,6 @@ local map_pair = u.map_pair
 
 map('n', ' ', '<Nop>', { noremap = true, silent = true })
 
--- Release for surround
-map('n', 's', '<Nop>')
-
 --file related maps
 map('n', '<leader>fn', cmd('enew'), { desc = '[N]ew File' })
 

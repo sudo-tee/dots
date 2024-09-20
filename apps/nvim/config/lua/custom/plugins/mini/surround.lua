@@ -7,18 +7,20 @@ local M = {}
 -- - sr)'  - [S]urround [R]eplace [)] [']
 
 M.setup = function()
-  require('mini.surround').setup()
+  require('mini.surround').setup({
+    mappings = {
+      add = 'Sa', -- Add surrounding in Normal and Visual modes
+      delete = 'Sd', -- Delete surrounding
+      find = 'Sf', -- Find surrounding (to the right)
+      find_left = 'SF', -- Find surrounding (to the left)
+      highlight = 'Sh', -- Highlight surrounding
+      replace = 'Sr', -- Replace surrounding
+      update_n_lines = 'Sn', -- Update `n_lines`
 
-  -- Disable visual mode 's' key
-  vim.keymap.set('v', 's', '<nop>', { noremap = true })
-  -- Surround shortcuts
-  local surrounds = { '{', '}', '[', ']', '(', ')', "'", '"', '`' }
-  for _, char in ipairs(surrounds) do
-    vim.keymap.set('v', 's' .. char, function()
-      local c = vim.api.nvim_replace_termcodes(char, true, false, true)
-      vim.api.nvim_feedkeys('sa' .. c, 'v', true)
-    end, { desc = 'Surround with ' .. char, noremap = true })
-  end
+      suffix_last = 'l', -- Suffix to search with "prev" method
+      suffix_next = 'n', -- Suffix to search with "next" method
+    },
+  })
 end
 
 return M
