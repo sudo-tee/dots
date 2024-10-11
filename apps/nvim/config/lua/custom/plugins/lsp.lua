@@ -112,7 +112,7 @@ return {
       --  When you add nvim-cmp, luasnip, etc. Neovim now has *more* capabilities.
       --  So, we create new capabilities with nvim cmp, and then broadcast that to the servers.
       local capabilities = vim.lsp.protocol.make_client_capabilities()
-      capabilities = vim.tbl_deep_extend('force', capabilities, require('cmp_nvim_lsp').default_capabilities())
+      -- capabilities = vim.tbl_deep_extend('force', capabilities, require('cmp_nvim_lsp').default_capabilities())
 
       -- Enable the following language servers
       --  Feel free to add/remove any LSPs that you want here. They will automatically be installed.
@@ -135,6 +135,7 @@ return {
         -- But for many setups, the LSP (`tsserver`) will work just fine
         -- tsserver = require('custom.plugins.lsp.servers.tsserver'),
         rust_analyzer = {},
+        volar = {},
         vtsls = require('custom.plugins.lsp.servers.vtsls'),
         eslint = require('custom.plugins.lsp.servers.eslint'),
         lua_ls = require('custom.plugins.lsp.servers.luals'),
@@ -164,6 +165,7 @@ return {
         'shellcheck',
         'shfmt',
         'codelldb',
+        'vue-language-server',
       })
       require('mason-tool-installer').setup({ ensure_installed = ensure_installed })
 
@@ -183,6 +185,7 @@ return {
               capabilities = vim.tbl_deep_extend('force', {}, capabilities, server.capabilities or {}),
               root_dir = server.root_dir,
               single_file_support = server.single_file_support,
+              before_init = server.before_init,
               on_init = server.on_init,
               on_attach = server.on_attach,
               on_exit = server.on_exit,

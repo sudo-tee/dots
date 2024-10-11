@@ -1,4 +1,5 @@
 return {
+  filetypes = { 'typescript', 'javascript', 'javascriptreact', 'typescriptreact', 'vue' },
   single_file_support = true,
   root_dir = require('lspconfig.util').root_pattern('.git'),
   on_attach = function(_opts, buff)
@@ -23,6 +24,16 @@ return {
       require('vtsls').commands.restart_server()
     end, '[R]estart TS server')
   end,
+  before_init = function(params, config)
+    local vuePluginConfig = {
+      name = '@vue/typescript-plugin',
+      location = require('mason-registry').get_package('vue-language-server'):get_install_path() .. '/node_modules/@vue/language-server',
+      languages = { 'vue' },
+      configNamespace = 'typescript',
+      enableForWorkspaceTypeScriptVersions = true,
+    }
+    table.insert(config.settings.vtsls.tsserver.globalPlugins, vuePluginConfig)
+  end,
   settings = {
     vtsls = {
       enableMoveToFileCodeAction = true,
@@ -30,6 +41,9 @@ return {
         completion = {
           enableServerSideFuzzyMatch = true,
         },
+      },
+      tsserver = {
+        globalPlugins = {},
       },
     },
     javascript = {
