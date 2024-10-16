@@ -2,7 +2,7 @@ return { -- Useful plugin to show you pending keybinds.
   'folke/which-key.nvim',
   config = function() -- This is the function that runs, AFTER loading
     require('which-key').setup({
-      preset = 'modern',
+      preset = 'helix',
     })
 
     -- Document existing key chains

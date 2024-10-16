@@ -100,8 +100,8 @@ map('n', 'G', 'Gzz', { desc = 'Go to end' })
 
 -- Utilities to replace text
 map('n', 'c*', 'g*Ncgn', { desc = 'Change word with . repeat' })
-map('x', '<leader>rv', cmd('ReplaceSelection'), { desc = '[R]eplace [v]isually selected text' })
-map('n', '<leader>rw', cmd('ReplaceWord'), { desc = '[R]eplace [w]ord under cursor' })
+map('x', '<localleader>rv', cmd('ReplaceSelection'), { desc = '[R]eplace [v]isually selected text' })
+map('n', '<localleader>rw', cmd('ReplaceWord'), { desc = '[R]eplace [w]ord under cursor' })
 
 -- Close anything order: floating window | splits |
 map({ 'n', 'i', 't' }, '<A-q>', function()
