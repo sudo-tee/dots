@@ -218,12 +218,11 @@ return { -- Fuzzy Finder (files, lsp, etc)
 
       undo = {
         entry_format = '⨀ #$ID [$STAT] \t\t$TIME',
-
         mappings = {
           i = {
-            ['<C-y>'] = require('telescope-undo.actions').yank_additions,
-            ['<C-Y>'] = require('telescope-undo.actions').yank_deletions,
-            ['<C-cr>'] = require('telescope-undo.actions').restore,
+            ['<C-d>'] = require('telescope-undo.actions').yank_deletions,
+            ['<C-a>'] = require('telescope-undo.actions').yank_additions,
+            ['<C-r>'] = require('telescope-undo.actions').restore,
           },
         },
       },
