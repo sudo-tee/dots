@@ -62,7 +62,7 @@ return {
     'SuperBo/fugit2.nvim',
     opts = {
       width = 90,
-      libgit2_path = '/home/linuxbrew/.linuxbrew/Cellar/libgit2/1.7.2/lib/libgit2.so.1.7.2',
+      libgit2_path = '/home/linuxbrew/.linuxbrew/Cellar/libgit2/1.8.1/lib/libgit2.so',
       external_diffview = true,
     },
     dependencies = {

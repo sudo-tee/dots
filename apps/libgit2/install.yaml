@@ -1,0 +1,10 @@
+- defaults:
+    shell:
+      stdout: true
+      stderr: true
+      quiet: true
+
+- shell:
+    - description: "💿💿💿  Installing libgit2 💿💿💿"
+      command: |
+          brew install libgit2
