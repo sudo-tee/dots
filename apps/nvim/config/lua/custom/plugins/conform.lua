@@ -7,10 +7,6 @@ return { -- Autoformat
     default_format_opts = {
       stop_after_first = true,
     },
-    format_on_save = {
-      timeout_ms = 700,
-      lsp_fallback = true,
-    },
     formatters_by_ft = {
       lua = { 'stylua' },
       -- Conform can also run multiple formatters sequentially
@@ -33,4 +29,16 @@ return { -- Autoformat
       },
     },
   },
+  config = function(_, opts)
+    if vim.g.format_on_save == false then
+      opts.format_on_save = nil
+    else
+      opts.format_on_save = {
+        timeout_ms = 700,
+        lsp_fallback = true,
+      }
+    end
+
+    require('conform').setup(opts)
+  end,
 }
