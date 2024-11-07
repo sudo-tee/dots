@@ -6,7 +6,6 @@ vim.api.nvim_set_keymap('c', '<Up>', 'v:lua.get_wildmenu_key("<left>", "<up>")',
 function _G.get_wildmenu_key(key_wildmenu, key_regular)
   return vim.fn.wildmenumode() ~= 0 and key_wildmenu or key_regular
 end
-
 return {
   'folke/noice.nvim',
   lazy = true,
@@ -68,12 +67,20 @@ return {
             { find = '^%d+ fewer lines;?' },
             { find = '^%d+ more lines?;?' },
             { find = '^%d+ line less;?' },
-            { find = '^%d+ lines yanked$' },
-            { find = '^%d+ lines moved$' },
-            { find = '^%d+ lines indented$' },
-            { find = '^%d+ lines changed$' },
+            { find = '^%d+ lines? %a+ed$' },
             { find = '^%d+ lines .ed %d+ times?$' },
             { kind = 'emsg', find = 'E490' },
+          },
+        },
+        skip = true,
+        opts = { skip = true },
+      },
+      {
+        filter = {
+          event = 'notify',
+          any = {
+            { find = 'vim.treesitter.get_parser will return nil instead' },
+            { find = 'No information available' },
           },
         },
         skip = true,
@@ -83,5 +90,18 @@ return {
   },
   dependencies = {
     'MunifTanjim/nui.nvim',
+    {
+      'folke/snacks.nvim',
+      opts = {
+        styles = {
+          notification = {
+            wo = { wrap = true },
+          },
+        },
+        notifier = {
+          enabled = true,
+        },
+      },
+    },
   },
 }
