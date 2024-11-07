@@ -64,11 +64,7 @@ return {
             { find = '%d+L, %d+B' },
             { find = '; after #%d+' },
             { find = '; before #%d+' },
-            { find = '^%d+ fewer lines;?' },
-            { find = '^%d+ more lines?;?' },
-            { find = '^%d+ line less;?' },
-            { find = '^%d+ lines? %a+ed$' },
-            { find = '^%d+ lines .ed %d+ times?$' },
+            { find = '^%d+%s+lines?%s*%a*;?$' }, -- Matches all line count messages
             { kind = 'emsg', find = 'E490' },
           },
         },
