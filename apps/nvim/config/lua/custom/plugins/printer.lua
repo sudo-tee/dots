@@ -1,8 +1,8 @@
-local DEFAULT_PRINT_TAG = '🧭'
+local DEFAULT_PRINT_TAG = '⭕'
 local function get_print_tag()
   local tag = DEFAULT_PRINT_TAG
   if vim.g.debug_tag then
-    tag = DEFAULT_PRINT_TAG .. ' ' .. vim.g.debug_tag
+    tag = DEFAULT_PRINT_TAG .. '' .. vim.g.debug_tag
   end
   return tag
 end
@@ -89,6 +89,12 @@ return {
         return string.format('print("%s =" , vim.inspect(%s))', text_inside, text_var)
       end,
       typescriptreact = function(text_inside, text_var)
+        if not text_var then
+          return string.format('console.warn("%s")', text_inside)
+        end
+        return string.format('console.warn("%s=", %s)', text_inside, text_var)
+      end,
+      vue = function(text_inside, text_var)
         if not text_var then
           return string.format('console.warn("%s")', text_inside)
         end
