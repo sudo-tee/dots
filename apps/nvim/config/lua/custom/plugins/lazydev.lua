@@ -1,6 +1,14 @@
 return {
   {
     'folke/lazydev.nvim',
+    dependencies = {
+      {
+        'sudo-tee/wezterm-types',
+        -- dir = '~/Projects/_nvim/wezterm-types',
+        lazy = true,
+        event = 'LazyFile',
+      },
+    },
     ft = 'lua', -- only load on lua files
     opts = {
       library = {
@@ -10,7 +18,7 @@ return {
         -- "LazyVim",
         -- When relative, you can also provide a path to the library in the plugin dir
         { path = 'luvit-meta/library', words = { 'vim%.uv' } },
-        { path = '~/Projects/_nvim/wezterm-types', words = { 'wezterm.' }, mods = { 'wezterm' } },
+        { path = 'wezterm-types', words = { 'wezterm.' }, mods = { 'wezterm' } },
       },
     },
   },
