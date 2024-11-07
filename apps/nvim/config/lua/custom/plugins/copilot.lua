@@ -56,7 +56,7 @@ return {
   {
     'CopilotC-Nvim/CopilotChat.nvim',
     lazy = true,
-    even = 'VeryLazy',
+    event = 'VeryLazy',
     cmd = {
       'CopilotChatTests',
       'CopilotChat',
@@ -67,6 +67,7 @@ return {
       'CopilotChatCommitStaged',
       'CopilotChatCommitMessageFloat',
       'CopilotChatModels',
+      'CopilotChatModel',
     },
     branch = 'canary',
     dependencies = {
@@ -74,7 +75,7 @@ return {
       { 'nvim-lua/plenary.nvim' }, -- for curl, log wrapper
     },
     opts = {
-      model = 'gpt-4',
+      model = 'gpt-4o-2024-08-06',
       temperature = 0.2,
       context = 'buffers',
       debug = false,
