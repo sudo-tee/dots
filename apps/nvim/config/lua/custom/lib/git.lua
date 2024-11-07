@@ -4,9 +4,7 @@ local u = lazy_require('custom.lib.utils')
 local M = {}
 
 function M.default_branch()
-  local cmd_output = vim.fn.system('basename $(git symbolic-ref refs/remotes/origin/HEAD)'):gsub('\n', '')
-
-  return u.just(cmd_output).or_else('main').unwrap()
+  return vim.trim(vim.fn.system("git branch -l main master --format '%(refname:short)'"))
 end
 
 function M.current_branch()
