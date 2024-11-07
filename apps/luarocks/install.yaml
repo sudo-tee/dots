@@ -1,0 +1,9 @@
+- defaults:
+    shell:
+      stdout: true
+      stderr: true
+      quiet: true
+- shell:
+    - description: "💿💿💿 Installing luarocks 💿💿💿"
+      command: |
+        brew install luarocks

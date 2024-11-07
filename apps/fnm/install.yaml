@@ -6,6 +6,8 @@
       stdout: true
       stderr: true
       quiet: true
+- create:
+    ~/.npm-global/bin/
 - link:
     ~/.config/zsh/includes/_fnm.sh:
       force: true
@@ -19,7 +21,9 @@
           fnm install 18.18.0
           fnm use 18.18.0
           ./Taskfile npm
+          fnm use 18.20.0
+          ./Taskfile npm -f
           fnm install 18.18.1
           fnm default 18.18.1
           fnm use default
-          ./Taskfile npm
+          ./Taskfile npm -f
