@@ -157,6 +157,7 @@ map('n', '<leader>ur', cmd('w | e'), { desc = '[R]fresh file' })
 
 -- run quick shell cmd
 map('n', '!', ':Sh ', { desc = 'Execute Shell Command in the floating term', silent = false })
+map('n', 'g!', ':.!', { desc = 'Filter Filter [count] lines through the external program', silent = false })
 
 -- Work/Workflow specific keymaps
 
