@@ -94,6 +94,9 @@ vim.opt.virtualedit = 'block'
 -- Dont show the default intro message
 vim.opt.shortmess:append('I')
 
+-- set exrc to enable local .nvim.lua files
+vim.opt.exrc = true
+
 vim.opt.spelllang = { 'en' }
 
 -- Allow misspellings
