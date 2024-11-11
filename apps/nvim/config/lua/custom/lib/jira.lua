@@ -25,16 +25,28 @@ function M.get_ticket_from_branch()
   return M.match_jira_ticket(cmd_output)
 end
 
-function M.create_jira_link(ticket)
+--- Format a jira ticket as a markdown link
+--- @param ticket? string (optional) The ticket number to format, if not provided it will try to get the ticket from the current branch
+function M.format_ticket_as_markdown_link(ticket)
   ticket = ticket or M.get_ticket_from_branch()
 
   if not ticket then
     print('Please provide a jira ticket')
     return
   end
+
   local jira_url = M.get_issue_link(ticket)
 
-  local link = string.format('[%s](%s)', ticket, jira_url)
+  if not jira_url then
+    print('No jira url found for issue:', ticket)
+    return
+  end
+
+  return string.format('[%s](%s)', ticket, jira_url)
+end
+
+function M.create_jira_link(ticket)
+  local link = M.format_ticket_as_markdown_link(ticket)
 
   local cursor_pos = vim.api.nvim_win_get_cursor(0)
   vim.api.nvim_put({ link }, 'c', true, true)
