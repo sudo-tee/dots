@@ -32,7 +32,7 @@ M.setup = function()
 
     -- Replace text with register
     replace = {
-      prefix = 's',
+      prefix = 'gs',
 
       -- Whether to reindent new text to match previous indent
       reindent_linewise = true,
