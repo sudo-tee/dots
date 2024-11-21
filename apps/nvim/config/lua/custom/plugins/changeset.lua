@@ -12,7 +12,7 @@ return {
   },
   keys = {
     {
-      '<leader>cxx',
+      '<leader>pkx',
       function()
         require('changesets').create()
       end,
@@ -20,12 +20,13 @@ return {
       desc = 'Create a changeset',
     },
     {
-      '<leader>cxa',
+      '<leader>pka',
       function()
         require('changesets').add_package()
       end,
       mode = 'n',
-      desc = 'Add a package to the changeset in the current buffer',
+      desc = 'Add a package to changeset',
+      ft = 'markdown',
     },
   },
 }

@@ -16,6 +16,7 @@ M.setup = function()
         local filename = MiniStatusline.section_filename({ trunc_width = 80 })
         local fileinfo = MiniStatusline.section_fileinfo({ trunc_width = 75 })
         local lazy_updates = MiniStatusline.updates()
+        local package_info = require('package-info').get_status()
 
         local location = MiniStatusline.section_location({ trunc_width = 75 })
         local copilot_status = MiniStatusline.copilot_status()
@@ -23,7 +24,7 @@ M.setup = function()
         local groups = {
           { hl = 'IncSearch', strings = { search } },
           { hl = mode_hl, strings = { mode } },
-          { hl = 'MiniStatuslineDevinfo', strings = { git } },
+          { hl = 'MiniStatuslineDevinfo', strings = { git, package_info } },
           { hl = 'MiniStatuslineCustomDiagnosticError', strings = { diagnostics.error } },
           { hl = 'MiniStatuslineCustomDiagnosticWarn', strings = { diagnostics.warn } },
           { hl = 'MiniStatuslineCustomDiagnosticInfo', strings = { diagnostics.info } },

@@ -4,22 +4,28 @@ return {
   ft = 'json',
   keys = {
     {
-      '<leader>pi',
+      '<leader>pki',
       function()
         require('package-info').show()
       end,
+      desc = 'Toggle info',
+      ft = 'json',
     },
     {
-      '<leader>pI',
+      '<leader>pkI',
       function()
         require('package-info').show({ force = true })
       end,
+      desc = 'Toggle info (force)',
+      ft = 'json',
     },
     {
-      '<leader>pu',
+      '<leader>pku',
       function()
         require('package-info').update()
       end,
+      desc = 'Update',
+      ft = 'json',
     },
   },
   opts = {

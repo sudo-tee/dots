@@ -44,6 +44,8 @@ return { -- Useful plugin to show you pending keybinds.
       { '<leader>n_', hidden = true },
       { '<leader>p', group = 'Project' },
       { '<leader>p_', hidden = true },
+      { '<leader>pk', group = 'Packages' },
+      { '<leader>pk_', hidden = true },
       {
         mode = { 'v', 's' },
         { '<leader>r', group = 'Rename/Replace', icon = { icon = '🔁', color = 'blue' } },
