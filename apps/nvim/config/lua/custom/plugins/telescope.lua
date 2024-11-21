@@ -129,7 +129,6 @@ return { -- Fuzzy Finder (files, lsp, etc)
 
     -- [S]earch
     { '<leader>sb',       u.cmd('Telescope buffers'),      desc = 'Buffers' },
-    { '<leader><leader>', u.cmd('Telescope buffers'),      desc = 'Buffers' },
     { '<C-p>'     ,       u.cmd('Telescope smart_open'),   desc = 'Files' },
     { '<leader>sh',       u.cmd('Telescope help_tags'),    desc = 'Help' },
     { '<leader>sk',       u.cmd('Telescope keymaps'),      desc = 'Keymaps' },
