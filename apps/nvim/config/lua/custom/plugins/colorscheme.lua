@@ -67,6 +67,10 @@ return {
           -- Gitgraph
           GitGraphBranchMsg = { fg = '#D7D7BA' },
           GitGraphTimestamp = { fg = '#727169' },
+
+          BlinkCmpMenu = { bg = theme.ui.bg_m3 },
+          BlinkCmpMenuBorder = { bg = theme.ui.bg_m3, fg = '#54546d' },
+          BlinkCmpDocBorder = { bg = theme.ui.bg_m3, fg = '#54546d' },
         }
       end
       require('kanagawa').setup(opts)

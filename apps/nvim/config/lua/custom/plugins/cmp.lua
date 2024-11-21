@@ -27,7 +27,7 @@ local kind_icons = {
 }
 
 return { -- Autocompletion
-  enabled = true,
+  enabled = false,
   'hrsh7th/nvim-cmp',
   event = 'InsertEnter',
   dependencies = {
