@@ -177,3 +177,11 @@ end, { desc = '[O]pen [G]itlab mr for branch' })
 map('n', '<leader>glc', function()
   require('custom.lib.gitlab').generate_chat_message_for_mr()
 end, { desc = 'Generate a sharing message for MR' })
+
+map('n', '<leader>glf', function()
+  require('snacks').gitbrowse.open({ what = 'file' })
+end, { desc = 'Line' })
+
+map('n', '<leader>glb', function()
+  require('snacks').gitbrowse.open({ what = 'branch' })
+end, { desc = 'Branch' })
