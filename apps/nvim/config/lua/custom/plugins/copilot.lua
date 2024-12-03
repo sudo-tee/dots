@@ -40,20 +40,6 @@ return {
     end,
   },
   {
-    'zbirenbaum/copilot-cmp',
-    lazy = true,
-    event = 'VeryLazy',
-    enabled = false,
-    dependencies = 'copilot.lua',
-    opts = {},
-    config = function(_, opts)
-      if vim.g.disable_copilot then
-        return
-      end
-      require('copilot_cmp').setup(opts)
-    end,
-  },
-  {
     'CopilotC-Nvim/CopilotChat.nvim',
     lazy = true,
     event = 'VeryLazy',
