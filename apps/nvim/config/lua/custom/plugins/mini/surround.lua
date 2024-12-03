@@ -7,6 +7,7 @@ local M = {}
 -- - sr)'  - [S]urround [R]eplace [)] [']
 
 M.setup = function()
+  vim.keymap.set('n', 's', '<nop>', { noremap = true })
   require('mini.surround').setup({
     mappings = {
       add = 'sa', -- Add surrounding in Normal and Visual modes
