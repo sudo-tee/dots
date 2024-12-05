@@ -1,12 +1,11 @@
 return {
   'yetone/avante.nvim',
   event = 'VeryLazy',
-  lazy = false,
+  lazy = true,
   version = false, -- set this if you want to always pull the latest change
   ---@module 'avante'
   ---@type avante.Config
   opts = {
-    debug = true,
     provider = 'copilot',
     auto_suggestions_provider = nil,
     behaviour = {
@@ -16,14 +15,6 @@ return {
       timeout = 50000,
       model = 'claude-3.5-sonnet',
     },
-    -- mappings = {
-    --   suggestion = {
-    --     accept = '<A-l>',
-    --     next = '<M-]>',
-    --     prev = '<M-[>',
-    --     dismiss = '<C-]>',
-    --   },
-    -- },
     windows = {
       width = 40,
     },
