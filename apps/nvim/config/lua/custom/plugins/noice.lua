@@ -92,5 +92,6 @@ return {
   },
   dependencies = {
     'MunifTanjim/nui.nvim',
+    'folke/snacks.nvim',
   },
 }
