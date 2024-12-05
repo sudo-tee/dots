@@ -43,6 +43,7 @@ return {
     {
       '<leader>np',
       function()
+        project_name = vim.fn.fnamemodify(vim.fn.getcwd(), ':t')
         require('gitpad').toggle_gitpad({
           filename = project_name .. '.md',
           default_text = function(current)
