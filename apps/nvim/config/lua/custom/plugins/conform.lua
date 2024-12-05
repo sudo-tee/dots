@@ -21,6 +21,7 @@ return { -- Autoformat
       html = { 'prettierd', 'prettier' },
       scss = { 'prettierd', 'prettier' },
       sh = { 'shfmt' },
+      markdown = { 'prettierd', 'prettier' },
     },
     formatters = {
       injected = { options = { ignore_errors = true } },
