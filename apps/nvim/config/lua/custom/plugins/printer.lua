@@ -84,9 +84,9 @@ return {
     formatters = {
       lua = function(text_inside, text_var)
         if not text_var then
-          return string.format('print("%s")', text_inside)
+          return string.format('vim.print("%s")', text_inside)
         end
-        return string.format('print("%s =" , vim.inspect(%s))', text_inside, text_var)
+        return string.format('vim.print("%s =" , %s)', text_inside, text_var)
       end,
       typescriptreact = function(text_inside, text_var)
         if not text_var then
