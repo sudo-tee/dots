@@ -15,7 +15,11 @@ return {
     },
      -- stylua: ignore
     keys = {
-      { "<leader>tt", function() require("neotest").run.run(vim.fn.expand("%")) end, desc = "[T]est [F]ile" },
+      { "<leader>tt", function()
+        require("neotest").run.run(vim.fn.expand("%"))
+        require("neotest").summary.open()
+      end, desc = "[T]est [F]ile"
+      },
       { "<leader>tT", function() require("neotest").run.run(vim.uv.cwd()) end, desc = "[T]est [A]ll Files" },
       { "<leader>tn", function() require("neotest").run.run() end, desc = "[T]est [N]earest" },
       { "<leader>tl", function() require("neotest").run.run_last() end, desc = "[T]est [L]ast" },
@@ -27,7 +31,7 @@ return {
     config = function()
       local jest_config = {
         env = { CI = true },
-        jestCommand = vim.g.jest_command or 'jest',
+        jestCommand = vim.g.jest_command or 'nr test',
       }
 
       local vitest_config = {
