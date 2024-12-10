@@ -2,7 +2,7 @@ local M = {}
 
 local function _get_jira_url()
   local project_links = require('custom.lib.project-links')
-  return project_links.get_url_by_label('Jira', 'https://my-jira-url/browse/')
+  return project_links.get_url_by_label('Jira', os.getenv('JIRA_URL') or 'https://my-jira-url/browse/')
 end
 
 function M.get_issue_link(ticket)
