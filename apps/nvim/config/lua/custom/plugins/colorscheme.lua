@@ -53,11 +53,12 @@ return {
           MiniStatuslineCopilotNormal = { fg = '#7aa2f7', bg = theme.ui.bg_m3 },
           MiniStatuslineCopilotInProgress = { fg = '#9ece6a', bg = theme.ui.bg_m3 },
           MiniStatuslineCopilotWarning = { fg = '#ff9a3b', bg = theme.ui.bg_m3 },
-
-          MiniStatuslineCustomDiagnosticError = { fg = '#e82424', bg = theme.ui.bg_m3 },
-          MiniStatuslineCustomDiagnosticWarn = { fg = '#ff9a3b', bg = theme.ui.bg_m3 },
-          MiniStatuslineCustomDiagnosticInfo = { fg = '#659584', bg = theme.ui.bg_m3 },
-          MiniStatuslineCustomDiagnosticHint = { fg = '#6a9589', bg = theme.ui.bg_m3 },
+          MiniStatuslineCustomDiagnosticError = { fg = '#e82424', bg = '#393836' },
+          MiniStatuslineCustomDiagnosticWarn = { fg = '#ff9a3b', bg = '#393836' },
+          MiniStatuslineCustomDiagnosticInfo = { fg = '#659584', bg = '#393836' },
+          MiniStatuslineCustomDiagnosticHint = { fg = '#6a9589', bg = '#393836' },
+          MiniStatuslineCustomDiagnostic = { fg = '#D7D7BA', bg = '#393836' },
+          MiniStatuslineCustomNotes = { fg = '#6a9589', bg = theme.ui.bg_m3 },
 
           -- mini tabline
           MiniTablineModifiedVisible = { fg = '#bada55', bg = '#2a2a37' },
