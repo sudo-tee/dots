@@ -99,9 +99,17 @@ map('n', '<C-b>', '<C-b>zz', { desc = 'Scroll backward' })
 map('n', 'G', 'Gzz', { desc = 'Go to end' })
 
 -- Utilities to replace text
-map('n', 'c*', 'g*Ncgn', { desc = 'Change word with . repeat' })
+
+map('n', '<localleader>*', '*Ncgn', { desc = 'Change word with . repeat' })
 map('x', '<localleader>rv', cmd('ReplaceSelection'), { desc = '[R]eplace [v]isually selected text' })
 map('n', '<localleader>rw', cmd('ReplaceWord'), { desc = '[R]eplace [w]ord under cursor' })
+
+-- Duplicate a line and comment out the first line
+map('n', '<localleader>c', 'yy<cmd>normal gcc<CR>p', { desc = 'Duplicate line and comment' })
+
+map('n', '<C-c>', 'ciw')
+
+map('i', '<A-BS>', '<C-W>', { desc = 'Deletes word backwards' })
 
 -- Close anything order: floating window | splits |
 map({ 'n', 'i', 't' }, '<A-q>', function()
@@ -144,12 +152,8 @@ map('n', '<leader>`', bufnav('e #'), { desc = 'Switch to alternate ' })
 
 -- Custom UI keymaps
 
-map('n', '<leader>uh', function()
-  vim.lsp.inlay_hint.enable(not vim.lsp.inlay_hint.is_enabled())
-end, { desc = 'toggle inlay [h]int mode' })
-
 --Profiling
-map('n', '<leader>up', cmd('ToggleProfile'), { silent = false, noremap = true, desc = 'Toggle [p]rofilling session' })
+-- map('n', '<leader>up', cmd('ToggleProfile'), { silent = false, noremap = true, desc = 'Toggle [p]rofilling session' })
 -- highlights under cursor
 map('n', '<leader>ui', vim.show_pos, { desc = '[I]nspect Pos' })
 
@@ -161,6 +165,10 @@ map('n', 'g!', ':.!', { desc = 'Filter Filter [count] lines through the external
 
 -- Work/Workflow specific keymaps
 
+map('n', '<leader>cft', function()
+  require('custom.lib.arrowfn').toggle_function()
+end, { desc = 'Toggle arrow/regular function' })
+
 -- Helper to create a jira link
 map('v', '<leader>pj', 'y:JiraLink <C-R>"<CR>', { silent = false, desc = 'Create a [j]ira link in markdown' })
 map('n', '<leader>pj', ':JiraLink', { silent = false, desc = 'Create a [j]ira link in markdown' })
@@ -168,11 +176,11 @@ map('n', '<leader>pj', ':JiraLink', { silent = false, desc = 'Create a [j]ira li
 -- Gitlab shortcuts
 map('n', '<leader>glo', function()
   require('custom.lib.gitlab').open_git_remote()
-end, { desc = '[O]pen [G]itab remote for project' })
+end, { desc = 'Repo' })
 
 map('n', '<leader>glm', function()
   require('custom.lib.gitlab').open_git_mr()
-end, { desc = '[O]pen [G]itlab mr for branch' })
+end, { desc = 'Merge Request' })
 
 map('n', '<leader>glc', function()
   require('custom.lib.gitlab').generate_chat_message_for_mr()
