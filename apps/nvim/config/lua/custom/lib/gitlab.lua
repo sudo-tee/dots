@@ -53,7 +53,7 @@ M.get_mr_details = function()
   return nil
 end
 
-M.get_current_mr_url = u.memoize(function(branch)
+M.get_current_mr_url, M.clear_mr_url_cache = u.memoize(function(branch)
   print('Getting current MR url for branch', branch)
 
   local details = M.get_mr_details()
@@ -65,6 +65,7 @@ M.create_new_mr = function()
   if not success then
     return nil
   end
+  M.clear_mr_url_cache()
 end
 
 M.open_git_mr = function()
@@ -73,9 +74,10 @@ M.open_git_mr = function()
   print('Opening MR for branch')
 
   local web_url = M.get_current_mr_url(branch) or M.create_new_mr()
-
-  wezterm.open_url(web_url)
-  vim.fn.setreg('+', web_url)
+  if web_url and #web_url > 0 then
+    wezterm.open_url(web_url)
+    vim.fn.setreg('+', web_url)
+  end
 end
 
 M.get_project_folder = function()
@@ -102,7 +104,7 @@ M.generate_chat_message_for_mr = function()
   local title = details.title
   local web_url = details.web_url
 
-  local message = string.format('Ⓜ MR (%s) | %s \n%s', project_folder, title, web_url)
+  local message = string.format('Ⓜ MR (%s) | %s \n%s \n\n @Nova-devs @Nova-testers', project_folder, title, web_url)
   vim.notify('⚡ MR message copied to clipboard!', vim.log.levels.INFO)
   vim.fn.setreg('+', message)
 end
