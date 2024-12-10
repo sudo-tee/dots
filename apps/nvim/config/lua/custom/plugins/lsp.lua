@@ -49,6 +49,13 @@ return {
       vim.api.nvim_create_autocmd('LspAttach', {
         group = vim.api.nvim_create_augroup('sudo_tee/lsp-attach', { clear = true }),
         callback = function(event)
+          local hover = function()
+            vim.lsp.buf.hover({ border = 'rounded' })
+          end
+          local signature_help = function()
+            vim.lsp.buf.signature_help({ border = 'rounded' })
+          end
+
           local map = function(mode, keys, func, desc)
             vim.keymap.set(mode, keys, func, { buffer = event.buf, desc = 'LSP: ' .. desc })
           end
@@ -62,9 +69,9 @@ return {
           map('n', '<leader>rn', vim.lsp.buf.rename,                               '[R]e[n]ame')
           map('n', '<F2>',       vim.lsp.buf.rename,                               '[R]e[n]ame')
           map('n', '<leader>ca', vim.lsp.buf.code_action,                          '[C]ode [A]ction')
-          map('n', 'K',          vim.lsp.buf.hover,                                'Hover Documentation')
-          map('n', 'gK',         vim.lsp.buf.signature_help,                       'Signatiure Help')
-          map('i', '<M-k>',      vim.lsp.buf.signature_help,                       'Signatiure Help')
+          map('n', 'K',          hover,                                            'Hover Documentation')
+          map('n', 'gK',         signature_help,                                   'Signatiure Help')
+          map('i', '<M-k>',      signature_help,                                   'Signatiure Help')
           map('n', 'gD',         vim.lsp.buf.declaration,                          '[G]oto [D]eclaration')
           -- stylua: ignore end
 
