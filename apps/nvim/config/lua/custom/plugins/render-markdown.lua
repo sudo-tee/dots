@@ -3,7 +3,7 @@ return {
   ---@module 'render-markdown'
   ---@type render.md.UserConfig
   opts = {
-    file_types = { 'markdown', 'Avante' },
+    file_types = { 'markdown', 'Avante', 'copilot-chat' },
   },
-  ft = { 'markdown', 'Avante' },
+  ft = { 'markdown', 'Avante', 'copilot-chat' },
 }
