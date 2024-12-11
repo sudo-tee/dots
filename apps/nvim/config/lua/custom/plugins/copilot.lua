@@ -61,10 +61,11 @@ return {
       { 'nvim-lua/plenary.nvim' }, -- for curl, log wrapper
     },
     opts = {
-      model = 'gpt-4o-2024-08-06',
+      model = 'claude-3.5-sonnet',
       temperature = 0.2,
       context = 'buffers',
       debug = false,
+      insert_at_end = true,
       question_header = '  User ',
       answer_header = '  Copilot ',
       error_header = '## Error ',
