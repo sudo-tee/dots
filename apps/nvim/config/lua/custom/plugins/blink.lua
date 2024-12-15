@@ -16,9 +16,6 @@ return {
   opts = {
     keymap = { preset = 'enter' },
 
-    -- Disables keymaps, completions and signature help for these filetypes
-    blocked_filetypes = {},
-
     completion = {
       menu = {
         border = 'rounded',
@@ -29,6 +26,9 @@ return {
           border = 'rounded',
         },
       },
+    },
+    sources = {
+      cmdline = {},
     },
     signature = {
       enabled = true,
