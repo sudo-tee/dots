@@ -15,7 +15,7 @@ local logo = [[
 
 return {
   'nvimdev/dashboard-nvim',
-  dependencies = { { 'juansalvatore/git-dashboard-nvim', 'nvim-tree/nvim-web-devicons' } },
+  dependencies = { { 'juansalvatore/git-dashboard-nvim' } },
   event = 'VimEnter',
   opts = function()
     local git_dashboard = require('git-dashboard-nvim').setup({
