@@ -48,6 +48,8 @@ map('v', 'X', '"_X')
 map('n', '<Del>', '"_x')
 map('v', '<Del>', '"_x')
 
+map('i', '<A-BS>', '<C-W>', { desc = 'delete whole word' })
+
 -- Duplicate lines without affecting PRIMARY and CLIPBOARD selections.
 map('n', '<localleader>d', 'm`""Y""P``', { desc = 'Duplicate line' })
 map('x', '<localleader>d', '""Y""Pgv', { desc = 'Duplicate selection' })
