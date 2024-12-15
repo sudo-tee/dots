@@ -8,8 +8,6 @@ return {
         'nvim-treesitter/nvim-treesitter',
         'nvim-neotest/neotest-jest',
         'sudo-tee/neotest-vitest',
-        'nvim-neotest/neotest-vim-test',
-        'vim-test/vim-test',
         'nvim-neotest/neotest-plenary',
       },
     },

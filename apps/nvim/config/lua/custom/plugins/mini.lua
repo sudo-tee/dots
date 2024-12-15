@@ -10,6 +10,9 @@ return { -- Collection of various small independent plugins/modules
       require('custom.plugins.mini.tabline').setup()
       require('custom.plugins.mini.hipatterns').setup()
       require('custom.plugins.mini.operators').setup()
+
+      require('mini.icons').setup()
+      MiniIcons.mock_nvim_web_devicons()
     end,
   },
 }

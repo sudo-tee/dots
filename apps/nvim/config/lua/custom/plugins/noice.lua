@@ -6,7 +6,12 @@ vim.api.nvim_set_keymap('c', '<Up>', 'v:lua.get_wildmenu_key("<left>", "<up>")',
 function _G.get_wildmenu_key(key_wildmenu, key_regular)
   return vim.fn.wildmenumode() ~= 0 and key_wildmenu or key_regular
 end
+
 return {
+  dependencies = {
+    'MunifTanjim/nui.nvim',
+    'folke/snacks.nvim',
+  },
   'folke/noice.nvim',
   lazy = true,
   event = 'LazyFile',
@@ -92,9 +97,5 @@ return {
         opts = { skip = true },
       },
     },
-  },
-  dependencies = {
-    'MunifTanjim/nui.nvim',
-    'folke/snacks.nvim',
   },
 }
