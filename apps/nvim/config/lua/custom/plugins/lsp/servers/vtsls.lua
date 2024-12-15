@@ -12,6 +12,10 @@ return {
       require('vtsls').commands.add_missing_imports(0)
     end, 'Add missing [i]mports')
 
+    map('n', '<leader>cx', function()
+      require('vtsls').commands.source_actions(0)
+    end, 'Sources actions')
+
     map('n', '<leader>cA', function()
       require('vtsls').commands.fix_all(0)
     end, 'Fix [a]ll diagnostics')
