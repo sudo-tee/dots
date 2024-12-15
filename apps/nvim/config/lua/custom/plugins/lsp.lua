@@ -1,16 +1,6 @@
 local u = require('custom.lib.utils')
-local rust = require('custom.plugins.lsp.servers.rust-analyzer')
 
 return {
-  {
-    'mrcjkb/rustaceanvim',
-    version = '^4', -- Recommended
-    ft = { 'rust' },
-    opts = {
-      server = rust.server,
-    },
-    config = rust.config,
-  },
   { -- LSP Configuration & Plugins
 
     'neovim/nvim-lspconfig',
@@ -22,10 +12,19 @@ return {
       {
         'yioneko/nvim-vtsls',
         handlers = {},
+        refactor_auto_rename = true,
       },
       'b0o/schemastore.nvim',
     },
     opts = {
+      capabilities = {
+        workspace = {
+          fileOperations = {
+            didRename = true,
+            willRename = true,
+          },
+        },
+      },
       ---@type vim.diagnostic.Opts
       diagnostics = {
         float = {
@@ -83,13 +82,16 @@ return {
       --  By default, Neovim doesn't support everything that is in the LSP Specification.
       --  When you add nvim-cmp, luasnip, etc. Neovim now has *more* capabilities.
       --  So, we create new capabilities with nvim cmp, and then broadcast that to the servers.
-      local capabilities = vim.lsp.protocol.make_client_capabilities()
-      local cmp_status_ok, cmp_nvim_lsp = pcall(require, 'cmp_nvim_lsp')
-      if cmp_status_ok then
-        capabilities = vim.tbl_deep_extend('force', capabilities, cmp_nvim_lsp.default_capabilities())
-      else
-        capabilities = require('blink.cmp').get_lsp_capabilities(capabilities)
-      end
+      local has_cmp, cmp_nvim_lsp = pcall(require, 'cmp_nvim_lsp')
+      local has_blink, blink = pcall(require, 'blink.cmp')
+      local capabilities = vim.tbl_deep_extend(
+        'force',
+        {},
+        vim.lsp.protocol.make_client_capabilities(),
+        has_cmp and cmp_nvim_lsp.default_capabilities() or {},
+        has_blink and blink.get_lsp_capabilities() or {},
+        opts.capabilities or {}
+      )
 
       -- Enable the following language servers
       --  Feel free to add/remove any LSPs that you want here. They will automatically be installed.
@@ -104,14 +106,6 @@ return {
         -- clangd = {},
         -- gopls = {},
         -- pyright = {},
-        -- ... etc. See `:help lspconfig-all` for a list of all the pre-configured LSPs
-        --
-        -- Some languages (like typescript) have entire language plugins that can be useful:
-        --    https://github.com/pmizio/typescript-tools.nvim
-        --
-        -- But for many setups, the LSP (`tsserver`) will work just fine
-        -- tsserver = require('custom.plugins.lsp.servers.tsserver'),
-        rust_analyzer = {},
         volar = {},
         vtsls = require('custom.plugins.lsp.servers.vtsls'),
         eslint = require('custom.plugins.lsp.servers.eslint'),

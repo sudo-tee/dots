@@ -3,7 +3,6 @@ return {
   single_file_support = true,
   root_dir = require('lspconfig.util').root_pattern('.git'),
   on_attach = function(_opts, buff)
-    local u = require('custom.lib.utils')
     local map = function(mode, keys, func, desc)
       vim.keymap.set(mode, keys, func, { buffer = buff, desc = 'LSP: ' .. desc })
     end
@@ -31,7 +30,8 @@ return {
   before_init = function(params, config)
     local vuePluginConfig = {
       name = '@vue/typescript-plugin',
-      location = require('mason-registry').get_package('vue-language-server'):get_install_path() .. '/node_modules/@vue/language-server',
+      location = require('mason-registry').get_package('vue-language-server'):get_install_path()
+        .. '/node_modules/@vue/language-server',
       languages = { 'vue' },
       configNamespace = 'typescript',
       enableForWorkspaceTypeScriptVersions = true,
