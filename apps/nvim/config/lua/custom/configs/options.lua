@@ -99,6 +99,9 @@ vim.opt.exrc = true
 
 vim.opt.spelllang = { 'en' }
 
+vim.opt.termguicolors = true
+vim.opt.autoread = true
+
 -- Allow misspellings
 vim.cmd.cnoreabbrev('qw', 'wq')
 vim.cmd.cnoreabbrev('W', 'w')
