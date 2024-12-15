@@ -73,7 +73,13 @@ local function merge_requests()
   for _, mr in ipairs(mr_list) do
     local status_icon = glab.status_icons[mr.detailed_merge_status] or '❔'
     table.insert(links, {
-      status_icon .. u.fixed_width(mr.detailed_merge_status, 11) .. ' | ' .. mr.title .. ' (' .. mr.user_notes_count .. ')',
+      status_icon
+        .. u.fixed_width(mr.detailed_merge_status, 11)
+        .. ' | '
+        .. mr.title
+        .. ' ('
+        .. mr.user_notes_count
+        .. ')',
 
       u.open_url_callback(mr.web_url),
     })
@@ -107,7 +113,9 @@ return { -- Fuzzy Finder (files, lsp, etc)
       build = 'make',
     },
     { 'stevearc/dressing.nvim', opts = {} },
-    { 'nvim-tree/nvim-web-devicons' },
+    {
+      'echasnovski/mini.nvim',
+    },
 
     {
       'danielfalk/smart-open.nvim',

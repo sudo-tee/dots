@@ -67,7 +67,7 @@ return {
     },
     dependencies = {
       'MunifTanjim/nui.nvim',
-      'nvim-tree/nvim-web-devicons',
+      'echasnovski/mini.nvim',
       'nvim-lua/plenary.nvim',
     },
     build = function() end,

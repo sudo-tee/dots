@@ -4,7 +4,7 @@ return {
     lazy = true,
     dependencies = {
       'nvim-lua/plenary.nvim',
-      'nvim-tree/nvim-web-devicons',
+      'echasnovski/mini.nvim',
       'MunifTanjim/nui.nvim',
     },
     cmd = 'NeoTree',
