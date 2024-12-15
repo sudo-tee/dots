@@ -52,9 +52,6 @@ return {
     words = {
       enabled = true,
     },
-    scroll = {
-      enabled = true,
-    },
     debug = {
       enabled = true,
     },
@@ -83,7 +80,6 @@ return {
           :map('<leader>uc')
         Snacks.toggle.treesitter():map('<leader>uT')
         Snacks.toggle.inlay_hints():map('<leader>uh')
-        Snacks.toggle.indent():map('<leader>ug')
       end,
     })
   end,
