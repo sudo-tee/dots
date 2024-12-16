@@ -1,5 +1,6 @@
 return { -- Useful plugin to show you pending keybinds.
   'folke/which-key.nvim',
+  enabled = false,
   config = function() -- This is the function that runs, AFTER loading
     require('which-key').setup({
       preset = 'helix',
