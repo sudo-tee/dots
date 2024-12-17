@@ -46,6 +46,7 @@ M.key_tables = {
     {
       key = "Escape",
       action = wezterm.action_callback(function(window, pane)
+        wezterm.GLOBAL.ws_switcher_action = ""
         window:perform_action(act.PopKeyTable, pane)
         window:perform_action(act.SendKey({ key = "Escape" }), pane)
       end),

@@ -1,6 +1,6 @@
 return {
   'folke/snacks.nvim',
-  event = 'VeryLazy',
+  lazy = false,
   keys = {
     {
       '<leader>up',
@@ -54,6 +54,9 @@ return {
     },
     debug = {
       enabled = true,
+    },
+    terminal = {
+      enabled = false,
     },
   },
   init = function()

@@ -1,3 +1,17 @@
+local function run(start)
+  require('custom.lib.task-progress')
+    .new({
+      get_status = function()
+        return require('package-info.ui.generic.loading-status').get()
+      end,
+      notify_id = 'package-info.nvim',
+      title = 'Package Info',
+    })
+    :start(function()
+      start()
+    end)
+end
+
 return {
   'vuki656/package-info.nvim',
   dependencies = 'MunifTanjim/nui.nvim',
@@ -6,7 +20,9 @@ return {
     {
       '<leader>pki',
       function()
-        require('package-info').show()
+        run(function()
+          require('package-info').show()
+        end)
       end,
       desc = 'Toggle info',
       ft = 'json',
@@ -14,7 +30,9 @@ return {
     {
       '<leader>pkI',
       function()
-        require('package-info').show({ force = true })
+        run(function()
+          require('package-info').show({ force = true })
+        end)
       end,
       desc = 'Toggle info (force)',
       ft = 'json',
@@ -22,7 +40,9 @@ return {
     {
       '<leader>pku',
       function()
-        require('package-info').update()
+        run(function()
+          require('package-info').update()
+        end)
       end,
       desc = 'Update',
       ft = 'json',

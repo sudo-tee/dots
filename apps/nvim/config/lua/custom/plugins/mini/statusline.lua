@@ -40,16 +40,36 @@ M.setup = function()
     },
   })
 
-  ---@diagnostic disable-next-line: duplicate-set-field
-  MiniStatusline.section_filename = function()
-    -- In terminal always use plain name
-    if vim.bo.buftype == 'terminal' then
-      return '%t'
-    else
-      -- Use relative path
-      return '%f%m%r'
+  MiniStatusline.section_filename = (function()
+    local utils = require('custom.lib.utils')
+    local cached_filename = nil
+
+    local function update_filename_cache()
+      if vim.bo.buftype == 'terminal' then
+        cached_filename = '%t'
+      else
+        cached_filename = '%f%m%r'
+      end
     end
-  end
+
+    update_filename_cache()
+
+    vim.api.nvim_create_autocmd({
+      'BufEnter',
+      'BufFilePost',
+      'BufWritePost',
+      'FileChangedShellPost',
+      'TermOpen',
+    }, {
+      group = utils.augroup('custom_statusline_filename'),
+
+      callback = update_filename_cache,
+    })
+
+    return function()
+      return cached_filename
+    end
+  end)()
 
   MiniStatusline.copilot_status = function()
     if vim.g.disable_copilot then
@@ -80,7 +100,7 @@ M.setup = function()
     local cache = {}
 
     -- Update cache when diagnostics change
-    vim.api.nvim_create_autocmd('DiagnosticChanged', {
+    vim.api.nvim_create_autocmd({ 'DiagnosticChanged', 'BufEnter' }, {
       group = utils.augroup('custom_statusline_diagnostics'),
       callback = function()
         cache = {}
@@ -101,7 +121,7 @@ M.setup = function()
 
   MiniStatusline.macro = function(_)
     local reg = vim.fn.reg_recording()
-    local macro = reg ~= '' and string.format('Recording @%s', reg) or ''
+    local macro = reg ~= '' and string.format('🎥 @%s', reg) or ''
 
     return macro
   end

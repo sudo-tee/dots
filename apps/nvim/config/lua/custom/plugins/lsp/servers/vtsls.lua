@@ -1,5 +1,5 @@
 return {
-  filetypes = { 'typescript', 'javascript', 'javascriptreact', 'typescriptreact', 'vue' },
+  filetypes = { 'typescript', 'javascript', 'javascriptreact', 'typescriptreact' },
   single_file_support = true,
   root_dir = require('lspconfig.util').root_pattern('.git'),
   on_attach = function(_opts, buff)

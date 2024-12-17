@@ -22,5 +22,6 @@
 - shell:
     - description: "💿💿💿 installing nvim"
       command: |
+          brew install luarocks
           bob install nightly
           bob use nightly

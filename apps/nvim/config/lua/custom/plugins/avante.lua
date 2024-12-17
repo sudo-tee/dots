@@ -9,6 +9,7 @@ return {
   ---@module 'avante'
   ---@type avante.Config
   opts = {
+    debug = false,
     provider = 'copilot',
     auto_suggestions_provider = nil,
     behaviour = {

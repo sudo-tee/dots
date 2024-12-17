@@ -54,11 +54,13 @@ return {
       'CopilotChatCommitMessageFloat',
       'CopilotChatModels',
       'CopilotChatModel',
+      'CopilotChatFixDiagnostic',
     },
     branch = 'canary',
     dependencies = {
       { 'zbirenbaum/copilot.lua' }, -- or github/copilot.vim
       { 'nvim-lua/plenary.nvim' }, -- for curl, log wrapper
+      { 'nvim-treesitter/nvim-treesitter' },
     },
     opts = {
       model = 'claude-3.5-sonnet',
@@ -66,9 +68,10 @@ return {
       context = 'buffers',
       debug = false,
       insert_at_end = true,
+      highlight_headers = false,
       question_header = '  User ',
       answer_header = '  Copilot ',
-      error_header = '## Error ',
+      error_header = '> [!ERROR] Error',
       prompts = {
         Tests = {
           prompt = '/COPILOT_GENERATE Please generate tests for my code using vitest. The test should be wrapped in a `describe` block. Each test case should be in an `it` block. Generate all the test cases',
@@ -77,13 +80,14 @@ return {
     },
     -- stylua: ignore
     keys = {
-      { mode = {'n'},        '<leader>cch', '<cmd>CopilotChatHelpActions<cr>',        desc = '[H]elp actions', },
-      { mode = { 'n', 'v' }, '<leader>cca', '<cmd>CopilotChatActions<cr>',            desc = '[A]ctions' },
-      {                      '<leader>ccc', '<cmd>CopilotChatCommitMessageFloat<cr>', desc = '[C]ommit message', },
-      { mode = { 'n', 'v' }, '<leader>ccp', '<cmd>CopilotChat<cr>',                   desc = '[P]rompt' },
-      { mode = { 'n', 'v' }, '<leader>cco', '<cmd>CopilotChatOptimize<cr>',           desc = '[O]ptimize' },
-      { mode = { 'n', 'v' }, '<leader>cct', '<cmd>CopilotChatTests<cr>',              desc = '[T]ests' },
-      { mode = { 'n' },      '<leader>ccq', '<cmd>CopilotChatQuick<cr>',             desc = '[]ests' },
+      { mode = {'n'},        '<leader>cch', '<cmd>CopilotChatHelpActions<cr>',        desc = 'Help actions', },
+      { mode = { 'n', 'v' }, '<leader>cca', '<cmd>CopilotChatActions<cr>',            desc = 'Actions' },
+      {                      '<leader>ccc', '<cmd>CopilotChatCommitMessageFloat<cr>', desc = 'Commit message', },
+      { mode = { 'n', 'v' }, '<leader>ccp', '<cmd>CopilotChat<cr>',                   desc = 'Prompt' },
+      { mode = { 'n', 'v' }, '<leader>cco', '<cmd>CopilotChatOptimize<cr>',           desc = 'Optimize' },
+      { mode = { 'n', 'v' }, '<leader>cct', '<cmd>CopilotChatTests<cr>',              desc = 'Tests' },
+      { mode = { 'n' },      '<leader>ccq', '<cmd>CopilotChatQuick<cr>',              desc = 'Quick chat' },
+      { mode = { 'n', 'v' }, '<leader>ccd', '<cmd>CopilotChatFixDiagnostic<cr>',      desc = 'Fix diagnostic' },
     },
     -- See Commands section for default commands if you want to lazy load on them
     config = function(_, opts)

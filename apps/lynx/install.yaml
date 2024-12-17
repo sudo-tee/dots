@@ -1,0 +1,9 @@
+- defaults:
+    shell:
+      stdout: true
+      stderr: true
+      quiet: true
+- shell:
+    - description: "💿💿💿 Installing lynx 💿💿💿"
+      command: |
+        brew install lynx
