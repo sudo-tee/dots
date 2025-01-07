@@ -14,7 +14,8 @@ local M = {}
 function M.get_projects()
   return lume(wezterm.read_dir(wsl_path))
     :filter(function(path)
-      return not path:match("_nvim")
+      local basename = u.basename(path)
+      return not basename:match("^_")
     end)
     :map(function(path)
       return { name = u.basename(path), path = path, cwd = project_path .. u.basename(path) }
