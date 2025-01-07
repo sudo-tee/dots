@@ -48,8 +48,6 @@ map('v', 'X', '"_X')
 map('n', '<Del>', '"_x')
 map('v', '<Del>', '"_x')
 
-map('i', '<A-BS>', '<C-W>', { desc = 'delete whole word' })
-
 -- Duplicate lines without affecting PRIMARY and CLIPBOARD selections.
 map('n', '<localleader>d', 'm`""Y""P``', { desc = 'Duplicate line' })
 map('x', '<localleader>d', '""Y""Pgv', { desc = 'Duplicate selection' })
@@ -110,8 +108,6 @@ map('n', '<localleader>rw', cmd('ReplaceWord'), { desc = '[R]eplace [w]ord under
 map('n', '<localleader>c', 'yy<cmd>normal gcc<CR>p', { desc = 'Duplicate line and comment' })
 
 map('n', '<C-c>', 'ciw')
-
-map('i', '<A-BS>', '<C-W>', { desc = 'Deletes word backwards' })
 
 -- Close anything order: floating window | splits |
 map({ 'n', 'i', 't' }, '<A-q>', function()
