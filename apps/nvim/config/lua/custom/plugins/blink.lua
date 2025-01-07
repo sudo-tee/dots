@@ -29,6 +29,9 @@ return {
     completion = {
       menu = {
         border = 'rounded',
+        draw = {
+          treesitter = { 'lsp' },
+        },
       },
       documentation = {
         auto_show = true,
@@ -36,9 +39,6 @@ return {
           border = 'rounded',
         },
       },
-    },
-    sources = {
-      cmdline = {},
     },
     signature = {
       enabled = true,
@@ -49,7 +49,11 @@ return {
 
     sources = {
       cmdline = {},
-      default = { 'lsp', 'path', 'snippets', 'buffer' },
+      providers = {
+        lsp = {
+          async = true,
+        },
+      },
     },
   },
 }
