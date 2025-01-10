@@ -21,7 +21,7 @@ return {
         },
       },
       panel = {
-        enabled = true,
+        enabled = false,
         keymap = {
           open = '<M-/>',
         },
@@ -54,7 +54,7 @@ return {
       'CopilotChatCommitMessageFloat',
       'CopilotChatModels',
       'CopilotChatModel',
-      'CopilotChatFixDiagnostic',
+      'CopilotChatFixDiag',
     },
     branch = 'canary',
     dependencies = {
@@ -87,7 +87,7 @@ return {
       { mode = { 'n', 'v' }, '<leader>cco', '<cmd>CopilotChatOptimize<cr>',           desc = 'Optimize' },
       { mode = { 'n', 'v' }, '<leader>cct', '<cmd>CopilotChatTests<cr>',              desc = 'Tests' },
       { mode = { 'n' },      '<leader>ccq', '<cmd>CopilotChatQuick<cr>',              desc = 'Quick chat' },
-      { mode = { 'n', 'v' }, '<leader>ccd', '<cmd>CopilotChatFixDiagnostic<cr>',      desc = 'Fix diagnostic' },
+      { mode = { 'n', 'v' }, '<leader>ccd', '<cmd>CopilotChatFixDiag<cr>',            desc = 'Fix diagnostic' },
     },
     -- See Commands section for default commands if you want to lazy load on them
     config = function(_, opts)
@@ -101,9 +101,17 @@ return {
       local actions = require('CopilotChat.actions')
       local select = require('CopilotChat.select')
 
+      command('CopilotChatFixDiag', function()
+        local selection = function(source)
+          return select.visual(source) or select.line(source)
+        end
+
+        require('CopilotChat').ask('/Fix diagnostics', { selection = selection })
+      end, { range = true })
+
       command('CopilotChatActions', function()
         local selection = function(source)
-          return select.visual(source) or select.buffer(source)
+          return select(source) or select.buffer(source)
         end
         telescope.pick(actions.prompt_actions({ selection = selection }))
       end, { range = true })
