@@ -34,8 +34,11 @@ return {
 
       local vitest_config = {
         env = { CI = true },
-        vitestCommand = vim.g.vitest_command or 'vitest',
-        -- vitestConfigFile = vim.g.vitest_config_file or nil,
+        vitestCommand = vim.g.vitest_command or 'nr test',
+        vitestConfigFile = vim.g.vitest_config_file or nil,
+        filter_dir = function(name, rel_path, root)
+          return name ~= 'node_modules'
+        end,
         cwd = function(file)
           local util = require('neotest-vitest.util')
           if string.find(file, '/packages/') then
