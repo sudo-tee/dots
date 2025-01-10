@@ -60,7 +60,7 @@ return {
           end
           -- stylua: ignore start
           map('n', 'gd',         u.cmd('Telescope lsp_definitions'),               '[G]oto [D]efinition')
-          map('n', 'gr',         u.cmd('Telescope lsp_references'),                '[G]oto [R]eferences')
+          map('n', 'gR',         u.cmd('Telescope lsp_references'),                '[G]oto [R]eferences')
           map('n', 'gI',         u.cmd('Telescope lsp_implementations'),           '[G]oto [I]mplementation')
           map('n', 'gy',         u.cmd('Telescope lsp_type_definitions'),          'T[y]pe Definition')
           map('n', '<leader>sy', u.cmd('Telescope lsp_document_symbols'),          'Document [Sy]mbols')
