@@ -50,10 +50,7 @@ return {
     completion = {
       accept = { auto_brackets = { enabled = false } },
       list = {
-        selection = {
-          preselect = false,
-          auto_insert = false,
-        },
+        -- selection = 'manual',
       },
       menu = {
         border = 'rounded',

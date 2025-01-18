@@ -1,0 +1,4 @@
+#!/bin/bash
+set -u
+
+command cat <(fre --sorted --store_name "$1") <(fd -t f --color never -E .git) | awk '!x[$0]++'

@@ -47,10 +47,10 @@ return {
         header = git_dashboard,
         -- stylua: ignore start
         center = {
-          { action = "Telescope smart_open",  desc = " Find file",    icon = " ", key = "f" },
-          { action = "Telescope oldfiles",    desc = " Recent files", icon = " ", key = "e" },
+          { action = function() Snacks.picker.smart() end,  desc = " Find file",    icon = " ", key = "f" },
+          { action = function() Snacks.picker.recent() end,    desc = " Recent files", icon = " ", key = "e" },
           { action = "ene | startinsert",     desc = " New file",     icon = " ", key = "n" },
-          { action = "Telescope live_grep",   desc = " Find text",    icon = " ", key = "g" },
+          { action = function() Snacks.picker.grep() end,   desc = " Find text",    icon = " ", key = "g" },
           { action = "Lazy",                  desc = " Lazy",         icon = "󰒲 ", key = "l" },
           { action = "qa",                    desc = " Quit",         icon = " ", key = "q" },
         },

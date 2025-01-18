@@ -8,6 +8,7 @@ return {
         'nvim-treesitter/nvim-treesitter',
         'nvim-neotest/neotest-jest',
         'sudo-tee/neotest-vitest',
+        -- { dir = '~/Projects/_nvim/neotest-vitest' },
         'nvim-neotest/neotest-plenary',
       },
     },

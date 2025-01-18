@@ -1,7 +1,8 @@
 return {
+  -- enabled = false,
   -- 'sudo-tee/changesets.nvim',
   dir = '/home/francis/Projects/_nvim/changesets.nvim/',
-  dependencies = { 'neovim/nvim-lspconfig', 'nvim-telescope/telescope.nvim' },
+  -- dependencies = { 'neovim/nvim-lspconfig', 'nvim-telescope/telescope.nvim' },
   ---@module 'changesets'
   ---@type changesets.Opts
   opts = {

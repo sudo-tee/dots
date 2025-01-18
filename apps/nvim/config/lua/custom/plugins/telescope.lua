@@ -1,94 +1,8 @@
-local u = require('custom.lib.utils')
+local enabled = false
 
---- Highlight the path part of the file as comment
-vim.api.nvim_create_autocmd('FileType', {
-  pattern = 'TelescopeResults',
-  callback = function(ctx)
-    vim.api.nvim_buf_call(ctx.buf, function()
-      vim.fn.matchadd('TelescopeParent', '\t\t.*$')
-      vim.api.nvim_set_hl(0, 'TelescopeParent', { link = 'Comment' })
-    end)
-  end,
-})
-
-local function find_project_overlay()
-  require('telescope.builtin').find_files({
-    hidden = true,
-    find_command = { 'find-overlays' },
-    prompt_title = 'Project overlays',
-  })
+if not enabled then
+  return {}
 end
-
-local function current_buffer_fuzzy()
-  require('telescope.builtin').current_buffer_fuzzy_find(require('telescope.themes').get_dropdown({
-    winblend = 10,
-    previewer = false,
-  }))
-end
-
-local function grep_open_files()
-  require('telescope.builtin').live_grep({
-    grep_open_files = true,
-    prompt_title = 'Live Grep in Open Files',
-  })
-end
-
-local function neovim_files()
-  require('telescope.builtin').find_files({ cwd = vim.fn.stdpath('config') })
-end
-
-local function plugin_files()
-  local lazypath = vim.fn.stdpath('data') .. '/lazy/'
-  require('telescope.builtin').find_files({ cwd = lazypath, file_ignore_patterns = { '.git' } })
-end
-
-local function project_links()
-  local pl = require('custom.lib.project-links')
-  local select_menu = require('custom.lib.select-menu')
-  local menu = select_menu.create_select_menu('Project links', pl.get_links(), { add_numbers = true })
-  menu()
-end
-
-local function notes()
-  local notes_path = os.getenv('HOME') .. '/Projects/notes'
-  require('telescope.builtin').find_files({ cwd = notes_path, file_ignore_patterns = { '.git', '.obsidian' } })
-end
-
-local function grep_notes()
-  local notes_path = os.getenv('HOME') .. '/Projects/notes'
-  require('telescope.builtin').live_grep({ cwd = notes_path, file_ignore_patterns = { '.git', '.obsidian' } })
-end
-
-local function merge_requests()
-  local glab = require('custom.lib.gitlab')
-  local mr_list = glab.get_mr_list()
-  local select_menu = require('custom.lib.select-menu')
-
-  if not mr_list then
-    vim.notify('No merge requests found', vim.log.levels.INFO, { title = 'Merge requests' })
-    return
-  end
-
-  local links = {}
-  for _, mr in ipairs(mr_list) do
-    local status_icon = glab.status_icons[mr.detailed_merge_status] or '❔'
-    table.insert(links, {
-      status_icon
-        .. u.fixed_width(mr.detailed_merge_status, 11)
-        .. ' | '
-        .. mr.title
-        .. ' ('
-        .. mr.user_notes_count
-        .. ')',
-
-      u.open_url_callback(mr.web_url),
-    })
-  end
-
-  local menu = select_menu.create_select_menu('Active merge requests', links, { add_numbers = true })
-  menu()
-end
-
 local function paste_from_register()
   local reg = '"'
   local ctrl_r_key = vim.api.nvim_replace_termcodes('<C-R>', true, false, true)
@@ -105,6 +19,7 @@ end
 
 return { -- Fuzzy Finder (files, lsp, etc)
   'nvim-telescope/telescope.nvim',
+  enabled = false,
   lazy = true,
   dependencies = {
     'nvim-lua/plenary.nvim',
@@ -136,38 +51,37 @@ return { -- Fuzzy Finder (files, lsp, etc)
   keys = {
 
     -- [S]earch
-    { '<leader>sb',       u.cmd('Telescope buffers'),      desc = 'Buffers' },
-    { '<C-p>'     ,       u.cmd('Telescope smart_open'),   desc = 'Files' },
-    { '<leader>sh',       u.cmd('Telescope help_tags'),    desc = 'Help' },
-    { '<leader>sk',       u.cmd('Telescope keymaps'),      desc = 'Keymaps' },
-    { '<leader>sf',       u.cmd('Telescope find_files'),   desc = 'Files' },
+    -- { '<leader>sb',       u.cmd('Telescope buffers'),      desc = 'Buffers' },
+    -- { '<C-p>'     ,       u.cmd('Telescope smart_open'),   desc = 'Files' },
+    -- { '<leader>sh',       u.cmd('Telescope help_tags'),    desc = 'Help' },
+    -- { '<leader>sk',       u.cmd('Telescope keymaps'),      desc = 'Keymaps' },
+    -- { '<leader>sf',       u.cmd('Telescope find_files'),   desc = 'Files' },
     { '<leader>ss',       u.cmd('Telescope builtin'),      desc = 'Select Telescope' },
-    { '<leader>sw',       u.cmd('Telescope grep_string'),  desc = 'Current [W]ord' },
-    { '<leader>sg',       u.cmd('Telescope live_grep'),    desc = 'Grep' },
-    { '<leader>sd',       u.cmd('Telescope diagnostics'),  desc = 'Diagnostics' },
+    -- { '<leader>sw',       u.cmd('Telescope grep_string'),  desc = 'Current [W]ord' },
+    -- { '<leader>sg',       u.cmd('Telescope live_grep'),    desc = 'Grep' },
+    -- { '<leader>sd',       u.cmd('Telescope diagnostics'),  desc = 'Diagnostics' },
     { '<leader>sl',       u.cmd('Telescope resume'),       desc = 'Resume last picker' },
-    { '<leader>sM',       u.cmd('Telescope marks'),        desc = 'Marks' },
-    { '<leader>so',       u.cmd('Telescope oldfiles'),     desc = 'Old Files' },
+    -- { '<leader>sM',       u.cmd('Telescope marks'),        desc = 'Marks' },
+    -- { '<leader>so',       u.cmd('Telescope oldfiles'),     desc = 'Old Files' },
     { '<leader>sh',       u.cmd('Telescope undo'),         desc = 'File History' },
-    { '<leader>sp',       plugin_files,                    desc = 'Plugin Files' },
-    { '<leader>sn',       neovim_files,                    desc = 'Neovim files' },
-    { '<leader>s/',       grep_open_files,                 desc = 'Grep Open Files' },
-    { '<leader>po',       find_project_overlay,            desc = 'Project Overlay' },
-    { '<leader>/' ,       current_buffer_fuzzy,            desc = 'Fuzzily search in current buffer' },
+    -- { '<leader>sp',       plugin_files,                    desc = 'Plugin Files' },
+    -- { '<leader>sn',       neovim_files,                    desc = 'Neovim files' },
+    -- { '<leader>s/',       grep_open_files,                 desc = 'Grep Open Files' },
+    -- { '<leader>po',       find_project_overlay,            desc = 'Project Overlay' },
+    -- { '<leader>/' ,       current_buffer_fuzzy,            desc = 'Fuzzily search in current buffer' },
 
     -- [P]roject
-    { '<leader>pl',       project_links ,                  desc = 'Project links'},
-    { '<leader>pm',       merge_requests ,                 desc = 'Project merge requests'},
+
 
     -- [G]it
-    { '<leader>gbb',      u.cmd('Telescope git_bcommits'), desc = 'Bcommits' },
-    { '<leader>gbc',      u.cmd('Telescope git_branches'), desc = 'Checkout' },
-    { '<leader>gfc',      u.cmd('Telescope git_bcommits'), desc = 'Commits' },
-    { '<leader>gcl',      u.cmd('Telescope git_commits'),  desc = 'Log' },
+    -- { '<leader>gbb',      u.cmd('Telescope git_bcommits'), desc = 'Bcommits' },
+    -- { '<leader>gbc',      u.cmd('Telescope git_branches'), desc = 'Checkout' },
+    -- { '<leader>gfc',      u.cmd('Telescope git_bcommits'), desc = 'Commits' },
+    -- { '<leader>gcl',      u.cmd('Telescope git_commits'),  desc = 'Log' },
 
     -- [N]otes
-    { '<leader>nn',       notes,                           desc = 'Notes' },
-    { '<leader>ng',       grep_notes,                      desc = 'Grep Notes' },
+    -- { '<leader>nn',       notes,                           desc = 'Notes' },
+    -- { '<leader>ng',       grep_notes,                      desc = 'Grep Notes' },
 
   },
   opts = {

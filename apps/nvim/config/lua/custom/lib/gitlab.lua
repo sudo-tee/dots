@@ -109,4 +109,30 @@ M.generate_chat_message_for_mr = function()
   vim.fn.setreg('+', message)
 end
 
+local function format_mr_text(mr)
+  local status_icon = M.status_icons[mr.detailed_merge_status] or '❔'
+  return string.format(
+    '%s | %s | %s (%s)',
+    status_icon,
+    u.fixed_width(mr.detailed_merge_status, 14),
+    mr.title,
+    mr.user_notes_count
+  )
+end
+
+M.get_mr_links = function()
+  local mr_list = M.get_mr_list()
+
+  if not mr_list then
+    return nil
+  end
+
+  return vim.tbl_map(function(mr)
+    return {
+      text = format_mr_text(mr),
+      action = u.open_url_callback(mr.web_url),
+    }
+  end, mr_list)
+end
+
 return M

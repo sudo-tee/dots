@@ -80,7 +80,6 @@ return {
     },
     -- stylua: ignore
     keys = {
-      { mode = {'n'},        '<leader>cch', '<cmd>CopilotChatHelpActions<cr>',        desc = 'Help actions', },
       { mode = { 'n', 'v' }, '<leader>cca', '<cmd>CopilotChatActions<cr>',            desc = 'Actions' },
       {                      '<leader>ccc', '<cmd>CopilotChatCommitMessageFloat<cr>', desc = 'Commit message', },
       { mode = { 'n', 'v' }, '<leader>ccp', '<cmd>CopilotChat<cr>',                   desc = 'Prompt' },
@@ -97,8 +96,6 @@ return {
 
       require('CopilotChat').setup(opts)
 
-      local telescope = require('CopilotChat.integrations.telescope')
-      local actions = require('CopilotChat.actions')
       local select = require('CopilotChat.select')
 
       command('CopilotChatFixDiag', function()
@@ -107,13 +104,6 @@ return {
         end
 
         require('CopilotChat').ask('/Fix diagnostics', { selection = selection })
-      end, { range = true })
-
-      command('CopilotChatActions', function()
-        local selection = function(source)
-          return select(source) or select.buffer(source)
-        end
-        telescope.pick(actions.prompt_actions({ selection = selection }))
       end, { range = true })
 
       command('CopilotChatQuick', function()
@@ -127,10 +117,6 @@ return {
         end
 
         require('CopilotChat').ask(input, { selection = selection })
-      end, { range = true })
-
-      command('CopilotChatHelpActions', function()
-        telescope.pick(actions.help_actions())
       end, { range = true })
 
       command('CopilotChatCommitMessageFloat', function()
