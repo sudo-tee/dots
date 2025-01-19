@@ -54,17 +54,23 @@ local function undo_tree()
   local current_bufnr = vim.api.nvim_get_current_buf()
   local current_seq = tree.seq_cur
   local saved_view = vim.fn.winsaveview()
+  local cursor = vim.api.nvim_win_get_cursor(0)
 
+  -- Get buffer content for a given sequence
+  local function get_buffer_content(seq)
+    seq = seq or ''
+    vim.cmd('silent! undo ' .. seq)
+    local lines = vim.api.nvim_buf_get_lines(current_bufnr, 0, -1, false)
+    return table.concat(lines, '\n')
+  end
+
+  -- Get the diff between the current buffer and the state of a given sequence
   local function get_diff(entry)
-    vim.cmd('silent! undo ' .. entry.seq)
-    local undo_lines = vim.api.nvim_buf_get_lines(0, 0, -1, false)
-    local buffer_after = table.concat(undo_lines, '\n')
-
-    vim.cmd('silent undo')
-    local buffer_before_lines = vim.api.nvim_buf_get_lines(0, 0, -1, false) or {}
-    local buffer_before = table.concat(buffer_before_lines, '\n')
+    local buffer_after = get_buffer_content(entry.seq)
+    local buffer_before = get_buffer_content()
     return vim.split(vim.diff(buffer_before, buffer_after, { ctxlen = vim.o.scrolloff }), '\n')
   end
+
   local items = {}
 
   local function format_relative_time(timestamp)
@@ -84,7 +90,7 @@ local function undo_tree()
 
   local function traverse_entry(entry, level, index)
     local indent = string.rep('  ', level)
-    local icon = level == 0 and '│' or (index == 1 and '├' or '│')
+    local icon = level == 0 and '├╴' or (index == 1 and '├╴' or '├╴')
     local time = format_relative_time(entry.time)
     local text = string.format(
       '%s %s ◉ %s - %s  %s',
@@ -98,7 +104,7 @@ local function undo_tree()
       time = entry.time,
       seq = entry.seq,
       text = text,
-      diff = get_diff(entry),
+      -- diff = get_diff(entry),
     })
 
     if entry.alt then
@@ -118,13 +124,17 @@ local function undo_tree()
 
   vim.cmd('silent! undo ' .. current_seq)
   vim.fn.winrestview(saved_view)
+  vim.api.nvim_win_set_cursor(0, cursor)
 
   ---@type snacks.picker.preview
   local previewer = function(ctx)
     vim.schedule(function()
       vim.api.nvim_buf_call(current_bufnr, function()
-        vim.api.nvim_buf_set_lines(ctx.buf, 0, -1, false, ctx.item.diff)
+        local diff = get_diff(ctx.item)
+        -- vim.print('⭕ ❱ picker.lua:133 ❱ ƒ(anonymous) ❱ diff =', diff)
+        vim.api.nvim_buf_set_lines(ctx.buf, 0, -1, false, diff)
         vim.bo[ctx.buf].filetype = 'diff'
+        vim.cmd('silent undo ' .. current_seq)
       end)
     end)
   end
@@ -141,8 +151,6 @@ local function undo_tree()
     end,
   })
 end
-
-undo_tree()
 
 local function plugin_files()
   local lazypath = vim.fn.stdpath('data') .. '/lazy/'
@@ -178,6 +186,7 @@ return {
     { '<leader>sh', pick("help"),                                     desc = 'Help' },
     { '<leader>sd', pick("diagnostics"),                              desc = 'Diagnostics' },
     { '<leader>sp', plugin_files,                                     desc = 'Plugin Files' },
+    { '<leader>su', undo_tree,                                     desc = 'Undo tree' },
 
     -- Git
     { "<leader>gcl", pick("git_log"),                                 desc = "Git Log" },
