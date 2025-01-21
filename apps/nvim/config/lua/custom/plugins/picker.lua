@@ -26,30 +26,23 @@ end
 
 local function marks(opts)
   return function()
-    local current_buf = vim.api.nvim_get_current_buf()
     ---@type snacks.picker.Config
     opts = vim.tbl_deep_extend('force', {
       actions = {
         delmark = {
           ---@param picker snacks.Picker
+          ---@param item snacks.picker.Item
           function(picker, item)
-            vim.api.nvim_buf_call(current_buf, function()
-              vim.cmd('delmarks ' .. item.label)
-              vim.schedule(function()
-                picker:close()
-                Snacks.picker.marks(opts)
-              end)
-            end)
+            picker:close()
+            require('custom.lib.marks').delete_mark(item.buf, item.label)
+            Snacks.picker.marks(picker.opts)
           end,
         },
       },
       win = {
         input = {
           keys = {
-            ['<c-x>'] = {
-              'delmark',
-              mode = { 'n', 'i' },
-            },
+            ['<c-x>'] = { 'delmark', mode = { 'n', 'i' } },
           },
         },
       },
@@ -103,8 +96,8 @@ return {
     { "<leader>sf", pick("smart"),                                    desc = "Find Files" },
     { "<leader>sn", pick("files", { cwd = vim.fn.stdpath("config") }),desc = "Find Neovim Config Files" },
     { '<leader>sb', pick("buffers"),                                  desc = 'Buffers' },
-    { '<leader>so', pick("recent"),                                   desc = 'Recent' },
     { '<leader>sB', pick("grep_buffers"),                             desc = 'Grep Buffers' },
+    { '<leader>so', pick("recent"),                                   desc = 'Recent' },
     { '<leader>sg', pick("grep"),                                     desc = 'Grep' },
     { '<leader>sw', pick("grep_word"),                                desc = 'Current [W]ord' },
     { '<leader>/',  pick("lines"),                                    desc = 'Buffers Lines' },
@@ -123,6 +116,9 @@ return {
     { "<leader>gcf", pick("git_log_file"),                            desc = "Git Log File" },
     { "<leader>gcL", pick("git_log_line"),                            desc = "Git Log Line" },
     { "<leader>gss", pick("git_status"),                              desc = "Git Status" },
+    { "<leader>gco", pick("git_branches"),                            desc = "Git Branches" },
+
+    -- Marks
     { "<leader>sm",  marks(),                                         desc = "Marks" },
     { "<leader>sM",  marks({["local"] = false}),                      desc = "Global Marks" },
 
@@ -151,17 +147,10 @@ return {
         layout = 'telescope',
         ui_select = true,
         formatters = {
-          file = {
-            filename_first = true,
-          },
+          file = { filename_first = true },
         },
         sources = {
-          smart = {
-            filter = {
-              cwd = true,
-            },
-          },
-          files = {},
+          smart = { filter = { cwd = true } },
         },
       },
     },

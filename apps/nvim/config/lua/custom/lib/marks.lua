@@ -109,9 +109,9 @@ function M.add_mark()
   vim.cmd('normal! m' .. mark)
 end
 
-function M.delete_mark()
-  local curbuf = vim.api.nvim_get_current_buf()
-  local mark = vim.fn.getcharstr()
+function M.delete_mark(buf, mark)
+  buf = buf or vim.api.nvim_get_current_buf()
+  mark = mark or vim.fn.getcharstr()
 
   if mark == nil then
     return
@@ -120,7 +120,7 @@ function M.delete_mark()
   if not is_letter_mark(mark) then
     return
   end
-  delete_mark(mark, curbuf)
+  delete_mark(mark, buf)
 end
 
 function M.delete_all_buffer_marks()
