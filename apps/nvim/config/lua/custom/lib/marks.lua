@@ -136,7 +136,6 @@ function M.set_keymaps()
   map('n', 'm', M.add_mark, { desc = 'Add [m]ark' })
   map('n', 'dm', M.delete_mark, { desc = '[D]elete [m]ark' })
   map('n', 'dM', M.delete_all_buffer_marks, { desc = '[D]elete all buffer [M]arks' })
-  map('n', '<leader>sm', M.telescope_get_user_marks, { desc = '[S]earch user [m]arks' })
 end
 
 function M.get_cwd_marks()
@@ -200,69 +199,6 @@ function M.BufWinEnterHandler(args)
       register_mark(mark, bufnr, mark_line)
     end
   end
-end
-
-function M.telescope_get_user_marks(opts)
-  opts = opts or {}
-  local conf = require('telescope.config').values
-  local bufnr = vim.api.nvim_get_current_buf()
-  local bufname = vim.api.nvim_buf_get_name(bufnr)
-
-  local results_data = {}
-  local results = {}
-
-  local format_result = function(mark_data)
-    local _, lnum, col = unpack(mark_data.pos)
-
-    local text = ''
-    if mark_data.file then -- this is a global mark
-      text = mark_data.file
-    else
-      text = vim.api.nvim_buf_get_lines(bufnr, lnum - 1, lnum, false)[1]
-    end
-
-    return string.format('%s %6d %4d %s', get_mark_name(mark_data), lnum, col - 1, text)
-  end
-
-  for _, mark_data in ipairs(M.get_user_marks()) do
-    local _, lnum, col = unpack(mark_data.pos)
-    table.insert(results, {
-      line = format_result(mark_data),
-      lnum = lnum,
-      col = col,
-      filename = vim.fs.normalize(mark_data.file or bufname),
-    })
-
-    table.insert(results_data, { mark = get_mark_name(mark_data) })
-  end
-
-  require('telescope.pickers')
-    .new(opts, {
-      prompt_title = 'User Marks',
-      finder = require('telescope.finders').new_table({
-        results = results,
-        entry_maker = require('telescope.make_entry').gen_from_marks(opts),
-      }),
-      sorter = conf.generic_sorter(opts),
-      previewer = conf.grep_previewer(opts),
-      attach_mappings = function(buf, map)
-        map('i', '<C-x>', function()
-          local entry = require('telescope.actions.state').get_selected_entry()
-          local mark = results_data[entry.index]
-
-          require('telescope.actions').close(buf)
-          delete_mark(mark.mark, bufnr)
-
-          vim.schedule(function()
-            M.telescope_get_user_marks(opts)
-          end)
-
-          vim.notify('Deleted mark [' .. mark.mark .. ']', vim.log.levels.INFO)
-        end, { desc = 'Delete mark' })
-        return true
-      end,
-    })
-    :find()
 end
 
 return M

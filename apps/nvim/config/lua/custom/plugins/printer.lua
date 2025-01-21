@@ -1,3 +1,5 @@
+---@module 'snacks'
+
 local DEFAULT_PRINT_TAG = '⭕'
 local function get_print_tag()
   local tag = DEFAULT_PRINT_TAG
@@ -41,7 +43,8 @@ return {
   keys = {
     { mode = 'n', 'gP', '<Plug>(printer_print)iw', desc = '[P]rint debug line' },
     { mode = 'n', 'gpp', '<Plug>(insert_below)', desc = '[P]rint debug line below' },
-    { mode = { 'n', 'v' }, 'gp', '<Plug>(printer_print)', desc = '[P]rint debug' },
+    { mode = { 'v' }, 'gp', '<Plug>(printer_print)', desc = '[P]rint debug' },
+    { mode = { 'v' }, 'gP', '<Plug>(printer_print)', desc = '[P]rint debug' },
     {
       '<localleader>py',
       function()
@@ -72,7 +75,7 @@ return {
     {
       '<localleader>ps',
       function()
-        require('telescope.builtin').live_grep({ default_text = DEFAULT_PRINT_TAG })
+        Snacks.picker.grep({ search = DEFAULT_PRINT_TAG })
       end,
       desc = 'Find all debug print for project',
       silent = false,

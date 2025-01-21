@@ -59,12 +59,6 @@ return {
             vim.keymap.set(mode, keys, func, { buffer = event.buf, desc = 'LSP: ' .. desc })
           end
           -- stylua: ignore start
-          -- map('n', 'gd',         u.cmd('Telescope lsp_definitions'),               '[G]oto [D]efinition')
-          -- map('n', 'gR',         u.cmd('Telescope lsp_references'),                '[G]oto [R]eferences')
-          -- map('n', 'gI',         u.cmd('Telescope lsp_implementations'),           '[G]oto [I]mplementation')
-          -- map('n', 'gy',         u.cmd('Telescope lsp_type_definitions'),          'T[y]pe Definition')
-          -- map('n', '<leader>sy', u.cmd('Telescope lsp_document_symbols'),          'Document [Sy]mbols')
-          -- map('n', '<leader>sY', u.cmd('Telescope lsp_dynamic_workspace_symbols'), 'Workspace [Sy]mbols')
           map('n', '<leader>rn', vim.lsp.buf.rename,                               '[R]e[n]ame')
           map('n', '<F2>',       vim.lsp.buf.rename,                               '[R]e[n]ame')
           map('n', '<leader>ca', vim.lsp.buf.code_action,                          '[C]ode [A]ction')

@@ -1,0 +1,16 @@
+- defaults:
+    link:
+      create: true
+      relink: true
+    shell:
+      stdout: true
+      stderr: true
+      quiet: true
+- link:
+    ~/.config/zsh/includes/_sqlite.sh:
+      force: true
+      path: apps/sqlite/_sqlite.sh
+- shell:
+    - description: "💿💿💿 Installing sqlite 💿💿💿"
+      command: |
+          brew install sqlite3
