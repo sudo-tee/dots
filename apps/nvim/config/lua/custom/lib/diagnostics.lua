@@ -3,13 +3,13 @@ local diag = vim.diagnostic
 local M = {}
 function M.prev(severity)
   return function()
-    diag.goto_prev(severity and { severity = diag.severity[severity] } or {})
+    diag.jump(severity and { severity = diag.severity[severity], count = -1 } or { count = -1 })
   end
 end
 
 function M.next(severity)
   return function()
-    diag.goto_next(severity and { severity = diag.severity[severity] } or {})
+    diag.jump(severity and { severity = diag.severity[severity], count = 1 } or { count = 1 })
   end
 end
 
