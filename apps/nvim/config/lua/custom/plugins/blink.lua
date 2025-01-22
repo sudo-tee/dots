@@ -50,7 +50,10 @@ return {
     completion = {
       accept = { auto_brackets = { enabled = false } },
       list = {
-        -- selection = 'manual',
+        selection = {
+          preselect = true,
+          auto_insert = false,
+        },
       },
       menu = {
         border = 'rounded',
@@ -61,9 +64,6 @@ return {
         window = {
           border = 'rounded',
         },
-      },
-      ghost_text = {
-        enabled = true,
       },
     },
     signature = {

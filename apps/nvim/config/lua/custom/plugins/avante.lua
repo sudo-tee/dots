@@ -29,7 +29,6 @@ return {
     'stevearc/dressing.nvim',
     'nvim-lua/plenary.nvim',
     'MunifTanjim/nui.nvim',
-    --- The below dependencies are optional,
     'echasnovski/mini.nvim',
     'zbirenbaum/copilot.lua', -- for providers='copilot'
     {
