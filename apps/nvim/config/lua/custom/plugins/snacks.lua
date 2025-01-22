@@ -67,6 +67,9 @@ return {
       enabled = true,
     },
     keys = {},
+    statuscolumn = {
+      enabled = true,
+    },
   },
   init = function()
     vim.api.nvim_create_autocmd('User', {

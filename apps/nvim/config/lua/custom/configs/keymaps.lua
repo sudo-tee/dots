@@ -69,6 +69,16 @@ map('n', '<localleader>O', 'O<Esc>', { desc = 'Insert new line before in normal 
 -- Select all
 map('n', '<localleader>a', 'ggVG', { desc = 'Select all' })
 
+-- Marks
+map('n', 'dm', function()
+  local mark = vim.fn.getcharstr()
+  if not mark:match('^[a-zA-Z]$') then
+    return
+  end
+  vim.cmd('delmarks ' .. vim.fn.getcharstr())
+  Snacks.util.redraw()
+end, { desc = '[D]elete [m]ark' })
+
 -- Diagnostics keymap ]e ]i ]w ]d
 local diag = require('custom.lib.diagnostics')
 map_pair('n', 'd', diag.prev(), diag.next(), '[D]iagnostic')
