@@ -49,19 +49,11 @@ end
 ---@param only_user_marks? boolean Only display marks placed by the user
 local function marks(opts, only_user_marks)
   return function()
-    local marks_finder = function(_opts)
-      local vim_marks = Snacks.picker.config.finder('vim_marks')(_opts, {})
-
-      return only_user_marks
-          and vim.tbl_filter(function(item)
-            return item.label:match('^[%a]')
-          end, vim_marks)
-        or vim_marks
-    end
-
     ---@type snacks.picker.marks.Config
     local mark_opts = vim.tbl_deep_extend('force', {
-      finder = marks_finder,
+      transform = function(item)
+        return not only_user_marks or item.label:match('^[%a]') == item.label
+      end,
       actions = { delmark = cmd_action('delmark', 'label', Snacks.picker.pick) },
       win = {
         input = {
