@@ -68,11 +68,11 @@ local function marks(opts, only_user_marks)
   end
 end
 
----@param method string picker name
+---@param source string picker name
 ---@param opts? snacks.picker.Config
-local function pick(method, opts)
+local function pick(source, opts)
   return function()
-    Snacks.picker[method](opts)
+    Snacks.picker(source, opts)
   end
 end
 
@@ -131,6 +131,28 @@ return {
   ---@type snacks.Config
   opts = {
     picker = {
+      win = {
+        input = {
+          keys = {
+            ['<C-Right>'] = { 'cycle_win', mode = { 'n', 'i' } },
+            ['<C-Left>'] = { 'cycle_win', mode = { 'n', 'i' } },
+          },
+        },
+        list = {
+          keys = {
+            ['<C-Right>'] = { 'cycle_win' },
+            ['<C-Left>'] = { 'cycle_win' },
+            ['<C-Down>'] = { 'focus_input' },
+          },
+        },
+        preview = {
+          keys = {
+            ['<C-Right>'] = { 'cycle_win' },
+            ['<C-Left>'] = { 'cycle_win' },
+            ['<C-Down>'] = { 'focus_input' },
+          },
+        },
+      },
       layout = { preset = 'telescope', cycle = true },
       ui_select = true,
       formatters = {
