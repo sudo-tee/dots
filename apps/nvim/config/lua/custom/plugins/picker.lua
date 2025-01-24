@@ -16,6 +16,12 @@ local function nvim_plugin_files()
   Snacks.picker.files({ cwd = vim.fn.stdpath('config') .. '/' })
 end
 
+local function project_overlays()
+  local project_name = vim.fn.getcwd():match('[^/\\]+$')
+  local folder = os.getenv('HOME') .. '/dots/work/projects/' .. project_name .. '/overlays'
+  Snacks.picker.files({ cwd = folder, hidden = true, ignored = true })
+end
+
 local function select_items(title, items)
   vim.ui.select(items, {
     prompt = title,
@@ -28,8 +34,8 @@ local function select_items(title, items)
 end
 
 local function merge_requests()
-  local mr = require('custom.lib.merge-requests')
-  select_items(' Merge requests ', mr.get_merge_requests())
+  local mr = require('custom.lib.gitlab')
+  select_items(' Merge requests ', mr.get_mr_links())
 end
 
 local function project_links()
@@ -91,7 +97,7 @@ return {
     { '<leader>sg', pick("grep"),                           desc = 'Grep' },
     { '<leader>sw', pick("grep_word"),                      desc = 'Current [W]ord' },
     { '<leader>/',  pick("lines"),                          desc = 'Buffers Lines' },
-    { '<leader>po', pick("files", {cmd = 'find-overlays'}), desc = 'Project Overlay' },
+    { '<leader>po', project_overlays,                       desc = 'Project Overlay' },
     { '<leader>sk', pick("keymaps"),                        desc = 'Keymaps' },
     { '<leader>sh', pick("help"),                           desc = 'Help' },
     { '<leader>sd', pick("diagnostics"),                    desc = 'Diagnostics' },

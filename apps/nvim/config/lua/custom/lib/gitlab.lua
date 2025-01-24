@@ -1,8 +1,7 @@
----@module 'custom.lib.utils'
-local u = lazy_require('custom.lib.utils')
-
 ---@module 'custom.lib.git'
 local git = lazy_require('custom.lib.git')
+---@module 'custom.lib.utils'
+local u = lazy_require('custom.lib.utils')
 
 ---@module 'custom.lib.wezterm'
 local wezterm = lazy_require('custom.lib.wezterm')
