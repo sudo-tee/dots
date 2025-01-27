@@ -6,41 +6,11 @@ return {
   lazy = false,
   -- stylua: ignore
   keys = {
-    {
-      '<leader>up',
-      function()
-        require('snacks.profiler').toggle()
-      end,
-    },
-    {
-      '<leader>uP',
-      function()
-        require('snacks.profiler').scratch()
-      end,
-      desc = 'Profiler Scratch Bufer',
-    },
-    {
-      ']]',
-      desc = 'Next Reference',
-      function()
-        Snacks.words.jump(vim.v.count1)
-      end,
-    },
-    {
-      '[[',
-      desc = 'Prev Reference',
-      function()
-        Snacks.words.jump(-vim.v.count1)
-      end,
-    },
-    {
-      '<leader>un',
-      function()
-        Snacks.notifier.show_history()
-      end,
-      desc = 'Notification History',
-    },
-
+    { '<leader>up',  function() Snacks.profiler.toggle() end,         desc = 'Toggle Profiler' },
+    { '<leader>uP',  function() Snacks.profiler.scratch() end,        desc = 'Profiler Scratch Buffer' },
+    { ']]',          function() Snacks.words.jump(vim.v.count1) end,  desc = 'Next Reference' },
+    { '[[',          function() Snacks.words.jump(-vim.v.count1) end, desc = 'Prev Reference' },
+    { '<leader>un',  function() Snacks.notifier.show_history() end,   desc = 'Notification History' },
   },
   ---@type snacks.Config
   opts = {
