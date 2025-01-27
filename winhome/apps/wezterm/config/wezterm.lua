@@ -30,7 +30,11 @@ c.show_new_tab_button_in_tab_bar = false
 c.enable_scroll_bar = false
 c.window_close_confirmation = "NeverPrompt"
 c.exit_behavior = "Close"
-c.font = wezterm.font("Rec Mono Duotone", { weight = "Regular", stretch = "Normal", style = "Normal" })
+c.font = wezterm.font_with_fallback({
+  { family = "Rec Mono Duotone", weight = "Regular" },
+  { family = "Flog Symbols", weight = "Bold" },
+  { family = "Symbols Nerd Font Mono", scale = 1 },
+})
 c.adjust_window_size_when_changing_font_size = false
 c.freetype_load_flags = "NO_HINTING"
 c.warn_about_missing_glyphs = false

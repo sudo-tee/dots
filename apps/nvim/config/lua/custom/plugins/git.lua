@@ -1,3 +1,4 @@
+---@module 'custom.lib.utils'
 local u = require('custom.lib.utils')
 
 ---@module 'custom.lib.git'
@@ -156,9 +157,9 @@ return {
         date = 'format:%Y-%m-%d %H:%M',
       }
       vim.g.flog_use_internal_lua = true
-      ---@TODO: need a patched font
+      ---need a patched font
       ---https://github.com/rbong/flog-symbols
-      -- vim.g.flog_enable_extended_chars = 1
+      vim.g.flog_enable_extended_chars = 1
     end,
     config = function()
       u.ft_map('floggraph', function(_, map)
