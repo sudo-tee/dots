@@ -20,3 +20,5 @@ apps/nvim/config_old/
 work/
 _work/
 work
+xdg-open-url
+xdg-start
