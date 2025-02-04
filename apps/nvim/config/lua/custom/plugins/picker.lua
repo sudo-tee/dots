@@ -51,6 +51,12 @@ local function cmd_action(cmd, field, on_done)
   end
 end
 
+local keys = function(keymaps)
+  return {
+    win = { input = { keys = keymaps }, list = { keys = keymaps } },
+  }
+end
+
 ---@param opts? snacks.picker.Config
 ---@param only_user_marks? boolean Only display marks placed by the user
 local function marks(opts, only_user_marks)
@@ -61,13 +67,7 @@ local function marks(opts, only_user_marks)
         return not only_user_marks or item.label:match('^[%a]') == item.label
       end,
       actions = { delmark = cmd_action('delmark', 'label', Snacks.picker.pick) },
-      win = {
-        input = {
-          keys = {
-            ['<c-x>'] = { 'delmark', mode = { 'n', 'i' } },
-          },
-        },
-      },
+      win = keys({ ['<c-x>'] = { 'delmark', mode = { 'n', 'i' } } }).win,
     }, opts or {})
 
     Snacks.picker.marks(mark_opts)
@@ -82,6 +82,14 @@ local function pick(source, opts)
   end
 end
 
+---@param type "commit"|"stash"|"branch"
+---@return table
+local function git_opts(type)
+  return keys({
+    ['<M-D>'] = { 'diff_view_' .. type, mode = { 'n', 'i' } },
+  })
+end
+
 return {
   'folke/snacks.nvim',
   lazy = false,
@@ -90,12 +98,12 @@ return {
     -- Files and search
     { "<C-p>",      pick("smart"),                          desc = "Find Files" },
     { "<leader>sf", pick("smart"),                          desc = "Find Files" },
-    { "<leader>sn", nvim_plugin_files,                      desc = "Find Neovim Plugin Files" },
+    { "<leader>sP", nvim_plugin_files,                      desc = "Find Neovim Plugin Files" },
     { '<leader>sb', pick("buffers"),                        desc = 'Buffers' },
     { '<leader>sB', pick("grep_buffers"),                   desc = 'Grep Buffers' },
     { '<leader>so', pick("recent"),                         desc = 'Recent' },
     { '<leader>sg', pick("grep"),                           desc = 'Grep' },
-    { '<leader>sw', pick("grep_word"),                      desc = 'Current [W]ord' },
+    { '<leader>sw', pick("grep_word"),                      desc = 'Current Word / Selection' , mode={'n','v'} },
     { '<leader>/',  pick("lines"),                          desc = 'Buffers Lines' },
     { '<leader>po', project_overlays,                       desc = 'Project Overlay' },
     { '<leader>sk', pick("keymaps"),                        desc = 'Keymaps' },
@@ -106,13 +114,16 @@ return {
     { '<leader>sH', pick("highlights"),                     desc = 'Highlights' },
     { '<leader>ss', pick("pickers"),                        desc = 'Pickers' },
     { '<leader>sr', pick("registers"),                      desc = 'Registers' },
+    { '<leader>sn', pick("notifications"),                  desc = 'Notifications' },
+    { '<leader>e',  pick("explorer"),                       desc = 'Explorer' },
 
     -- Git
-    { "<leader>gcl", pick("git_log"),                       desc = "Git Log" },
-    { "<leader>gcf", pick("git_log_file"),                  desc = "Git Log File" },
-    { "<leader>gcL", pick("git_log_line"),                  desc = "Git Log Line" },
-    { "<leader>gss", pick("git_status"),                    desc = "Git Status" },
-    { "<leader>gco", pick("git_branches"),                  desc = "Git Branches" },
+    { "<leader>gcl", pick("git_log",      git_opts("commit")),       desc = "Git Log" },
+    { "<leader>gcf", pick("git_log_file", git_opts("commit")),       desc = "Git Log File" },
+    { "<leader>gcL", pick("git_log_line", git_opts("commit")),       desc = "Git Log Line" },
+    { "<leader>gss", pick("git_stash",    git_opts("stash")),        desc = "Git Stashes" },
+    { "<leader>gcs", pick("git_status"),                             desc = "Git Status" },
+    { "<leader>gco", pick("git_branches", git_opts("branch")),       desc = "Git Branches" },
 
     -- Marks
     { "<leader>sm",  marks({}, true),                       desc = "User Marks" },
@@ -127,7 +138,7 @@ return {
     { "<leader>sY", pick("lsp_workspace_symbols"),          desc = "LSP Workspace Symbols" },
 
     -- Notes
-    { '<leader>nn', notes,                                  desc = 'Notes' },
+    { '<leader>ns', notes,                                  desc = 'Notes' },
     { '<leader>ng', grep_notes,                             desc = 'Grep Notes' },
 
     -- Project
@@ -136,26 +147,60 @@ return {
   },
   ---@type snacks.Config
   opts = {
+    explorer = {
+      replace_netrw = true,
+    },
     picker = {
       win = {
         input = {
           keys = {
-            ['<C-Right>'] = { 'cycle_win', mode = { 'n', 'i' } },
-            ['<C-Left>'] = { 'cycle_win', mode = { 'n', 'i' } },
+            ['<M-Up>'] = { 'cycle_win', mode = { 'n', 'i' } },
+            ['<M-Down>'] = { 'cycle_win', mode = { 'n', 'i' } },
+            ['<M-Left>'] = { 'cycle_win', mode = { 'n', 'i' } },
+            ['<M-Right>'] = { 'cycle_win', mode = { 'n', 'i' } },
+            ['<C-h>'] = { 'toggle_help_input', mode = { 'i' } },
+            ['<M-q>'] = { 'close', mode = { 'n', 'i' } },
           },
         },
         list = {
           keys = {
-            ['<C-Right>'] = { 'cycle_win' },
-            ['<C-Left>'] = { 'cycle_win' },
-            ['<C-Down>'] = { 'focus_input' },
+            ['<M-Right>'] = { 'cycle_win' },
+            ['<M-Left>'] = { 'cycle_win' },
+            ['<M-Down>'] = { 'focus_input' },
+            ['<M-Up>'] = { 'focus_input' },
+            ['<M-q>'] = { 'close' },
           },
         },
         preview = {
           keys = {
-            ['<C-Right>'] = { 'cycle_win' },
-            ['<C-Left>'] = { 'cycle_win' },
-            ['<C-Down>'] = { 'focus_input' },
+            ['<M-Up>'] = { 'focus_input' },
+            ['<M-Down>'] = { 'focus_input' },
+            ['<M-Left>'] = { 'cycle_win' },
+            ['<M-Right>'] = { 'cycle_win' },
+            ['<M-q>'] = { 'close' },
+          },
+        },
+      },
+      layouts = {
+        sidebar = { layout = { position = 'right' } },
+        sidebar_right = {
+          preview = false,
+          layout = {
+            backdrop = false,
+            width = 40,
+            min_width = 40,
+            height = 0,
+            position = 'right',
+            border = 'none',
+            box = 'vertical',
+            { win = 'list', border = 'none', fixbuf = true },
+            {
+              win = 'input',
+              height = 1,
+              border = 'single',
+              title = '{title} {live} {flags}',
+              title_pos = 'center',
+            },
           },
         },
       },
@@ -166,6 +211,23 @@ return {
       },
       sources = {
         smart = { filter = { cwd = true } },
+        explorer = {
+          layout = 'sidebar_right',
+        },
+      },
+      actions = {
+        diff_view_commit = function(picker, item)
+          picker:close()
+          vim.cmd('DiffviewOpen ' .. item.commit .. '^!')
+        end,
+        diff_view_stash = function(picker, item)
+          picker:close()
+          return vim.cmd('DiffviewOpen ' .. item.stash .. '^!')
+        end,
+        diff_view_branch = function(picker, item)
+          picker:close()
+          vim.cmd('DiffviewOpen ' .. item.branch)
+        end,
       },
     },
   },
