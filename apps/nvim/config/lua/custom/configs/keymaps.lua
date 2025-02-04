@@ -5,6 +5,8 @@ local map_pair = u.map_pair
 
 map('n', ' ', '<Nop>', { noremap = true, silent = true })
 
+map('n', '<Esc>', cmd('nohlsearch'))
+
 --file related maps
 map('n', '<leader>fn', cmd('enew'), { desc = '[N]ew File' })
 
@@ -25,8 +27,6 @@ end, { desc = '[n]ame' })
 
 -- Source current file
 map('n', '<leader>fs', cmd('w | source %'), { desc = '[S]ource file' })
-
-map('n', '<Esc>', cmd('nohlsearch'))
 
 -- I hate the "q:" I will use <C-f> in command mode if needed
 map('n', 'q:', '<Nop>')
@@ -75,7 +75,7 @@ map('n', 'dm', function()
   if not mark:match('^[a-zA-Z]$') then
     return
   end
-  vim.cmd('delmarks ' .. vim.fn.getcharstr())
+  vim.cmd('delmark ' .. mark)
   Snacks.util.redraw()
 end, { desc = '[D]elete [m]ark' })
 
@@ -86,11 +86,12 @@ map_pair('n', 'e', diag.prev('E'), diag.next('E'), '[E]rror diagnostic')
 map_pair('n', 'w', diag.prev('W'), diag.next('W'), '[W]arning diagnostic')
 map_pair('n', 'i', diag.prev('I'), diag.next('I'), '[I]nfo diagnostic')
 
--- quickfix list
-map_pair('n', 'q', cmd('cprev'), cmd('cnext'), '[q]uickfix item')
-
+-- Diagnostic float
 map('n', '<S-l>', diag.float, { desc = 'Show diagnostic messages' })
 map('n', '<leader>q', vim.diagnostic.setloclist, { desc = 'Open diagnostic [Q]uickfix list' })
+
+-- quickfix list
+map_pair('n', 'q', cmd('cprev'), cmd('cnext'), '[q]uickfix item')
 
 -- Terminal quick exit to vim mode
 map('t', '<C-o>', '<C-\\><C-n>', { desc = 'Exit terminal mode' })
@@ -145,6 +146,17 @@ map_pair('n', 'b', bufnav('bprev'), bufnav('bnext'), '[b]uffer')
 
 map('n', '<leader>bo', bufnav('%bd|edit#|bd#'), { desc = 'Close [o]ther [b]uffers' })
 map('n', '<leader>bd', bufnav('bd'), { desc = 'Close [c]urrent [b]uffer' })
+map('n', '<leader>br', function()
+  Snacks.bufdelete(function(buf)
+    return buf > vim.api.nvim_get_current_buf()
+  end)
+end, { desc = 'Close [r]ight [b]uffers' })
+
+map('n', '<leader>bl', function()
+  Snacks.bufdelete(function(buf)
+    return buf < vim.api.nvim_get_current_buf()
+  end)
+end, { desc = 'Close [l]eft [b]uffers' })
 
 -- TABS navigation
 map('n', '<S-Down>', cmd('tabnext'), { desc = 'Next [T]ab' })
@@ -160,8 +172,6 @@ map('n', '<leader>`', bufnav('e #'), { desc = 'Switch to alternate ' })
 
 -- Custom UI keymaps
 
---Profiling
--- map('n', '<leader>up', cmd('ToggleProfile'), { silent = false, noremap = true, desc = 'Toggle [p]rofilling session' })
 -- highlights under cursor
 map('n', '<leader>ui', vim.show_pos, { desc = '[I]nspect Pos' })
 
