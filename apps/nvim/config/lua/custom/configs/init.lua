@@ -1,3 +1,4 @@
+require('custom.configs.globals')
 require('custom.configs.options')
 require('custom.configs.keymaps')
 require('custom.configs.autocommands')

@@ -28,15 +28,6 @@ function M.lazy_return(...)
   end
 end
 
-M.reload = function(...)
-  return require('plenary.reload').reload_module(...)
-end
-
-M.re_require = function(name)
-  M.reload(name)
-  return require(name)
-end
-
 function M.map(mode, lhs, rhs, opts)
   local options = { noremap = true, silent = true }
   if opts then
