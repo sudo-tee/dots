@@ -86,6 +86,18 @@ M.setup = function()
         { mode = 'n', keys = '<Leader>w<Up>', postkeys = '<Leader>w', desc = 'Up' },
         { mode = 'n', keys = '<Leader>w<Left>', postkeys = '<Leader>w', desc = 'Left' },
         { mode = 'n', keys = '<Leader>w<Right>', postkeys = '<Leader>w', desc = 'Right' },
+
+        -- Git submode clues with postkeys
+        { mode = 'n', keys = '<Leader>ghs', postkeys = '<Leader>gh', desc = 'Stage Hunk' },
+        { mode = 'n', keys = '<Leader>ghr', postkeys = '<Leader>gh', desc = 'Reset Hunk' },
+        { mode = 'n', keys = '<Leader>ghS', postkeys = '<Leader>gh', desc = 'Stage Buffer' },
+        { mode = 'n', keys = '<Leader>ghu', postkeys = '<Leader>gh', desc = 'Undo Stage Hunk' },
+        { mode = 'n', keys = '<Leader>ghR', postkeys = '<Leader>gh', desc = 'Reset Buffer' },
+        { mode = 'n', keys = '<Leader>ghp', postkeys = '<Leader>gh', desc = 'Preview Hunk' },
+        { mode = 'n', keys = '<Leader>ghb', postkeys = '<Leader>gh', desc = 'Blame Line' },
+        { mode = 'n', keys = '<Leader>ghd', postkeys = '<Leader>gh', desc = 'Diff This' },
+        { mode = 'n', keys = '<Leader>ghD', postkeys = '<Leader>gh', desc = 'Git Diff This ~' },
+        { mode = { 'o', 'x' }, keys = 'ih', desc = 'Select Hunk' },
       },
       {
         { mode = 'n', keys = '<LocalLeader>p', desc = '+Print debug' },
