@@ -163,6 +163,16 @@ M.setup = function()
   end
 
   local updates_cache = require('custom.lib.cache').new(300) -- 15 minutes cache
+  vim.api.nvim_create_autocmd('BufLeave', {
+    group = vim.api.nvim_create_augroup('LazyBufferClosed', { clear = true }),
+    pattern = '*',
+    callback = function()
+      if vim.bo.filetype == 'lazy' then
+        updates_cache:clear()
+      end
+    end,
+  })
+
   MiniStatusline.updates = function(_)
     return updates_cache:get(function()
       local lazy_status = require('lazy.status')

@@ -18,4 +18,9 @@ function Cache:get(fetch_fn)
   return self.value
 end
 
+function Cache:clear()
+  self.value = nil
+  self.timestamp = 0
+end
+
 return Cache
