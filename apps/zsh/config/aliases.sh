@@ -81,3 +81,32 @@ hextorgb() {
 rgbtohex() {
   printf '#%02x%02x%02x\n' "$1" "$2" "$3"
 }
+
+nkill() {
+  local dirs
+  dirs=$(find . -maxdepth 3 -name "node_modules" -type d)
+
+  if [ -z "$dirs" ]; then
+    echo "No top-level node_modules directories found."
+    return 0
+  fi
+
+  echo "Found top-level node_modules directories:"
+  echo "$dirs"
+  echo
+
+  echo -n "Do you want to delete these directories? [y/N] "
+  read -k 1 REPLY
+  echo
+
+  if [[ $REPLY =~ ^[Yy]$ ]]; then
+    echo "Deleting directories..."
+    while IFS= read -r dir; do
+      rm -rf "$dir"
+      echo "✓ Deleted: $dir"
+    done <<<"$dirs"
+    echo "Done!"
+  else
+    echo "Operation cancelled."
+  fi
+}
