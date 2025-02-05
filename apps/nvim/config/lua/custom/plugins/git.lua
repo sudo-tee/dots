@@ -60,35 +60,6 @@ u.map('n', '<leader>gpp', u.cmd('Gp'), { desc = 'push' })
 return {
   { 'tpope/vim-fugitive', lazy = true, cmd = { 'G', 'Gwrite', 'Gdiff', 'Gedit' } },
   {
-    'SuperBo/fugit2.nvim',
-    opts = {
-      width = 90,
-      libgit2_path = '/home/linuxbrew/.linuxbrew/Cellar/libgit2/1.8.1/lib/libgit2.so',
-      external_diffview = true,
-    },
-    dependencies = {
-      'MunifTanjim/nui.nvim',
-      'echasnovski/mini.nvim',
-      'nvim-lua/plenary.nvim',
-    },
-    build = function() end,
-    cmd = { 'Fugit2', 'Fugit2Diff', 'Fugit2Graph' },
-    keys = {
-      { '<leader>gS', mode = 'n', '<cmd>Fugit2<cr>', desc = 'Status' },
-      { '<leader>gG', mode = 'n', '<cmd>Fugit2Graph<cr>', desc = 'Graph' },
-    },
-    config = function(_, opts)
-      u.ft_map({ 'fugit2*', 'diff' }, function(_, map)
-        map('n', '<leader>d', u.cmd('OpenCommitDiff'))
-        map('v', '<leader>d', u.cmd('OpenCommitRangeDiff'))
-        map('n', '<C-Right>', 'l', { noremap = false })
-        map('n', '<C-Left>', 'h', { noremap = false })
-      end)
-
-      require('fugit2').setup(opts)
-    end,
-  },
-  {
     'isakbm/gitgraph.nvim',
     opts = {
       symbols = {
@@ -114,14 +85,14 @@ return {
         function()
           require('gitgraph').draw({}, { all = true, max_count = 5000 })
         end,
-        desc = 'GitGraph - Draw',
+        desc = 'GitGraph All',
       },
       {
         '<leader>gB',
         function()
           require('gitgraph').draw({}, { all = false, max_count = 5000 })
         end,
-        desc = 'GitGraph - Draw',
+        desc = 'GitGraph Branch',
       },
     },
     config = function(_, opts)
@@ -140,46 +111,18 @@ return {
       require('gitgraph').setup(opts)
     end,
   },
-
-  {
-    'rbong/vim-flog',
-    dependencies = {
-      'tpope/vim-fugitive',
-      'sindrets/diffview.nvim',
-    },
-    lazy = true,
-    cmd = { 'Flog', 'FlogSplit' },
-    keys = {
-      { '<leader>gF', u.cmd('Flog'), desc = 'Graph' },
-    },
-    opts = function()
-      vim.g.flog_default_opts = {
-        date = 'format:%Y-%m-%d %H:%M',
-      }
-      vim.g.flog_use_internal_lua = true
-      ---need a patched font
-      ---https://github.com/rbong/flog-symbols
-      vim.g.flog_enable_extended_chars = 1
-    end,
-    config = function()
-      u.ft_map('floggraph', function(_, map)
-        map('n', '<leader>d', u.cmd('OpenCommitDiff'))
-        map('v', '<leader>d', u.cmd('OpenCommitRangeDiff'))
-      end)
-    end,
-  },
   {
     'lewis6991/gitsigns.nvim',
     lazy = true,
     event = 'LazyFile',
     opts = {
       signs = {
-        add = { text = '█' },
-        change = { text = '█' },
+        add = { text = '▌' },
+        change = { text = '▌' },
         delete = { text = '' },
         topdelete = { text = '' },
-        changedelete = { text = '█' },
-        untracked = { text = '█' },
+        changedelete = { text = '▌' },
+        untracked = { text = '▌' },
       },
       preview_config = {
         border = 'rounded',
