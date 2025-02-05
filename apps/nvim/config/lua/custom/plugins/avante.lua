@@ -14,13 +14,16 @@ return {
     auto_suggestions_provider = nil,
     behaviour = {
       auto_suggestions = false,
+      enable_token_counting = false,
     },
     copilot = {
-      timeout = 50000,
-      model = 'claude-3.5-sonnet',
+      model = 'o3-mini',
     },
     windows = {
       width = 40,
+    },
+    file_selector = {
+      provider = 'snacks',
     },
   },
   -- if you want to build from source then do `make BUILD_FROM_SOURCE=true`
@@ -29,6 +32,7 @@ return {
     'stevearc/dressing.nvim',
     'nvim-lua/plenary.nvim',
     'MunifTanjim/nui.nvim',
+    --- The below dependencies are optional,
     'echasnovski/mini.nvim',
     'zbirenbaum/copilot.lua', -- for providers='copilot'
     {
