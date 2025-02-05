@@ -160,6 +160,10 @@ return {
             ['<M-Right>'] = { 'cycle_win', mode = { 'n', 'i' } },
             ['<C-h>'] = { 'toggle_help_input', mode = { 'i' } },
             ['<M-q>'] = { 'close', mode = { 'n', 'i' } },
+            ['<c-z><Left>'] = { 'layout_left', mode = { 'i', 'n' } },
+            ['<c-z><Down>'] = { 'layout_bottom', mode = { 'i', 'n' } },
+            ['<c-z><Up>'] = { 'layout_top', mode = { 'i', 'n' } },
+            ['<c-z><Right>'] = { 'layout_right', mode = { 'i', 'n' } },
           },
         },
         list = {
@@ -169,6 +173,10 @@ return {
             ['<M-Down>'] = { 'focus_input' },
             ['<M-Up>'] = { 'focus_input' },
             ['<M-q>'] = { 'close' },
+            ['<c-z><Left>'] = { 'layout_left', mode = { 'i', 'n' } },
+            ['<c-z><Down>'] = { 'layout_bottom', mode = { 'i', 'n' } },
+            ['<c-z><Up>'] = { 'layout_top', mode = { 'i', 'n' } },
+            ['<c-z><Right>'] = { 'layout_right', mode = { 'i', 'n' } },
           },
         },
         preview = {
