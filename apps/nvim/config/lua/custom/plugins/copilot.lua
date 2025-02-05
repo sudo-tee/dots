@@ -43,6 +43,7 @@ return {
     'CopilotC-Nvim/CopilotChat.nvim',
     lazy = true,
     event = 'VeryLazy',
+    build = 'make tiktoken', -- Only on MacOS or Linux
     cmd = {
       'CopilotChatTests',
       'CopilotChat',
@@ -56,22 +57,21 @@ return {
       'CopilotChatModel',
       'CopilotChatFixDiag',
     },
-    branch = 'canary',
     dependencies = {
       { 'zbirenbaum/copilot.lua' }, -- or github/copilot.vim
       { 'nvim-lua/plenary.nvim' }, -- for curl, log wrapper
       { 'nvim-treesitter/nvim-treesitter' },
+      { 'folke/snacks.nvim' },
     },
     opts = {
       model = 'claude-3.5-sonnet',
       temperature = 0.2,
-      context = 'buffers',
       debug = false,
       insert_at_end = true,
       highlight_headers = false,
-      question_header = '  User ',
-      answer_header = '  Copilot ',
-      error_header = '> [!ERROR] Error',
+      question_header = '#   User ',
+      answer_header = '#   Copilot ',
+      error_header = '# > [!ERROR] Error ',
       prompts = {
         Tests = {
           prompt = '/COPILOT_GENERATE Please generate tests for my code using vitest. The test should be wrapped in a `describe` block. Each test case should be in an `it` block. Generate all the test cases',
@@ -80,13 +80,14 @@ return {
     },
     -- stylua: ignore
     keys = {
-      { mode = { 'n', 'v' }, '<leader>cca', '<cmd>CopilotChatActions<cr>',            desc = 'Actions' },
       {                      '<leader>ccc', '<cmd>CopilotChatCommitMessageFloat<cr>', desc = 'Commit message', },
       { mode = { 'n', 'v' }, '<leader>ccp', '<cmd>CopilotChat<cr>',                   desc = 'Prompt' },
       { mode = { 'n', 'v' }, '<leader>cco', '<cmd>CopilotChatOptimize<cr>',           desc = 'Optimize' },
       { mode = { 'n', 'v' }, '<leader>cct', '<cmd>CopilotChatTests<cr>',              desc = 'Tests' },
       { mode = { 'n' },      '<leader>ccq', '<cmd>CopilotChatQuick<cr>',              desc = 'Quick chat' },
       { mode = { 'n', 'v' }, '<leader>ccd', '<cmd>CopilotChatFixDiag<cr>',            desc = 'Fix diagnostic' },
+      { mode = { 'n', 'v' }, "<leader>ccx", '<cmd>CopilotChatActions<cr>',            desc = "CopilotChat - Prompt actions", },
+
     },
     -- See Commands section for default commands if you want to lazy load on them
     config = function(_, opts)
@@ -104,6 +105,11 @@ return {
         end
 
         require('CopilotChat').ask('/Fix diagnostics', { selection = selection })
+      end, { range = true })
+
+      command('CopilotChatActions', function()
+        local actions = require('CopilotChat.actions')
+        require('CopilotChat.integrations.snacks').pick(actions.prompt_actions())
       end, { range = true })
 
       command('CopilotChatQuick', function()
