@@ -100,6 +100,7 @@ return {
     { "<leader>sf", pick("smart"),                          desc = "Find Files" },
     { "<leader>sP", nvim_plugin_files,                      desc = "Find Neovim Plugin Files" },
     { '<leader>sb', pick("buffers"),                        desc = 'Buffers' },
+    { '<Tab><Tab>', pick("buffers"),                        desc = 'Buffers' },
     { '<leader>sB', pick("grep_buffers"),                   desc = 'Grep Buffers' },
     { '<leader>so', pick("recent"),                         desc = 'Recent' },
     { '<leader>sg', pick("grep"),                           desc = 'Grep' },
@@ -136,6 +137,7 @@ return {
     { "gy",         pick("lsp_type_definitions"),           desc = "Goto T[y]pe Definition" },
     { "<leader>sy", pick("lsp_symbols"),                    desc = "LSP Symbols" },
     { "<leader>sY", pick("lsp_workspace_symbols"),          desc = "LSP Workspace Symbols" },
+    { "<leader>st", pick("treesitter"),                     desc = "Treesitter" },
 
     -- Notes
     { '<leader>ns', notes,                                  desc = 'Notes' },
@@ -192,7 +194,6 @@ return {
       layouts = {
         sidebar = { layout = { position = 'right' } },
         sidebar_right = {
-          preview = false,
           layout = {
             backdrop = false,
             width = 40,
