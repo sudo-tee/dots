@@ -1,18 +1,5 @@
 require('custom.configs')
 
---- Lazy require a module
----@diagnostic disable-next-line: duplicate-set-field
-function _G.lazy_require(module)
-  local mod = nil
-  return type(package.loaded[module]) == 'table' and package.loaded[module]
-    or setmetatable({}, {
-      __index = function(_, key)
-        mod = mod or require(module)
-        return mod[key]
-      end,
-    })
-end
-
 -- [[ Install `lazy.nvim` plugin manager ]]
 --    See `:help lazy.nvim.txt` or https://github.com/folke/lazy.nvim for more info
 local lazypath = vim.fn.stdpath('data') .. '/lazy/lazy.nvim'
