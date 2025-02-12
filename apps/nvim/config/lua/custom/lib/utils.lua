@@ -189,4 +189,20 @@ function M.string_hash(str)
   return h
 end
 
+function M.yank_diagnostic()
+  local line = vim.api.nvim_win_get_cursor(0)[1] - 1
+  local items = vim.diagnostic.get(0, { lnum = line })
+  if not items or #items == 0 then
+    return
+  end
+
+  local lines = {}
+  for _, item in ipairs(items) do
+    local message = item.message:gsub('\n', ' ')
+    table.insert(lines, string.format('%s: %s', item.source, message))
+  end
+
+  M.yank(table.concat(lines, '\n'), 'Diagnostics')
+end
+
 return M

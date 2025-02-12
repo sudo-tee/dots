@@ -88,7 +88,8 @@ map_pair('n', 'i', diag.prev('I'), diag.next('I'), '[I]nfo diagnostic')
 
 -- Diagnostic float
 map('n', '<S-l>', diag.float, { desc = 'Show diagnostic messages' })
-map('n', '<leader>q', vim.diagnostic.setloclist, { desc = 'Open diagnostic [Q]uickfix list' })
+map('n', '<leader>dq', vim.diagnostic.setloclist, { desc = 'Open diagnostic [Q]uickfix list' })
+map('n', '<leader>dy', u.yank_diagnostic, { desc = 'Open diagnostic [Q]uickfix list' })
 
 -- quickfix list
 map_pair('n', 'q', cmd('cprev'), cmd('cnext'), '[q]uickfix item')
@@ -206,7 +207,7 @@ end, { desc = 'Generate a sharing message for MR' })
 
 map('n', '<leader>glf', function()
   require('snacks').gitbrowse.open({ what = 'file' })
-end, { desc = 'Line' })
+end, { desc = 'File' })
 
 map('n', '<leader>glb', function()
   require('snacks').gitbrowse.open({ what = 'branch' })
