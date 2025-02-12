@@ -11,7 +11,12 @@ return { -- Collection of various small independent plugins/modules
       require('custom.plugins.mini.hipatterns').setup()
       require('custom.plugins.mini.operators').setup()
 
-      require('mini.icons').setup()
+      require('mini.icons').setup({
+        extension = {
+          ['spec.ts'] = { glyph = '󰤒', hl = 'MiniIconsGreen' },
+          ['test.ts'] = { glyph = '󰤒', hl = 'MiniIconsGreen' },
+        },
+      })
       MiniIcons.mock_nvim_web_devicons()
 
       require('custom.plugins.mini.clue').setup()
