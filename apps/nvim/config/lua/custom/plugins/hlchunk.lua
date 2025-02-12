@@ -6,6 +6,8 @@ return {
       chunk = {
         enable = true,
         use_treesitter = true,
+        delay = 300,
+        duration = 100,
         chars = {
           horizontal_line = '─',
           vertical_line = '│',
@@ -18,7 +20,7 @@ return {
         enable = false,
       },
       line_num = {
-        enable = true,
+        enable = false,
         use_treesitter = true,
       },
     })
