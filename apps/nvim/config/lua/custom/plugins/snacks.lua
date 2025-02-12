@@ -40,6 +40,17 @@ return {
     statuscolumn = {
       enabled = true,
     },
+    gitbrowse = {
+      enabled = true,
+      url_patterns = {
+        ['gitlab[-%w_]*%.%a+'] = {
+          branch = '/-/tree/{branch}',
+          file = '/-/blob/{branch}/{file}#L{line_start}-L{line_end}',
+          permalink = '/-/blob/{commit}/{file}#L{line_start}-L{line_end}',
+          commit = '/-/commit/{commit}',
+        },
+      },
+    },
   },
   init = function()
     vim.api.nvim_create_autocmd('User', {
