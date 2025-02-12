@@ -19,6 +19,14 @@ return {
       desc = 'Flash',
     },
     {
+      'ss',
+      mode = { 'n', 'x', 'o' },
+      function()
+        require('flash').jump()
+      end,
+      desc = 'Flash',
+    },
+    {
       '<M-v>',
       mode = { 'n', 'x', 'o' },
       function()
