@@ -1,8 +1,6 @@
 return {
+  priority = 1000,
   'folke/snacks.nvim',
-  dependencies = {
-    'stevearc/dressing.nvim',
-  },
   lazy = false,
   -- stylua: ignore
   keys = {
@@ -36,8 +34,10 @@ return {
     picker = {
       enabled = true,
     },
-    keys = {},
     statuscolumn = {
+      enabled = true,
+    },
+    input = {
       enabled = true,
     },
     gitbrowse = {
