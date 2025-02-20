@@ -29,7 +29,10 @@ local function select_items(title, items)
       return item.text
     end,
   }, function(item)
-    item.action()
+    local action = item and item.action
+    if action then
+      action()
+    end
   end)
 end
 
@@ -170,6 +173,7 @@ return {
         },
         list = {
           keys = {
+            ['<c-f>'] = 'picker_grep',
             ['<M-Right>'] = { 'cycle_win' },
             ['<M-Left>'] = { 'cycle_win' },
             ['<M-Down>'] = { 'focus_input' },
