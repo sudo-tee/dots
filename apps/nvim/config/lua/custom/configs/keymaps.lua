@@ -70,14 +70,78 @@ map('n', '<localleader>O', 'O<Esc>', { desc = 'Insert new line before in normal 
 map('n', '<localleader>a', 'ggVG', { desc = 'Select all' })
 
 -- Marks
+map('n', 'm', function()
+  local mark = vim.fn.getcharstr()
+  if not mark:match('^[a-zA-Z]$') then
+    return
+  end
+  vim.cmd('normal! m' .. mark)
+  Snacks.util.redraw(0)
+end, { desc = '[m]ark' })
+
 map('n', 'dm', function()
   local mark = vim.fn.getcharstr()
   if not mark:match('^[a-zA-Z]$') then
     return
   end
   vim.cmd('delmark ' .. mark)
-  Snacks.util.redraw()
+  Snacks.util.redraw(0)
 end, { desc = '[D]elete [m]ark' })
+
+map('n', 'dmm', function()
+  local buf = vim.api.nvim_get_current_buf()
+  local current_line = vim.fn.line('.')
+  local marks = { vim.fn.getmarklist(buf), vim.fn.getmarklist() }
+
+  vim.iter(marks):flatten():each(function(mark)
+    if mark.mark:match("^'[a-zA-Z]$") and mark.pos[1] == buf and mark.pos[2] == current_line then
+      vim.cmd('delmark ' .. mark.mark:sub(2))
+    end
+  end)
+
+  Snacks.util.redraw(0)
+end, { desc = '[D]elete mark on current line' })
+
+local function next_available_mark(buf)
+  local taken = {}
+  local marklist = buf and vim.fn.getmarklist(buf) or vim.fn.getmarklist()
+  local range = buf and { string.byte('a'), string.byte('z') } or { string.byte('A'), string.byte('Z') }
+
+  for _, mark in ipairs(marklist) do
+    local mark_char = mark.mark:match("^'([a-zA-Z])$")
+    if mark_char then
+      taken[mark_char] = true
+    end
+  end
+
+  for ascii = range[1], range[2] do
+    local candidate = string.char(ascii)
+    if not taken[candidate] then
+      return candidate
+    end
+  end
+  return nil
+end
+
+map('n', 'mM', function()
+  local mark = next_available_mark()
+  if mark then
+    vim.cmd('normal! m' .. mark)
+    Snacks.util.redraw(0)
+  else
+    print('No available global mark.')
+  end
+end, { desc = '[m]ark - set next available global mark' })
+
+map('n', 'mm', function()
+  local mark = next_available_mark(vim.api.nvim_get_current_buf())
+  if mark then
+    vim.cmd('normal! m' .. mark)
+    Snacks.util.redraw(0)
+  else
+    print('No available global mark.')
+  end
+end, { desc = '[m]ark - set next available local mark' })
 
 -- Diagnostics keymap ]e ]i ]w ]d
 local diag = require('custom.lib.diagnostics')
