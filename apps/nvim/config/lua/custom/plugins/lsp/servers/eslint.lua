@@ -1,4 +1,5 @@
 return {
+  root_dir = require('lspconfig.util').root_pattern('package.json', '.eslintrc.json', '.eslintrc.js', '.eslintrc'),
   settings = {
     -- helps eslint find the eslintrc when it's placed in a subfolder instead of the cwd root
     workingDirectories = { mode = 'auto' },
