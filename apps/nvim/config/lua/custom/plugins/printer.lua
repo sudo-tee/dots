@@ -9,31 +9,39 @@ local function get_print_tag()
   return tag
 end
 
-local function is_function(node_type)
-  local valid_types = {
-    function_declaration = true,
-    method_definition = true,
-    function_definition = true,
-    ['function'] = true,
-    arrow_function = true,
-  }
+local VALID_FUNCTION_TYPES = {
+  function_declaration = true,
+  method_definition = true,
+  function_definition = true,
+  ['function'] = true,
+  arrow_function = true,
+  variable_list = true,
+}
 
-  return valid_types[node_type] ~= nil
-end
+local VALID_DECLARATION_TYPES = {
+  variable_declarator = true,
+  local_declaration = true,
+  lexical_declaration = true,
+}
 
 local function get_current_function_name()
   local node = vim.treesitter.get_node()
+  local buf = vim.api.nvim_get_current_buf()
 
   while node do
-    if is_function(node:type()) then
-      local name = node:field('name')
-      if name and #name >= 1 then
-        return vim.treesitter.get_node_text(name[1], vim.api.nvim_get_current_buf())
+    local ntype = node:type()
+    local names = node:field('name')
+    if VALID_FUNCTION_TYPES[ntype] and names[1] then
+      return vim.treesitter.get_node_text(names[1], buf)
+    elseif VALID_DECLARATION_TYPES[ntype] then
+      local value = node:field('value')[1]
+      if value and VALID_FUNCTION_TYPES[value:type()] and names[1] then
+        return vim.treesitter.get_node_text(names[1], buf)
       end
-      return 'anonymous'
     end
     node = node:parent()
   end
+  return 'anonymous'
 end
 
 return {
