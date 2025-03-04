@@ -69,6 +69,9 @@ map('n', '<localleader>O', 'O<Esc>', { desc = 'Insert new line before in normal 
 -- Select all
 map('n', '<localleader>a', 'ggVG', { desc = 'Select all' })
 
+-- Search in visual selection
+map('x', 'g/', '<Esc>/\\%V')
+
 -- Marks
 map('n', 'm', function()
   local mark = vim.fn.getcharstr()
@@ -174,11 +177,17 @@ map('n', '<C-f>', '<C-f>zz', { desc = 'Scroll forward' })
 map('n', '<C-b>', '<C-b>zz', { desc = 'Scroll backward' })
 map('n', 'G', 'Gzz', { desc = 'Go to end' })
 
+map('n', '<A-w>', function()
+  local current_word = vim.call('expand', '<cword>')
+  vim.fn.setreg('/', '\\<' .. current_word .. '\\>')
+  vim.opt.hlsearch = true
+end, { noremap = true, silent = true, desc = 'Higlight word under cursor' })
+
 -- Utilities to replace text
 
-map('n', '<localleader>*', '*Ncgn', { desc = 'Change word with . repeat' })
-map('x', '<localleader>rv', cmd('ReplaceSelection'), { desc = '[R]eplace [v]isually selected text' })
-map('n', '<localleader>rw', cmd('ReplaceWord'), { desc = '[R]eplace [w]ord under cursor' })
+map('n', '<leader>*', '*Ncgn', { desc = 'Change word with . repeat' })
+map('x', '<leader>rv', cmd('ReplaceSelection'), { desc = '[R]eplace [v]isually selected text' })
+map('n', '<leader>rw', cmd('ReplaceWord'), { desc = '[R]eplace [w]ord under cursor' })
 
 -- Duplicate a line and comment out the first line
 map('n', '<localleader>c', 'yy<cmd>normal gcc<CR>p', { desc = 'Duplicate line and comment' })
