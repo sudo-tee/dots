@@ -29,9 +29,8 @@ local function select_items(title, items)
       return item.text
     end,
   }, function(item)
-    local action = item and item.action
-    if action then
-      action()
+    if item and item.action then
+      item.action()
     end
   end)
 end
