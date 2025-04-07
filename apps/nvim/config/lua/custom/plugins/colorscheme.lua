@@ -1,9 +1,11 @@
+---@module 'kanagawa'
 return {
   {
     'rebelot/kanagawa.nvim',
     enabled = true,
     event = 'VimEnter',
     priority = 1000, -- make sure to load this before all the other start plugins
+    ---@type KanagawaConfig
     opts = {
       compile = true,
       dimInactive = true,
@@ -18,10 +20,20 @@ return {
       },
     },
     config = function(_, opts)
+      ---@type fun(colors: KanagawaColorsSpec): table<string, table>
       opts.overrides = function(colors)
+        ---@type ThemeColors
+
         local theme = colors.theme
 
         return {
+          ['@markup.link.url.markdown_inline'] = { link = 'Special' }, -- (url)
+          ['@markup.link.label.markdown_inline'] = { link = 'WarningMsg' }, -- [label]
+          ['@markup.italic.markdown_inline'] = { link = 'Exception' }, -- *italic*
+          ['@markup.raw.markdown_inline'] = { link = 'String' }, -- `code`
+          ['@markup.list.markdown'] = { link = 'Function' }, -- + list
+          ['@markup.quote.markdown'] = { link = 'Error' }, -- > blockcode
+          ['@markup.list.checked.markdown'] = { link = 'WarningMsg' }, -- - [X] checked list item
           DiagnosticSignInfo = { bg = 'none' },
           NormalFloat = { bg = 'none' },
           FloatBorder = { bg = 'none' },
@@ -72,6 +84,11 @@ return {
           BlinkCmpMenu = { bg = theme.ui.bg_m3 },
           BlinkCmpMenuBorder = { bg = theme.ui.bg_m3, fg = '#54546d' },
           BlinkCmpDocBorder = { bg = theme.ui.bg_m3, fg = '#54546d' },
+
+          AvanteSidebarWinSeparator = { bg = theme.ui.bg_dim, fg = '#393836' },
+          AvanteSidebarWinHorizontalSeparator = { bg = theme.ui.bg_dim, fg = '#393836' },
+
+          CopilotSuggestion = { link = 'Comment' },
         }
       end
       require('kanagawa').setup(opts)
