@@ -226,6 +226,9 @@ return {
         explorer = {
           layout = 'sidebar_right',
         },
+        help = {
+          layout = 'bottom',
+        },
       },
       actions = {
         diff_view_commit = function(picker, item)
