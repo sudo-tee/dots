@@ -64,8 +64,9 @@ return {
       { 'folke/snacks.nvim' },
     },
     opts = {
-      model = 'claude-3.5-sonnet',
-      temperature = 0.2,
+      -- model = 'claude-3.5-sonnet', -- :( not enable by company
+      model = 'o3-mini',
+      -- temperature = 0.2,
       debug = false,
       insert_at_end = true,
       highlight_headers = false,
