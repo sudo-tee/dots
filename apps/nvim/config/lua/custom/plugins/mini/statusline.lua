@@ -80,7 +80,7 @@ M.setup = function()
       return 'Offline'
     end
 
-    local status = require('copilot.api').status.data.status
+    local status = require('copilot.status').data.status
     if status == '' then
       return 'Idle'
     end
