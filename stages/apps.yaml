@@ -29,3 +29,6 @@
     - [./Taskfile app bat]
     - [./Taskfile app eza]
     - [./Taskfile app fzf]
+    - [./Taskfile app lynx]
+    - [./Taskfile app libgit2]
+    - [./Taskfile app go]

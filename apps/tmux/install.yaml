@@ -20,6 +20,9 @@
       path: apps/tmux/config/*
 
 - shell:
+    - description: "💿💿💿  Installing tmux 💿💿💿"
+      command: |
+          brew install tmux
     - description: "💿💿💿  Installing tmux tpm 💿💿💿"
       command: |
           git clone https://github.com/tmux-plugins/tpm ~/.tmux/plugins/tpm
