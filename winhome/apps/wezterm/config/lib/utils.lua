@@ -1,5 +1,26 @@
 local M = {}
 
+---@param pane Pane
+function M.get_pane_path(pane)
+  local domain = pane:get_domain_name()
+
+  local path = pane:get_current_working_dir().path
+  if domain:match("^WSL:") then
+    domain = domain:sub(5) -- Remove "WSL:" prefix
+
+    -- Convert Windows path to Unix path if needed
+    if path:match("^[A-Za-z]:\\") or path:match("^/[A-Za-z]:/") then
+      -- Remove drive letter and convert backslashes
+      path = path:gsub("^/?([A-Za-z]):[/\\]", "/mnt/%1/"):lower():gsub("\\", "/")
+    end
+
+    if path:match("^/" .. domain) then
+      path = path:sub(#domain + 2)
+    end
+  end
+  return path
+end
+
 function M.switch(case, options)
   return (options[case] or options.default or function() end)()
 end

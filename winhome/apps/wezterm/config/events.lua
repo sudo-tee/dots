@@ -36,7 +36,7 @@ wezterm.on("update-status", function(window, pane)
     { Attribute = { Intensity = "Bold" } },
     { Foreground = { Color = WS_BG } },
     { Background = { Color = WS_FG } },
-    { Text = " " .. icons.dev_terminal_badge .. " " },
+    { Text = " " .. icons.fa_terminal .. " " },
     { Background = { Color = ws_color.bg } },
     { Foreground = { Color = ws_color.fg } },
     { Text = " 󱂬  " .. workspace .. " " },

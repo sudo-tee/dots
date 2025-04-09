@@ -12,6 +12,10 @@ function _G.vim.inspect(x)
   return x
 end
 
+function _G.vim.print(...)
+  wezterm.log_info(...)
+end
+
 _G.wezterm = wezterm
 
 wezterm.GLOBAL.project_path = "/home/francis/Projects/"

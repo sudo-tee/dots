@@ -94,7 +94,11 @@ function M.apply_layout(window, layout)
   wezterm.emit("workspace-manager/on-layout-applied", window, main_pane, layout)
 
   if layout.command then
-    main_pane:send_text(layout.command .. "\n")
+    (function(pane, command)
+      wezterm.time.call_after(0.5, function()
+        pane:send_text(command .. "\n")
+      end)
+    end)(main_pane, layout.command)
   end
 
   main_pane:activate()

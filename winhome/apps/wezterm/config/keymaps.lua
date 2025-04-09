@@ -9,6 +9,7 @@ return {
   map("<S-A-|>", actions.split_pane("Right")),
   map("<S-A-_>", actions.split_pane("Bottom")),
   map("<S-A-T>", actions.create_new_tab),
+  map("<S-C-T>", actions.create_new_tab),
   map("<S-A-R>", actions.rename_tab),
   map("<S-A-Z>", act.TogglePaneZoomState),
   map("<S-A-LeftArrow>", act.ActivateTabRelative(-1)),

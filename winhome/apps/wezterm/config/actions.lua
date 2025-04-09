@@ -6,11 +6,12 @@ function M.split_pane(direction)
   ---@param pane Pane
   ---@param line string
   return function(window, pane, line)
-    local cwd = pane:get_current_working_dir()
+    local utils = require("lib.utils")
+    local cwd = utils.get_pane_path(pane)
 
     pane:split({
       direction = direction,
-      cwd = cwd.path,
+      cwd = cwd,
     })
 
     -- wez.ensure_cwd(new_pane, cwd.path)
@@ -21,7 +22,10 @@ end
 ---@param pane Pane
 ---@param line string
 function M.create_new_tab(window, pane, line)
-  window:mux_window():spawn_tab({})
+  local utils = require("lib.utils")
+  local path = utils.get_pane_path(pane)
+
+  window:mux_window():spawn_tab({ cwd = path })
 end
 
 ---@param window Window
