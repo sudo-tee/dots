@@ -78,7 +78,10 @@ end
 -- Given "c:\\foo\\bar" returns "bar"
 ---@param s string
 function M.basename(s)
-  return string.gsub(s, "(.*[/\\])(.*)", "%2")
+  -- Remove trailing slashes first
+  s = s:gsub("[/\\]+$", "")
+  local basename = string.gsub(s, "(.*[/\\])(.*)", "%2")
+  return basename
 end
 
 function M.filter(tbl, func)
