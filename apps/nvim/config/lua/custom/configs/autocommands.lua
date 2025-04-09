@@ -2,6 +2,14 @@
 --  See :help lua-guide-autocommands
 local augroup = require('custom.lib.utils').augroup
 
+-->> "RUN ONCE" ON FILE OPEN COMMANDS <<--
+-- prevent comment from being inserted when entering new line in existing comment
+vim.api.nvim_create_autocmd('BufWinEnter', {
+  callback = function()
+    vim.opt_local.formatoptions:remove({ 'r', 'o' })
+  end,
+})
+
 -- Check if we need to reload the file when it changed
 vim.api.nvim_create_autocmd({ 'FocusGained', 'TermClose', 'TermLeave' }, {
   group = augroup('checktime'),
@@ -78,6 +86,7 @@ vim.api.nvim_create_autocmd('FileType', {
     'neotest-summary',
     'neotest-output',
     'neotest-output-panel',
+    'AvanteInput',
   },
   callback = function(args)
     vim.keymap.set('n', 'q', '<cmd>quit<cr>', { buffer = args.buf })
