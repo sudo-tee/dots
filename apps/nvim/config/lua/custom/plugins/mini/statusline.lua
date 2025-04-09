@@ -1,4 +1,8 @@
 local M = {}
+local cache = {
+  plugin_updates = nil,
+  dianostic = nil,
+}
 
 M.setup = function()
   require('mini.statusline').setup({
@@ -97,17 +101,19 @@ M.setup = function()
 
   MiniStatusline.custom_diagnostics = (function()
     local utils = require('custom.lib.utils')
-    local cache = {}
 
     -- Update cache when diagnostics change
-    vim.api.nvim_create_autocmd({ 'DiagnosticChanged', 'BufEnter' }, {
+    vim.api.nvim_create_autocmd({ 'DiagnosticChanged', 'LSPAttach' }, {
       group = utils.augroup('custom_statusline_diagnostics'),
       callback = function()
-        cache = {}
+        cache.dianostic = {}
         for _, level in ipairs(diagnostic_levels) do
           local n = #vim.diagnostic.get(0, { severity = vim.diagnostic.severity[level.name] })
           if n > 0 then
-            table.insert(cache, { hl = 'MiniStatuslineCustomDiagnostic' .. level.name, strings = { level.sign .. n } })
+            table.insert(
+              cache.dianostic,
+              { hl = 'MiniStatuslineCustomDiagnostic' .. level.name, strings = { level.sign .. n } }
+            )
           end
         end
       end,
@@ -162,23 +168,25 @@ M.setup = function()
     return result
   end
 
-  local updates_cache = require('custom.lib.cache').new(300) -- 15 minutes cache
-  vim.api.nvim_create_autocmd('BufLeave', {
-    group = vim.api.nvim_create_augroup('LazyBufferClosed', { clear = true }),
-    pattern = '*',
-    callback = function()
-      if vim.bo.filetype == 'lazy' then
-        updates_cache:clear()
-      end
-    end,
-  })
+  MiniStatusline.updates = (function(_)
+    local utils = require('custom.lib.utils')
 
-  MiniStatusline.updates = function(_)
-    return updates_cache:get(function()
-      local lazy_status = require('lazy.status')
-      return lazy_status.has_updates() and lazy_status.updates() or nil
-    end)
-  end
+    vim.api.nvim_create_autocmd('User', {
+      group = utils.augroup('status_line_plugin_updates', { clear = true }),
+      pattern = { 'LazyCheck', 'LazyUpdate' },
+      callback = function()
+        cache.plugin_updates = require('lazy.status').updates() or ''
+        vim.cmd('redrawstatus')
+      end,
+    })
+
+    return function()
+      if cache.plugin_updates == nil then
+        cache.plugin_updates = require('lazy.status').updates() or ''
+      end
+      return cache.plugin_updates or ''
+    end
+  end)()
 end
 
 return M
