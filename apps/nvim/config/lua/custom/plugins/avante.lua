@@ -17,9 +17,9 @@ return {
       enable_token_counting = false,
     },
     copilot = {
-      model = 'o3-mini',
-      disable_tools = true,
-      -- model = 'claude-3.5-sonnet',
+      -- model = 'o3-mini',
+      -- disable_tools = true,
+      model = 'claude-3.5-sonnet',
     },
     windows = {
       width = 40,

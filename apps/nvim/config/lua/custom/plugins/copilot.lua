@@ -64,8 +64,8 @@ return {
       { 'folke/snacks.nvim' },
     },
     opts = {
-      -- model = 'claude-3.5-sonnet', -- :( not enable by company
-      model = 'o3-mini',
+      model = 'claude-3.5-sonnet', -- :( not enable by company
+      -- model = 'o3-mini',
       -- temperature = 0.2,
       debug = false,
       insert_at_end = true,
@@ -125,21 +125,6 @@ return {
 
         require('CopilotChat').ask(input, { selection = selection })
       end, { range = true })
-
-      command('CopilotChatCommitMessageFloat', function()
-        local chat = require('CopilotChat')
-        chat.ask(chat.config.prompts.CommitStaged.prompt, {
-          clear_chat_on_new_prompt = true,
-          window = {
-            layout = 'float',
-            title = 'Generate commit message',
-            zindex = 50,
-            width = 0.6,
-            border = 'rounded',
-          },
-          selection = chat.config.prompts.CommitStaged.selection,
-        })
-      end, {})
     end,
   },
 }
