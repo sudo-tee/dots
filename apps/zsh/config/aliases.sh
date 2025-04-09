@@ -83,29 +83,39 @@ rgbtohex() {
 }
 
 nkill() {
-  local dirs
-  dirs=$(find . -maxdepth 3 -name "node_modules" -type d)
+  local count=0
+  local dirs=()
 
-  if [ -z "$dirs" ]; then
-    echo "No top-level node_modules directories found."
+  echo "Searching for node_modules directories..."
+
+  while IFS= read -r dir; do
+    [[ -n "$dir" ]] && dirs+=("$dir")
+  done < <(find . -maxdepth 3 -name "node_modules" -type d -prune)
+
+  count=${#dirs[@]}
+
+  if ((count == 0)); then
+    echo "No node_modules directories found."
     return 0
   fi
 
-  echo "Found top-level node_modules directories:"
-  echo "$dirs"
-  echo
+  echo "Found $count node_modules director$( ((count == 1)) && echo "y" || echo "ies"):"
+  printf '  %s\n' "${dirs[@]}"
 
   echo -n "Do you want to delete these directories? [y/N] "
-  read -k 1 REPLY
+  read -r REPLY
   echo
 
   if [[ $REPLY =~ ^[Yy]$ ]]; then
     echo "Deleting directories..."
-    while IFS= read -r dir; do
-      rm -rf "$dir"
-      echo "✓ Deleted: $dir"
-    done <<<"$dirs"
-    echo "Done!"
+    for dir in "${dirs[@]}"; do
+      if rm -rf "$dir" 2>/dev/null; then
+        echo "✓ Deleted: $dir"
+      else
+        echo "✗ Failed to delete: $dir"
+      fi
+    done
+    echo "Operation completed!"
   else
     echo "Operation cancelled."
   fi
