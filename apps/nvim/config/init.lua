@@ -17,6 +17,7 @@ require('lazy').setup({
   change_detection = {
     notify = false,
   },
+  install = { colorscheme = {'kanagawa-wave'} },
   performance = {
     rtp = {
       -- disable some rtp plugins

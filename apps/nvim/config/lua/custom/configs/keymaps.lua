@@ -72,6 +72,12 @@ map('n', '<localleader>a', 'ggVG', { desc = 'Select all' })
 -- Search in visual selection
 map('x', 'g/', '<Esc>/\\%V')
 
+map('n', 'g.', ':%s//<c-r>./g<esc>', { desc = 'Repeat last substitution' })
+
+map('n', 'gh', function()
+  vim.cmd.h(vim.fn.expand('<cword>'))
+end, { desc = 'Get Help under current word' })
+
 -- Marks
 map('n', 'm', function()
   local mark = vim.fn.getcharstr()
@@ -156,7 +162,7 @@ map_pair('n', 'i', diag.prev('I'), diag.next('I'), '[I]nfo diagnostic')
 -- Diagnostic float
 map('n', '<S-l>', diag.float, { desc = 'Show diagnostic messages' })
 map('n', '<leader>dq', vim.diagnostic.setloclist, { desc = 'Open diagnostic [Q]uickfix list' })
-map('n', '<leader>dy', u.yank_diagnostic, { desc = 'Open diagnostic [Q]uickfix list' })
+map('n', '<leader>dy', u.yank_diagnostic, { desc = 'Yank diagnostic' })
 
 -- quickfix list
 map_pair('n', 'q', cmd('cprev'), cmd('cnext'), '[q]uickfix item')
