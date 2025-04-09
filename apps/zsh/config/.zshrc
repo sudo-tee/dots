@@ -32,7 +32,8 @@ export TSC_NONPOLLING_WATCHER="1"
 export NODE_NO_WARNINGS=1
 export COLORTERM=truecolor
 export DISABLE_AUTO_TITLE='true'
-export TERM='xterm-256color'
+# export TERM='xterm-256color'
+export TERM='wezterm'
 export EDITOR='nvim'
 export VISUAL='nvim'
 
