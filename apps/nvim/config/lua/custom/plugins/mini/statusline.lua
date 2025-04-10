@@ -24,6 +24,7 @@ M.setup = function()
         local copilot_status = MiniStatusline.copilot_status()
 
         local groups = {
+          { hl = 'MiniStatuslineCustomRecordingStatus', strings = { macro } },
           { hl = 'IncSearch', strings = { search } },
           { hl = mode_hl, strings = { mode } },
           { hl = 'MiniStatuslineDevinfo', strings = { git } },
@@ -32,7 +33,6 @@ M.setup = function()
           '%<', -- Mark general truncate point
           { hl = 'MiniStatuslineFilename', strings = { filename } },
           '%=', -- End left alignment
-          { hl = 'MiniStatuslineCustomRecordingStatus', strings = { macro } },
           { hl = 'MiniStatuslineCustomUpdatesStatus', strings = { lazy_updates } },
           { hl = 'MiniStatuslineCopilot' .. copilot_status, strings = { '' } },
           { hl = 'MiniStatuslineFileinfo', strings = { lsp, fileinfo } },
@@ -127,7 +127,7 @@ M.setup = function()
 
   MiniStatusline.macro = function(_)
     local reg = vim.fn.reg_recording()
-    local macro = reg ~= '' and string.format('🎥 @%s', reg) or ''
+    local macro = reg ~= '' and string.format('󰑊  REC @%s', reg) or ''
 
     return macro
   end

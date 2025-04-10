@@ -55,7 +55,7 @@ return {
           MiniStatuslineModeOther = { fg = '#15161e', bg = '#1abc9c' },
           MiniStatuslineModeReplace = { fg = '#15161e', bg = '#f7768e' },
           MiniStatuslineModeInsert = { fg = '#15161e', bg = '#9ece6a' },
-          MiniStatuslineCustomRecordingStatus = { fg = '#15161e', bg = '#ff9e3b' },
+          MiniStatuslineCustomRecordingStatus = { fg = '#ffffff', bg = '#e82424' },
           MiniStatuslineCustomUpdatesStatus = { fg = '#1abc9c', bg = theme.ui.bg_m3 },
 
           MiniStatuslineCopilot = { fg = '#1abc9c', bg = theme.ui.bg_m3 },
