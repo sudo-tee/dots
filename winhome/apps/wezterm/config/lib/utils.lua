@@ -1,5 +1,13 @@
 local M = {}
 
+-- This function normalize the path of a pane in WSL.
+-- It removes the WSL prefix and converts Windows paths to Unix paths.
+-- It also removes the domain name from the path if it matches the WSL domain.
+-- example of path that you can receive from wezterm:
+--   /mnt/c/Users/username/
+--   /Ubuntu/home/username/
+--   /C:/Users/username/
+
 ---@param pane Pane
 function M.get_pane_path(pane)
   local domain = pane:get_domain_name()
@@ -80,8 +88,7 @@ end
 function M.basename(s)
   -- Remove trailing slashes first
   s = s:gsub("[/\\]+$", "")
-  local basename = string.gsub(s, "(.*[/\\])(.*)", "%2")
-  return basename
+  return string.gsub(s, "(.*[/\\])(.*)", "%2")
 end
 
 function M.filter(tbl, func)

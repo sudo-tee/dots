@@ -70,11 +70,7 @@ function M.apply_layout(window, layout)
     wezterm.emit("workspace-manager/on-pane-created", window, current_pane, pane_config, cwd)
 
     if pane_config.command then
-      (function(pane, command)
-        wezterm.time.call_after(0.5, function()
-          pane:send_text(command .. "\n")
-        end)
-      end)(current_pane, pane_config.command)
+      current_pane:send_text(pane_config.command .. "\n")
     end
   end
 
@@ -94,11 +90,7 @@ function M.apply_layout(window, layout)
   wezterm.emit("workspace-manager/on-layout-applied", window, main_pane, layout)
 
   if layout.command then
-    (function(pane, command)
-      wezterm.time.call_after(0.5, function()
-        pane:send_text(command .. "\n")
-      end)
-    end)(main_pane, layout.command)
+    main_pane:send_text(layout.command .. "\n")
   end
 
   main_pane:activate()
