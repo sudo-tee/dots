@@ -1,0 +1,1 @@
+apps/zsh/config/priv.sh filter=git-crypt diff=git-crypt
