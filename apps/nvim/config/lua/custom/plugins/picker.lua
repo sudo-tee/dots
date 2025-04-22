@@ -102,7 +102,7 @@ return {
     { "<leader>sf", pick("smart"),                          desc = "Find Files" },
     { "<leader>sP", nvim_plugin_files,                      desc = "Find Neovim Plugin Files" },
     { '<leader>sb', pick("buffers"),                        desc = 'Buffers' },
-    { '<Tab><Tab>', pick("buffers"),                        desc = 'Buffers' },
+    { '<leader><leader>', pick("buffers"),                        desc = 'Buffers' },
     { '<leader>sB', pick("grep_buffers"),                   desc = 'Grep Buffers' },
     { '<leader>so', pick("recent"),                         desc = 'Recent' },
     { '<leader>sg', pick("grep"),                           desc = 'Grep' },
