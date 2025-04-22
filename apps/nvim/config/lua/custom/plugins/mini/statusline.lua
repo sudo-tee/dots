@@ -1,7 +1,7 @@
 local M = {}
 local cache = {
   plugin_updates = nil,
-  dianostic = nil,
+  diagnostic = nil,
 }
 
 M.setup = function()
@@ -106,12 +106,12 @@ M.setup = function()
     vim.api.nvim_create_autocmd({ 'DiagnosticChanged', 'LSPAttach' }, {
       group = utils.augroup('custom_statusline_diagnostics'),
       callback = function()
-        cache.dianostic = {}
+        cache.diagnostic = {}
         for _, level in ipairs(diagnostic_levels) do
           local n = #vim.diagnostic.get(0, { severity = vim.diagnostic.severity[level.name] })
           if n > 0 then
             table.insert(
-              cache.dianostic,
+              cache.diagnostic,
               { hl = 'MiniStatuslineCustomDiagnostic' .. level.name, strings = { level.sign .. n } }
             )
           end
@@ -121,7 +121,7 @@ M.setup = function()
 
     -- Return cached result
     return function()
-      return cache
+      return cache.diagnostic or {}
     end
   end)()
 
