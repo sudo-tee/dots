@@ -196,7 +196,9 @@ map('x', '<leader>rv', cmd('ReplaceSelection'), { desc = '[R]eplace [v]isually s
 map('n', '<leader>rw', cmd('ReplaceWord'), { desc = '[R]eplace [w]ord under cursor' })
 
 -- Duplicate a line and comment out the first line
-map('n', '<localleader>c', 'yy<cmd>normal gcc<CR>p', { desc = 'Duplicate line and comment' })
+map('n', '<localleader>cc', function()
+  return 'yy' .. vim.v.count1 .. "gcc']p"
+end, { remap = true, expr = true })
 
 map('n', '<C-c>', 'ciw')
 
