@@ -160,9 +160,9 @@ return {
       -- stylua: ignore start
       { '<leader>gg',  u.cmd('DiffviewOpen'),                               desc = 'Status' },
       { '<leader>gdm', u.cmd('GitDiffMain'),                                desc = 'Diff MAIN' },
-      { '<leader>gfh', u.cmd('DiffviewFileHistory'),                        desc = 'File History' },
-      { '<leader>gfH', u.cmd('DiffviewFileHistory --follow %'),             desc = 'File History' },
-      { '<leader>glh', u.cmd('.DiffviewFileHistory --follow %'), desc = 'Line History' },
+      { '<leader>gfh', u.cmd('DiffviewFileHistory --follow %'),             desc = 'File History' },
+      { '<leader>gfH', u.cmd('DiffviewFileHistory'),                        desc = 'File History' },
+      { '<leader>glh', u.cmd('.DiffviewFileHistory --follow %'),            desc = 'Line History' },
       { '<leader>gvh', "<Esc><Cmd>'<,'>DiffviewFileHistory --follow %<CR>", desc = 'Range History', mode="v" },
       -- stylua: ignore end
     },
@@ -191,11 +191,11 @@ return {
         keymaps = {
           -- stylua: ignore start
           view = {
-            { 'n', 'q',          u.cmd('DiffviewClose'), { desc = 'Close' } },
-            { 'n', '<A-q>',      u.cmd('DiffviewClose'), { desc = 'Close' } },
-            { 'n', '<Leader>l',  actions.cycle_layout,   { desc = 'Cycle layout' } },
-            { 'n', '-',  u.cmd("StageHunk"),   { desc = 'Stage hunk' } },
-            { 'v', '-',  u.cmd("StageVisualHunk"),   { desc = 'Stage hunk' } },
+            { 'n', 'q',          u.cmd('DiffviewClose'),  { desc = 'Close' } },
+            { 'n', '<A-q>',      u.cmd('DiffviewClose'),  { desc = 'Close' } },
+            { 'n', '<Leader>l',  actions.cycle_layout,    { desc = 'Cycle layout' } },
+            { 'n', '-',          u.cmd("StageHunk"),      { desc = 'Stage hunk' } },
+            { 'v', '-',          u.cmd("StageVisualHunk"),{ desc = 'Stage hunk' } },
           },
           file_panel = {
             { 'n', 'q',          u.cmd('DiffviewClose'), { desc = 'Close' } },
@@ -205,8 +205,6 @@ return {
             { 'n', 'A',          u.cmd('Gan'),           { desc = 'Git Commit Amend No Edit' } },
             { 'n', 'p',          u.cmd('Gp'),            { desc = 'Git Push' } },
             { 'n', 'F',          u.cmd('Gpl'),           { desc = 'Git Push Force (with lease)' } },
-            { 'n', '<Leader>rc', u.cmd('Grc'),           { desc = 'Git Rebase Continue' } },
-            { 'n', '<Leader>rm', u.cmd('Grm'),           { desc = 'Git Rebase master/main' } },
             { 'n', 'h',          actions.prev_entry,     { desc = 'Previuos entry' } },
             { 'n', '<Leader>l', actions.cycle_layout,   { desc = 'Cycle layout' } },
           },
