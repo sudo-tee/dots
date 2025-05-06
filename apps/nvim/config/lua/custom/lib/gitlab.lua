@@ -53,8 +53,6 @@ M.get_mr_details = function()
 end
 
 M.get_current_mr_url, M.clear_mr_url_cache = u.memoize(function(branch)
-  print('Getting current MR url for branch', branch)
-
   local details = M.get_mr_details()
   return details and details.web_url or nil
 end)
