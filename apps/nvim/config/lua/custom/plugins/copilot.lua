@@ -67,6 +67,16 @@ return {
       model = 'claude-3.5-sonnet', -- :( not enable by company
       -- model = 'o3-mini',
       -- temperature = 0.2,
+      sticky = {
+        '#files',
+        '#buffers',
+      },
+      context = { 'buffer', 'file' },
+      providers = {
+        github_models = {
+          disabled = true,
+        },
+      },
       debug = false,
       insert_at_end = true,
       highlight_headers = false,
