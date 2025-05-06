@@ -16,6 +16,9 @@ return {
       auto_suggestions = false,
       enable_token_counting = false,
     },
+    web_search_engine = {
+      provider = 'google', -- tavily, serpapi, searchapi, google, kagi, brave, or searxng
+    },
     copilot = {
       -- model = 'o3-mini',
       -- disable_tools = true,
@@ -37,23 +40,24 @@ return {
     'echasnovski/mini.nvim',
     'saghen/blink.cmp',
     'zbirenbaum/copilot.lua', -- for providers='copilot'
-    {
-      -- support for image pasting
-      'HakonHarnes/img-clip.nvim',
-      event = 'VeryLazy',
-      opts = {
-        -- recommended settings
-        default = {
-          -- insert_mode_after_paste = false,
-          embed_image_as_base64 = false,
-          prompt_for_file_name = false,
-          drag_and_drop = {
-            insert_mode = false,
-          },
-          -- required for Windows users
-          use_absolute_path = true,
-        },
-      },
-    },
+    'MeanderingProgrammer/render-markdown.nvim',
+    -- {
+    --   -- support for image pasting
+    --   'HakonHarnes/img-clip.nvim',
+    --   event = 'VeryLazy',
+    --   opts = {
+    --     -- recommended settings
+    --     default = {
+    --       -- insert_mode_after_paste = false,
+    --       embed_image_as_base64 = false,
+    --       prompt_for_file_name = false,
+    --       drag_and_drop = {
+    --         insert_mode = false,
+    --       },
+    --       -- required for Windows users
+    --       use_absolute_path = true,
+    --     },
+    --   },
+    -- },
   },
 }
