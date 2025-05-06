@@ -19,6 +19,9 @@
     ~/.config/zsh/ulimit.sh:
       force: true
       path: apps/zsh/config/ulimit.sh
+    ~/.config/zsh/priv.sh:
+      force: true
+      path: apps/zsh/config/priv.sh
     ~/.config/zsh/aliases.sh:
       force: true
       path: apps/zsh/config/aliases.sh
