@@ -1,0 +1,12 @@
+- defaults:
+    link:
+      create: true
+      relink: true
+    shell:
+      stdout: true
+      stderr: true
+      quiet: true
+- shell:
+    - description: "💿💿💿 Installing entr 💿💿💿"
+      command: |
+          brew install entr
