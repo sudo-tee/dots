@@ -125,29 +125,15 @@ return {
       require('mason-tool-installer').setup({ ensure_installed = ensure_installed })
 
       require('mason-lspconfig').setup({
-        handlers = {
-          function(server_name)
-            local server = servers[server_name] or {}
-
-            if server_name == 'rust_analyzer' then
-              return true
-            end
-
-            require('lspconfig')[server_name].setup({
-              cmd = server.cmd,
-              settings = server.settings,
-              filetypes = server.filetypes,
-              capabilities = vim.tbl_deep_extend('force', {}, capabilities, server.capabilities or {}),
-              root_dir = server.root_dir,
-              single_file_support = server.single_file_support,
-              before_init = server.before_init,
-              on_init = server.on_init,
-              on_attach = server.on_attach,
-              on_exit = server.on_exit,
-            })
-          end,
-        },
+        ensure_installed = {},
+        automatic_installation = false,
+        automatic_enable = true,
       })
+
+      for server_name, config in pairs(servers) do
+        require('lspconfig')[server_name].setup(config)
+        vim.lsp.config(server_name, config)
+      end
 
       vim.api.nvim_command('MasonToolsInstall')
     end,
