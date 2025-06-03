@@ -19,11 +19,11 @@ vim.cmd('command! Grbm :Sh git rbm')
 vim.cmd('command! -nargs=?  Gri :Sh git rebase -i <args>')
 
 cmd('GitDiffMain', function()
-  vim.cmd('DiffviewOpen origin/' .. git.default_branch() .. '...HEAD')
+  vim.cmd('DiffviewOpen origin/' .. git.default_branch() .. '...HEAD --imply-local')
 end, {})
 
 cmd('GitDiffBranch', function(args)
-  vim.cmd('DiffviewOpen origin/' .. args.fargs[1] .. '...HEAD')
+  vim.cmd('DiffviewOpen origin/' .. args.fargs[1] .. '...HEAD --imply-local')
 end, { nargs = '*' })
 
 cmd('OpenCommitDiff', function()
