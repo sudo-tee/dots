@@ -102,7 +102,7 @@ return {
     { "<leader>sf", pick("smart"),                          desc = "Find Files" },
     { "<leader>sP", nvim_plugin_files,                      desc = "Find Neovim Plugin Files" },
     { '<leader>sb', pick("buffers"),                        desc = 'Buffers' },
-    { '<leader><leader>', pick("buffers"),                        desc = 'Buffers' },
+    { '<leader><leader>', pick("buffers"),                  desc = 'Buffers' },
     { '<leader>sB', pick("grep_buffers"),                   desc = 'Grep Buffers' },
     { '<leader>so', pick("recent"),                         desc = 'Recent' },
     { '<leader>sg', pick("grep"),                           desc = 'Grep' },
@@ -111,6 +111,7 @@ return {
     { '<leader>po', project_overlays,                       desc = 'Project Overlay' },
     { '<leader>sk', pick("keymaps"),                        desc = 'Keymaps' },
     { '<leader>sh', pick("help"),                           desc = 'Help' },
+    { '<leader>sh', pick("jumps"),                          desc = 'Jumps' },
     { '<leader>sd', pick("diagnostics"),                    desc = 'Diagnostics' },
     { '<leader>sp', plugin_files,                           desc = 'Plugin Files' },
     { '<leader>su', pick("undo"),                           desc = 'Undo tree' },
@@ -118,6 +119,8 @@ return {
     { '<leader>ss', pick("pickers"),                        desc = 'Pickers' },
     { '<leader>sr', pick("registers"),                      desc = 'Registers' },
     { '<leader>sn', pick("notifications"),                  desc = 'Notifications' },
+    { '<leader>sN', pick("noice"),                          desc = 'Noice' },
+    { '<leader>sz', pick("zoxide"),                         desc = 'zoxide' },
     { '<leader>e',  pick("explorer"),                       desc = 'Explorer' },
 
     -- Git
@@ -195,6 +198,13 @@ return {
         },
       },
       layouts = {
+        horizontal = {
+          preset = 'vertical',
+          layout = {
+            width = 0.8,
+            min_width = 120,
+          },
+        },
         sidebar = { layout = { position = 'right' } },
         sidebar_right = {
           layout = {
@@ -228,6 +238,12 @@ return {
         },
         help = {
           layout = 'bottom',
+        },
+        notifications = {
+          layout = 'horizontal',
+        },
+        noice = {
+          layout = 'horizontal',
         },
       },
       actions = {
