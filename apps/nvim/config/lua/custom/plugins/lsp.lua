@@ -90,7 +90,6 @@ return {
         -- clangd = {},
         -- gopls = {},
         -- pyright = {},
-        volar = {},
         vtsls = require('custom.plugins.lsp.servers.vtsls'),
         eslint = require('custom.plugins.lsp.servers.eslint'),
         lua_ls = require('custom.plugins.lsp.servers.luals'),
@@ -101,6 +100,10 @@ return {
         marksman = {},
       }
 
+      for server_name, config in pairs(servers) do
+        require('lspconfig')[server_name].setup(config)
+        vim.lsp.config(server_name, config)
+      end
       -- Ensure the servers and tools above are installed
       --  To check the current status of installed tools and/or manually install
       --  other tools, you can run
@@ -129,11 +132,6 @@ return {
         automatic_installation = false,
         automatic_enable = true,
       })
-
-      for server_name, config in pairs(servers) do
-        require('lspconfig')[server_name].setup(config)
-        vim.lsp.config(server_name, config)
-      end
 
       vim.api.nvim_command('MasonToolsInstall')
     end,
