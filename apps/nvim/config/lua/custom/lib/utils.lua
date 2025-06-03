@@ -190,19 +190,64 @@ function M.string_hash(str)
 end
 
 function M.yank_diagnostic()
-  local line = vim.api.nvim_win_get_cursor(0)[1] - 1
-  local items = vim.diagnostic.get(0, { lnum = line })
+  local win_get_cursor = vim.api.nvim_win_get_cursor
+  local diagnostic_get = vim.diagnostic.get
+
+  local line = win_get_cursor(0)[1] - 1
+  local items = diagnostic_get(0, { lnum = line })
   if not items or #items == 0 then
     return
   end
 
   local lines = {}
   for _, item in ipairs(items) do
-    local message = item.message:gsub('\n', ' ')
-    table.insert(lines, string.format('%s: %s', item.source, message))
+    -- Replace newlines in messages with a space (sanitize for yank)
+    local message = item.message and item.message:gsub('\n', ' ') or ''
+    local source = item.source or ''
+    lines[#lines + 1] = string.format('%s: %s', source, message)
   end
 
   M.yank(table.concat(lines, '\n'), 'Diagnostics')
+end
+
+local dont_kill_clients = {
+  copilot = true, -- Copilot is a special case, it should not be restarted
+}
+
+function M.lsp_restart()
+  local bufnr = vim.api.nvim_get_current_buf()
+  local clients = vim.lsp.get_clients({ bufnr = bufnr })
+
+  if #clients == 0 then
+    -- I'm using my own implementation of `vim.lsp.enable()`
+    -- To work with default one change group name from `MyLsp` to `nvim.lsp.enable`
+    -- It is not tested with default one, so not sure if it would 100% work.
+    vim.api.nvim_exec_autocmds('FileType', { group = 'nvim.lsp.enable', buffer = bufnr })
+    return
+  end
+
+  for _, c in ipairs(clients) do
+    local attached_buffers = vim.tbl_keys(c.attached_buffers) ---@type integer[]
+    local config = c.config
+
+    if dont_kill_clients[config.name] then
+      vim.notify(string.format('Lsp `%s` has been skipped.', config.name))
+      return
+    end
+
+    vim.lsp.stop_client(c.id, true)
+    vim.defer_fn(function()
+      local id = vim.lsp.start(config)
+      if id then
+        for _, b in ipairs(attached_buffers) do
+          vim.lsp.buf_attach_client(b, id)
+        end
+        vim.notify(string.format('Lsp `%s` has been restarted.', config.name))
+      else
+        vim.notify(string.format('Error restarting `%s`.', config.name), vim.log.levels.ERROR)
+      end
+    end, 600)
+  end
 end
 
 return M

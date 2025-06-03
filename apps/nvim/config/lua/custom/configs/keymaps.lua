@@ -7,6 +7,9 @@ map('n', ' ', '<Nop>', { noremap = true, silent = true })
 
 map('n', '<Esc>', cmd('nohlsearch'))
 
+-- window navigation
+map('n', '<A-w>', '<C-w><C-w>', { desc = 'Next window' })
+
 --file related maps
 map('n', '<leader>fn', cmd('enew'), { desc = '[N]ew File' })
 
@@ -183,7 +186,7 @@ map('n', '<C-f>', '<C-f>zz', { desc = 'Scroll forward' })
 map('n', '<C-b>', '<C-b>zz', { desc = 'Scroll backward' })
 map('n', 'G', 'Gzz', { desc = 'Go to end' })
 
-map('n', '<A-w>', function()
+map('n', '<A-i>', function()
   local current_word = vim.call('expand', '<cword>')
   vim.fn.setreg('/', '\\<' .. current_word .. '\\>')
   vim.opt.hlsearch = true
@@ -254,10 +257,11 @@ map('n', '<leader>`', bufnav('e #'), { desc = 'Switch to alternate ' })
 
 -- Custom UI keymaps
 
+map('n', '<leader>uu', u.lsp_restart, { desc = 'Lsp restart' })
 -- highlights under cursor
 map('n', '<leader>ui', vim.show_pos, { desc = '[I]nspect Pos' })
 
-map('n', '<leader>ur', cmd('w | e'), { desc = '[R]fresh file' })
+map('n', '<leader>uS', cmd('w | e'), { desc = '[R]fresh file' })
 
 -- run quick shell cmd
 map('n', '!', ':Sh ', { desc = 'Execute Shell Command in the floating term', silent = false })
