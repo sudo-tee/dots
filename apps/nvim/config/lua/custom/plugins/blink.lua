@@ -54,7 +54,6 @@ return {
           preselect = true,
           auto_insert = false,
         },
-        max_items = 15,
       },
       menu = {
         border = 'rounded',
