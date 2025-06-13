@@ -257,7 +257,8 @@ map('n', '<leader>`', bufnav('e #'), { desc = 'Switch to alternate ' })
 
 -- Custom UI keymaps
 
-map('n', '<leader>uu', u.lsp_restart, { desc = 'Lsp restart' })
+map('n', '<leader>uu', u.restart, { desc = 'Restart Neovim' })
+map('n', '<leader>uR', u.lsp_restart, { desc = 'Lsp restart' })
 -- highlights under cursor
 map('n', '<leader>ui', vim.show_pos, { desc = '[I]nspect Pos' })
 
@@ -297,3 +298,5 @@ end, { desc = 'File' })
 map('n', '<leader>glb', function()
   require('snacks').gitbrowse.open({ what = 'branch' })
 end, { desc = 'Branch' })
+
+map('n', '<leader>y', u.yank_markdown_code_block, { desc = 'Yank contents of Markdown code block to clipboard' })
