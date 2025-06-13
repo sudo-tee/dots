@@ -30,7 +30,7 @@ return {
   before_init = function(params, config)
     local vuePluginConfig = {
       name = '@vue/typescript-plugin',
-      location = '~/.local/share/nvim/mason/package/node_modules/@vue/language-server',
+      location = vim.fn.expand('$MASON/packages/vue-language-server/node_modules/@vue/language-server'),
       languages = { 'vue' },
       configNamespace = 'typescript',
       enableForWorkspaceTypeScriptVersions = true,
