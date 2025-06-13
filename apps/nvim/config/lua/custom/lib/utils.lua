@@ -219,15 +219,11 @@ function M.lsp_restart()
   local clients = vim.lsp.get_clients({ bufnr = bufnr })
 
   if #clients == 0 then
-    -- I'm using my own implementation of `vim.lsp.enable()`
-    -- To work with default one change group name from `MyLsp` to `nvim.lsp.enable`
-    -- It is not tested with default one, so not sure if it would 100% work.
     vim.api.nvim_exec_autocmds('FileType', { group = 'nvim.lsp.enable', buffer = bufnr })
     return
   end
 
   for _, c in ipairs(clients) do
-    local attached_buffers = vim.tbl_keys(c.attached_buffers) ---@type integer[]
     local config = c.config
 
     if dont_kill_clients[config.name] then
@@ -237,6 +233,7 @@ function M.lsp_restart()
 
     vim.lsp.stop_client(c.id, true)
     vim.defer_fn(function()
+      local attached_buffers = vim.tbl_keys(c.attached_buffers) ---@type integer[]
       local id = vim.lsp.start(config)
       if id then
         for _, b in ipairs(attached_buffers) do
@@ -248,6 +245,58 @@ function M.lsp_restart()
       end
     end, 600)
   end
+end
+
+function M.find_parent_node(node, type)
+  while node and node:type() ~= type do
+    node = node:parent()
+  end
+  return node
+end
+
+function M.find_child_node(parent, type)
+  for child in parent:iter_children() do
+    if child:type() == type then
+      return child
+    end
+  end
+  return nil
+end
+
+function M.yank_markdown_code_block()
+  local node = vim.treesitter.get_node()
+  if not node then
+    vim.notify('No treesitter parser found', vim.log.levels.WARN)
+    return
+  end
+
+  local code_block = M.find_parent_node(node, 'fenced_code_block')
+  if not code_block then
+    vim.notify('Not inside a Markdown code block!', vim.log.levels.WARN)
+    return
+  end
+
+  local content_node = M.find_child_node(code_block, 'code_fence_content')
+  if not content_node then
+    vim.notify('No code content found', vim.log.levels.WARN)
+    return
+  end
+
+  local start_row, start_col, end_row = content_node:range()
+
+  vim.api.nvim_win_set_cursor(0, { start_row + 1, start_col })
+  vim.cmd('normal! v')
+  vim.api.nvim_win_set_cursor(0, { end_row, 0 })
+  vim.cmd('normal! $y')
+
+  vim.cmd('normal! `<')
+
+  vim.notify('Code block yanked!', vim.log.levels.INFO)
+end
+
+function M.restart()
+  vim.api.nvim_exec_autocmds('User', { pattern = 'RestartPre' })
+  vim.cmd('restart')
 end
 
 return M
