@@ -32,4 +32,10 @@ function M.find_nearest_commit_hash()
   return vim.fn.matchstr(vim.fn.getline('.'), commit_hash_pattern)
 end
 
+M.get_git_root = u.memoize(function(path)
+  local cmd_output = vim.fn.system('git rev-parse --show-toplevel'):gsub('\n', '')
+
+  return cmd_output ~= '' and cmd_output or nil
+end)
+
 return M

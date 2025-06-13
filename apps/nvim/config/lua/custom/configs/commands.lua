@@ -50,3 +50,7 @@ end, {})
 command('JiraLink', function(ticket)
   require('custom.lib.jira').create_jira_link(ticket.fargs[1])
 end, { nargs = '*' })
+
+command('Restart', function()
+  require('custom.lib.utils').restart()
+end, {})

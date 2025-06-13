@@ -93,3 +93,78 @@ vim.api.nvim_create_autocmd('FileType', {
     vim.keymap.set({ 'n' }, '<ESC>', '<cmd>close<CR>', { silent = true, buffer = true })
   end,
 })
+
+local function ensure_dir_exists(dir)
+  if not vim.fn.isdirectory(dir) then
+    vim.fn.mkdir(dir, 'p')
+  end
+end
+
+---@param subFolder string -- subdirectory (e.g., 'shada', 'session')
+---@param prefix string   -- prefix for filename
+---@param suffix string   -- file extension or suffix
+---@return string|nil
+local function get_nvim_data_file(subFolder, prefix, suffix)
+  local git = require('custom.lib.git')
+  local utils = require('custom.lib.utils')
+  local root = git.get_git_root(vim.fn.getcwd())
+  if not root then
+    return nil
+  end
+  local folder_hash = utils.string_hash(root)
+  local dir = vim.fn.stdpath('data') .. '/' .. subFolder
+  ensure_dir_exists(dir)
+  local fname = string.format('%s/%s_%s%s', dir, prefix, folder_hash, suffix)
+  return vim.fn.fnameescape(fname)
+end
+
+-- Set project-specific shada file
+local function set_project_shada()
+  local shada_file = get_nvim_data_file('shada', 'shada', '.shada')
+  if shada_file then
+    vim.go.shadafile = shada_file
+  else
+    vim.go.shadafile = vim.fn.fnameescape(vim.fn.stdpath('data') .. '/shada/main.shada')
+  end
+  if vim.fn.filereadable(vim.go.shadafile) == 1 then
+    vim.cmd('rshada ' .. vim.go.shadafile)
+  end
+end
+
+-- Get project-specific session file
+local function get_project_session(prefix)
+  prefix = prefix or ''
+  local session_file = get_nvim_data_file('session', prefix .. '_session', '.vim')
+  return session_file
+end
+
+vim.api.nvim_create_autocmd('User', {
+  group = augroup('SessionSave', { clear = true }),
+  pattern = 'RestartPre',
+  callback = function()
+    local session_file = get_project_session('restart_')
+    if session_file then
+      vim.cmd('mksession! ' .. session_file)
+    end
+  end,
+})
+
+vim.api.nvim_create_autocmd('VimEnter', {
+  group = augroup('SessionLoad', { clear = true }),
+  pattern = '*',
+  callback = function()
+    vim.defer_fn(function()
+      local session_file = get_project_session('restart_')
+      if session_file and vim.fn.filereadable(session_file) == 1 then
+        vim.cmd('source ' .. session_file)
+        vim.fn.system('rm ' .. session_file)
+      end
+    end, 100)
+  end,
+})
+
+vim.api.nvim_create_autocmd({ 'DirChanged', 'VimEnter' }, {
+  group = augroup('ProjectShada', { clear = true }),
+  pattern = '*',
+  callback = set_project_shada,
+})
