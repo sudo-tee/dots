@@ -1,8 +1,12 @@
 -- Stand-alone Mini plugins with custom configs
 
 return {
-  { 'echasnovski/mini.bufremove' },
   {
+    event = 'VeryLazy',
+    'echasnovski/mini.bufremove',
+  },
+  {
+    event = 'VeryLazy',
     'echasnovski/mini.ai',
     dependencies = {
       'echasnovski/mini.extra',
@@ -13,6 +17,7 @@ return {
     end,
   },
   {
+    event = 'VeryLazy',
     'echasnovski/mini.clue',
     version = false,
     config = function()
@@ -20,6 +25,7 @@ return {
     end,
   },
   {
+    event = 'VeryLazy',
     'echasnovski/mini.hipatterns',
     version = false,
     config = function()
@@ -27,6 +33,7 @@ return {
     end,
   },
   {
+    event = 'VeryLazy',
     'echasnovski/mini.operators',
     version = false,
     config = function()
@@ -34,6 +41,7 @@ return {
     end,
   },
   {
+    event = 'VeryLazy',
     'echasnovski/mini.statusline',
     version = false,
     config = function()
@@ -41,6 +49,7 @@ return {
     end,
   },
   {
+    event = 'VeryLazy',
     'echasnovski/mini.surround',
     version = false,
     config = function()
@@ -48,6 +57,7 @@ return {
     end,
   },
   {
+    event = 'VeryLazy',
     'echasnovski/mini.tabline',
     version = false,
     config = function()
@@ -55,6 +65,7 @@ return {
     end,
   },
   {
+    event = 'VeryLazy',
     'echasnovski/mini.icons',
     version = false,
     config = function()
