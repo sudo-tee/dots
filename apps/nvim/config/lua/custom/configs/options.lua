@@ -8,6 +8,8 @@ vim.g.maplocalleader = '\\'
 -- NOTE: You can change these options as you wish!
 --  For more options, you can see `:help option-list`
 
+vim.o.path = '.,,**'
+
 vim.opt.expandtab = true
 vim.opt.tabstop = 2
 vim.opt.shiftwidth = 2
@@ -100,6 +102,8 @@ vim.opt.spelllang = { 'en' }
 
 vim.opt.termguicolors = true
 vim.opt.autoread = true
+
+vim.o.sessionoptions = 'blank,buffers,curdir,folds,help,tabpages,winsize,winpos,terminal,localoptions'
 
 -- Allow misspellings
 vim.cmd.cnoreabbrev('qw', 'wq')
