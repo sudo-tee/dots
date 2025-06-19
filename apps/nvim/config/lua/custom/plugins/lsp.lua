@@ -1,13 +1,11 @@
-local u = require('custom.lib.utils')
-
 return {
   { -- LSP Configuration & Plugins
 
     'neovim/nvim-lspconfig',
     event = 'VeryLazy',
     dependencies = {
-      'williamboman/mason.nvim',
-      'williamboman/mason-lspconfig.nvim',
+      'mason-org/mason.nvim',
+      'mason-org/mason-lspconfig.nvim',
       'WhoIsSethDaniel/mason-tool-installer.nvim',
       {
         'yioneko/nvim-vtsls',
@@ -98,6 +96,7 @@ return {
         -- cssls = {},
         bashls = {},
         marksman = {},
+        -- oxlint = require('custom.plugins.lsp.servers.oxlint'),
       }
 
       for server_name, config in pairs(servers) do
@@ -118,6 +117,7 @@ return {
       vim.list_extend(ensure_installed, {
         'stylua',
         'eslint',
+        -- 'oxlint',
         'prettier',
         'prettierd',
         'shellcheck',
