@@ -111,7 +111,7 @@ return {
     { '<leader>po', project_overlays,                       desc = 'Project Overlay' },
     { '<leader>sk', pick("keymaps"),                        desc = 'Keymaps' },
     { '<leader>sh', pick("help"),                           desc = 'Help' },
-    { '<leader>sh', pick("jumps"),                          desc = 'Jumps' },
+    { '<leader>sj', pick("jumps"),                          desc = 'Jumps' },
     { '<leader>sd', pick("diagnostics"),                    desc = 'Diagnostics' },
     { '<leader>sp', plugin_files,                           desc = 'Plugin Files' },
     { '<leader>su', pick("undo"),                           desc = 'Undo tree' },
