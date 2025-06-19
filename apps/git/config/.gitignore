@@ -11,3 +11,7 @@ yalc.lock
 .vscode/
 lpm.manifest.json
 .ignore
+.vault/
+.aider*
+.goose
+.config/goose/history.txt

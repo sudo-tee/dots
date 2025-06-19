@@ -3,7 +3,8 @@ return {
   ---@module 'render-markdown'
   ---@type render.md.UserConfig
   opts = {
-    file_types = { 'markdown', 'Avante', 'copilot-chat' },
+    anti_conceal = { enabled = false },
+    file_types = { 'markdown', 'Avante', 'copilot-chat', 'goose_output' },
   },
-  ft = { 'markdown', 'Avante', 'copilot-chat' },
+  ft = { 'markdown', 'Avante', 'copilot-chat', 'goose_output' },
 }

@@ -1,0 +1,1 @@
+export GOOSE_DISABLE_KEYRING=true

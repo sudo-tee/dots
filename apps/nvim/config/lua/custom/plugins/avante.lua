@@ -1,8 +1,10 @@
 return {
+
   'yetone/avante.nvim',
-  event = 'VeryLazy',
+  event = 'LazyFile',
   enabled = function()
-    return not vim.g.disable_copilot
+    return false
+    -- return not vim.g.disable_copilot
   end,
   lazy = true,
   version = false, -- set this if you want to always pull the latest change

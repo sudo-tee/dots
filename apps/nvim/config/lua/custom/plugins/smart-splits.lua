@@ -49,6 +49,9 @@ return {
     {
       '<C-j>',
       function()
+        if require('custom.lib.hooks').run_hook('move_cursor_down') then
+          return
+        end
         require('smart-splits').move_cursor_down()
       end,
       desc = 'Move to split down',
@@ -56,6 +59,9 @@ return {
     {
       '<C-k>',
       function()
+        if require('custom.lib.hooks').run_hook('move_cursor_up') then
+          return
+        end
         require('smart-splits').move_cursor_up()
       end,
       desc = 'Move to split up',
@@ -63,6 +69,9 @@ return {
     {
       '<C-l>',
       function()
+        if require('custom.lib.hooks').run_hook('move_cursor_right') then
+          return
+        end
         require('smart-splits').move_cursor_right()
       end,
       desc = 'Move to split right',
@@ -70,6 +79,9 @@ return {
     {
       '<C-h>',
       function()
+        if require('custom.lib.hooks').run_hook('move_cursor_left') then
+          return
+        end
         require('smart-splits').move_cursor_left()
       end,
       desc = 'Move to split left',
@@ -77,6 +89,9 @@ return {
     {
       '<C-Left>',
       function()
+        if require('custom.lib.hooks').run_hook('move_cursor_left') then
+          return
+        end
         require('smart-splits').move_cursor_left()
       end,
       desc = 'Move to split left',
@@ -84,6 +99,9 @@ return {
     {
       '<C-Down>',
       function()
+        if require('custom.lib.hooks').run_hook('move_cursor_down') then
+          return
+        end
         require('smart-splits').move_cursor_down()
       end,
       desc = 'Move to split down',
@@ -91,6 +109,9 @@ return {
     {
       '<C-Up>',
       function()
+        if require('custom.lib.hooks').run_hook('move_cursor_up') then
+          return
+        end
         require('smart-splits').move_cursor_up()
       end,
       desc = 'Move to split up',
@@ -98,6 +119,9 @@ return {
     {
       '<C-Right>',
       function()
+        if require('custom.lib.hooks').run_hook('move_cursor_right') then
+          return
+        end
         require('smart-splits').move_cursor_right()
       end,
       desc = 'Move to split right',

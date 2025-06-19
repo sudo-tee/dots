@@ -1,0 +1,25 @@
+- defaults:
+    link:
+      create: true
+      relink: true
+    shell:
+      stdout: true
+      stderr: true
+      quiet: true
+- link:
+    ~/.config/zsh/includes/_goose.sh:
+      force: true
+      path: apps/goose/_goose.sh
+    ~/.config/goose:
+      force: true
+      path: apps/goose/config
+
+- shell:
+    - description: "💿💿💿 Installing goose 💿💿💿"
+      command: |
+          if  [ -e "$HOME/.local/bin/goose" ]; then
+            echo "⬆️ Updating goose"
+            goose update --canary
+          else
+            curl -fsSL https://github.com/block/goose/releases/download/stable/download_cli.sh | bash
+          fi

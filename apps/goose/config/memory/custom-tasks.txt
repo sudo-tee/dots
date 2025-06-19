@@ -1,0 +1,3 @@
+# commit
+Generate a conventional commit message for my staged changes.
+

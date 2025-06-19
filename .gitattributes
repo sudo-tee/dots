@@ -1,1 +1,5 @@
 apps/zsh/config/priv.sh filter=git-crypt diff=git-crypt
+apps/goose/config/githubcopilot/* filter=git-crypt diff=git-crypt
+apps/goose/config/secrets.yaml filter=git-crypt diff=git-crypt
+apps/goose/config/secrets.yml filter=git-crypt diff=git-crypt
+
