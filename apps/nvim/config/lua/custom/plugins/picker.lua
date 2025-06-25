@@ -235,6 +235,7 @@ return {
         smart = { filter = { cwd = true } },
         explorer = {
           layout = 'sidebar_right',
+          hidden = true,
         },
         help = {
           layout = 'bottom',
