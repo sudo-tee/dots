@@ -1,0 +1,31 @@
+{
+  "$schema": "https://opencode.ai/config.json",
+  "theme": "system",
+  "autoshare": false,
+  "autoupdate": false,
+  "mode": {
+      "review": {
+          "tools": {
+              "glob": true,
+              "grep": true,
+              "write": false,
+              "read": true,
+              "edit": false,
+              "bash": false
+          },
+          "prompt": "{file:./prompts/review.txt}"
+      }
+  },
+  "mcp": {
+      "context7": {
+          "enabled": true,
+          "type": "local",
+          "command": [
+              "npx",
+              "-y",
+              "@upstash/context7-mcp"
+            ]
+      }
+  },
+  "model": "github-copilot/claude-sonnet-4"
+}

@@ -1,0 +1,22 @@
+- defaults:
+    link:
+      create: true
+      relink: true
+    shell:
+      stdout: true
+      stderr: true
+      quiet: true
+- link:
+    ~/.config/opencode:
+      force: true
+      path: apps/opencode/config
+
+- shell:
+    - description: "💿💿💿 Installing opencode 💿💿💿"
+      command: |
+          brew install sst/tap/opencode
+          
+          echo "🪄 Updating the cache (because of proxy)"
+          cd ~/.cache/opencode
+          http_proxy="" https_proxy="" ni @ai-sdk/openai-compatible
+          http_proxy="" https_proxy="" opencode run "hi"
