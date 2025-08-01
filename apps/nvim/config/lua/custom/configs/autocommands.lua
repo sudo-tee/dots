@@ -142,6 +142,16 @@ vim.api.nvim_create_autocmd('User', {
   group = augroup('SessionSave', { clear = true }),
   pattern = 'RestartPre',
   callback = function()
+    local bufs = vim.api.nvim_list_bufs()
+    for _, bufnr in ipairs(bufs) do
+      local bopts = vim.bo[bufnr]
+      local should_delete = not vim.api.nvim_buf_is_loaded(bufnr) or not bopts.buflisted or bopts.filetype == 'qf'
+
+      if should_delete then
+        vim.api.nvim_buf_delete(bufnr, { force = true })
+      end
+    end
+
     local session_file = get_project_session('restart_')
     if session_file then
       vim.cmd('mksession! ' .. session_file)
