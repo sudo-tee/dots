@@ -3,28 +3,28 @@
   "theme": "system",
   "autoshare": false,
   "autoupdate": false,
-  "mode": {
+  "agent": {
       "review": {
+          "prompt": "{file:./prompts/review.txt}",
           "tools": {
-              "glob": true,
               "grep": true,
-              "write": false,
+              "bash": false,
               "read": true,
-              "edit": false,
-              "bash": false
-          },
-          "prompt": "{file:./prompts/review.txt}"
+              "glob": true,
+              "write": false,
+              "edit": false
+          }
       }
   },
   "mcp": {
       "context7": {
           "enabled": true,
-          "type": "local",
           "command": [
               "npx",
               "-y",
               "@upstash/context7-mcp"
-            ]
+            ],
+          "type": "local"
       }
   },
   "model": "github-copilot/claude-sonnet-4"

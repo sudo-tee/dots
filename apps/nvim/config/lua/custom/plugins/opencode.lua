@@ -27,6 +27,8 @@ return {
         diff_close = keymap_prefix .. 'c', -- Close diff view tab and return to normal editing
         diff_revert_all_last_prompt = keymap_prefix .. 'ra', -- Revert all file changes since the last goose prompt
         diff_revert_this_last_prompt = keymap_prefix .. 'rt',
+        diff_restore_snapshot_file = keymap_prefix .. 'rr',
+        diff_restore_snapshot_all = keymap_prefix .. 'rR',
         open_configuration_file = keymap_prefix .. 'C',
         swap_position = '<leader>ax', -- Swap Opencode pane left/right
       },

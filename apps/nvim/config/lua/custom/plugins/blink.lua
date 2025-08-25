@@ -30,6 +30,11 @@ return {
   ---@module 'blink.cmp'
   ---@type blink.cmp.Config
   opts = {
+    fuzzy = {
+      prebuilt_binaries = {
+        download = true,
+      },
+    },
     appearance = {
       -- sets the fallback highlight groups to nvim-cmp's highlight groups
       -- useful for when your theme doesn't support blink.cmp
@@ -54,6 +59,7 @@ return {
           preselect = true,
           auto_insert = false,
         },
+        -- max_items = 15,
       },
       menu = {
         border = 'rounded',
