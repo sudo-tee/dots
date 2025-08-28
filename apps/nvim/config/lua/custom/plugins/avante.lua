@@ -39,7 +39,7 @@ return {
     'nvim-lua/plenary.nvim',
     'MunifTanjim/nui.nvim',
     --- The below dependencies are optional,
-    'echasnovski/mini.nvim',
+    'nvim-mini/mini.nvim',
     'saghen/blink.cmp',
     'zbirenbaum/copilot.lua', -- for providers='copilot'
     'MeanderingProgrammer/render-markdown.nvim',

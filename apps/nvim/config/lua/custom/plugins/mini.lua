@@ -3,13 +3,13 @@
 return {
   {
     event = 'VeryLazy',
-    'echasnovski/mini.bufremove',
+    'nvim-mini/mini.bufremove',
   },
   {
     event = 'VeryLazy',
-    'echasnovski/mini.ai',
+    'nvim-mini/mini.ai',
     dependencies = {
-      'echasnovski/mini.extra',
+      'nvim-mini/mini.extra',
     },
     version = false,
     config = function()
@@ -18,7 +18,7 @@ return {
   },
   {
     event = 'VeryLazy',
-    'echasnovski/mini.clue',
+    'nvim-mini/mini.clue',
     version = false,
     config = function()
       require('custom.plugins.mini.clue').setup()
@@ -26,7 +26,7 @@ return {
   },
   {
     event = 'VeryLazy',
-    'echasnovski/mini.hipatterns',
+    'nvim-mini/mini.hipatterns',
     version = false,
     config = function()
       require('custom.plugins.mini.hipatterns').setup()
@@ -34,7 +34,7 @@ return {
   },
   {
     event = 'VeryLazy',
-    'echasnovski/mini.operators',
+    'nvim-mini/mini.operators',
     version = false,
     config = function()
       require('custom.plugins.mini.operators').setup()
@@ -42,7 +42,7 @@ return {
   },
   {
     event = 'VeryLazy',
-    'echasnovski/mini.statusline',
+    'nvim-mini/mini.statusline',
     version = false,
     config = function()
       require('custom.plugins.mini.statusline').setup()
@@ -50,7 +50,7 @@ return {
   },
   {
     event = 'VeryLazy',
-    'echasnovski/mini.surround',
+    'nvim-mini/mini.surround',
     version = false,
     config = function()
       require('custom.plugins.mini.surround').setup()
@@ -58,7 +58,7 @@ return {
   },
   {
     event = 'VeryLazy',
-    'echasnovski/mini.tabline',
+    'nvim-mini/mini.tabline',
     version = false,
     config = function()
       require('custom.plugins.mini.tabline').setup()
@@ -66,7 +66,7 @@ return {
   },
   {
     event = 'VeryLazy',
-    'echasnovski/mini.icons',
+    'nvim-mini/mini.icons',
     version = false,
     config = function()
       require('custom.plugins.mini.icons').setup()
