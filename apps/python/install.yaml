@@ -10,3 +10,4 @@
     - description: "💿💿💿 Installing python 💿💿💿"
       command: |
           brew install python
+          curl -LsSf https://astral.sh/uv/install.sh | sh

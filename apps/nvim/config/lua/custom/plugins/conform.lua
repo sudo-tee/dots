@@ -3,7 +3,7 @@ return { -- Autoformat
   lazy = true,
   event = 'VeryLazy',
   opts = {
-    notify_on_error = false,
+    notify_on_error = true,
     default_format_opts = {
       stop_after_first = true,
     },

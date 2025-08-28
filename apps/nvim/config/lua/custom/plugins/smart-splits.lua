@@ -33,7 +33,6 @@ end
 return {
   'mrjones2014/smart-splits.nvim',
   lazy = true,
-  event = 'LazyFile',
   keys = {
 
     -- resizing splits
@@ -217,7 +216,6 @@ return {
   },
   opts = {
     multiplexer_integration = false,
-    ignored_buftypes = { 'Neotree' },
     at_edge = function(mux)
       local utils = require('custom.lib.utils')
       local wez = require('custom.lib.wezterm')
@@ -228,4 +226,11 @@ return {
       resize_keys = { '<Left>', '<Down>', '<Up>', '<Right>' },
     },
   },
+  init = function()
+    -- disable default multiplexer integration
+    vim.g.smart_splits_multiplexer_integration = false
+  end,
+  config = function(_, opts)
+    require('smart-splits').setup(opts)
+  end,
 }

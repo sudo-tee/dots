@@ -76,7 +76,7 @@ return {
       },
       importModuleSpecifierPreference = 'non-relative',
       updateImportsOnFileMove = 'always',
-      preferGoToSourceDefinition = true,
+      -- preferGoToSourceDefinition = true,
       format = {
         enabled = false,
       },
@@ -106,7 +106,7 @@ return {
         includeCompletionsForImportStatements = true,
       },
       updateImportsOnFileMove = 'always',
-      preferGoToSourceDefinition = true,
+      -- preferGoToSourceDefinition = true,
       tsserver = {
         maxTsServerMemory = 8096,
         -- log = 'verbose',

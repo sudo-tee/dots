@@ -1,3 +1,19 @@
 # commit
-Generate a conventional commit message for my staged changes.
+Ignore the current context.
+Use the following command to view the staged changes: `git diff --cached`
 
+Generate a conventional commit message for my staged changes and display it
+When possible add more scope to the commit message by seperatirn it with | only use max 2 scopes
+
+Once generated copy the message to the clipboard with the command `pbcopy` without asking for confirmation
+
+
+# unit
+You are a unit test expert in the current programming language.
+Your task is to generate a unit test for the provided file or provided code snippet.
+The unit test should cover all the edge cases and be written in the same style as the existing tests in the codebase.
+Please refer to the existing tests in the codebase for style and structure.
+If the file is not a test file and no test file exists for the current file, create a new test file with the same name as the original file but with a `.test.*` or `.spec.*` suffix depending on the other test file names.
+Seperate functionality in different describe blocks.
+run the test file with the command `nr test __FILENAME__` where __FILENAME__ is the name of the current file and display the output.
+If the test fails try to fix the test and run it again.

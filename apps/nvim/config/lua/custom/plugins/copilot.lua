@@ -7,6 +7,7 @@ return {
     event = 'InsertEnter',
     lazy = true,
     build = ':Copilot auth',
+    ---@type CopilotConfig
     opts = {
       suggestion = {
         enabled = true,
@@ -63,8 +64,10 @@ return {
       { 'nvim-treesitter/nvim-treesitter' },
       { 'folke/snacks.nvim' },
     },
+    ---@type CopilotChat.config
     opts = {
-      model = 'claude-3.5-sonnet', -- :( not enable by company
+      -- model = 'claude-3.5-sonnet', -- :( not enable by company
+      model = 'gpt-4.1',
       -- model = 'o3-mini',
       -- temperature = 0.2,
       sticky = {
