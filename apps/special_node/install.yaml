@@ -10,6 +10,6 @@
     - description: "💿💿💿 Installing node with pointer comperssion 💿💿💿"
       command: |
           cd /tmp
-          wget https://unofficial-builds.nodejs.org/download/release/v20.12.1/node-v20.12.1-linux-x64-pointer-compression.tar.gz
-          tar -xvf node-v20.12.1-linux-x64-pointer-compression.tar.gz -C ~/.local/share/
-          rm  node-v20.12.1-linux-x64-pointer-compression.tar.gz
+          wget https://unofficial-builds.nodejs.org/download/release/v22.1.0/node-v22.1.0-linux-x64-pointer-compression.tar.gz
+          tar -xvf node-v22.1.0-linux-x64-pointer-compression.tar.gz -C ~/.local/share/
+          rm  node-v22.1.0-linux-x64-pointer-compression.tar.gz
