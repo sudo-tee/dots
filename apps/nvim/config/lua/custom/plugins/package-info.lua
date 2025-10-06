@@ -51,13 +51,11 @@ return {
   opts = {
     autostart = false,
     hide_up_to_date = true,
-    colors = {
-      outdated = '#d19a66',
+    highlights = {
+      outdated = { fg = '#d19a66' },
     },
   },
   config = function(_, opts)
     require('package-info').setup(opts)
-
-    vim.cmd([[highlight PackageInfoOutdatedVersion guifg=]] .. opts.colors.outdated)
   end,
 }
