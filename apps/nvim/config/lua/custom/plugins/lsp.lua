@@ -68,7 +68,9 @@ return {
           map('n', 'gD',         vim.lsp.buf.declaration,                          '[G]oto [D]eclaration')
           -- stylua: ignore end
 
-          vim.diagnostic.config(vim.deepcopy(opts.diagnostics))
+          vim.schedule(function()
+            vim.diagnostic.config(vim.deepcopy(opts.diagnostics))
+          end)
         end,
       })
 
