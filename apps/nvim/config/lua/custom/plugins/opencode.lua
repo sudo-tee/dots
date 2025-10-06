@@ -7,7 +7,7 @@ return {
   ---@type OpencodeConfig
   opts = {
     prefered_picker = 'snacks',
-    default_global_keymaps = false,
+    default_global_keymaps = true,
     keymap = {
       global = {
         toggle = keymap_prefix .. 'a', -- Open goose. Close if opened
@@ -52,5 +52,7 @@ return {
   dependencies = {
     'nvim-lua/plenary.nvim',
     'MeanderingProgrammer/render-markdown.nvim',
+    -- 'saghen/blink.cmp',
+    'hrsh7th/nvim-cmp',
   },
 }
