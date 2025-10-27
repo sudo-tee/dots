@@ -30,6 +30,18 @@ local function is_full_height(winnr)
   return vim.api.nvim_win_get_height(winnr or 0) > vim.o.lines - 4 -- bufferline / status line / cmd height
 end
 
+---@param direction 'Left'|'Down'|'Up'|'Right'
+function try_move(direction)
+  local prev_win = vim.api.nvim_get_current_win()
+  local smart_splits = require('smart-splits')
+  local move_function = smart_splits['move_cursor_' .. direction:lower()]
+  if not move_function then
+    return false
+  end
+  move_function()
+  return prev_win ~= vim.api.nvim_get_current_win()
+end
+
 return {
   'mrjones2014/smart-splits.nvim',
   lazy = true,
@@ -51,7 +63,7 @@ return {
         if require('custom.lib.hooks').run_hook('move_cursor_down') then
           return
         end
-        require('smart-splits').move_cursor_down()
+        local _ = try_move('Down') or vim.api.nvim_command('wincmd j')
       end,
       desc = 'Move to split down',
     },
@@ -61,7 +73,7 @@ return {
         if require('custom.lib.hooks').run_hook('move_cursor_up') then
           return
         end
-        require('smart-splits').move_cursor_up()
+        local _ = try_move('Up') or vim.api.nvim_command('wincmd k')
       end,
       desc = 'Move to split up',
     },
@@ -71,7 +83,7 @@ return {
         if require('custom.lib.hooks').run_hook('move_cursor_right') then
           return
         end
-        require('smart-splits').move_cursor_right()
+        local _ = try_move('Right') or vim.api.nvim_command('wincmd l')
       end,
       desc = 'Move to split right',
     },
@@ -81,7 +93,7 @@ return {
         if require('custom.lib.hooks').run_hook('move_cursor_left') then
           return
         end
-        require('smart-splits').move_cursor_left()
+        local _ = try_move('Left') or vim.api.nvim_command('wincmd h')
       end,
       desc = 'Move to split left',
     },
@@ -91,7 +103,7 @@ return {
         if require('custom.lib.hooks').run_hook('move_cursor_left') then
           return
         end
-        require('smart-splits').move_cursor_left()
+        local _ = try_move('Left') or vim.api.nvim_command('wincmd h')
       end,
       desc = 'Move to split left',
     },
@@ -101,7 +113,7 @@ return {
         if require('custom.lib.hooks').run_hook('move_cursor_down') then
           return
         end
-        require('smart-splits').move_cursor_down()
+        local _ = try_move('Down') or vim.api.nvim_command('wincmd j')
       end,
       desc = 'Move to split down',
     },
@@ -111,7 +123,7 @@ return {
         if require('custom.lib.hooks').run_hook('move_cursor_up') then
           return
         end
-        require('smart-splits').move_cursor_up()
+        local _ = try_move('Up') or vim.api.nvim_command('wincmd k')
       end,
       desc = 'Move to split up',
     },
@@ -121,7 +133,7 @@ return {
         if require('custom.lib.hooks').run_hook('move_cursor_right') then
           return
         end
-        require('smart-splits').move_cursor_right()
+        local _ = try_move('Right') or vim.api.nvim_command('wincmd l')
       end,
       desc = 'Move to split right',
     },
@@ -214,8 +226,11 @@ return {
       end,
     },
   },
+  ---@module 'smart-splits'
+  ---@class SmartSplitsConfig
   opts = {
     multiplexer_integration = false,
+
     at_edge = function(mux)
       local utils = require('custom.lib.utils')
       local wez = require('custom.lib.wezterm')
