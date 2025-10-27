@@ -40,6 +40,10 @@ return {
     input = {
       enabled = true,
     },
+    profiler = {
+      enabled = true,
+      globals = { 'vim' },
+    },
     gitbrowse = {
       enabled = true,
       url_patterns = {
