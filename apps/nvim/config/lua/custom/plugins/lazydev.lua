@@ -2,11 +2,10 @@ return {
   {
     'folke/lazydev.nvim',
     dependencies = {
+      { 'Bilal2453/luvit-meta', name = 'luvit-types', lazy = true },
       {
         'sudo-tee/wezterm-types',
         -- dir = '~/Projects/_nvim/wezterm-types',
-        lazy = true,
-        event = 'LazyFile',
       },
     },
     ft = 'lua', -- only load on lua files
@@ -17,13 +16,14 @@ return {
         -- Or relative, which means they will be resolved as a plugin
         -- "LazyVim",
         -- When relative, you can also provide a path to the library in the plugin dir
-        { path = 'luvit-meta/library', words = { 'vim%.uv' } },
+        'lazy.nvim',
+        { path = 'luvit-types/library', words = { 'vim%.uv' } },
         { path = 'snacks.nvim', words = { 'Snacks' } },
         { path = 'wezterm-types', words = { 'wezterm.' }, mods = { 'wezterm' } },
+        { path = vim.env.VIMRUNTIME, words = { 'vim' } },
       },
     },
   },
-  { 'Bilal2453/luvit-meta', lazy = true }, -- optional `vim.uv` typings
   { -- optional blink completion source for require statements and module annotations
     'saghen/blink.cmp',
     opts = {
