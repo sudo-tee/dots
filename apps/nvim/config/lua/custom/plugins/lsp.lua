@@ -4,6 +4,7 @@ return {
     'neovim/nvim-lspconfig',
     event = 'VeryLazy',
     dependencies = {
+      'folke/lazydev.nvim',
       'mason-org/mason.nvim',
       'mason-org/mason-lspconfig.nvim',
       'WhoIsSethDaniel/mason-tool-installer.nvim',
@@ -92,7 +93,8 @@ return {
         -- pyright = {},
         vtsls = require('custom.plugins.lsp.servers.vtsls'),
         eslint = require('custom.plugins.lsp.servers.eslint'),
-        lua_ls = require('custom.plugins.lsp.servers.luals'),
+        -- lua_ls = require('custom.plugins.lsp.servers.luals'),
+        emmylua_ls = require('custom.plugins.lsp.servers.emmylua_ls'),
         graphql = require('custom.plugins.lsp.servers.graphql'),
         jsonls = require('custom.plugins.lsp.servers.jsonls'),
         -- cssls = {},
@@ -102,8 +104,11 @@ return {
       }
 
       for server_name, config in pairs(servers) do
-        require('lspconfig')[server_name].setup(config)
+        if server_name ~= 'emmylua_ls' then
+          require('lspconfig')[server_name].setup(config)
+        end
         vim.lsp.config(server_name, config)
+        vim.lsp.enable({ 'emmylua_ls' })
       end
       -- Ensure the servers and tools above are installed
       --  To check the current status of installed tools and/or manually install
