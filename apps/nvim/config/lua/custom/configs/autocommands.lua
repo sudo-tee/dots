@@ -178,3 +178,12 @@ vim.api.nvim_create_autocmd({ 'DirChanged', 'VimEnter' }, {
   pattern = '*',
   callback = set_project_shada,
 })
+
+-- syntax highlighting for dotenv files
+vim.api.nvim_create_autocmd('BufRead', {
+  group = augroup('DotenvFt', { clear = true }),
+  pattern = { '.env', '.env.*', '.env.*.*' },
+  callback = function()
+    vim.bo.filetype = 'ini'
+  end,
+})
