@@ -25,6 +25,7 @@ return { -- Highlight, edit, and navigate code
         'rust',
         'toml',
         'diff',
+        'ini',
       },
       -- Autoinstall languages that are not installed
       auto_install = true,
