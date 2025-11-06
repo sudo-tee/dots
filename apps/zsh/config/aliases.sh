@@ -64,11 +64,17 @@ wtp() {
   fi
 
   if [ -n "$pid_flag" ]; then
-    sudo lsof -i:$1 -t
+    ss -ltnp "sport = :$1" | awk -F'[=,)]' '/users:/ {print $3}' | sort -u
   elif [[ -n "$kill_flag" ]]; then
-    kill -9 $(sudo lsof -i:$1 -t)
+    pid=$(ss -ltnp "sport = :$1" | awk -F'[=,)]' '/users:/ {print $3}' | sort -u)
+    if [ -n "$pid" ]; then
+      kill -9 "$pid"
+    else
+      echo "No process found listening on port $1"
+      return 1
+    fi
   else
-    sudo lsof -i:$1
+    ss -ltnp "sport = :$1"
   fi
 }
 
