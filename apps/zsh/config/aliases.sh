@@ -47,13 +47,11 @@ wtp() {
     return 1
   fi
 
-  local pid_flag
+  local pid_flag kill_flag
   if [[ "$1" == "-p" ]]; then
     shift
     pid_flag=1
   fi
-
-  local kill_flag
   if [[ "$1" == "-k" ]]; then
     if [[ -n "$pid_flag" ]]; then
       echo "You cannot use the -p flag and the -k flag at the same time"
@@ -63,18 +61,40 @@ wtp() {
     kill_flag=1
   fi
 
-  if [ -n "$pid_flag" ]; then
-    ss -ltnp "sport = :$1" | awk -F'[=,)]' '/users:/ {print $3}' | sort -u
+  local port="$1"
+
+  _wtp_get_pids() {
+    sudo fuser "${1}/tcp" 2>/dev/null | tr ' ' '\n' | grep -v '^$'
+  }
+
+  if [[ -n "$pid_flag" ]]; then
+    _wtp_get_pids "$port"
+
   elif [[ -n "$kill_flag" ]]; then
-    pid=$(ss -ltnp "sport = :$1" | awk -F'[=,)]' '/users:/ {print $3}' | sort -u)
-    if [ -n "$pid" ]; then
-      kill -9 "$pid"
+    local pids
+    pids=$(_wtp_get_pids "$port")
+    if [[ -n "$pids" ]]; then
+      echo "Killing PID(s): $pids"
+      echo "$pids" | xargs sudo kill -9
     else
-      echo "No process found listening on port $1"
+      echo "No process found listening on port $port"
       return 1
     fi
+
   else
-    ss -ltnp "sport = :$1"
+    local pids
+    pids=$(_wtp_get_pids "$port")
+    if [[ -z "$pids" ]]; then
+      echo "No process found listening on port $port"
+      return 1
+    fi
+    printf "%-10s %-20s %s\n" "PID" "COMMAND" "USER"
+    while IFS= read -r pid; do
+      local cmd user
+      cmd=$(cat "/proc/$pid/comm" 2>/dev/null || echo "?")
+      user=$(stat -c '%U' "/proc/$pid" 2>/dev/null || echo "?")
+      printf "%-10s %-20s %s\n" "$pid" "$cmd" "$user"
+    done <<<"$pids"
   fi
 }
 
