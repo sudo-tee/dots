@@ -1,0 +1,12 @@
+- defaults:
+    link:
+      create: true
+      relink: true
+    shell:
+      stdout: true
+      stderr: true
+      quiet: true
+- shell:
+    - description: "💿💿💿 Installing gh cli 💿💿💿"
+      command: |
+          brew install gh
