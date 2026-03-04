@@ -15,3 +15,5 @@ lpm.manifest.json
 .aider*
 .goose
 .config/goose/history.txt
+.opencode/
+AGENTS.md
