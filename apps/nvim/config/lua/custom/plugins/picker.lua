@@ -93,8 +93,21 @@ local function git_opts(type)
 end
 
 return {
-  'folke/snacks.nvim',
-  lazy = false,
+  {
+    -- {
+    --   'ibhagwan/fzf-lua',
+    -- },
+    -- {
+    --   'nvim-mini/mini.pick',
+    -- },
+    -- {
+    --   'nvim-telescope/telescope.nvim',
+    --   enabled = true,
+    -- },
+    {
+      'folke/snacks.nvim',
+      -- enabled = false,
+      lazy = false,
   -- stylua: ignore
   keys = {
     -- Files and search
@@ -152,114 +165,137 @@ return {
     { '<leader>pl', project_links,                          desc = 'Project links'},
     { '<leader>pm', merge_requests,                         desc = 'Project merge requests'},
   },
-  ---@type snacks.Config
-  opts = {
-    explorer = {
-      replace_netrw = true,
-    },
-    picker = {
-      win = {
-        input = {
-          keys = {
-            ['<M-Up>'] = { 'cycle_win', mode = { 'n', 'i' } },
-            ['<M-Down>'] = { 'cycle_win', mode = { 'n', 'i' } },
-            ['<M-Left>'] = { 'cycle_win', mode = { 'n', 'i' } },
-            ['<M-Right>'] = { 'cycle_win', mode = { 'n', 'i' } },
-            ['<C-h>'] = { 'toggle_help_input', mode = { 'i' } },
-            ['<M-q>'] = { 'close', mode = { 'n', 'i' } },
-            ['<c-z><Left>'] = { 'layout_left', mode = { 'i', 'n' } },
-            ['<c-z><Down>'] = { 'layout_bottom', mode = { 'i', 'n' } },
-            ['<c-z><Up>'] = { 'layout_top', mode = { 'i', 'n' } },
-            ['<c-z><Right>'] = { 'layout_right', mode = { 'i', 'n' } },
-          },
+      ---@type snacks.Config
+      opts = {
+        explorer = {
+          replace_netrw = true,
         },
-        list = {
-          keys = {
-            ['<c-f>'] = 'picker_grep',
-            ['<M-Right>'] = { 'cycle_win' },
-            ['<M-Left>'] = { 'cycle_win' },
-            ['<M-Down>'] = { 'focus_input' },
-            ['<M-Up>'] = { 'focus_input' },
-            ['<M-q>'] = { 'close' },
-            ['<c-z><Left>'] = { 'layout_left', mode = { 'i', 'n' } },
-            ['<c-z><Down>'] = { 'layout_bottom', mode = { 'i', 'n' } },
-            ['<c-z><Up>'] = { 'layout_top', mode = { 'i', 'n' } },
-            ['<c-z><Right>'] = { 'layout_right', mode = { 'i', 'n' } },
-          },
-        },
-        preview = {
-          keys = {
-            ['<M-Up>'] = { 'focus_input' },
-            ['<M-Down>'] = { 'focus_input' },
-            ['<M-Left>'] = { 'cycle_win' },
-            ['<M-Right>'] = { 'cycle_win' },
-            ['<M-q>'] = { 'close' },
-          },
-        },
-      },
-      layouts = {
-        horizontal = {
-          preset = 'vertical',
-          layout = {
-            width = 0.8,
-            min_width = 120,
-          },
-        },
-        sidebar = { layout = { position = 'right' } },
-        sidebar_right = {
-          layout = {
-            backdrop = false,
-            width = 40,
-            min_width = 40,
-            height = 0,
-            position = 'right',
-            border = 'none',
-            box = 'vertical',
-            { win = 'list', border = 'none', fixbuf = true },
-            {
-              win = 'input',
-              height = 1,
-              border = 'single',
-              title = '{title} {live} {flags}',
-              title_pos = 'center',
+        picker = {
+          win = {
+            input = {
+              keys = {
+                ['<M-Up>'] = { 'cycle_win', mode = { 'n', 'i' } },
+                ['<M-Down>'] = { 'cycle_win', mode = { 'n', 'i' } },
+                ['<M-Left>'] = { 'cycle_win', mode = { 'n', 'i' } },
+                ['<M-Right>'] = { 'cycle_win', mode = { 'n', 'i' } },
+                ['<C-h>'] = { 'toggle_help_input', mode = { 'i' } },
+                ['<M-q>'] = { 'close', mode = { 'n', 'i' } },
+                ['<c-z><Left>'] = { 'layout_left', mode = { 'i', 'n' } },
+                ['<c-z><Down>'] = { 'layout_bottom', mode = { 'i', 'n' } },
+                ['<c-z><Up>'] = { 'layout_top', mode = { 'i', 'n' } },
+                ['<c-z><Right>'] = { 'layout_right', mode = { 'i', 'n' } },
+              },
+            },
+            list = {
+              keys = {
+                ['<c-f>'] = 'picker_grep',
+                ['<M-Right>'] = { 'cycle_win' },
+                ['<M-Left>'] = { 'cycle_win' },
+                ['<M-Down>'] = { 'focus_input' },
+                ['<M-Up>'] = { 'focus_input' },
+                ['<M-q>'] = { 'close' },
+                ['<c-z><Left>'] = { 'layout_left', mode = { 'i', 'n' } },
+                ['<c-z><Down>'] = { 'layout_bottom', mode = { 'i', 'n' } },
+                ['<c-z><Up>'] = { 'layout_top', mode = { 'i', 'n' } },
+                ['<c-z><Right>'] = { 'layout_right', mode = { 'i', 'n' } },
+              },
+            },
+            preview = {
+              keys = {
+                ['<M-Up>'] = { 'focus_input' },
+                ['<M-Down>'] = { 'focus_input' },
+                ['<M-Left>'] = { 'cycle_win' },
+                ['<M-Right>'] = { 'cycle_win' },
+                ['<M-q>'] = { 'close' },
+              },
             },
           },
+          layouts = {
+            horizontal = {
+              preset = 'vertical',
+              layout = {
+                width = 0.8,
+                min_width = 120,
+              },
+            },
+            sidebar = { layout = { position = 'right' } },
+            sidebar_right = {
+              layout = {
+                backdrop = false,
+                width = 40,
+                min_width = 40,
+                height = 0,
+                position = 'right',
+                border = 'none',
+                box = 'vertical',
+                { win = 'list', border = 'none', fixbuf = true },
+                {
+                  win = 'input',
+                  height = 1,
+                  border = 'single',
+                  title = '{title} {live} {flags}',
+                  title_pos = 'center',
+                },
+              },
+            },
+          },
+          layout = { preset = 'telescope', cycle = true },
+          ui_select = true,
+          formatters = {
+            file = { filename_first = true },
+          },
+          sources = {
+            smart = {
+              -- debug = {
+              --   scores = true,
+              -- },
+              filter = { cwd = true },
+              matcher = {
+                history_bonus = true,
+                on_match = function(_, item)
+                  if item.buf then
+                    item.score = item.score * (item.flags:find('%%') and 1.2 or 1.3)
+                  end
+                end,
+              },
+            },
+            explorer = {
+              layout = 'sidebar_right',
+              hidden = true,
+            },
+            help = {
+              layout = 'bottom',
+            },
+            notifications = {
+              layout = 'horizontal',
+              win = {
+                wo = {
+                  wrap = true,
+                },
+              },
+            },
+            noice = {
+              layout = 'horizontal',
+            },
+            profiler = {
+              layout = 'horizontal',
+            },
+          },
+          actions = {
+            diff_view_commit = function(picker, item)
+              picker:close()
+              vim.cmd('DiffviewOpen ' .. item.commit .. '^!')
+            end,
+            diff_view_stash = function(picker, item)
+              picker:close()
+              return vim.cmd('DiffviewOpen ' .. item.stash .. '^!')
+            end,
+            diff_view_branch = function(picker, item)
+              picker:close()
+              vim.cmd('DiffviewOpen ' .. item.branch)
+            end,
+          },
         },
-      },
-      layout = { preset = 'telescope', cycle = true },
-      ui_select = true,
-      formatters = {
-        file = { filename_first = true },
-      },
-      sources = {
-        smart = { filter = { cwd = true } },
-        explorer = {
-          layout = 'sidebar_right',
-          hidden = true,
-        },
-        help = {
-          layout = 'bottom',
-        },
-        notifications = {
-          layout = 'horizontal',
-        },
-        noice = {
-          layout = 'horizontal',
-        },
-      },
-      actions = {
-        diff_view_commit = function(picker, item)
-          picker:close()
-          vim.cmd('DiffviewOpen ' .. item.commit .. '^!')
-        end,
-        diff_view_stash = function(picker, item)
-          picker:close()
-          return vim.cmd('DiffviewOpen ' .. item.stash .. '^!')
-        end,
-        diff_view_branch = function(picker, item)
-          picker:close()
-          vim.cmd('DiffviewOpen ' .. item.branch)
-        end,
       },
     },
   },
