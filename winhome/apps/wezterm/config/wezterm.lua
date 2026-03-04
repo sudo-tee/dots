@@ -1,6 +1,7 @@
 require("lib.globals")
 require("events")
 
+local wezterm = require("wezterm")
 local keys = require("keymaps")
 local colors = require("lib.colors")
 local workspace_switcher = require("lib.workspace-switcher")
@@ -20,6 +21,7 @@ if wezterm.config_builder then
 end
 
 c.max_fps = 144
+c.use_ime = false
 c.window_decorations = "RESIZE"
 c.use_fancy_tab_bar = false
 c.tab_max_width = 24

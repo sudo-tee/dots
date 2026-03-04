@@ -1,8 +1,9 @@
+---@type Wezterm
+local wezterm = require("wezterm")
 local act = wezterm.action
 local mux = wezterm.mux
 local u = require("lib.utils")
 local map = require("lib.keymap").map
-local workspace_manager = require("lib.workspace-manager")
 local Frecency = require("lib.frecency")
 
 local WORKSPACE_SWITCHER_KEYTABLE = "WORKSPACE_SWITCHER"
@@ -21,6 +22,7 @@ local State = {
   get_projects = nil,
   debug_scores = false,
   frecency = Frecency:new(),
+  last_active_workspace = nil,
 }
 
 local function format_text(icon, label, color)
@@ -31,7 +33,9 @@ local function create_choice_item(color, icon, name, suffix)
   return { id = name, label = format_text(icon, name .. (suffix or ""), color) }
 end
 
-local function list_workspaces()
+function M.list_workspaces()
+  State.workspaces = State.workspaces or u.index_by(mux.get_workspace_names())
+  State.projects = State.projects or u.index_by(State.get_projects() or {}, "name")
   local active_workspace = mux.get_active_workspace()
   local items = {}
   for _, ws in ipairs(u.keys(State.workspaces)) do
@@ -82,7 +86,7 @@ end
 
 local function get_choices()
   local choices = {}
-  local ws_items = list_workspaces()
+  local ws_items = M.list_workspaces()
   for _, item in ipairs(ws_items) do
     table.insert(choices, format_workspace_item(item))
   end
@@ -100,8 +104,11 @@ local function on_item_selected(window, pane, selection)
 
   u.switch(State.switcher_action, {
     ["kill"] = function()
+      local workspace_manager = require("lib.workspace-manager")
       workspace_manager.kill_workspace(selection)(window)
-      M.workspace_selector(window, window:active_pane())
+      wezterm.time.call_after(0.1, function()
+        M.workspace_selector(window, window:active_pane())
+      end)
     end,
     ["select"] = function()
       M.switch_workspace(window, pane, selection)
@@ -147,6 +154,7 @@ function M.switch_workspace(window, pane, name)
   local is_new = not State.workspaces[name]
   local project = State.projects[name] or {}
   local path = project.cwd or project.path
+  State.last_active_workspace = mux.get_active_workspace()
 
   State.frecency:visit(name)
 
@@ -158,6 +166,18 @@ function M.switch_workspace(window, pane, name)
     "workspace-switcher-switched",
     { name = name, path = path, window = active_pane:window(), pane = active_pane, is_new = is_new }
   )
+end
+
+function M.switch_to_last_active_workspace(window, pane)
+  State.workspaces = State.workspaces or u.index_by(mux.get_workspace_names())
+  local last_workspace = State.last_active_workspace
+  if not State.last_active_workspace or not State.workspaces[State.last_active_workspace] then
+    State.last_active_workspace = nil
+    last_workspace = M.list_workspaces()[1] and M.list_workspaces()[1].name
+  end
+  if last_workspace then
+    M.switch_workspace(window, pane, last_workspace)
+  end
 end
 
 ---@param window Window

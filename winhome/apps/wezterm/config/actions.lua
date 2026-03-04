@@ -1,3 +1,4 @@
+local wezterm = require("wezterm")
 local M = {}
 
 ---@param direction "Right" | "Bottom"
@@ -29,12 +30,16 @@ function M.create_new_tab(window, pane, line)
 end
 
 ---@param window Window
-function M.kill_current_wokspace(window)
+function M.kill_current_wokspace(window, pane, line)
   local workspace_manager = require("lib.workspace-manager")
-  workspace_manager.kill_workspace(window:active_workspace())(window)
+  local active_workspace = window:active_workspace()
+
+  workspace_manager.kill_workspace(active_workspace)(window, pane)
 
   --prompt to select a new workspace
-  require("lib.workspace-switcher").workspace_selector(window, window:active_pane())
+  wezterm.time.call_after(0.1, function()
+    require("lib.workspace-switcher").workspace_selector(window, window:active_pane())
+  end)
 end
 
 ---@param window Window

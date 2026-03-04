@@ -29,9 +29,11 @@ local Opts = {
 }
 
 local M = {}
+---@type Wezterm
+local wezterm = require("wezterm")
 
+---@return WorkspaceLayout
 M.default_layout = function(name, cwd)
-  ---@return WorkspaceLayout
   return {
     name = name,
     cwd = cwd,
@@ -111,22 +113,27 @@ end
 --- @return PaneInformation[]|nil
 function M.get_workspace_panes(workspace_name)
   workspace_name = workspace_name or wezterm.mux.get_active_workspace()
-  local success, stdout = wezterm.run_child_process({ "wezterm", "cli", "list", "--format=json" })
-
-  if success then
-    local json = wezterm.json_parse(stdout)
-    if not json then
-      return
-    end
-
-    local workspace_panes = {}
-    for _, pane in ipairs(json) do
-      if pane.workspace == workspace_name then
-        table.insert(workspace_panes, pane)
+  local pane_ids = {}
+  for _, mux_win in ipairs(wezterm.mux.all_windows()) do
+    if mux_win:get_workspace() == workspace_name then
+      for _, tab in ipairs(mux_win:tabs()) do
+        for _, p in ipairs(tab:panes()) do
+          table.insert(pane_ids, p)
+        end
       end
     end
-    return workspace_panes
   end
+  return pane_ids
+end
+
+function M.get_workspace_window(workspace_name)
+  workspace_name = workspace_name or wezterm.mux.get_active_workspace()
+  for _, mux_win in ipairs(wezterm.mux.all_windows()) do
+    if mux_win:get_workspace() == workspace_name then
+      return mux_win:gui_window()
+    end
+  end
+  return nil
 end
 
 --Kills a pane by its ID.
@@ -139,11 +146,22 @@ function M.kill_pane_by_id(pane_id)
 end
 
 function M.kill_workspace(workspace_name)
-  return function(window)
-    workspace_name = workspace_name or wezterm.mux.get_active_workspace()
+  return function(window, pane)
+    local workspace_switcher = require("lib.workspace-switcher")
+    local current_workspace = wezterm.mux.get_active_workspace()
+    workspace_name = workspace_name or current_workspace
+
+    -- If the workspace to kill is the current one, switch to another workspace before killing it
+    -- Otherwise wezterm will bug and stop refreshing events
+    -- https://github.com/wezterm/wezterm/issues/7438
+    if current_workspace == workspace_name then
+      local win = M.get_workspace_window(workspace_name)
+      pane = pane or win and win:active_pane()
+      workspace_switcher.switch_to_last_active_workspace(win, pane)
+    end
     local workspace_panes = M.get_workspace_panes(workspace_name) or {}
     for _, pane in ipairs(workspace_panes) do
-      M.kill_pane_by_id(pane.pane_id)
+      M.kill_pane_by_id(pane:pane_id())
     end
   end
 end

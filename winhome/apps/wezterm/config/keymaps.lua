@@ -1,8 +1,8 @@
+local wezterm = require("wezterm")
 local act = wezterm.action
 local actions = require("actions")
 local map = require("lib.keymap").map
 local workspace_switcher = require("lib.workspace-switcher")
-local u = require("lib.utils")
 
 return {
   map("<S-A-|>", actions.split_pane("Right")),
