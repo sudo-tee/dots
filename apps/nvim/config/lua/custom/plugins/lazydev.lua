@@ -4,7 +4,7 @@ return {
     dependencies = {
       { 'Bilal2453/luvit-meta', name = 'luvit-types', lazy = true },
       {
-        'sudo-tee/wezterm-types',
+        'DrKJeff16/wezterm-types',
         -- dir = '~/Projects/_nvim/wezterm-types',
       },
     },
