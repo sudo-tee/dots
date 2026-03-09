@@ -1,93 +1,63 @@
 return { -- Highlight, edit, and navigate code
   'nvim-treesitter/nvim-treesitter',
-  lazy = true,
+  lazy = false,
   event = 'LazyFile',
-
-  dependencies = { 'nvim-treesitter/nvim-treesitter-textobjects' },
+  branch = 'main',
+  -- dependencies = { 'nvim-treesitter/nvim-treesitter-textobjects' },
   build = ':TSUpdate',
   config = function()
     -- [[ Configure Treesitter ]] See `:help nvim-treesitter`
+    local parsers = {
+      'bash',
+      'c',
+      'diff',
+      'html',
+      'lua',
+      'luadoc',
+      'markdown',
+      'markdown_inline',
+      'query',
+      'vim',
+      'vimdoc',
+      'javascript',
+      'typescript',
+      'tsx',
+      'ron',
+      'rust',
+      'toml',
+      'diff',
+      'ini',
+      'gitcommit',
+      'json',
+      'yaml',
+      'go',
+      'graphql',
+    }
+    require('nvim-treesitter').install(parsers)
+    vim.api.nvim_create_autocmd('FileType', {
+      callback = function(args)
+        local buf, filetype = args.buf, args.match
 
-    ---@diagnostic disable-next-line: missing-fields
-    require('nvim-treesitter.configs').setup({
-      ensure_installed = {
-        'bash',
-        'c',
-        'html',
-        'lua',
-        'markdown',
-        'vim',
-        'vimdoc',
-        'javascript',
-        'typescript',
-        'tsx',
-        'ron',
-        'rust',
-        'toml',
-        'diff',
-        'ini',
-      },
-      -- Autoinstall languages that are not installed
-      auto_install = true,
-      highlight = { enable = true },
-      indent = { enable = true },
-      incremental_selection = {
-        enable = true,
-        keymaps = {
-          init_selection = '<C-space>',
-          node_incremental = '<C-space>',
-          scope_incremental = false,
-          node_decremental = '<BS>',
-        },
-      },
-      textobjects = {
-        select = {
-          enable = true,
-          lookahead = true,
-          keymaps = {
-            ['af'] = '@function.outer',
-            ['if'] = '@function.inner',
-            ['ac'] = '@class.outer',
-            ['ic'] = '@class.inner',
-            ['a,'] = '@parameter.outer',
-            ['i,'] = '@parameter.inner',
-          },
-        },
-        move = {
-          enable = true,
-          set_jumps = true,
-          goto_next_start = {
-            [']f'] = '@function.outer',
-            [']c'] = '@class.outer',
-            ['],'] = '@parameter.inner',
-          },
-          goto_next_end = {
-            [']F'] = '@function.outer',
-            [']C'] = '@class.outer',
-          },
-          goto_previous_start = {
-            ['[f'] = '@function.outer',
-            ['[c'] = '@class.outer',
-            ['[,'] = '@parameter.inner',
-          },
-          goto_previous_end = {
-            ['[F'] = '@function.outer',
-            ['[C'] = '@class.outer',
-          },
-        },
-        swap = {
-          enable = true,
-          swap_next = { ['>,'] = '@parameter.inner' },
-          swap_previous = { ['<,'] = '@parameter.inner' },
-        },
-      },
+        local language = vim.treesitter.language.get_lang(filetype)
+        if not language then
+          return
+        end
+
+        -- check if parser exists and load it
+        if not vim.treesitter.language.add(language) then
+          return
+        end
+        -- enables syntax highlighting and other treesitter features
+        vim.treesitter.start(buf, language)
+
+        -- enables treesitter based folds
+        -- for more info on folds see `:help folds`
+        -- vim.wo.foldexpr = 'v:lua.vim.treesitter.foldexpr()'
+        -- vim.wo.foldmethod = 'expr'
+
+        -- enables treesitter based indentation
+        vim.bo.indentexpr = "v:lua.require'nvim-treesitter'.indentexpr()"
+      end,
     })
-
-    -- There are additional nvim-treesitter modules that you can use to interact
-    -- with nvim-treesitter. You should go explore a few and see what interests you:
-    --
-    --    - Incremental selection: Included, see :help nvim-treesitter-incremental-selection-mod
-    --    - Show your current context: https://github.com/nvim-treesitter/nvim-treesitter-context
-    --    - Treesitter + textobjects: https://github.com/nvim-treesitter/nvim-treesitter-textobjects
   end,
 }
