@@ -17,6 +17,6 @@
           brew install sst/tap/opencode
           
           echo "🪄 Updating the cache (because of proxy)"
-          cd ~/.cache/opencode
-          http_proxy="" https_proxy="" ni @ai-sdk/openai-compatible
-          http_proxy="" https_proxy="" opencode run "hi"
+          # cd ~/.cache/opencode
+          # http_proxy="" https_proxy="" bun @ai-sdk/openai-compatible
+          # http_proxy="" https_proxy="" opencode run "hi"

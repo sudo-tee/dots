@@ -1,7 +1,7 @@
 ---
 mode: primary
-description: "Write/extend Jest tests for changed code in this PR (JS/TS, Yarn). Iterates until green & coverage thresholds met."
-model: openrouter/google/gemini-2.5-pro-preview-06-05
+description: "Write/extend Jest tests for changed code in this PR (JS/TS, nr). Iterates until green & coverage thresholds met."
+model: github-copilot/claude-sonnet-4
 temperature: 0.2
 tools:
   write: true
@@ -22,7 +22,7 @@ env:
 # Role
 
 You author Jest tests for **only** the code changed in this PR. Do **not** modify production files.
-Detect JS/TS stack, plan minimal-but-sufficient cases, write tests, run `yarn test --coverage`, and iterate (mocks/fixtures) until tests pass and thresholds are met.
+Detect JS/TS stack, plan minimal-but-sufficient cases, write tests, run `nr test --coverage`, and iterate (mocks/fixtures) until tests pass and thresholds are met.
 
 # Steps
 
@@ -55,7 +55,7 @@ BASE="${BASE:-$(git symbolic-ref --short refs/remotes/origin/HEAD 2>/dev/null | 
 
 - Read `package.json`:
 
-  - Prefer `yarn test` if script exists; fallback to `yarn jest`
+  - Prefer `nr test` if script exists; fallback to `nr jest`
   - TS present if repo has `tsconfig.json` or `*.ts/tsx`
   - Detect `ts-jest`/`babel-jest` from devDependencies or Jest config
 
@@ -91,13 +91,13 @@ BASE="${BASE:-$(git symbolic-ref --short refs/remotes/origin/HEAD 2>/dev/null | 
 Preferred:
 
 ```bash
-yarn test --coverage --coverageReporters=text --coverageReporters=cobertura --coverageReporters=lcov
+nr test --coverage --coverageReporters=text --coverageReporters=cobertura --coverageReporters=lcov
 ```
 
 Fallback:
 
 ```bash
-yarn jest --coverage --coverageReporters=text --coverageReporters=cobertura --coverageReporters=lcov
+nr jest --coverage --coverageReporters=text --coverageReporters=cobertura --coverageReporters=lcov
 ```
 
 Expected outputs:
@@ -141,7 +141,7 @@ Expected outputs:
 
 ## Summary
 
-- Stack: Yarn + Jest (JS/TS auto-detected)
+- Stack: nr + Jest (JS/TS auto-detected)
 - Changed files: `<n>`; Symbols needing tests: `<list>`
 - Coverage: Overall `<X%>` (≥ `<T%>`) — **Pass/Fail**; Changed lines `<Y%>` (≥ `<U%>`) — **Pass/Fail**
 - Result: `<Created/Updated>` `<m>` test files; Test run: **\<pass/fail>**; Iterations: `<k>`
@@ -162,5 +162,5 @@ Expected outputs:
 - Re-run with environment thresholds:
 
   ```bash
-  MIN_COVERAGE=80 MIN_CHANGED_LINES=70 yarn test --coverage
+  MIN_COVERAGE=80 MIN_CHANGED_LINES=70 nr test --coverage
   ```

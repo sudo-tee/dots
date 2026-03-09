@@ -1,6 +1,5 @@
 ---
 description: Say hello to bob
-model: github-copilot/gpt-4.1
 ---
 
 Say hello to bob $ARGUMENTS and ask how he is doing today.

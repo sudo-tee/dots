@@ -1,5 +1,5 @@
 ---
-mode: primary
+mode: all
 description: "Read-only PR reviewer that inspects the diff and produces actionable comments."
 model: github-copilot/claude-sonnet-4
 temperature: 0.1
