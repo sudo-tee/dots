@@ -19,16 +19,16 @@ vim.cmd('command! Grbm :Sh git rbm')
 vim.cmd('command! -nargs=?  Gri :Sh git rebase -i <args>')
 
 cmd('GitDiffMain', function()
-  vim.cmd('DiffviewOpen origin/' .. git.default_branch() .. '...HEAD --imply-local')
+  vim.cmd('CodeDiff origin/' .. git.default_branch() .. '...HEAD --imply-local')
 end, {})
 
 cmd('GitDiffBranch', function(args)
-  vim.cmd('DiffviewOpen origin/' .. args.fargs[1] .. '...HEAD --imply-local')
+  vim.cmd('CodeDiff origin/' .. args.fargs[1] .. '...HEAD --imply-local')
 end, { nargs = '*' })
 
 cmd('OpenCommitDiff', function()
   local commit_hash = git.find_nearest_commit_hash()
-  vim.cmd('DiffviewOpen ' .. commit_hash .. '^!')
+  vim.cmd('CodeDiff ' .. commit_hash .. '^!')
 end, {})
 
 cmd('OpenCommitRangeDiff', function()
@@ -39,7 +39,7 @@ cmd('OpenCommitRangeDiff', function()
 
   local first_commit_hash = git.find_nearest_commit_hash()
 
-  vim.cmd('DiffviewOpen ' .. first_commit_hash .. '~1..' .. last_commit_hash)
+  vim.cmd('CodeDiff ' .. first_commit_hash .. '~1..' .. last_commit_hash)
 end, { range = true })
 
 cmd('StageHunk', function()
@@ -58,6 +58,38 @@ u.map('n', '<leader>gpl', u.cmd('Gpl'), { desc = 'push force lease' })
 u.map('n', '<leader>gpp', u.cmd('Gp'), { desc = 'push' })
 
 return {
+  {
+    'esmuellert/codediff.nvim',
+    -- dir = '~/Projects/_nvim/codediff.nvim',
+    cmd = 'CodeDiff',
+    keys = {
+      -- stylua: ignore start
+      { '<leader>gg',  u.cmd('CodeDiff'),                                   desc = 'Status' },
+      { '<leader>gdm', u.cmd('GitDiffMain'),                                desc = 'Diff MAIN' },
+      { '<leader>gfh', u.cmd('CodeDiff history %'),                         desc = 'File History' },
+      { '<leader>gfH', u.cmd('CodeDiff history'),                           desc = 'File History' },
+      { '<leader>glh', u.cmd('.CodeDiff history %'),                        desc = 'Line History' },
+      { '<leader>gvh', "<Esc><Cmd>'<,'>CodeDiff history <CR>",              desc = 'Range History', mode="v" },
+      -- stylua: ignore end
+    },
+    opts = {
+      explorer = {
+        view_mode = 'tree', -- "list" or "tree"
+        indent_markers = false, -- Show indent markers in tree view (│, ├, └)
+      },
+    },
+    config = function(_, opts)
+      u.ft_map('codediff-explorer', function(event, map)
+        map('n', 'c', u.cmd('Gc'), { desc = 'Git Commit' })
+        map('n', 'a', u.cmd('Gca'), { desc = 'Git Commit Amend' })
+        map('n', 'A', u.cmd('Gan'), { desc = 'Git Commit Amend No Edit' })
+        map('n', 'p', u.cmd('Gp'), { desc = 'Git Push' })
+        map('n', 'F', u.cmd('Gpl'), { desc = 'Git Push Force (with lease)' })
+      end)
+
+      require('codediff').setup(opts)
+    end,
+  },
   { 'tpope/vim-fugitive', lazy = true, cmd = { 'G', 'Gwrite', 'Gdiff', 'Gedit' } },
   {
     'isakbm/gitgraph.nvim',
@@ -72,10 +104,10 @@ return {
       },
       hooks = {
         on_select_commit = function(commit)
-          vim.cmd(':DiffviewOpen ' .. commit.hash .. '^!')
+          vim.cmd(':CodeDiff ' .. commit.hash .. '~1...' .. commit.hash)
         end,
         on_select_range_commit = function(from, to)
-          vim.cmd(':DiffviewOpen ' .. from.hash .. '~1..' .. to.hash)
+          vim.cmd(':CodeDiff ' .. from.hash .. '~1..' .. to.hash)
         end,
       },
     },
@@ -151,73 +183,5 @@ return {
         -- stylua: ignore end
       end,
     },
-  },
-  {
-    'sindrets/diffview.nvim',
-    lazy = true,
-    cmd = { 'DiffviewOpen', 'DiffviewFileHistory' },
-    keys = {
-      -- stylua: ignore start
-      { '<leader>gg',  u.cmd('DiffviewOpen'),                               desc = 'Status' },
-      { '<leader>gdm', u.cmd('GitDiffMain'),                                desc = 'Diff MAIN' },
-      { '<leader>gfh', u.cmd('DiffviewFileHistory --follow %'),             desc = 'File History' },
-      { '<leader>gfH', u.cmd('DiffviewFileHistory'),                        desc = 'File History' },
-      { '<leader>glh', u.cmd('.DiffviewFileHistory --follow %'),            desc = 'Line History' },
-      { '<leader>gvh', "<Esc><Cmd>'<,'>DiffviewFileHistory --follow %<CR>", desc = 'Range History', mode="v" },
-      -- stylua: ignore end
-    },
-    init = function()
-      vim.api.nvim_create_autocmd({ 'FocusGained', 'TermClose', 'TermLeave' }, {
-        group = u.augroup('diffview/refresh'),
-        callback = function()
-          local view = require('diffview.lib').get_current_view()
-          if view then
-            vim.cmd('DiffviewRefresh')
-          end
-        end,
-      })
-    end,
-    opts = function()
-      local actions = require('diffview.actions')
-
-      return {
-        enhanced_diff_hl = true, -- See ':h diffview-config-enhanced_diff_hl',
-        view = {
-          merge_tool = {
-            layout = 'diff3_mixed',
-            disable_diagnostics = true,
-          },
-        },
-        keymaps = {
-          -- stylua: ignore start
-          view = {
-            { 'n', 'q',          u.cmd('DiffviewClose'),  { desc = 'Close' } },
-            { 'n', '<A-q>',      u.cmd('DiffviewClose'),  { desc = 'Close' } },
-            { 'n', '<Leader>l',  actions.cycle_layout,    { desc = 'Cycle layout' } },
-            { 'n', '-',          u.cmd("StageHunk"),      { desc = 'Stage hunk' } },
-            { 'v', '-',          u.cmd("StageVisualHunk"),{ desc = 'Stage hunk' } },
-          },
-          file_panel = {
-            { 'n', 'q',          u.cmd('DiffviewClose'), { desc = 'Close' } },
-            { 'n', '<A-q>',      u.cmd('DiffviewClose'), { desc = 'Close' } },
-            { 'n', 'c',          u.cmd('Gc'),            { desc = 'Git Commit' } },
-            { 'n', 'a',          u.cmd('Gca'),           { desc = 'Git Commit Amend' } },
-            { 'n', 'A',          u.cmd('Gan'),           { desc = 'Git Commit Amend No Edit' } },
-            { 'n', 'p',          u.cmd('Gp'),            { desc = 'Git Push' } },
-            { 'n', 'F',          u.cmd('Gpl'),           { desc = 'Git Push Force (with lease)' } },
-            { 'n', 'h',          actions.prev_entry,     { desc = 'Previuos entry' } },
-            { 'n', '<Leader>l', actions.cycle_layout,   { desc = 'Cycle layout' } },
-          },
-          file_history_panel = {
-            { 'n', 'q',          u.cmd('DiffviewClose'),  { desc = 'Close' }},
-            { 'n', '<A-q>',      u.cmd('DiffviewClose'),  { desc = 'Close' }},
-            { 'n', '<Leader>l',  actions.cycle_layout,    { desc = 'Cycle layout' } },
-            { "n", "<Leader>d",  actions.open_in_diffview,{ desc = "Open in Diffview" } },
-
-          },
-          -- stylua: ignore end
-        },
-      }
-    end,
   },
 }
