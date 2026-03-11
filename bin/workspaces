@@ -1,0 +1,137 @@
+#!/usr/bin/env bash
+# workspaces: a sk-based workspace switcher for wezterm
+#
+#  Lists ~/Projects folders in sk.
+#  Active wezterm workspaces (from /tmp/wezterm-workspaces, pipe-separated
+#  e.g. "test|default") are shown in green with a  icon.
+#  Active workspaces that have NO matching ~/Projects folder are also listed.
+#
+#  Keymaps
+#  -------
+#  Enter   → print the selected project name (stripped of ANSI/icon)
+#  ctrl-d  → call on_delete() with the selected item
+
+set -uo pipefail   # no -e: read returns 1 on EOF with no newline
+
+CURRENT_WS=${1:-}   # passed by wezterm on workspace change, e.g. "default"
+PROJECTS_DIR="${HOME}/Projects"
+WORKSPACES_FILE="/tmp/wezterm-workspaces"
+
+# ANSI colours
+GREEN="\033[1;32m"
+RESET="\033[0m"
+
+# Icons (Nerd Font glyphs — make sure your terminal font supports them)
+ICON_ACTIVE=" "   # active workspace
+ICON_FOLDER=" "   # plain project folder
+
+# ── helpers ────────────────────────────────────────────────────────────────
+strip_ansi() {
+    sed 's/\x1b\[[0-9;]*m//g' <<< "$1"
+}
+
+# ── on_select: called with the clean project name on Enter ────────────────
+on_select() {
+    local project="$1"
+    echo "$project"
+    wezterm_send_user_command "open_ws" "$project"
+}
+
+# ── on_delete: called with the clean project name on ctrl-d ───────────────
+on_delete() {
+    local raw="$1"
+    local project
+    project=$(strip_ansi "$raw" | sed 's/^[^ ]* //')   # drop icon + space
+    echo "Deleting workspace: $project" >&2
+    wezterm_send_user_command "delete_ws" "$project"
+}
+
+wezterm_send_user_command() {
+  printf "\033]1337;SetUserVar=%s=%s\007" "$1" $(echo -n "$2" | base64) 2>&1
+}
+
+# ── Read active workspaces ─────────────────────────────────────────────────
+ACTIVE_WORKSPACES=""
+if [[ -f "$WORKSPACES_FILE" ]]; then
+    ACTIVE_WORKSPACES=$(cat "$WORKSPACES_FILE")
+fi
+
+is_active() {
+    local name="$1"
+    [[ "|${ACTIVE_WORKSPACES}|" == *"|${name}|"* ]]
+}
+
+
+has_project_folder() {
+    local name="$1"
+    [[ -d "${PROJECTS_DIR}/${name}" ]]
+}
+
+# ── Build the display list ─────────────────────────────────────────────────
+build_list() {
+    local name
+
+    # 1. Active workspaces first (both orphans and project-matched), in workspace order
+    if [[ -n "$ACTIVE_WORKSPACES" ]]; then
+        IFS='|' read -ra ws_list <<< "$ACTIVE_WORKSPACES"
+        for ws in "${ws_list[@]}"; do
+            [[ -z "$ws" ]] && continue
+            if [[ "$ws" == "$CURRENT_WS" ]]; then
+                printf "${GREEN}${ICON_ACTIVE}${ws} (current)${RESET}\n"
+            else
+                printf "${GREEN}${ICON_ACTIVE}${ws}${RESET}\n"
+            fi
+        done
+    fi
+
+    # 2. Remaining projects that are not an active workspace
+    for dir in "$PROJECTS_DIR"/*/; do
+        [[ -d "$dir" ]] || continue
+        name=$(basename "$dir")
+        if ! is_active "$name"; then
+            printf "${ICON_FOLDER}${name}\n"
+        fi
+    done
+}
+
+# ── Self-reinvocation hook (ctrl-d subshell workaround) ───────────────────
+if [[ "${1:-}" == "--delete" ]]; then
+    on_delete "${2:-}" >> "${3:-/dev/stderr}"
+    exit 0
+fi
+
+# ── Guards ─────────────────────────────────────────────────────────────────
+command -v sk &>/dev/null || { echo "error: skim (sk) is not installed." >&2; exit 1; }
+[[ -d "$PROJECTS_DIR" ]] || { echo "error: $PROJECTS_DIR does not exist." >&2; exit 1; }
+
+SCRIPT="$(realpath "$0")"
+RESULT=$(mktemp /tmp/skim_result.XXXXXX)
+trap 'rm -f "$RESULT"' EXIT
+
+# ── Run skim ───────────────────────────────────────────────────────────────
+
+selected=$(
+  build_list | sk \
+    --ansi \
+    --no-multi \
+    --border=rounded \
+    --prompt "Workspace> " \
+    --header $'ctrl-d: delete  |  enter: open' \
+    --bind "ctrl-d:execute(\"$SCRIPT\" --delete {} \"$RESULT\")+abort" \
+    || true
+)
+
+# ctrl-d path
+if [[ -s "$RESULT" ]]; then
+    cat "$RESULT"
+    exit 0
+fi
+
+# enter path — strip ANSI and icon, return clean project name
+if [[ -n "$selected" ]]; then
+    project=$(strip_ansi "$selected" | sed 's/^[^ ]* //')
+    on_select "$project"
+else
+    echo "(no selection made)" >&2
+    exit 1
+fi
