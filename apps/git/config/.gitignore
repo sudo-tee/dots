@@ -17,3 +17,5 @@ lpm.manifest.json
 .config/goose/history.txt
 .opencode/
 AGENTS.md
+.claude/
+.node-version

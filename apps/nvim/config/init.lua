@@ -10,6 +10,7 @@ end ---@diagnostic disable-next-line: undefined-field
 vim.opt.rtp:prepend(lazypath)
 
 require('custom.lib.lazyfile').setup()
+require('custom.lib.databricks').setup()
 require('lazy').setup({
   { import = 'custom.plugins' },
 }, {
@@ -17,7 +18,7 @@ require('lazy').setup({
   change_detection = {
     notify = false,
   },
-  install = { colorscheme = {'kanagawa-wave'} },
+  install = { colorscheme = { 'kanagawa-wave' } },
   performance = {
     rtp = {
       -- disable some rtp plugins
