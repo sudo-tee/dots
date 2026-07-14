@@ -12,27 +12,11 @@ vim.api.nvim_create_user_command('LL', function()
   end, 100)
 end, {})
 
--- Ugly hack to make it work with lazydev
--- EmmyLua does not sent the workspace/didChangeConfiguration on initialization
--- so we need to do it manually on the first attach
-local first_attach = true
 vim.api.nvim_create_autocmd('LspAttach', {
   callback = function(args)
     local client = vim.lsp.get_client_by_id(args.data.client_id)
     if client.name ~= 'emmylua_ls' then
       return
-    end
-    if first_attach then
-      first_attach = false
-      -- set runtime path
-      vim.defer_fn(function()
-        client.notify('workspace/didChangeConfiguration', {
-          settings = { Lua = {} },
-        })
-        vim.defer_fn(function()
-          vim.cmd('edit')
-        end, 100)
-      end, 400)
     end
   end,
 })
@@ -52,8 +36,13 @@ return {
         version = 'LuaJIT',
       },
       workspace = {
+        library = {
+          vim.env.VIMRUNTIME,
+          vim.fn.stdpath('data') .. '/lazy/lazy.nvim',
+          vim.fn.stdpath('data') .. '/lazy/snacks.nvim',
+        },
         ignoreGlobs = {
-          '**/*_spec.lua', -- to avoid some weird type defs in a plugin
+          '**/*_spec.lua',
         },
       },
       diagnostics = {
