@@ -12,7 +12,7 @@ return {
   ---@type avante.Config
   opts = {
     debug = false,
-    provider = 'copilot',
+    provider = 'opencode',
     auto_suggestions_provider = nil,
     behaviour = {
       auto_suggestions = false,
@@ -21,10 +21,11 @@ return {
     web_search_engine = {
       provider = 'google', -- tavily, serpapi, searchapi, google, kagi, brave, or searxng
     },
-    copilot = {
-      -- model = 'o3-mini',
-      -- disable_tools = true,
-      model = 'claude-3.5-sonnet',
+    acp_providers = {
+      ['opencode'] = {
+        command = 'opencode',
+        args = { 'acp' },
+      },
     },
     windows = {
       width = 40,
