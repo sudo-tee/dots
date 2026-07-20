@@ -31,25 +31,6 @@ local function base64_encode(data)
   )
 end
 
-local function basename(file)
-  local file_name = file:match('^.+/(.+)$')
-  return file_name:sub(0, #file_name - 4)
-end
-
-function M.project_files(dir_path)
-  local Path = require('plenary.path')
-  local scan = require('plenary.scandir')
-  dir_path = dir_path or Path:new(os.getenv('HOME'), '.config', 'projects').filename
-  local files = {}
-  for _, entry in ipairs(scan.scan_dir(dir_path)) do
-    local file = basename(entry)
-    if file ~= '_template' then
-      table.insert(files, { file .. '.lua', file })
-    end
-  end
-  return files
-end
-
 function M.send_user_var(key, val)
   local encoded_val = base64_encode(val)
   -- equivalent to "\033]1337
@@ -84,8 +65,15 @@ function M.switch_workspace(workspace)
   M.send_user_command(M.commands.OpenWorkspace, workspace)
 end
 
+local pane_seq = 0
+
+function M.current_pane_id()
+  return pane_seq
+end
+
 function M.activate_pane_direction(direction)
   M.send_user_command(M.commands.ActivatePaneDirection, direction)
+  pane_seq = pane_seq + 1
 end
 
 function M.resize_pane_direction(direction)
@@ -98,17 +86,6 @@ function M.kill_workspace(workspace)
     workspace
   )
   vim.fn.system(command)
-end
-
-function M.get_workspaces()
-  local command = "wezterm cli list --format json | jq -r '.[].workspace' | uniq"
-  local output = vim.fn.system(command)
-
-  return vim.split(vim.trim(output), '\n')
-end
-
-function M.open_workspace_file(path)
-  M.send_user_command(M.commands.CreateWorkspace, path)
 end
 
 return M

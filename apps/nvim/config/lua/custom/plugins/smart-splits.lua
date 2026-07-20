@@ -1,53 +1,45 @@
----@return boolean
-local function at_top_edge()
-  return vim.fn.winnr() == vim.fn.winnr('k')
+local multiplexer
+if vim.env.HOLLOW_PANE_ID then
+  multiplexer = require('custom.lib.hollow')
+else
+  multiplexer = require('custom.lib.wezterm')
 end
 
----@return boolean
-local function at_bottom_edge()
-  return vim.fn.winnr() == vim.fn.winnr('j')
+local function capitalize(s)
+  return s:sub(1, 1):upper() .. s:sub(2):lower()
 end
 
----@return boolean
-local function at_left_edge()
-  return vim.fn.winnr() == vim.fn.winnr('h')
-end
-
----@return boolean
-local function at_right_edge()
-  return vim.fn.winnr() == vim.fn.winnr('l')
-end
-
----@param winnr number|nil window ID, defaults to current window
----@return boolean
-local function is_full_width(winnr)
-  return vim.api.nvim_win_get_width(winnr or 0) == vim.o.columns
-end
-
----@param winnr number|nil window ID, defaults to current window
----@return boolean
-local function is_full_height(winnr)
-  return vim.api.nvim_win_get_height(winnr or 0) > vim.o.lines - 4 -- bufferline / status line / cmd height
-end
-
----@param direction 'Left'|'Down'|'Up'|'Right'
-function try_move(direction)
-  local prev_win = vim.api.nvim_get_current_win()
-  local smart_splits = require('smart-splits')
-  local move_function = smart_splits['move_cursor_' .. direction:lower()]
-  if not move_function then
+local custom_mux = {
+  type = 'custom',
+  is_in_session = function()
+    return true
+  end,
+  current_pane_id = function()
+    return multiplexer.current_pane_id()
+  end,
+  current_pane_at_edge = function(_)
     return false
-  end
-  move_function()
-  return prev_win ~= vim.api.nvim_get_current_win()
-end
+  end,
+  current_pane_is_zoomed = function()
+    return false
+  end,
+  next_pane = function(direction)
+    multiplexer.activate_pane_direction(capitalize(direction))
+    return true
+  end,
+  resize_pane = function(direction, _)
+    multiplexer.resize_pane_direction(capitalize(direction))
+    return true
+  end,
+  split_pane = function()
+    return false
+  end,
+}
 
 return {
   'mrjones2014/smart-splits.nvim',
   lazy = true,
   keys = {
-
-    -- resizing splits
     {
       '<leader>ur',
       function()
@@ -55,197 +47,164 @@ return {
       end,
       desc = 'Toggle resize window',
     },
-
-    -- move between splits
     {
       '<C-j>',
       function()
-        if require('custom.lib.hooks').run_hook('move_cursor_down') then
-          return
+        if vim.bo.filetype == 'snacks_picker_list' then
+          vim.cmd('wincmd j')
+        else
+          require('smart-splits').move_cursor_down()
         end
-        local _ = try_move('Down') or vim.api.nvim_command('wincmd j')
       end,
       desc = 'Move to split down',
     },
     {
       '<C-k>',
       function()
-        if require('custom.lib.hooks').run_hook('move_cursor_up') then
-          return
+        if vim.bo.filetype == 'snacks_picker_list' then
+          vim.cmd('wincmd k')
+        else
+          require('smart-splits').move_cursor_up()
         end
-        local _ = try_move('Up') or vim.api.nvim_command('wincmd k')
       end,
       desc = 'Move to split up',
     },
     {
       '<C-l>',
       function()
-        if require('custom.lib.hooks').run_hook('move_cursor_right') then
-          return
+        if vim.bo.filetype == 'snacks_picker_list' then
+          vim.cmd('wincmd l')
+        else
+          require('smart-splits').move_cursor_right()
         end
-        local _ = try_move('Right') or vim.api.nvim_command('wincmd l')
       end,
       desc = 'Move to split right',
     },
     {
       '<C-h>',
       function()
-        if require('custom.lib.hooks').run_hook('move_cursor_left') then
-          return
+        if vim.bo.filetype == 'snacks_picker_list' then
+          vim.cmd('wincmd h')
+        else
+          require('smart-splits').move_cursor_left()
         end
-        local _ = try_move('Left') or vim.api.nvim_command('wincmd h')
       end,
       desc = 'Move to split left',
     },
     {
       '<C-Left>',
       function()
-        if require('custom.lib.hooks').run_hook('move_cursor_left') then
-          return
+        if vim.bo.filetype == 'snacks_picker_list' then
+          vim.cmd('wincmd h')
+        else
+          require('smart-splits').move_cursor_left()
         end
-        local _ = try_move('Left') or vim.api.nvim_command('wincmd h')
       end,
       desc = 'Move to split left',
     },
     {
       '<C-Down>',
       function()
-        if require('custom.lib.hooks').run_hook('move_cursor_down') then
-          return
+        if vim.bo.filetype == 'snacks_picker_list' then
+          vim.cmd('wincmd j')
+        else
+          require('smart-splits').move_cursor_down()
         end
-        local _ = try_move('Down') or vim.api.nvim_command('wincmd j')
       end,
       desc = 'Move to split down',
     },
     {
       '<C-Up>',
       function()
-        if require('custom.lib.hooks').run_hook('move_cursor_up') then
-          return
+        if vim.bo.filetype == 'snacks_picker_list' then
+          vim.cmd('wincmd k')
+        else
+          require('smart-splits').move_cursor_up()
         end
-        local _ = try_move('Up') or vim.api.nvim_command('wincmd k')
       end,
       desc = 'Move to split up',
     },
     {
       '<C-Right>',
       function()
-        if require('custom.lib.hooks').run_hook('move_cursor_right') then
-          return
+        if vim.bo.filetype == 'snacks_picker_list' then
+          vim.cmd('wincmd l')
+        else
+          require('smart-splits').move_cursor_right()
         end
-        local _ = try_move('Right') or vim.api.nvim_command('wincmd l')
       end,
       desc = 'Move to split right',
     },
     {
       '<C-A-h>',
       function()
-        if at_left_edge() and is_full_width() then
-          local wez = require('cunstom.lib.wezterm')
-          wez.resize_pane_direction('Left')
-        else
-          require('smart-splits').resize_left()
-        end
+        require('smart-splits').resize_left()
       end,
+      desc = 'Resize left',
     },
     {
       '<C-A-j>',
       function()
-        if at_bottom_edge() and is_full_height() then
-          local wez = require('custom.lib.wezterm')
-          wez.resize_pane_direction('Down')
-        else
-          require('smart-splits').resize_down()
-        end
+        require('smart-splits').resize_down()
       end,
+      desc = 'Resize down',
     },
     {
       '<C-A-k>',
       function()
-        if at_top_edge() and is_full_height() then
-          local wez = require('custom.lib.wezterm')
-          wez.resize_pane_direction('Up')
-        else
-          require('smart-splits').resize_up()
-        end
+        require('smart-splits').resize_up()
       end,
+      desc = 'Resize up',
     },
     {
       '<C-A-l>',
       function()
-        if at_right_edge() and is_full_width() then
-          local wez = require('custom.lib.wezterm')
-          wez.resize_pane_direction('Right')
-        else
-          require('smart-splits').resize_right()
-        end
+        require('smart-splits').resize_right()
       end,
+      desc = 'Resize right',
     },
     {
       '<C-A-Left>',
       function()
-        if at_left_edge() and is_full_width() then
-          local wez = require('custom.lib.wezterm')
-          wez.resize_pane_direction('Left')
-        else
-          require('smart-splits').resize_left()
-        end
+        require('smart-splits').resize_left()
       end,
+      desc = 'Resize left',
     },
     {
       '<C-A-Down>',
       function()
-        if at_bottom_edge() and is_full_height() then
-          local wez = require('custom.lib.wezterm')
-          wez.resize_pane_direction('Down')
-        else
-          require('smart-splits').resize_down()
-        end
+        require('smart-splits').resize_down()
       end,
+      desc = 'Resize down',
     },
     {
       '<C-A-Up>',
       function()
-        if at_top_edge() and is_full_height() then
-          local wez = require('custom.lib.wezterm')
-          wez.resize_pane_direction('Up')
-        else
-          require('smart-splits').resize_up()
-        end
+        require('smart-splits').resize_up()
       end,
+      desc = 'Resize up',
     },
     {
       '<C-A-Right>',
       function()
-        if at_right_edge() and is_full_width() then
-          local wez = require('custom.lib.wezterm')
-          wez.resize_pane_direction('Right')
-        else
-          require('smart-splits').resize_right()
-        end
+        require('smart-splits').resize_right()
       end,
+      desc = 'Resize right',
     },
   },
-  ---@module 'smart-splits'
-  ---@class SmartSplitsConfig
   opts = {
     multiplexer_integration = false,
-
-    at_edge = function(mux)
-      local utils = require('custom.lib.utils')
-      local wez = require('custom.lib.wezterm')
-
-      wez.activate_pane_direction(utils.first_to_upper(mux.direction))
-    end,
+    at_edge = 'stop',
     resize_mode = {
       resize_keys = { '<Left>', '<Down>', '<Up>', '<Right>' },
     },
   },
   init = function()
-    -- disable default multiplexer integration
     vim.g.smart_splits_multiplexer_integration = false
   end,
   config = function(_, opts)
+    local mux_api = require('smart-splits.mux')
+    mux_api.__mux = custom_mux
     require('smart-splits').setup(opts)
   end,
 }
