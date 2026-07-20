@@ -101,7 +101,8 @@ M.generate_chat_message_for_mr = function()
   local title = details.title
   local web_url = details.web_url
 
-  local message = string.format('Ⓜ MR (%s) | %s \n%s \n\n @Nova-devs @Nova-testers', project_folder, title, web_url)
+  local message =
+    string.format('Ⓜ MR (%s) | %s \n%s \n\n @nebula-dev @nebula-testers', project_folder, title, web_url)
   vim.notify('⚡ MR message copied to clipboard!', vim.log.levels.INFO)
   vim.fn.setreg('+', message)
 end
