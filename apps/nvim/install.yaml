@@ -22,7 +22,7 @@
 - shell:
     - description: "💿💿💿 installing nvim"
       command: |
-          ./Taskfile app sqlite
-          brew install luarocks
+          # ./Taskfile app sqlite
+          # brew install luarocks
           bob install nightly
           bob use nightly
