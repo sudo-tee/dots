@@ -28,14 +28,14 @@ return {
     end, '[R]estart TS server')
   end,
   before_init = function(params, config)
-    local vuePluginConfig = {
-      name = '@vue/typescript-plugin',
-      location = vim.fn.expand('$MASON/packages/vue-language-server/node_modules/@vue/language-server'),
-      languages = { 'vue' },
-      configNamespace = 'typescript',
-      enableForWorkspaceTypeScriptVersions = true,
-    }
-    table.insert(config.settings.vtsls.tsserver.globalPlugins, vuePluginConfig)
+    -- local vuePluginConfig = {
+    --   name = '@vue/typescript-plugin',
+    --   location = vim.fn.expand('$MASON/packages/vue-language-server/node_modules/@vue/language-server'),
+    --   languages = { 'vue' },
+    --   configNamespace = 'typescript',
+    --   enableForWorkspaceTypeScriptVersions = true,
+    -- }
+    -- table.insert(config.settings.vtsls.tsserver.globalPlugins, vuePluginConfig)
   end,
   settings = {
     vtsls = {
