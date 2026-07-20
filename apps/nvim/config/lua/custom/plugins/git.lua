@@ -62,6 +62,7 @@ return {
     'esmuellert/codediff.nvim',
     -- dir = '~/Projects/_nvim/codediff.nvim',
     cmd = 'CodeDiff',
+    enabled = true,
     keys = {
       -- stylua: ignore start
       -- { '<leader>gg',  u.cmd('CodeDiff'),                                   desc = 'Status' },
@@ -90,6 +91,12 @@ return {
       require('codediff').setup(opts)
     end,
   },
+  -- {
+  --   'CoreyKaylor/diffbandit.nvim',
+  --   config = function()
+  --     require('diffbandit').setup()
+  --   end,
+  -- },
   { 'tpope/vim-fugitive', lazy = true, cmd = { 'G', 'Gwrite', 'Gdiff', 'Gedit' } },
   {
     'isakbm/gitgraph.nvim',
@@ -104,10 +111,10 @@ return {
       },
       hooks = {
         on_select_commit = function(commit)
-          vim.cmd(':CodeDiff ' .. commit.hash .. '~1...' .. commit.hash)
+          vim.cmd(':DiffviewOpen ' .. commit.hash .. '~1...' .. commit.hash)
         end,
         on_select_range_commit = function(from, to)
-          vim.cmd(':CodeDiff ' .. from.hash .. '~1..' .. to.hash)
+          vim.cmd(':DiffviewOpen ' .. from.hash .. '~1..' .. to.hash)
         end,
       },
     },
