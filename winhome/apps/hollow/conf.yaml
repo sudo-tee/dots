@@ -1,0 +1,12 @@
+- defaults:
+    shell:
+      stdout: true
+      stderr: true
+      quiet: true
+
+- create:
+  - ~/winhome/AppData/Roaming/hollow
+  - ~/winhome/AppData/Roaming/hollow/types
+
+- shell:
+  - [ cp -r winhome/apps/hollow/config/* ~/winhome/AppData/Roaming/hollow/, "📁 Copying config files for hollow"]

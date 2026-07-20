@@ -1,0 +1,10 @@
+
+- defaults:
+    shell:
+      stdout: true
+      stderr: true
+      quiet: true
+- shell:
+  - ["", 💿💿💿 Installing Hollow 💿💿💿]
+  - [ "CONFIG=winhome/apps/hollow/conf.yaml ./Taskfile install" ]
+

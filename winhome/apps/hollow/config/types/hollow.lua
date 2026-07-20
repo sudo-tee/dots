@@ -1,0 +1,2035 @@
+---@meta
+---@module 'hollow'
+
+---@alias HollowColor string
+
+---@alias HollowFontWeight "thin"|"extralight"|"light"|"regular"|"medium"|"semibold"|"bold"|"extrabold"|"black"
+
+---@alias HollowFontStyle "normal"|"italic"|"oblique"
+---@alias HollowCursorStyle "block"|"bar"|"underline"|"block_hollow"
+---@alias HollowTopBarMode "always"|"tabs"
+---@alias HollowSidebarSide "left"|"right"
+---@alias HollowOverlayAlign "center"|"top_left"|"top_center"|"top_right"|"left_center"|"right_center"|"bottom_left"|"bottom_center"|"bottom_right"|"left"|"right"|"top"|"bottom"
+---@class HollowUiThemeBackdrop
+---@field color? HollowColor
+---@field alpha? integer
+
+---@class HollowPalette
+---@field foreground HollowColor
+---@field background HollowColor
+---@field cursor_bg HollowColor
+---@field cursor_fg HollowColor
+---@field selection_bg HollowColor
+---@field selection_fg HollowColor
+---@field black HollowColor
+---@field red HollowColor
+---@field green HollowColor
+---@field yellow HollowColor
+---@field blue HollowColor
+---@field magenta HollowColor
+---@field cyan HollowColor
+---@field white HollowColor
+---@field bright_black HollowColor
+---@field bright_red HollowColor
+---@field bright_green HollowColor
+---@field bright_yellow HollowColor
+---@field bright_blue HollowColor
+---@field bright_magenta HollowColor
+---@field bright_cyan HollowColor
+---@field bright_white HollowColor
+
+---@class HollowResolvedTheme
+---@field terminal HollowTerminalTheme
+---@field ui HollowAppTheme
+---@field palette HollowPalette
+
+---@class HollowTerminalTheme
+---@field foreground HollowColor
+---@field background HollowColor
+---@field cursor_bg HollowColor
+---@field cursor_fg HollowColor
+---@field selection_bg HollowColor
+---@field selection_fg HollowColor
+---@field ansi HollowColor[]
+---@field brights HollowColor[]
+
+---@class HollowAppTheme
+---@field widgets table
+---@field top_bar { height: integer, background: HollowColor }
+---@field tab_bar table
+---@field scrollbar HollowScrollbarConfig
+---@field split_active HollowColor
+---@field split_inactive HollowColor
+---@field floating_active HollowColor
+---@field floating_inactive HollowColor
+---@field accent HollowColor
+---@field warm HollowColor
+---@field status { bg: HollowColor, fg: HollowColor }
+
+---@class HollowThemeTerminalSpec
+---@field foreground? HollowColor
+---@field background? HollowColor
+---@field cursor_bg? HollowColor
+---@field cursor_fg? HollowColor
+---@field selection_bg? HollowColor
+---@field selection_fg? HollowColor
+---@field ansi? HollowColor[]
+---@field brights? HollowColor[]
+
+---@class HollowThemeUiSpec
+---@field widgets? table
+---@field top_bar? { height?: integer, background?: HollowColor }
+---@field tab_bar? table
+---@field scrollbar? HollowScrollbarConfig
+---@field split_active? HollowColor
+---@field split_inactive? HollowColor
+---@field floating_active? HollowColor
+---@field floating_inactive? HollowColor
+---@field accent? HollowColor
+---@field warm? HollowColor
+---@field status? { bg?: HollowColor, fg?: HollowColor }
+
+---@class HollowThemeSpec
+---@field terminal? HollowThemeTerminalSpec
+---@field ui? HollowThemeUiSpec
+---@field palette? HollowPalette|table
+
+---@class HollowUiBox
+---@field top? integer
+---@field right? integer
+---@field bottom? integer
+---@field left? integer
+---@field x? integer
+---@field y? integer
+---@field horizontal? integer
+---@field vertical? integer
+
+---@alias HollowUiBoxValue integer|HollowUiBox
+---@alias HollowOverlayBackdropValue boolean|HollowColor|HollowUiThemeBackdrop
+---@class HollowUiTheme
+---@field panel_bg? HollowColor
+---@field panel_border? HollowColor
+---@field divider? HollowColor
+---@field title? HollowColor
+---@field fg? HollowColor
+---@field muted? HollowColor
+---@field input_bg? HollowColor
+---@field input_fg? HollowColor
+---@field cursor_bg? HollowColor
+---@field cursor_fg? HollowColor
+---@field selected_bg? HollowColor
+---@field selected_detail_bg? HollowColor
+---@field selected_fg? HollowColor
+---@field primary_bg? HollowColor
+---@field primary_fg? HollowColor
+---@field destructive_bg? HollowColor
+---@field destructive_fg? HollowColor
+---@field selected_muted? HollowColor
+---@field detail? HollowColor
+---@field notify_fg? HollowColor
+---@field counter? HollowColor
+---@field empty? HollowColor
+---@field scrollbar_track? HollowColor
+---@field scrollbar_thumb? HollowColor
+---@field radius? integer
+---@field padding? HollowUiBoxValue
+---@field margin? HollowUiBoxValue
+---@field backdrop? HollowOverlayBackdropValue
+---@field notify_levels? { info?: HollowColor, warn?: HollowColor, error?: HollowColor, success?: HollowColor }
+---@alias HollowNotifyLevel "info"|"warn"|"error"|"success"
+---@alias HollowKeyMode "normal"|"copy_mode"|(string & {})
+
+---@alias HollowKeyChord string
+---@alias HollowKeyMods string
+---@alias HollowHexColor HollowColor
+---@alias HollowUiKeyMods HollowKeyMods
+
+---@alias HollowEventName
+---| "config:reloaded"
+---| "workspace:new"
+---| "workspace:changed"
+---| "workspace:closed"
+---| "term:title_changed"
+---| "term:tab_activated"
+---| "term:tab_closed"
+---| "term:pane_focused"
+---| "term:pane_layout_changed"
+---| "term:cwd_changed"
+---| "term:foreground_process_changed"
+---| "term:bell"
+---| "key:unhandled"
+---| "window:resized"
+---| "window:focused"
+---| "window:blurred"
+---| "copy_mode:changed"
+---| "copy_mode:search_requested"
+---| "topbar:hover"
+---| "topbar:leave"
+---| "topbar:click"
+---| "bottombar:hover"
+---| "bottombar:leave"
+---| "bottombar:click"
+---| "overlay:hover"
+---| "overlay:leave"
+---| "overlay:click"
+---| "selection:begin"
+---| "selection:cleared"
+---| "window:focused"
+---| "window:blurred"
+---| string
+
+---@class HollowEventPayloadMap
+---@field ["config:reloaded"] {}
+---@field ["workspace:new"] { workspace: HollowWorkspace, index: integer }
+---@field ["workspace:changed"] { workspace: HollowWorkspace, index: integer }
+---@field ["workspace:closed"] { name: string }
+---@field ["term:title_changed"] { pane: HollowPane, old_title: string, new_title: string }
+---@field ["term:tab_activated"] { tab: HollowTab }
+---@field ["term:tab_closed"] { tab_id: integer }
+---@field ["term:pane_focused"] { pane: HollowPane }
+---@field ["term:pane_layout_changed"] { pane: HollowPane }
+---@field ["term:cwd_changed"] { pane: HollowPane, old_cwd: string, new_cwd: string }
+---@field ["term:foreground_process_changed"] { pane: HollowPane, old_process: string, new_process: string }
+---@field ["term:bell"] { pane: HollowPane }
+---@field ["key:unhandled"] { key: string, mods: string }
+---@field ["window:resized"] { size: HollowSize }
+---@field ["window:focused"] {}
+---@field ["window:blurred"] {}
+---@field ["copy_mode:changed"] { active: boolean, query: string, match_count: integer, match_index: integer|nil, selecting: boolean, block: boolean }
+---@field ["copy_mode:search_requested"] {}
+---@field ["topbar:hover"] { id: string }
+---@field ["topbar:leave"] {}
+---@field ["topbar:click"] { id: string }
+---@field ["bottombar:hover"] { id: string }
+---@field ["bottombar:leave"] {}
+---@field ["bottombar:click"] { id: string }
+---@field ["overlay:hover"] { id: string }
+---@field ["overlay:leave"] {}
+---@field ["overlay:click"] { id: string }
+---@field ["selection:begin"] {}
+---@field ["selection:cleared"] {}
+
+---@alias HollowHtpValue nil|boolean|number|string|table
+---@alias HollowEventHandle integer
+
+---@class HollowStyle
+---@field fg? HollowColor
+---@field bg? HollowColor
+---@field bold? boolean
+---@field italic? boolean
+---@field underline? boolean
+---@field strikethrough? boolean
+---@field dim? boolean
+---@field id? string
+---@field radius? number Rounded corner radius for bg/border rect
+---@field border? HollowColor Border color for bg rect outline
+---@field border_size? number Border thickness in pixels
+---@field on_click? fun(e: { id: string })
+---@field on_mouse_enter? fun(e: { id: string })
+---@field on_mouse_leave? fun(e: { id: string })
+
+---@alias HollowStyleValue HollowStyle|HollowColor
+---@alias HollowUiNodeStyle HollowStyle
+
+---@class HollowUiStyleWrapper
+---@field style HollowUiNodeStyle
+
+---@alias HollowUiNodeEventPayload table<string, any>
+
+---@class HollowUiChrome
+---@field bg? HollowColor
+---@field border? HollowColor
+---@field border_size? integer
+---@field alpha? integer
+---@field radius? integer
+---@field padding? HollowUiBoxValue
+---@field margin? HollowUiBoxValue
+
+---@class HollowSize
+---@field rows integer
+---@field cols integer
+---@field width integer
+---@field height integer
+
+---@alias HollowFontSmoothing "grayscale"|"subpixel"
+---@alias HollowFontHinting "none"|"light"|"normal"
+
+---@class HollowFontInfo
+---@field family string
+---@field styles string[]
+
+---@class HollowFontsNamespace
+---@field list fun(): HollowFontInfo[]
+---@field find fun(query: string): HollowFontInfo[]
+---@field has fun(family: string, style?: string): boolean
+---@field pick fun(candidates: string[], style?: string): string|nil
+
+---@class HollowFontsConfig
+---@field size number
+---@field line_height? number
+---@field padding_x? number
+---@field padding_y? number
+---@field smoothing? HollowFontSmoothing
+---@field hinting? HollowFontHinting
+---@field ligatures? boolean
+---@field embolden? number
+---@field regular_embolden? number
+---@field bold_embolden? number
+---@field italic_embolden? number
+---@field bold_italic_embolden? number
+---@field family? string
+---@field regular? string
+---@field bold? string
+---@field italic? string
+---@field bold_italic? string
+---@field fallbacks? string[]
+
+---@class HollowCursorConfig
+---@field style? HollowCursorStyle
+---@field blink? boolean
+---@field blink_rate? integer
+
+---@class HollowUnfocusedPaneConfig
+---@field cursor? HollowCursorStyle|false
+---@field dim? boolean|number
+---@field dim_opacity? number
+
+---@class HollowScrollbarConfig
+---@field enabled? boolean
+---@field width? integer
+---@field min_thumb_size? integer
+---@field margin? integer
+---@field jump_to_click? boolean
+---@field track? HollowColor
+---@field thumb? HollowColor
+---@field thumb_hover? HollowColor
+---@field thumb_active? HollowColor
+---@field border? HollowColor
+
+---@class HollowHyperlinksConfig
+---@field enabled? boolean
+---@field shift_click_only? boolean
+---@field match_www? boolean
+---@field prefixes? string
+---@field delimiters? string
+---@field trim_leading? string
+---@field trim_trailing? string
+
+---@class HollowConfig
+---@field debug_overlay? boolean
+---@field debug_terminal_trace? boolean
+---@field backend? string
+---@field vsync? boolean
+---@field max_fps? integer
+---@field command_timing? boolean
+---@field padding? integer
+---@field alternate_screen_padding? integer
+---@field alternate_padding_x? integer
+---@field alternate_padding_y? integer
+---@field alternate_padding_left? integer
+---@field alternate_padding_right? integer
+---@field alternate_padding_top? integer
+---@field alternate_padding_bottom? integer
+---@field theme? string|HollowThemeSpec
+---@field fonts? HollowFontsConfig
+---@field scrollback? integer
+---@field cols? integer
+---@field rows? integer
+---@field window_title? string
+---@field window_width? integer
+---@field window_height? integer
+---@field window_titlebar_show? boolean
+---@field top_bar_mode? HollowTopBarMode
+---@field top_bar_height? integer
+---@field top_bar_bg? HollowColor
+---@field bottom_bar_show? boolean
+---@field bottom_bar_height? integer
+---@field bottom_bar_bg? HollowColor
+---@field bottom_bar_draw_status? boolean
+---@field scrollbar? HollowScrollbarConfig
+---@field hyperlinks? HollowHyperlinksConfig
+---@field cursor? HollowCursorConfig
+---@field unfocused_pane? HollowUnfocusedPaneConfig
+---@field shell? string|string[]
+---@field default_domain? string
+---@field domains? table<string, string|HollowDomainConfig>
+---@field env? table<string, string>
+---@field workspace? HollowWorkspaceConfig
+---@field watch_dirs? string[]
+
+---@class HollowWorkspaceConfig
+---@field auto_bootstrap? "always"|"never"
+---@field default_layout? string
+
+---@class HollowDomainConfig
+---@field shell? string
+---@field ssh? HollowSshDomainConfig
+---@field wsl_distro? string
+---@field default_cwd? string
+---@field env? table<string, string>
+
+---@class HollowDomain: HollowDomainConfig
+---@field name string
+---@field is_active boolean
+---@field is_default boolean
+
+---@alias HollowSshBackend "native"|"wsl"
+---@alias HollowSshReuse "none"|"auto"
+---@class HollowSshDomainConfig
+---@field host? string
+---@field user? string
+---@field alias? string
+---@field backend? HollowSshBackend
+---@field reuse? HollowSshReuse
+
+---@class HollowPane
+---@field id integer
+---@field pid integer
+---@field domain? string
+---@field active_screen '"primary"|"alternate"'
+---@field cwd string
+---@field title string
+---@field is_focused boolean
+---@field is_floating boolean
+---@field is_maximized boolean
+---@field has_bell boolean
+---@field frame { x: integer, y: integer, width: integer, height: integer }
+---@field foreground_process string
+---@field tags string[]
+---@field size HollowSize
+
+---@class HollowTab
+---@field id integer
+---@field title string
+---@field index integer
+---@field is_active boolean
+---@field panes HollowPane[]
+---@field pane HollowPane
+
+---@class HollowWorkspace
+---@field id integer
+---@field index integer
+---@field name string
+---@field domain? string
+---@field is_active boolean
+
+---@alias HollowPaneSnapshot HollowPane
+---@alias HollowTabSnapshot HollowTab
+---@alias HollowWorkspaceSnapshot HollowWorkspace
+---@alias HollowDomainSnapshot HollowDomain
+---@alias HollowPaneSizeSnapshot HollowSize
+---@alias HollowWindowSizeSnapshot HollowSize
+
+---@class HollowNewTabOpts
+---@field cmd? string|string[]
+---@field cwd? string
+---@field env? table<string, string>
+---@field title? string
+---@field domain? string
+---@field command? string
+---@field on_complete? fun(result: { success: boolean, tab_id?: integer })
+
+---@class HollowSplitPaneOpts
+---@field direction? "horizontal"|"vertical"
+---@field tag? string
+---@field tags? string[]
+---@field ratio? number
+---@field domain? string
+---@field cwd? string
+---@field command? string
+---@field command_mode? "send"|"spawn"
+---@field close_on_exit? boolean
+---@field floating? boolean
+---@field fullscreen? boolean
+---@field x? number
+---@field y? number
+---@field width? number
+---@field height? number
+---@field on_complete? fun(result: { success: boolean, pane_id?: integer })
+
+---@class HollowNewWorkspaceOpts
+---@field cwd? string
+---@field domain? string
+---@field command? string
+---@field name? string
+---@field on_complete? fun(result: { success: boolean, workspace_index?: integer })
+
+---@class HollowPromise<T>
+---@field status fun(self: HollowPromise<T>): "pending"|"fulfilled"|"rejected"
+---@field value fun(self: HollowPromise<T>): T|nil
+---@field error fun(self: HollowPromise<T>): any
+---@field next fun(self: HollowPromise<T>, on_resolve?: fun(value: T): any, on_reject?: fun(err: any): any): HollowPromise<any>
+---@field catch fun(self: HollowPromise<T>, on_reject: fun(err: any): any): HollowPromise<any>
+---@field await fun(self: HollowPromise<T>): T
+
+---@class HollowAsyncNamespace
+---@field run fun(fn: function): thread
+---@field await fun(register: fun(resolve: fun(value: any), reject?: fun(err: any))): any
+---@field promise fun(register: fun(resolve: fun(value: any), reject: fun(err: any))): HollowPromise<any>
+
+---@class HollowWorkspaceBootstrapPane
+---@field cwd? string
+---@field domain? string
+---@field command? string
+---@field command_mode? "send"|"spawn"
+---@field close_on_exit? boolean
+---@field floating? boolean
+---@field fullscreen? boolean
+---@field x? number
+---@field y? number
+---@field width? number
+---@field height? number
+---@field size? number
+---@field direction? "horizontal"|"vertical"
+---@field main? boolean
+---@field default? boolean
+
+---@class HollowWorkspaceBootstrapTab
+---@field name? string
+---@field layout? "horizontal"|"vertical"
+---@field panes HollowWorkspaceBootstrapPane[]
+
+---@class HollowWorkspaceBootstrapSpec
+---@field name? string
+---@field tabs HollowWorkspaceBootstrapTab[]
+
+---@class HollowPaneMaximizeOpts
+---@field show_background? boolean
+
+---@class HollowFloatingPaneBounds
+---@field x? number
+---@field y? number
+---@field width? number
+---@field height? number
+
+---@class HollowMovePaneOpts
+---@field pane_id? integer
+---@field id? integer
+---@field direction "left"|"right"|"up"|"down"
+---@field amount? number
+
+---@class HollowUiSpanNode
+---@field _type "span"
+---@field text string
+---@field style? HollowUiNodeStyle|HollowHexColor
+
+---@class HollowUiSpacerNode
+---@field _type "spacer"
+
+---@class HollowUiIconNode
+---@field _type "icon"
+---@field name string
+---@field style? HollowUiNodeStyle|HollowHexColor
+
+---@class HollowUiGroupNode
+---@field _type "group"
+---@field children HollowUiRenderableNode[]
+---@field style? HollowUiNodeStyle|HollowHexColor
+
+---@alias HollowUiFormattedNode HollowUiSpanNode|HollowUiGroupNode
+---@alias HollowUiFormattedValue string|HollowUiFormattedNode|HollowUiFormattedNode[]
+
+---@class HollowUiTextShorthand: HollowStyle
+---@field [1] string
+
+---@class HollowUiButtonOptions
+---@field id string
+---@field text? string
+---@field style? HollowUiNodeStyle
+---@field on_click? fun(e: { id: string })
+---@field on_mouse_enter? fun(e: { id: string })
+---@field on_mouse_leave? fun(e: { id: string })
+
+---@alias HollowUiRenderableNode HollowUiSpanNode|HollowUiSpacerNode|HollowUiIconNode|HollowUiGroupNode
+---@alias HollowUiInlineNode string|HollowUiRenderableNode|HollowUiTextShorthand
+
+---@class HollowUiFormatColumnSpec
+---@field text? string
+---@field style? HollowUiNodeStyle|HollowHexColor
+---@field width? integer
+---@field align? "left"|"right"
+
+---@class HollowUiOverlayRowOptions
+---@field fill_bg? HollowColor
+---@field divider? HollowColor
+---@field scrollbar_track? boolean
+---@field scrollbar_thumb? boolean
+---@field scrollbar_track_color? HollowColor
+---@field scrollbar_thumb_color? HollowColor
+
+---@class HollowUiOverlayRow
+---@field _overlay_row true
+---@field nodes HollowUiRenderableNode[]
+---@field fill_bg? HollowColor
+---@field divider? HollowColor
+---@field scrollbar_track boolean
+---@field scrollbar_thumb boolean
+---@field scrollbar_track_color? HollowColor
+---@field scrollbar_thumb_color? HollowColor
+
+---@alias HollowUiRow HollowUiRenderableNode[]|HollowUiOverlayRow
+---@alias HollowUiRows HollowUiRow[]
+
+---@class HollowUiTagProps: HollowStyle
+---@field name? string
+---@field children? any[]
+---@field color? HollowColor
+---@field divider? HollowColor
+---@field fill_bg? HollowColor
+---@field scrollbar_track? boolean
+---@field scrollbar_thumb? boolean
+---@field scrollbar_track_color? HollowColor
+---@field scrollbar_thumb_color? HollowColor
+---@field style? HollowStyle
+
+---@class HollowUiTabState
+---@field id integer|nil
+---@field title string
+---@field index integer
+---@field is_active boolean
+---@field is_hovered boolean
+---@field is_hover_close boolean
+---@field pane HollowPane|nil
+---@field panes HollowPane[]
+
+---@class HollowUiWorkspaceState
+---@field index integer
+---@field name string
+---@field is_active boolean
+---@field active_index integer
+---@field count integer
+
+---@class HollowUiBarNodeOptionsBase
+---@field _type? string
+---@field style? HollowUiNodeStyle|HollowHexColor|fun(state:any, ctx?:HollowWidgetCtx): HollowUiNodeStyle|HollowHexColor|nil
+---@field fit? "content"|"fill"
+
+---@class HollowUiBarNodeBase: HollowUiBarNodeOptionsBase
+---@field _type string
+
+---@class HollowUiBarNodePayload
+---@field id string
+
+---@class HollowUiBarTabsOptions: HollowUiBarNodeOptionsBase
+---@field fit? "fill"|"content"
+---@field max_width? number
+---@field format? fun(tab: HollowUiTabState, ctx?:HollowWidgetCtx): HollowUiFormattedValue
+---@field style? HollowUiNodeStyle|HollowHexColor|fun(tab: HollowUiTabState, ctx?:HollowWidgetCtx): HollowUiNodeStyle|HollowHexColor|nil
+
+---@class HollowUiBarTabsNode: HollowUiBarTabsOptions
+---@field _type "bar_tabs"
+
+---@class HollowUiBarWorkspaceOptions: HollowUiBarNodeOptionsBase
+---@field format? fun(workspace: HollowUiWorkspaceState, ctx?:HollowWidgetCtx): HollowUiFormattedValue
+---@field style? HollowUiNodeStyle|HollowHexColor|fun(workspace: HollowUiWorkspaceState, ctx?:HollowWidgetCtx): HollowUiNodeStyle|HollowHexColor|nil
+
+---@class HollowUiBarWorkspaceNode: HollowUiBarWorkspaceOptions
+---@field _type "bar_workspace"
+
+---@class HollowUiBarTimeOptions: HollowUiBarNodeOptionsBase
+---@field style? HollowUiNodeStyle|HollowHexColor
+
+---@class HollowUiBarTimeNode: HollowUiBarTimeOptions
+---@field _type "bar_time"
+---@field format string
+
+---@class HollowUiBarKeyLegendOptions: HollowUiBarNodeOptionsBase
+---@field style? HollowUiNodeStyle|HollowHexColor
+
+---@class HollowUiBarKeyLegendNode: HollowUiBarKeyLegendOptions
+---@field _type "bar_key_legend"
+
+---@class HollowUiBarCustomNode
+---@field _type "bar_custom"
+---@field id? string
+---@field render fun(ctx: HollowWidgetCtx): HollowUiFormattedValue
+---@field on_click? fun(e: { id: string })
+---@field on_mouse_enter? fun(e: { id: string })
+---@field on_mouse_leave? fun(e: { id: string })
+---@class HollowUiBarCustomOptions
+---@field id? string
+---@field render fun(ctx:HollowWidgetCtx):HollowUiFormattedValue|HollowUiSegment|HollowUiNodeStyle|nil
+---@field on_click? fun(payload:HollowUiNodeEventPayload)
+---@field on_mouse_enter? fun(payload:HollowUiNodeEventPayload)
+---@field on_mouse_leave? fun(payload:HollowUiNodeEventPayload)
+
+---@class HollowWidgetCtxTerm
+---@field tab HollowTab|nil
+---@field pane HollowPane|nil
+---@field tabs HollowTab[]
+---@field workspace HollowWorkspace|nil
+---@field workspaces HollowWorkspace[]
+
+---@class HollowWidgetCtxTime
+---@field epoch_ms integer
+---@field iso string
+
+---@class HollowWidgetCtx
+---@field term HollowWidgetCtxTerm
+---@field size HollowSize
+---@field time HollowWidgetCtxTime
+
+---@class HollowUiFlatNode
+---@field text string
+---@field spacer? boolean
+---@field style? HollowStyle
+
+---@class HollowUiSegment
+---@field text string
+---@field fg? HollowColor
+---@field bg? HollowColor
+---@field bold? boolean
+---@field id? string
+---@field spacer? boolean When true, pushes subsequent segments to the right edge of the row
+---@field segments? HollowUiSegment[]
+---@field kind? string
+---@field radius? number Rounded corner radius for bg/border rect
+---@field border? HollowColor Border color for bg rect outline
+---@field border_size? number Border thickness in pixels
+
+---@class HollowUiTabsLayout
+---@field kind "tabs"
+---@field fit "content"|"fill"
+---@field max_width? number
+---@field tabs HollowUiSegment[]
+
+---@class HollowUiOverlaySerializedRow
+---@field segments HollowUiSegment[]
+---@field fill_bg? HollowColor
+---@field divider? HollowColor
+---@field scrollbar_track boolean
+---@field scrollbar_thumb boolean
+---@field scrollbar_track_color? HollowColor
+---@field scrollbar_thumb_color? HollowColor
+
+---@class HollowUiOverlaySerializedWidget
+---@field align string
+---@field backdrop HollowUiThemeBackdrop|nil
+---@field chrome HollowUiChrome|nil
+---@field width integer|nil
+---@field height integer|nil
+---@field max_height integer|nil
+---@field rows HollowUiOverlaySerializedRow[]
+
+---@class HollowUiSidebarState
+---@field side "left"|"right"
+---@field width integer
+---@field reserve boolean
+---@field rows HollowUiSegment[][]
+
+---@alias HollowWidgetRenderResult HollowUiRows|HollowUiRenderableNode[]|HollowUiRenderableNode|nil
+
+---@class HollowWidget
+---@field _kind? string
+---@field render fun(ctx: HollowWidgetCtx): HollowWidgetRenderResult
+---@field on_event? fun(name: string, e: any)
+---@field on_key? fun(key: string, mods: HollowKeyMods): boolean
+---@field on_mount? fun()
+---@field on_unmount? fun()
+---@field height? number
+---@field max_height? number
+---@field width? number
+---@field side? HollowSidebarSide
+---@field align? HollowOverlayAlign|string
+---@field backdrop? HollowOverlayBackdropValue
+---@field chrome? HollowUiChrome|boolean
+---@field hidden? boolean
+---@field reserve? boolean
+---@field _notify? boolean
+---@field _expires_at? integer
+
+---@alias HollowUiWidget HollowWidget
+---@alias HollowUiWidgetOptions HollowWidget
+
+---@class HollowUiTopbarOptions: HollowWidget
+---@field height? integer
+
+---@class HollowUiTopbarCwdOptions
+---@field style? HollowUiNodeStyle|HollowHexColor
+---@field format? fun(pane: HollowPane|nil, ctx?: HollowWidgetCtx): HollowUiFormattedValue|nil
+
+---@class HollowUiTopbarSeparatorOptions
+---@field text? HollowUiFormattedValue
+---@field value? HollowUiFormattedValue
+---@field style? HollowUiNodeStyle|HollowHexColor
+
+---@class HollowUiTopbarTimeOptions
+---@field format? string
+---@field style? HollowUiNodeStyle|HollowHexColor
+
+---@class HollowUiTopbarConfigureOptions
+---@field height? integer
+---@field style? HollowUiNodeStyle|HollowHexColor
+---@field layout? { padding?: HollowUiBoxValue, margin?: HollowUiBoxValue }
+---@field workspace? false|HollowUiBarWorkspaceOptions
+---@field tabs? false|HollowUiBarTabsOptions
+---@field separator? false|string|HollowUiTopbarSeparatorOptions
+---@field cwd? false|HollowUiTopbarCwdOptions
+---@field key_legend? false|HollowUiBarKeyLegendOptions
+---@field time? false|string|HollowUiTopbarTimeOptions
+
+---@class HollowUiBottombarOptions: HollowWidget
+---@field height? integer
+
+---@class HollowUiSidebarOptions: HollowWidget
+---@field side? HollowSidebarSide
+---@field width? integer
+---@field reserve? boolean
+
+---@class HollowUiOverlayOptions
+---@field render fun(ctx: HollowWidgetCtx): HollowWidgetRenderResult
+---@field on_key? fun(key: string, mods: HollowKeyMods): boolean
+---@field on_mount? fun()
+---@field on_unmount? fun()
+---@field align? HollowOverlayAlign
+---@field backdrop? HollowOverlayBackdropValue
+---@field width? integer
+---@field height? integer
+---@field chrome? HollowUiChrome
+
+---@class HollowUiNotifyAction
+---@field label string
+---@field fn fun()
+
+---@class HollowUiNotifyOptions
+---@field level? HollowNotifyLevel
+---@field title? string
+---@field ttl? number
+---@field action? HollowUiNotifyAction
+---@field align? HollowOverlayAlign
+---@field backdrop? HollowOverlayBackdropValue
+---@field chrome? HollowUiChrome|boolean
+---@field theme? HollowUiTheme
+
+---@class HollowUiInputOptions
+---@field prompt? string
+---@field default? string
+---@field backdrop? HollowOverlayBackdropValue
+---@field width? integer
+---@field height? integer
+---@field chrome? HollowUiChrome|boolean
+---@field theme? HollowUiTheme
+---@field align? HollowOverlayAlign
+---@field on_confirm fun(value: string)
+---@field on_cancel? fun()
+
+---@class HollowUiInputState
+---@field prompt string
+---@field value string
+
+---@class HollowUiSelectAction
+---@field name string
+---@field fn fun(item: any)
+---@field key? string
+---@field desc? string
+
+---@class HollowUiConfirmButton
+---@field text string
+---@field value? any
+---@field style? "default"|"primary"|"secondary"|"destructive"
+---@field on_confirm? fun()
+
+---@class (exact) HollowUiBuilderButton
+---@field _button true
+---@field id string
+---@field text string
+---@field kind "default"|"primary"|"destructive"
+---@field on_click? fun(e: { id: string })
+
+---@class HollowUiConfirmOptions
+---@field prompt string
+---@field title? string
+---@field buttons? HollowUiConfirmButton[]
+---@field backdrop? HollowOverlayBackdropValue
+---@field width? integer
+---@field height? integer
+---@field chrome? HollowUiChrome|boolean
+---@field theme? HollowUiTheme
+---@field align? HollowOverlayAlign
+---@field on_confirm? fun(value: any)
+---@field on_cancel? fun()
+
+---@class HollowUiBuilderModal
+---@field widget table
+---@field close fun()
+---@field invalidate fun()
+
+---@class HollowUiBuilderButtonOptions
+---@field id? string
+---@field text string
+---@field kind? "default"|"primary"|"destructive"
+---@field on_click? fun(e: { id: string })
+
+---@class (exact) HollowUiBuilderListNav
+---@field index integer
+---@field count integer
+---@field resize fun(new_n: integer)
+---@field set fun(i: integer)
+---@field next fun()
+---@field prev fun()
+---@field move fun(delta: integer)
+---@field first fun()
+---@field last fun()
+---@field handlers table<string, function>
+
+---@class (exact) HollowUiBuilderScrollNav
+---@field index integer
+---@field count integer
+---@field resize fun(new_n: integer)
+---@field visible_range fun(items: any[], budget: integer): integer, integer, boolean, integer
+---@field page_down fun()
+---@field page_up fun()
+---@field handlers table<string, function>
+
+---@class (exact) HollowUiBuilderTextInput
+---@field value string
+---@field cursor integer
+---@field on_change? fun(value: string)
+---@field set fun(value: string, cursor?: integer)
+---@field render fun(theme: table): any[]
+---@field handlers table<string, function>
+
+---@class (exact) HollowUiBuilderDialogOptions
+---@field title? string
+---@field body? table[]
+---@field footer? (HollowUiBuilderButton|{ text: string, kind?: string, id?: string, on_click?: fun(e: { id: string }) })[]
+---@field selected? integer
+---@field hovered? integer
+
+---@class HollowUiBuilderModalSpec
+---@field theme? table|string
+---@field render fun(theme: table, state?: table): any
+---@field keys? function
+---@field width? integer
+---@field height? integer
+---@field max_height? integer
+---@field chrome? table|boolean
+---@field align? string
+---@field backdrop? any
+---@field on_event? function
+
+---@class HollowUiBuilderNamespace
+---@field modal fun(spec: HollowUiBuilderModalSpec): HollowUiBuilderModal
+---@field keys fun(...: table): function
+---@field fire fun(fn: function|nil, value?: any)
+---@field list_nav fun(n: integer): HollowUiBuilderListNav
+---@field scroll_nav fun(n: integer, opts?: { row_count_fn?: fun(item: any): integer, row_budget?: integer }): HollowUiBuilderScrollNav
+---@field text_input fun(opts?: { initial?: string, on_change?: fun(value: string) }): HollowUiBuilderTextInput
+---@field dialog fun(opts: HollowUiBuilderDialogOptions, theme: table): table
+---@field button fun(opts: HollowUiBuilderButtonOptions): HollowUiBuilderButton
+---@field buttons fun(items: { id?: string, text: string, kind?: string, style?: string, on_click?: fun(e: { id: string }), on_confirm?: fun() }[], map?: fun(item: table, i: integer): { on_click?: fun(e: { id: string }) }|nil): HollowUiBuilderButton[]
+---@field text fun(value: any, style?: any): any
+
+---@class HollowUiSelectState
+---@field index integer
+---@field query string
+---@field scroll_top integer
+
+---@class HollowUiSelectEntry
+---@field item any
+---@field label_nodes HollowUiRenderableNode[]
+---@field label_text string
+---@field detail_nodes HollowUiRenderableNode[]|nil
+---@field detail_text string|nil
+---@field source_index integer
+---@field score number
+
+---@class HollowUiSelectOptions
+---@field items any[]
+---@field label? fun(item: any): HollowUiInlineNode|HollowUiInlineNode[]
+---@field search_text? fun(item: any): string|nil
+---@field detail? fun(item: any): HollowUiInlineNode|HollowUiInlineNode[]
+---@field prompt? string
+---@field fuzzy? boolean
+---@field query? string
+---@field backdrop? HollowOverlayBackdropValue
+---@field width? integer
+---@field height? integer
+---@field chrome? HollowUiChrome|boolean
+---@field theme? HollowUiTheme
+---@field actions HollowUiSelectAction[]
+---@field on_cancel? fun()
+
+---@alias HollowActionCategory "tab"|"pane"|"workspace"|"window"|"scroll"|"copy_mode"|"general"|"user"|string
+
+---@class HollowActionSpec
+---@field run fun()
+---@field desc? string
+---@field category? HollowActionCategory
+---@field workspace_targetable? boolean
+
+---@class HollowPaletteEntry
+---@field name string
+---@field desc string
+---@field category HollowActionCategory
+---@field chords string[]
+---@field run fun()
+---@field workspace_targetable? boolean
+
+---@class HollowUiCommandPaletteOptions
+---@field prompt? string
+---@field query? string
+---@field backdrop? HollowOverlayBackdropValue
+---@field width? integer
+---@field height? integer
+---@field chrome? HollowUiChrome|boolean
+---@field theme? HollowUiTheme
+---@field on_confirm? fun(entry: HollowPaletteEntry)
+---@field on_cancel? fun()
+
+---@class HollowEventListener
+---@field name string
+---@field handler fun(payload:any)
+---@field once boolean
+
+---@alias HollowEventHandleMap table<integer, HollowEventListener>
+---@alias HollowEventListenerMap table<string, integer[]>
+
+---@class HollowEventState
+---@field builtin_names table<string, boolean>
+---@field handles HollowEventHandleMap
+---@field listeners HollowEventListenerMap
+---@field next_handle integer
+
+---@class HollowConfigState
+---@field values table<string, any>
+
+---@class HollowKeymapBinding
+---@field action any
+---@field desc string|nil
+
+---@class HollowKeymapModeState
+---@field bindings HollowKeymapBindingStore
+---@field sequence_bindings HollowKeymapSequenceNode
+---@field leader_bindings HollowKeymapSequenceNode
+
+---@alias HollowKeymapBindingStore table<string, table<integer, HollowKeymapBinding>>
+---@alias HollowKeymapSequenceChildren table<string, table<integer, HollowKeymapSequenceNode>>
+
+---@class HollowKeymapSequenceNode
+---@field action any
+---@field desc string|nil
+---@field children HollowKeymapSequenceChildren
+
+---@class HollowKeymapLeader
+---@field key string
+---@field mods integer
+
+---@class HollowKeymapState
+---@field modes table<HollowKeyMode, HollowKeymapModeState>
+---@field leader HollowKeymapLeader|nil
+---@field sequence_timeout_ms integer
+---@field sequence_pending_until integer|nil
+---@field sequence_active_node HollowKeymapSequenceNode|nil
+---@field sequence_steps string[]
+---@field sequence_prefix string|nil
+---@field active_mode HollowKeyMode
+
+---@class HollowUiState
+---@field mounted_topbar HollowUiWidget|nil
+---@field configured_topbar HollowUiTopbarConfigureOptions|nil
+---@field topbar_hovered_id string|nil
+---@field mounted_bottombar HollowUiWidget|nil
+---@field bottombar_hovered_id string|nil
+---@field mounted_sidebar HollowUiWidget|nil
+---@field sidebar_visible boolean
+---@field overlay_stack HollowUiWidget[]
+---@field notifications HollowUiWidget[]
+
+---@class HollowCopyModeState
+---@field active boolean
+---@field query string
+---@field hud HollowUiWidget|nil
+---@field selecting boolean
+---@field block boolean
+---@field pending_g boolean
+---@field match_count integer
+---@field match_index integer|nil
+---@field prompt_depth integer|nil
+
+---@class HollowState
+---@field host_api HollowHostBridge
+---@field config HollowConfigState
+---@field events HollowEventState
+---@field keymap HollowKeymapState
+---@field ui HollowUiState
+---@field copy_mode HollowCopyModeState|nil
+
+---@class HtpQueryContext
+---@field pane HollowPane
+---@field params table<string, any>
+
+---@class HtpEmitContext
+---@field pane HollowPane
+---@field payload any
+
+---@class HollowProcessWriter
+---@field write fun(data: string)
+
+---@class HollowProcessReader
+---@field read fun(): string|nil
+
+---@class HollowProcess
+---@field pid integer
+---@field stdin HollowProcessWriter
+---@field stdout HollowProcessReader
+---@field stderr HollowProcessReader
+---@field wait fun(): integer
+---@field kill fun()
+
+---@class HollowExecResult
+---@field exit_code integer
+---@field stdout string
+---@field stderr string
+
+---@class HollowProcessRunResult
+---@field code integer
+---@field stdout string
+---@field stderr string
+
+---@class HollowProcessOpts
+---@field cmd string|string[]
+---@field cwd? string
+---@field env? table<string, string>
+
+---@class HollowProcessRunOpts
+---@field hide_window? boolean Defaults to true on the host bridge
+
+---@class HollowActionNamespace
+---@field register fun(name: string, spec: HollowActionSpec)
+---@field list fun(): HollowPaletteEntry[]
+---@field [string] fun()
+
+---@class HollowConfigNamespace
+local config = {}
+
+---@param opts HollowConfig
+function config.set(opts) end
+
+---@param key string
+---@return any
+function config.get(key) end
+
+---@return HollowConfig
+function config.snapshot() end
+
+function config.reload() end
+
+---@class HollowThemeNamespace
+local theme = {}
+
+---@param spec? HollowThemeSpec
+---@return HollowResolvedTheme
+function theme.create(spec) end
+
+---@param name string
+---@return HollowResolvedTheme
+function theme.get(name) end
+
+---@return HollowResolvedTheme
+function theme.current() end
+
+---@param kind string
+---@param resolved? HollowResolvedTheme
+---@return HollowUiTheme
+function theme.resolve_widget(kind, resolved) end
+
+---@class HollowJsonNamespace
+local json = {}
+
+---@param value any
+---@return string
+function json.encode(value) end
+
+---@param text string
+---@return any
+function json.decode(text) end
+
+---@class HollowWorkspaceNamespace
+local workspace_api = {}
+
+---@class HollowAsyncNamespace
+local async = {}
+
+---@param fn function
+---@return thread
+function async.run(fn) end
+
+---@param register fun(resolve: fun(value: any), reject?: fun(err: any))
+---@return any
+function async.await(register) end
+
+function async.next_tick() end
+
+---@param register fun(resolve: fun(value: any), reject: fun(err: any))
+---@return HollowPromise<any>
+function async.promise(register) end
+
+---@param spec HollowWorkspaceBootstrapSpec
+---@param opts? { base_dir?: string, name?: string, replace_current?: boolean }
+---@return HollowWorkspaceSnapshot|nil
+function workspace_api.bootstrap(spec, opts) end
+
+---@param path string
+---@return HollowWorkspaceBootstrapSpec
+function workspace_api.load(path) end
+
+---@param path string
+---@param opts? { base_dir?: string, name?: string, replace_current?: boolean }
+---@return HollowWorkspaceSnapshot|nil
+function workspace_api.load_and_bootstrap(path, opts) end
+
+---@return HollowWorkspaceBootstrapSpec
+function workspace_api.export_current() end
+
+---@param path string
+---@return string
+function workspace_api.export_to(path) end
+
+---@param dir? string
+---@return string|nil
+function workspace_api.project_local_path(dir) end
+
+---@return string|nil
+function workspace_api.resolve_auto_bootstrap_path() end
+
+---@return boolean
+function workspace_api.auto_bootstrap() end
+
+---@class HollowTermNamespace
+local term = {}
+
+---@return HollowTabSnapshot|nil
+function term.current_tab() end
+
+---@return HollowPaneSnapshot|nil
+function term.current_pane() end
+
+---@param id integer
+---@return HollowPaneSnapshot|nil
+function term.pane_by_id(id) end
+
+---@return HollowTabSnapshot[]
+function term.tabs() end
+
+---@return HollowWorkspaceSnapshot[]
+function term.workspaces() end
+
+---@return HollowWorkspaceSnapshot|nil
+function term.current_workspace() end
+
+---@param id integer
+---@return HollowWorkspaceSnapshot|nil
+function term.workspace_by_id(id) end
+
+---@return HollowDomainSnapshot|nil
+function term.current_domain() end
+
+---@param id integer
+---@return HollowTabSnapshot|nil
+function term.tab_by_id(id) end
+
+---@param opts? HollowNewTabOpts
+function term.new_tab(opts) end
+
+---@param args string[]
+---@param domain? string
+---@param opts? HollowProcessRunOpts
+---@return boolean, string, string
+function term.run_domain_process(args, domain, opts) end
+
+---@param direction? "horizontal"|"vertical"|HollowSplitPaneOpts
+---@param opts? HollowSplitPaneOpts
+function term.split_pane(direction, opts) end
+
+---@param id integer
+function term.focus_tab(id) end
+
+---@param id integer
+function term.close_tab(id) end
+
+function term.next_tab() end
+
+function term.prev_tab() end
+
+---@param title string
+---@param tab_id? integer
+function term.set_title(title, tab_id) end
+
+---@param combo string  e.g. "<C-h>", "<C-A-Left>", "home"
+---@param pane_id? integer
+function term.send_key(combo, pane_id) end
+
+---@param text string
+---@param pane_id? integer
+function term.send_text(text, pane_id) end
+
+---@param pane_id? integer
+---@return string
+function term.get_pane_text(pane_id) end
+
+---@param pane_id? integer
+---@return string[]
+function term.get_pane_tags(pane_id) end
+
+---@param tags? string[]
+---@param pane_id? integer
+function term.set_pane_tags(tags, pane_id) end
+
+---@param tag string
+---@param pane_id? integer
+function term.add_pane_tag(tag, pane_id) end
+
+---@param tag string
+---@param pane_id? integer
+function term.remove_pane_tag(tag, pane_id) end
+
+---@param pane_id integer|nil
+---@param process string|nil
+function term.set_pane_foreground_process(pane_id, process) end
+
+---@param pane_id? integer|HollowPaneMaximizeOpts
+---@param opts? HollowPaneMaximizeOpts
+function term.toggle_pane_maximized(pane_id, opts) end
+
+---@param pane_id integer|{ pane_id?: integer, id?: integer, floating?: boolean }
+---@param floating? boolean
+function term.set_pane_floating(pane_id, floating) end
+
+---@param pane_id integer
+---@param opts HollowFloatingPaneBounds
+function term.set_floating_pane_bounds(pane_id, opts) end
+
+---@param direction_or_opts "left"|"right"|"up"|"down"|HollowMovePaneOpts
+---@param opts? HollowMovePaneOpts
+function term.move_pane(direction_or_opts, opts) end
+
+---@param pane_id? integer
+function term.close_pane(pane_id) end
+
+---@param direction string
+function term.focus_pane(direction) end
+
+---@param pane_id integer
+function term.focus_pane_by_id(pane_id) end
+
+---@param axis_or_direction string
+---@param delta number
+function term.resize_pane(axis_or_direction, delta) end
+
+---@param name string
+function term.set_workspace_name(name) end
+
+---@param cwd string
+function term.set_workspace_default_cwd(cwd) end
+
+---@param opts? { cwd?: string, domain?: string, command?: string, name?: string }
+function term.new_workspace(opts) end
+
+---@param id? integer
+function term.close_workspace(id) end
+
+function term.next_workspace() end
+
+function term.prev_workspace() end
+
+---@param index integer
+function term.switch_workspace(index) end
+
+function term.reload_config() end
+
+---@param where string
+function term.scroll(where) end
+
+---@param name string
+function term.set_theme(name) end
+
+---@class HollowEventsNamespace
+local events = {}
+
+---@param name HollowEventName
+---@param handler fun(e: HollowEventPayloadMap[name])
+---@return HollowEventHandle
+function events.on(name, handler) end
+
+---@param handle HollowEventHandle
+function events.off(handle) end
+
+---@param name HollowEventName
+---@param handler fun(e: HollowEventPayloadMap[name])
+function events.once(name, handler) end
+
+---@param name string
+---@param payload? any
+function events.emit(name, payload) end
+
+---@alias HollowKeyAction string|fun()
+
+---@class HollowKeymapOpts
+---@field desc? string
+---@field timeout_ms? integer
+---@field mode? HollowKeyMode
+
+---@class HollowKeymapValue
+---@field action HollowKeyAction
+---@field desc? string
+
+---@class HollowLeaderState
+---@field active boolean
+---@field mode HollowKeyMode
+---@field prefix string
+---@field sequence string[]
+---@field display string
+---@field next string[]
+---@field next_display string[]
+---@field desc? string
+---@field remaining_ms integer
+---@field timeout_ms integer
+---@field complete boolean
+
+---@class HollowKeymapBindingInfo
+---@field action any
+---@field chord string
+---@field desc string|nil
+---@field mode HollowKeyMode
+
+---@class HollowKeymapNamespace
+local keymap = {}
+
+---@param chord HollowKeyChord
+---@param rhs HollowKeyAction
+---@param opts? HollowKeymapOpts
+function keymap.set(chord, rhs, opts) end
+
+---@param chord HollowKeyChord
+---@param opts? HollowKeymapOpts
+---@return boolean
+function keymap.del(chord, opts) end
+
+---@param chord HollowKeyChord
+---@param opts? HollowKeymapOpts
+---@return HollowKeyAction|nil
+function keymap.get(chord, opts) end
+
+---@param chord? HollowKeyChord
+---@param opts? HollowKeymapOpts
+function keymap.set_leader(chord, opts) end
+
+function keymap.clear_leader() end
+
+---@return boolean
+function keymap.is_leader_active() end
+
+---@return HollowLeaderState|nil
+function keymap.get_leader_state() end
+
+---@param mode? HollowKeyMode
+---@return HollowKeymapBindingInfo[]
+function keymap.list_bindings(mode) end
+
+---@param action_name string
+---@param mode? HollowKeyMode
+---@return string[]
+function keymap.find_by_action(action_name, mode) end
+
+---@param mods integer
+---@return string
+function keymap.format_mods(mods) end
+
+---@param key string
+---@param mods integer
+---@return string
+function keymap.format_chord(key, mods) end
+
+---@param chord string
+---@return string, integer
+function keymap.parse_chord(chord) end
+
+---@class HollowUiBarNamespace
+local bar = {}
+
+---@param opts? HollowUiBarTabsOptions
+---@return HollowUiBarTabsNode
+function bar.tabs(opts) end
+
+---@param opts? HollowUiBarWorkspaceOptions
+---@return HollowUiBarWorkspaceNode
+function bar.workspace(opts) end
+
+---@param fmt string
+---@param opts? HollowUiBarTimeOptions
+---@return HollowUiBarTimeNode
+function bar.time(fmt, opts) end
+
+---@param opts? HollowUiBarKeyLegendOptions
+---@return HollowUiBarKeyLegendNode
+function bar.key_legend(opts) end
+
+---@param opts HollowUiBarCustomOptions
+---@return HollowUiBarCustomNode
+function bar.custom(opts) end
+
+---@class HollowUiWidgetSurfaceNamespace
+local topbar = {}
+
+---@param opts HollowUiTopbarOptions
+---@return HollowWidget
+function topbar.new(opts) end
+
+---@param widget HollowWidget
+function topbar.mount(widget) end
+
+function topbar.unmount() end
+
+---@return boolean
+function topbar.invalidate() end
+
+---@param opts? HollowUiTopbarConfigureOptions
+function topbar.configure(opts) end
+
+---@alias HollowUiTopbarNamespace HollowUiWidgetSurfaceNamespace
+
+---@class HollowUiBottombarNamespace
+local bottombar = {}
+
+---@param opts HollowUiBottombarOptions
+---@return HollowWidget
+function bottombar.new(opts) end
+
+---@param widget HollowWidget
+function bottombar.mount(widget) end
+
+function bottombar.unmount() end
+
+---@return boolean
+function bottombar.invalidate() end
+
+---@class HollowUiSidebarNamespace
+local sidebar = {}
+
+---@param opts HollowUiSidebarOptions
+---@return HollowWidget
+function sidebar.new(opts) end
+
+---@param widget HollowWidget
+function sidebar.mount(widget) end
+
+function sidebar.unmount() end
+
+---@return boolean
+function sidebar.toggle() end
+
+---@return boolean
+function sidebar.invalidate() end
+
+---@class HollowUiOverlayNamespace
+local overlay = {}
+
+---@param opts HollowUiOverlayOptions
+---@return HollowWidget
+function overlay.new(opts) end
+
+---@param widget HollowWidget
+function overlay.push(widget) end
+
+function overlay.pop() end
+
+function overlay.clear() end
+
+---@return integer
+function overlay.depth() end
+
+---@class HollowUiNotifyNamespace
+local notify = {}
+
+---@param message string
+---@param opts? HollowUiNotifyOptions
+function notify.show(message, opts) end
+
+function notify.clear() end
+
+---@param message string
+---@param opts? HollowUiNotifyOptions
+function notify.info(message, opts) end
+
+---@param message string
+---@param opts? HollowUiNotifyOptions
+function notify.warn(message, opts) end
+
+---@param message string
+---@param opts? HollowUiNotifyOptions
+function notify.error(message, opts) end
+
+---@class HollowUiInputNamespace
+local input = {}
+
+---@param opts HollowUiInputOptions
+function input.open(opts) end
+
+function input.close() end
+
+---@class HollowUiConfirmNamespace
+local confirm = {}
+
+---@param opts HollowUiConfirmOptions
+function confirm.open(opts) end
+
+function confirm.close() end
+
+---@class HollowUiCommandPaletteNamespace
+local command_palette = {}
+
+---@param opts? HollowUiCommandPaletteOptions
+function command_palette.open(opts) end
+
+function command_palette.close() end
+
+---@class HollowUiSelectNamespace
+local select = {}
+
+---@param opts HollowUiSelectOptions
+function select.open(opts) end
+
+function select.close() end
+
+---@class HollowUiWorkspaceItem
+---@field id string
+---@field workspace_id? integer
+---@field name string
+---@field cwd? string
+---@field domain? string
+---@field source "open"|"user"
+---@field is_active boolean
+---@field is_open boolean
+---@field open_index? integer
+---@field open_index? integer Used only for switching to an already-open workspace
+---@field last_opened_at? integer
+
+---@class HollowUiWorkspaceSource
+---@field resolver? "local"|"wsl"|"ssh"
+---@field name? string
+---@field domain? string
+---@field roots? string[]
+---@field items? fun(): HollowUiWorkspaceItem[]|table[]|nil
+---@field cwd_resolver? "wsl_unc"|fun(cwd: string, item: HollowUiWorkspaceItem, source: HollowUiWorkspaceSource): string|nil
+---@field default? boolean
+
+---@class HollowUiWorkspaceSwitcherOptions
+---@field prompt? string
+---@field width? integer
+---@field height? integer
+---@field max_height? integer
+---@field backdrop? HollowOverlayBackdropValue
+---@field chrome? HollowUiChrome|boolean
+---@field theme? HollowUiTheme
+---@field known_workspaces? fun(): HollowUiWorkspaceItem[]|table[]|nil
+---@field sources? HollowUiWorkspaceSource[]|fun(): HollowUiWorkspaceSource[]|nil
+---@field format_item? fun(workspace: HollowUiWorkspaceItem): HollowUiInlineNode|HollowUiInlineNode[]
+---@field filter_item? fun(workspace: HollowUiWorkspaceItem): boolean|nil
+---@field cache_ttl_ms? integer
+---@field force_refresh? boolean
+---@field project_roots? string[]
+---@field status_column_width? integer
+---@field name_column_width? integer
+---@field column_gap? integer
+---@field rename_key? string
+---@field rename_desc? string
+---@field close_key? string
+---@field close_desc? string
+---@field create_key? string
+---@field create_desc? string
+
+---@class HollowUiWorkspaceNamespace
+---@field configure fun(opts?: HollowUiWorkspaceSwitcherOptions)
+---@field clear_cache fun()
+---@field known_workspaces fun(force_refresh?: boolean): HollowUiWorkspaceItem[]
+---@field items fun(force_refresh?: boolean): HollowUiWorkspaceItem[]
+---@field open_switcher fun(opts?: HollowUiWorkspaceSwitcherOptions)
+---@field switcher fun(opts?: HollowUiWorkspaceSwitcherOptions)
+---@field topbar_button fun(opts?: { id?: string, text?: string, prefix?: string, suffix?: string, style?: HollowUiNodeStyle, switcher?: HollowUiWorkspaceSwitcherOptions, colorize?: boolean }): HollowUiSpanNode|HollowUiSpanNode[]
+---@field create fun(opts?: { prompt?: string, on_confirm?: fun(name: string) })
+---@field rename fun(workspace?: HollowWorkspaceSnapshot|HollowUiWorkspaceItem, opts?: { prompt?: string, on_confirm?: fun(name: string, workspace: any) })
+---@field close fun(workspace?: HollowWorkspaceSnapshot|HollowUiWorkspaceItem)
+local workspace = {}
+
+---@class HollowUi
+local ui = {}
+
+---@class HollowUiOverlayRowNamespace
+---@field make fun(nodes:HollowUiRenderableNode[]|nil, opts:HollowUiOverlayRowOptions|nil):HollowUiOverlayRow
+---@field nodes fun(row:HollowUiRow):HollowUiRenderableNode[]
+
+---@alias HollowUiTagBuilder fun(props:HollowUiTagProps|HollowUiInlineNode|string|number|nil, ...:any):any
+
+---@class HollowUiTags
+---@field overlay_row fun(props:HollowUiTagProps|nil, ...:any):HollowUiOverlayRow
+---@field divider fun(props:HollowUiTagProps|nil):HollowUiOverlayRow
+---@field text HollowUiTagBuilder
+---@field span HollowUiTagBuilder
+---@field group HollowUiTagBuilder
+---@field row HollowUiTagBuilder
+---@field rows HollowUiTagBuilder
+---@field icon HollowUiTagBuilder
+---@field spacer HollowUiTagBuilder
+---@field button HollowUiTagBuilder
+
+---@param text string
+---@param style? HollowUiNodeStyle|HollowHexColor
+---@return HollowUiSpanNode
+function ui.span(text, style) end
+
+---@param value HollowUiInlineNode
+---@param style? HollowUiNodeStyle|HollowHexColor
+---@return HollowUiRenderableNode
+function ui.text(value, style) end
+
+---@param ... HollowUiInlineNode|HollowUiInlineNode[]
+---@return HollowUiRenderableNode[]
+function ui.row(...) end
+
+---@param ... any
+---@return HollowUiRows
+function ui.rows(...) end
+
+---@type HollowUiTags
+ui.tags = {}
+
+---@return HollowUiSpacerNode
+function ui.spacer() end
+
+---@param name string
+---@param style? HollowUiNodeStyle|HollowHexColor
+---@return HollowUiIconNode
+function ui.icon(name, style) end
+
+---@param children HollowUiRenderableNode[]
+---@param style? HollowUiNodeStyle|HollowHexColor
+---@return HollowUiGroupNode
+function ui.group(children, style) end
+
+---@param opts HollowUiButtonOptions
+---@return HollowUiSpanNode
+function ui.button(opts) end
+
+---@type HollowUiOverlayRowNamespace
+ui.overlay_row = {}
+
+ui.bar = bar
+ui.topbar = topbar
+ui.bottombar = bottombar
+ui.sidebar = sidebar
+ui.overlay = overlay
+ui.notify = notify
+ui.input = input
+ui.command_palette = command_palette
+ui.select = select
+ui.confirm = confirm
+ui.workspace = workspace
+
+---@field new_widget fun(kind:string, opts:HollowUiWidgetOptions):HollowUiWidget
+---@field close_overlay_widget fun(widget:HollowUiWidget):HollowUiWidget|nil
+---@field dispatch_widget_event fun(name:string, payload:HollowUiNodeEventPayload)
+---@field dispatch_overlay_key fun(key:string, mods:HollowUiKeyMods):boolean
+---@field trim_row_for_width fun(row:HollowUiRow, max_chars:number|nil):HollowUiSegment[]
+---@field handle_bar_node_event fun(kind:string, payload:HollowUiBarNodePayload|any)
+---@field resolve_theme fun():HollowResolvedTheme
+---@field resolve_theme fun(kind:string):HollowUiTheme
+---@field _overlay_state fun():HollowUiOverlaySerializedWidget[]|nil
+---@field _topbar_state fun():((HollowUiSegment|HollowUiTabsLayout|{kind:"spacer"})[])|nil
+---@field _bottombar_state fun():((HollowUiSegment|HollowUiTabsLayout|{kind:"spacer"})[])|nil
+---@field _bottombar_layout fun():{height:integer}|nil
+---@field _sidebar_state fun():HollowUiSidebarState|nil
+
+---@class HollowHtpNamespace
+local htp = {}
+
+---@param channel string
+---@param handler fun(ctx: HtpQueryContext): HollowHtpValue
+function htp.on_query(channel, handler) end
+
+---@param channel string
+---@param handler fun(ctx: HtpEmitContext)
+function htp.on_emit(channel, handler) end
+
+---@param channel string
+function htp.off_query(channel) end
+
+---@param channel string
+function htp.off_emit(channel) end
+
+---@class HollowProcessNamespace
+local process = {}
+
+---@param opts HollowProcessOpts
+---@return HollowProcess
+function process.spawn(opts) end
+
+---@param opts HollowProcessOpts
+---@return HollowExecResult
+function process.exec(opts) end
+
+---@param args string[]
+---@param opts? HollowProcessRunOpts
+---@return boolean, string, string
+function process.run_child_process(args, opts) end
+
+---@param cmd string
+---@param args? string[]
+---@return HollowProcessRunResult
+function process.run(cmd, args) end
+
+---@class HollowFsNamespace
+local fs = {}
+
+---@return string
+function fs.data_dir() end
+
+---@param pattern string
+---@return string[]
+function fs.glob(pattern) end
+
+---@param path string
+---@return boolean
+function fs.is_dir(path) end
+
+---@param path string
+function fs.mkdir_p(path) end
+
+---@class HollowPluginsNamespace
+local plugins = {}
+
+---@param config { plugins?: (string|{[1]: string, opts?: table})[] }|nil
+function plugins.setup(config) end
+
+function plugins.sync() end
+
+---@class HollowPlatformInfo
+---@field os string
+---@field is_windows boolean
+---@field is_linux boolean
+---@field is_macos boolean
+---@field default_shell string
+
+---@class HollowHostBridge
+---@field set_config fun(opts: table)
+---@field list_fonts fun(): HollowFontInfo[]
+---@field new_tab fun(opts?: table)
+---@field close_tab fun()
+---@field switch_tab fun(index: integer)
+---@field new_workspace fun(opts?: { cwd?: string })
+---@field defer fun(handler: fun(), timeout_ms?: integer)
+---@field schedule fun(handler: fun())
+---@field close_workspace fun()
+---@field next_workspace fun()
+---@field prev_workspace fun()
+---@field switch_workspace fun(index: integer)
+---@field set_workspace_name fun(name: string)
+---@field set_workspace_default_cwd fun(cwd: string)
+---@field get_workspace_name fun(index: integer): string
+---@field get_workspace_count fun(): integer
+---@field get_active_workspace_index fun(): integer
+---@field set_tab_title fun(title: string)
+---@field send_text fun(text: string)
+---@field on_gui_ready fun(handler: fun())
+---@field switch_tab_by_id fun(tab_id: integer): boolean
+---@field close_tab_by_id fun(tab_id: integer): boolean
+---@field close_pane_by_id fun(pane_id: integer): boolean
+---@field set_tab_title_by_id fun(tab_id: integer, title: string): boolean
+---@field send_text_to_pane fun(pane_id: integer, text: string): boolean
+---@field get_pane_domain fun(pane_id: integer): string
+---@field get_window_width fun(): integer
+---@field get_window_height fun(): integer
+---@field now_ms fun(): integer
+---@field pane_exists fun(pane_id: integer): boolean
+---@field get_pane_pid fun(pane_id: integer): integer
+---@field get_pane_cwd fun(pane_id: integer): string
+---@field get_pane_title fun(pane_id: integer): string
+---@field pane_is_focused fun(pane_id: integer): boolean
+---@field get_pane_rows fun(pane_id: integer): integer
+---@field get_pane_cols fun(pane_id: integer): integer
+---@field get_pane_x fun(pane_id: integer): integer
+---@field get_pane_y fun(pane_id: integer): integer
+---@field get_pane_width fun(pane_id: integer): integer
+---@field get_pane_height fun(pane_id: integer): integer
+---@field pane_is_floating fun(pane_id: integer): boolean
+---@field pane_is_maximized fun(pane_id: integer): boolean
+---@field pane_has_bell fun(pane_id: integer): boolean
+---@field get_tab_pane_count fun(tab_id: integer): integer
+---@field get_tab_pane_id_at fun(tab_id: integer, index: integer): integer
+---@field get_tab_active_pane_id fun(tab_id: integer): integer
+---@field current_tab_id fun(): integer|nil
+---@field get_tab_index_by_id fun(tab_id: integer): integer|nil
+---@field get_tab_count fun(): integer
+---@field get_tab_id_at fun(index: integer): integer|nil
+---@field current_pane_id fun(): integer|nil
+---@field reload_config fun(): boolean
+---@field strftime fun(fmt: string): string
+---@field read_dir fun(path: string): string[]
+---@field data_dir fun(): string
+---@field glob fun(pattern: string): string[]
+---@field is_dir fun(path: string): boolean
+---@field mkdir_p fun(path: string)
+---@field read_file fun(path: string): string
+---@field write_file fun(path: string, contents: string): boolean
+---@field path_exists fun(path: string): boolean
+---@field list_wsl_distros fun(): string[]
+---@field run_child_process fun(args: string[], opts?: HollowProcessRunOpts): boolean, string, string
+---@field run_process fun(cmd: string, args?: string[]): HollowProcessRunResult
+---@field default_config_path fun(): string|nil
+---@field json_encode fun(value: any): string
+
+---@field json_decode fun(text: string): any
+---@field on_key fun(handler: fun(key: string, mods: integer): boolean)
+---@field split_pane fun(opts_or_direction: HollowSplitPaneOpts|string, ratio?: number, domain?: string)
+---@field toggle_pane_maximized fun(pane_id?: integer, show_background?: boolean)
+---@field set_pane_floating fun(pane_id?: integer, floating?: boolean)
+---@field set_floating_pane_bounds fun(pane_id?: integer, x?: number, y?: number, width?: number, height?: number)
+---@field move_pane fun(pane_id?: integer, direction: string, amount?: number)
+---@field close_pane fun()
+---@field focus_pane fun(direction: string)
+---@field focus_pane_by_id fun(pane_id: integer): boolean
+---@field resize_pane fun(axis: string, delta: number)
+---@field copy_selection fun()
+---@field paste_clipboard fun()
+---@field scroll_active fun(delta: integer)
+---@field scroll_active_page fun(pages: integer)
+---@field scroll_active_top fun()
+---@field scroll_active_bottom fun()
+---@field prompt_jump fun(direction: "prev"|"next")
+---@field set_bar_cache_state fun(surface: string, dirty: boolean, expires_at_ms: integer, visible: boolean)
+---@field copy_mode_enter fun()
+---@field copy_mode_exit fun()
+---@field copy_mode_move fun(direction: "left"|"right"|"up"|"down"|"page_up"|"page_down"|"line_start"|"line_end"|"top"|"bottom", extend?: boolean)
+---@field copy_mode_begin_selection fun(block?: boolean)
+---@field copy_mode_clear_selection fun()
+---@field copy_mode_copy fun()
+---@field copy_mode_open_search fun()
+---@field copy_mode_search_set_query fun(query: string)
+---@field copy_mode_search_next fun()
+---@field copy_mode_search_prev fun()
+---@field platform HollowPlatformInfo
+
+---@class HollowUiModuleExports
+---@field dispatch_widget_event fun(name:string, payload:HollowUiNodeEventPayload)
+---@field dispatch_overlay_key fun(key:string, mods:HollowUiKeyMods):boolean
+---@field handle_bar_node_event fun(kind:string, payload:HollowUiBarNodePayload|any)
+
+---@class Hollow
+---@field action HollowActionNamespace
+---@field config HollowConfigNamespace
+---@field fonts HollowFontsNamespace
+---@field json HollowJsonNamespace
+---@field term HollowTermNamespace
+---@field workspace HollowWorkspaceNamespace
+---@field async HollowAsyncNamespace
+---@field events HollowEventsNamespace
+---@field keymap HollowKeymapNamespace
+---@field ui HollowUi
+---@field htp HollowHtpNamespace
+---@field fs HollowFsNamespace
+---@field process HollowProcessNamespace
+---@field plugins HollowPluginsNamespace
+---@field platform HollowPlatformInfo
+---@field on_gui_ready fun(handler: fun())
+---@field log fun(...: any)
+---@field inspect fun(value: any): string
+---@field read_dir fun(path: string): string[]
+---@field schedule fun(handler: fun())
+---@field defer fun(handler: fun(), timeout_ms?: integer)
+---@field color HollowColorModule
+---@field util HollowUtilNamespace
+---@field theme HollowThemeNamespace
+---@field tbl HollowTblModule
+
+---@type Hollow
+hollow = {}
+
+hollow.config = config
+hollow.fonts = {}
+hollow.json = json
+hollow.term = term
+hollow.workspace = workspace_api
+hollow.events = events
+hollow.keymap = keymap
+hollow.color = color
+hollow.ui = ui
+hollow.htp = htp
+hollow.fs = fs
+hollow.process = process
+hollow.plugins = plugins
+
+---@type HollowPlatformInfo
+hollow.platform = {
+  os = "",
+  is_windows = false,
+  is_linux = false,
+  is_macos = false,
+  default_shell = "",
+}
+
+---@class HollowColorModule
+---@field is_hex_color fun(value:string): boolean
+---@field normalize_hex_color fun(value:string, fallback:string|nil): string|nil
+---@field adjust_hex_color fun(value:string, amount:number|string, fallback:string|nil): string|nil
+---@field brighten_hex_color fun(value:string, amount:number|string, fallback:string|nil): string|nil
+---@field darken_hex_color fun(value:string, amount:number|string, fallback:string|nil): string|nil
+---@field contrast_hex_color fun(value:string, amount:number|string, fallback:string|nil): string|nil
+---@field hex_from_hsl fun(h:number, s:number, l:number): string
+---@field hex_luminance fun(hex:string): number
+
+---@class HollowUtilNamespace
+---@field clone_value fun(value:any, seen:table|nil): any
+---@field merge_tables fun(dst:table, src:table): table
+---@field unsupported fun(name:string)
+---@field host_now_ms fun(host_api:table|nil): integer
+---@field path_separator fun(path:string|nil): string
+---@field normalize_path fun(path:string, separator:string|nil): string|nil
+---@field join_path fun(...:string): string
+---@field basepath fun(path:string): string|nil
+---@field basename fun(path:string): string|nil
+---@field has_any_key fun(t:table, keys:table): boolean
+
+---@class HollowTbl
+---@field get fun(self): table
+---@field done fun(self): table
+---@field totable fun(self): table
+---@field each fun(self, fn:fun(v:any, i:integer, t:table)): HollowTbl
+---@field map fun(self, fn:fun(v:any, i:integer, t:table):any): HollowTbl
+---@field filter fun(self, fn:fun(v:any, i:integer, t:table):boolean): HollowTbl
+---@field filter_map fun(self, fn:fun(v:any, i:integer, t:table):any|nil): HollowTbl
+---@field take fun(self, n:integer): HollowTbl
+---@field skip fun(self, n:integer): HollowTbl
+---@field flatten fun(self): HollowTbl
+---@field flat_map fun(self, fn:fun(v:any, i:integer, t:table):table|any): HollowTbl
+---@field reduce fun(self, fn:fun(acc:any, v:any, i:integer, t:table):any, initial:any|nil): any
+---@field some fun(self, fn:fun(v:any, i:integer, t:table):boolean): boolean
+---@field every fun(self, fn:fun(v:any, i:integer, t:table):boolean): boolean
+---@field find fun(self, fn:fun(v:any, i:integer, t:table):boolean): any, integer|nil
+---@field first fun(self): any|nil
+---@field last fun(self): any|nil
+---@field len fun(self): integer
+---@field count fun(self, fn?:fun(v:any):boolean): integer
+---@field nth fun(self, n:integer): any|nil
+---@field sort fun(self, fn?:fun(a:any, b:any):boolean): HollowTbl
+---@field reverse fun(self): HollowTbl
+---@field uniq fun(self, fn?:fun(v:any):any): HollowTbl
+---@field concat fun(self, ...:table|any): HollowTbl
+---@field join fun(self, sep?:string): string
+---@field group_by fun(self, fn:fun(v:any):any): table
+---@field chunk fun(self, n:integer): HollowTbl
+---@field entries fun(self): table
+---@field map_entries fun(self, fn:fun(k:any, v:any):any, any): table
+---@field pick fun(self, ...:any): table
+---@field omit fun(self, ...:any): table
+
+---@class HollowTblModule
+---@field range fun(start:integer, stop:integer, step?:integer): HollowTbl
+---@field new fun(t:table|nil): HollowTbl
+---@overload fun(t: table|nil): HollowTbl
+
+---@type HollowTblModule
+hollow.tbl = {}
+
+hollow.util = {}
+
+return hollow

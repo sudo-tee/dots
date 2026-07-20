@@ -15,4 +15,6 @@
     - ./Taskfile app -p winhome wincompose
     - ./Taskfile app -p winhome font
     - ./Taskfile app -p winhome wezterm
+    - ./Taskfile install
+    - ./Taskfile app -p winhome hollow
     - ./Taskfile app -p winhome win32Yank
