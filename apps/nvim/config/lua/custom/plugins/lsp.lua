@@ -97,14 +97,15 @@ return {
         emmylua_ls = require('custom.plugins.lsp.servers.emmylua_ls'),
         graphql = require('custom.plugins.lsp.servers.graphql'),
         jsonls = require('custom.plugins.lsp.servers.jsonls'),
-        -- cssls = {},
+        cssls = {},
         bashls = {},
         marksman = {},
+        -- cssmodules_ls = {},
         -- oxlint = require('custom.plugins.lsp.servers.oxlint'),
       }
 
       for server_name, config in pairs(servers) do
-        if server_name ~= 'emmylua_ls' then
+        if server_name ~= 'emmylua_ls' and server_name ~= 'cssls' then
           require('lspconfig')[server_name].setup(config)
         end
         vim.lsp.config(server_name, config)
