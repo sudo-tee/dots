@@ -22,6 +22,7 @@ M.setup = function()
         local lazy_updates = MiniStatusline.updates()
         local location = MiniStatusline.section_location({ trunc_width = 75 })
         local copilot_status = MiniStatusline.copilot_status()
+        local cost = vim.g.databricks_cost or require('custom.lib.databricks').get_cost()
 
         local groups = {
           { hl = 'MiniStatuslineCustomRecordingStatus', strings = { macro } },
@@ -35,6 +36,7 @@ M.setup = function()
           '%=', -- End left alignment
           { hl = 'MiniStatuslineCustomUpdatesStatus', strings = { lazy_updates } },
           { hl = 'MiniStatuslineCopilot' .. copilot_status, strings = { '' } },
+          { hl = 'MiniStatuslineCopilot', strings = { cost } },
           { hl = 'MiniStatuslineFileinfo', strings = { lsp, fileinfo } },
           { hl = mode_hl, strings = { location } },
         }
