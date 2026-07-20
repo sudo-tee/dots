@@ -95,6 +95,12 @@ vim.opt.virtualedit = 'block'
 -- Dont show the default intro message
 vim.opt.shortmess:append('I')
 
+-- Wrap arrow keys
+vim.opt.whichwrap:append('<,>,[,]')
+
+-- Add characters to set used to identify words
+vim.opt.iskeyword:append({ '-' })
+
 -- set exrc to enable local .nvim.lua files
 vim.opt.exrc = true
 
