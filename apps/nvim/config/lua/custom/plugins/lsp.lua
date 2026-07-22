@@ -8,11 +8,6 @@ return {
       'mason-org/mason.nvim',
       'mason-org/mason-lspconfig.nvim',
       'WhoIsSethDaniel/mason-tool-installer.nvim',
-      {
-        'yioneko/nvim-vtsls',
-        handlers = {},
-        refactor_auto_rename = true,
-      },
       'b0o/schemastore.nvim',
     },
     opts = {
@@ -91,7 +86,7 @@ return {
         -- clangd = {},
         -- gopls = {},
         -- pyright = {},
-        vtsls = require('custom.plugins.lsp.servers.vtsls'),
+        tsgo = require('custom.plugins.lsp.servers.tsgo'),
         eslint = require('custom.plugins.lsp.servers.eslint'),
         -- lua_ls = require('custom.plugins.lsp.servers.luals'),
         emmylua_ls = require('custom.plugins.lsp.servers.emmylua_ls'),
