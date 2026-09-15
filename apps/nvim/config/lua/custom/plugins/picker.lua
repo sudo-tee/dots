@@ -132,7 +132,6 @@ return {
     { '<leader>ss', pick("pickers"),                        desc = 'Pickers' },
     { '<leader>sr', pick("registers"),                      desc = 'Registers' },
     { '<leader>sn', pick("notifications"),                  desc = 'Notifications' },
-    { '<leader>sN', pick("noice"),                          desc = 'Noice' },
     { '<leader>sz', pick("zoxide"),                         desc = 'zoxide' },
     { '<leader>e',  pick("explorer"),                       desc = 'Explorer' },
 
@@ -273,9 +272,6 @@ return {
                   wrap = true,
                 },
               },
-            },
-            noice = {
-              layout = 'horizontal',
             },
             profiler = {
               layout = 'horizontal',
