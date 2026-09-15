@@ -1,10 +1,10 @@
 return {
+  enabled = false,
   lazy = false,
   dependencies = {
     'folke/snacks.nvim',
   },
   'folke/sidekick.nvim',
-  enabled = true,
   keys = {
     {
       '<tab>',
