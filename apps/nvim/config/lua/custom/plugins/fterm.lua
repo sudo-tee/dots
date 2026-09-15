@@ -19,7 +19,7 @@ return {
       local terminal
       terminal = require('FTerm'):new({
         cmd = 'source ~/.zshrc && ' .. expanded_args,
-        auto_close = true,
+        auto_close = false,
         on_exit = function(_, exit_code)
           if exit_code ~= 0 and (not terminal.win or not vim.api.nvim_win_is_valid(terminal.win)) then
             vim.schedule(function()
