@@ -82,7 +82,14 @@ return {
       default = { 'lsp', 'path', 'snippets', 'buffer' },
     },
     cmdline = {
-      enabled = false,
+      enabled = true,
+      keymap = { preset = 'enter', ['<Tab>'] = { 'show' } },
+      completion = {
+        menu = { auto_show = false },
+        list = {
+          selection = {},
+        },
+      },
     },
   },
   opts_extend = { 'sources.default' },
