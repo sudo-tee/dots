@@ -40,10 +40,11 @@ zsh-defer source ~/.local/share/zap/plugins/zsh-syntax-highlighting/zsh-syntax-h
 
 
 plug "zsh-users/zsh-history-substring-search"
-bindkey '^[[A' history-substring-search-up
-bindkey '^[OA' history-substring-search-up
-bindkey '^[[B' history-substring-search-down
-bindkey '^[OB' history-substring-search-down
+bindkey '^[[A' history-substring-search-up # Up arrow (normal mode): filter history with typed prefix
+bindkey '^[OA' history-substring-search-up # Up arrow (application mode): same
+bindkey '^[[B' history-substring-search-down # Down arrow (normal mode): filter history with typed prefix
+bindkey '^[OB' history-substring-search-down # Down arrow (application mode): same
+
 
 
 
@@ -54,6 +55,8 @@ path=(
  /usr/local/bin
  ~/.cargo/bin
  /mnt/c/Windows/System32/WindowsPowerShell/v1.0
+ /mnt/c/Windows/System32
+ /mnt/c/Windows
  $path
 )
 
@@ -66,6 +69,7 @@ export TERM='xterm-256color'
 # export TERM='wezterm'
 export EDITOR='nvim'
 export VISUAL='nvim'
+export GPG_TTY=$(tty)
 
 export USERPROFILE="/mnt/c/Users/fbelanger"
 
@@ -83,5 +87,4 @@ done
  if [ -n "${ZSH_PROFILE_STARTUP:+x}" ]; then
   zprof
  fi
-
 
