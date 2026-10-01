@@ -6,17 +6,25 @@ local git = lazy_require('custom.lib.git')
 
 local cmd = vim.api.nvim_create_user_command
 
-vim.cmd('command! Gc  :Sh git commit')
-vim.cmd('command! Grc :Sh GIT_EDITOR=true git rebase --continue')
-vim.cmd('command! Gca :Sh git commit --amend')
-vim.cmd('command! Gan :Sh git commit --amend --no-edit')
-vim.cmd('command! Gaf :Sh git commit --amend --no-edit && git push --force-with-lease')
-vim.cmd('command! Gp  :Sh git push')
-vim.cmd('command! Gpl :Sh git push --force-with-lease')
-vim.cmd('command! Gpr :Sh git pull --rebase')
-vim.cmd('command! Grim :Sh git rim')
-vim.cmd('command! Grbm :Sh git rbm')
-vim.cmd('command! -nargs=?  Gri :Sh git rebase -i <args>')
+cmd('GitRun', function(args)
+  if args.args == '' then
+    require('custom.lib.git_term').toggle()
+  else
+    require('custom.lib.git_term').run(vim.fn.expandcmd(args.args))
+  end
+end, { nargs = '*', desc = 'Run git command in floating terminal (no args: toggle last)' })
+
+vim.cmd('command! Gc  :GitRun git commit')
+vim.cmd('command! Grc :GitRun GIT_EDITOR=true git rebase --continue')
+vim.cmd('command! Gca :GitRun git commit --amend')
+vim.cmd('command! Gan :GitRun git commit --amend --no-edit')
+vim.cmd('command! Gaf :GitRun git commit --amend --no-edit && git push --force-with-lease')
+vim.cmd('command! Gp  :GitRun git push')
+vim.cmd('command! Gpl :GitRun git push --force-with-lease')
+vim.cmd('command! Gpr :GitRun git pull --rebase')
+vim.cmd('command! Grim :GitRun git rim')
+vim.cmd('command! Grbm :GitRun git rbm')
+vim.cmd('command! -nargs=?  Gri :GitRun git rebase -i <args>')
 
 cmd('GitDiffMain', function()
   vim.cmd('DiffviewOpen origin/' .. git.default_branch() .. '...HEAD --imply-local')
