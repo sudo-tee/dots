@@ -50,6 +50,8 @@ return {
     },
     keymap = {
       preset = 'enter',
+      ['<C-n>'] = { 'show' },
+      ['<C-space>'] = { 'fallback' },
     },
 
     completion = {

@@ -132,6 +132,17 @@ if vim.fn.executable('nvr') == 1 then
 end
 
 vim.g.disable_copilot = os.getenv('DISABLE_COPILOT') == 'true'
+if vim.g.disable_copilot then
+  require('custom.lib.databricks_inline').setup({
+    base_url = vim.env.DATABRICKS_OPENAI_BASE_URL,
+    -- Leave unset to get the benchmarked default (databricks-gemini-3-flash); see the model
+    -- comment in custom/lib/databricks_inline.lua for the numbers behind that choice.
+    model = vim.env.DATABRICKS_COMPLETION_MODEL,
+    -- gpt-* endpoints only. Keep 'none': 'minimal' is rejected outright and 'low' spends the
+    -- token budget on reasoning, dropping measured quality from 0.62 to 0.12.
+    reasoning_effort = vim.env.DATABRICKS_COMPLETION_EFFORT,
+  })
+end
 
 vim.g.notes_dir = os.getenv('HOME') .. '/Projects/notes/WorkDocs/scratch'
 vim.g.have_nerd_font = true
