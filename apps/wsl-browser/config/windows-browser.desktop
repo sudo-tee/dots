@@ -1,0 +1,6 @@
+[Desktop Entry]
+Type=Application
+Name=Windows Default Browser
+Exec=/mnt/c/Windows/explorer.exe %u
+NoDisplay=true
+MimeType=x-scheme-handler/http;x-scheme-handler/https;text/html;

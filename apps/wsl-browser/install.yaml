@@ -1,0 +1,23 @@
+- defaults:
+    link:
+      create: true
+      relink: true
+    shell:
+      stdout: true
+      stderr: true
+      quiet: true
+
+- link:
+    ~/.local/share/applications/windows-browser.desktop:
+      force: true
+      path: apps/wsl-browser/config/windows-browser.desktop
+
+- shell:
+    - description: "💿💿💿 Setting Windows browser as default 💿💿💿"
+      command: |
+        sudo cp apps/wsl-browser/config/WSLInterop.conf /usr/lib/binfmt.d/WSLInterop.conf
+        sudo systemctl restart systemd-binfmt
+        xdg-settings set default-web-browser windows-browser.desktop
+        for mime in x-scheme-handler/http x-scheme-handler/https text/html; do
+          xdg-mime default windows-browser.desktop "$mime"
+        done
