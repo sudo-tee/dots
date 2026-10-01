@@ -1,0 +1,386 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+AUTH_PATH="${CODEX_HOME:-$HOME/.codex}/auth.json"
+JSON_OUTPUT=false
+COMPACT_OUTPUT=false
+
+usage() {
+  cat <<'EOF'
+Usage: codex-usage [--json] [--compact]
+
+Options:
+  --json      Print machine-readable JSON
+  --compact   Print compact single-line-per-window view with bars
+  -h, --help  Show this help
+EOF
+}
+
+die() {
+  echo "codex-usage: $*" >&2
+  exit 1
+}
+
+while (($# > 0)); do
+  case "$1" in
+    --json)
+      JSON_OUTPUT=true
+      ;;
+    --compact)
+      COMPACT_OUTPUT=true
+      ;;
+    -h|--help)
+      usage
+      exit 0
+      ;;
+    *)
+      echo "Unknown option: $1" >&2
+      usage >&2
+      exit 2
+      ;;
+  esac
+
+  shift
+done
+
+command -v curl >/dev/null 2>&1 ||
+  die "missing dependency: curl"
+
+command -v jq >/dev/null 2>&1 ||
+  die "missing dependency: jq"
+
+[[ -r "$AUTH_PATH" ]] ||
+  die "Codex auth file not found: $AUTH_PATH"
+
+TOKEN="$(
+  jq -er '
+    .tokens.access_token
+    // error("Access token not found")
+  ' "$AUTH_PATH"
+)" || die "could not read access token from $AUTH_PATH"
+
+ACCOUNT_ID="$(
+  jq -er '
+    .tokens.account_id
+    // .account_id
+    // error("Account ID not found")
+  ' "$AUTH_PATH"
+)" || die "could not read account ID from $AUTH_PATH"
+
+TMP_DIR="$(mktemp -d)"
+trap 'rm -rf "$TMP_DIR"' EXIT
+
+request() {
+  local endpoint="$1"
+  local output="$2"
+  local status
+
+  status="$(
+    curl -sS \
+      -o "$output" \
+      -w '%{http_code}' \
+      "https://chatgpt.com/backend-api/$endpoint" \
+      -H "Authorization: Bearer $TOKEN" \
+      -H "ChatGPT-Account-ID: $ACCOUNT_ID" \
+      -H 'originator: Codex CLI'
+  )" || {
+    echo "Request failed: $endpoint" >&2
+    return 1
+  }
+
+  if [[ "$status" != "200" ]]; then
+    echo "Request to $endpoint failed with HTTP $status" >&2
+
+    if [[ -s "$output" ]]; then
+      cat "$output" >&2
+      echo >&2
+    fi
+
+    return 1
+  fi
+
+  if ! jq -e . "$output" >/dev/null 2>&1; then
+    echo "Request to $endpoint returned invalid JSON" >&2
+
+    if [[ -s "$output" ]]; then
+      cat "$output" >&2
+      echo >&2
+    fi
+
+    return 1
+  fi
+}
+
+USAGE_RESPONSE="$TMP_DIR/usage.json"
+CREDITS_RESPONSE="$TMP_DIR/credits.json"
+
+request \
+  'wham/usage' \
+  "$USAGE_RESPONSE" ||
+  exit 1
+
+request \
+  'wham/rate-limit-reset-credits' \
+  "$CREDITS_RESPONSE" ||
+  exit 1
+
+RESULT="$(
+  jq -n \
+    --slurpfile usage "$USAGE_RESPONSE" \
+    --slurpfile credits "$CREDITS_RESPONSE" '
+      def timestamp_iso:
+        if type == "number" then
+          strftime("%Y-%m-%dT%H:%M:%SZ")
+        else
+          null
+        end;
+
+      def duration_seconds:
+        .limit_window_seconds?
+        // .window_seconds?
+        // (
+          .window_minutes?
+          // .window_duration_mins?
+          | if type == "number" then
+              . * 60
+            else
+              null
+            end
+        );
+
+      def usage_windows:
+        [
+          $usage[0]
+          | ..
+          | objects
+          | duration_seconds as $duration
+          | select(
+              ($duration | type) == "number"
+              and (.used_percent? | type) == "number"
+            )
+          | {
+              used_percent,
+              remaining_percent: (100 - .used_percent),
+              duration_seconds: $duration,
+              resets_at: (
+                .reset_at
+                // .resets_at
+                // .reset_at_epoch
+              )
+            }
+        ]
+        | unique_by([
+            .duration_seconds,
+            .used_percent,
+            .resets_at
+          ]);
+
+      usage_windows as $windows
+      | (
+          $windows
+          | map(select(.duration_seconds == 604800))
+          | first
+        ) as $weekly
+
+      | (
+          $windows
+          | map(select(.duration_seconds == 18000))
+          | first
+        ) as $five_hour
+
+      | {
+          five_hour:
+            if $five_hour == null then
+              null
+            else
+              $five_hour + {
+                resets_at_iso: (
+                  $five_hour.resets_at
+                  | timestamp_iso
+                )
+              }
+            end,
+
+          weekly:
+            if $weekly == null then
+              null
+            else
+              $weekly + {
+                resets_at_iso: (
+                  $weekly.resets_at
+                  | timestamp_iso
+                )
+              }
+            end,
+
+          reset_credits: {
+            available_count: (
+              $credits[0].available_count
+              // 0
+            ),
+
+            total_earned_count: (
+              $credits[0].total_earned_count
+              // 0
+            ),
+
+            credits: [
+              $credits[0].credits[]?
+              | {
+                  status,
+                  granted_at,
+                  granted_at_iso: (
+                    .granted_at
+                    | timestamp_iso
+                  ),
+                  expires_at,
+                  expires_at_iso: (
+                    .expires_at
+                    | timestamp_iso
+                  )
+                }
+            ]
+          }
+        }
+    '
+)"
+
+if $JSON_OUTPUT; then
+  jq . <<<"$RESULT"
+  exit 0
+fi
+
+if $COMPACT_OUTPUT; then
+  jq -r '
+    def local_time:
+      if type == "number" then
+        strflocaltime("%a %b %d at %H:%M")
+      elif type == "string" then
+        (
+          (sub("\\.\\d+"; "") | fromdateiso8601?) as $ep
+          | if ($ep | type) == "number" then
+              $ep | strflocaltime("%a %b %d at %H:%M")
+            else
+              .
+            end
+        )
+      else
+        "unknown"
+      end;
+
+    def bar($width):
+      if . == null then
+        "n/a"
+      else
+        (
+          (./100 * $width | floor) as $fill
+          | "[" + ("█" * $fill) + ("░" * ($width - $fill)) + "]"
+        )
+      end;
+
+    def color($pct):
+      if $pct < 50 then
+        "32"
+      elif $pct < 80 then
+        "33"
+      else
+        "31"
+      end;
+
+    def colored($pct; $text):
+      "\u001b[" + (color($pct)) + "m" + $text + "\u001b[0m";
+
+    (
+      if .five_hour == null then
+        "5h: n/a \(null | bar(10))"
+      else
+        colored(
+          .five_hour.used_percent;
+          "5h: \(.five_hour.used_percent)% \(.five_hour.used_percent | bar(10))"
+          + "  renews \(.five_hour.resets_at | local_time)"
+        )
+      end
+    ),
+
+    (
+      if .weekly == null then
+        "Weekly: n/a \(null | bar(10))"
+      else
+        colored(
+          .weekly.used_percent;
+          "Weekly: \(.weekly.used_percent)% \(.weekly.used_percent | bar(10))"
+          + "  renews \(.weekly.resets_at | local_time)"
+        )
+      end
+    ),
+
+    (
+      (
+        .reset_credits.available_count
+      ) as $avail
+      | (
+          .reset_credits.total_earned_count
+        ) as $earned
+      | (
+          .reset_credits.credits
+          | map(select(.status == "available" or .status == "earned"))
+          | sort_by(.expires_at)
+          | map(
+              "\(.status) exp \(.expires_at | local_time)"
+            )
+          | join("  ·  ")
+        ) as $credit_list
+      | "Banked resets: \($avail) available (\($earned) earned)"
+        + (
+          if $credit_list == "" then
+            ""
+          else
+            "  ·  " + $credit_list
+          end
+        )
+    )
+  ' <<<"$RESULT"
+  exit 0
+fi
+
+jq -r '
+  def local_time:
+    if type == "number" then
+      strflocaltime("%a %b %d at %H:%M")
+    elif type == "string" then
+      .
+    else
+      "unknown"
+    end;
+
+  if .five_hour == null then
+    "5h usage: no 5h window found"
+  else
+    "\(.five_hour.used_percent)% of 5h used"
+    + " — \(.five_hour.remaining_percent)% remaining"
+    + "\nResets: \(.five_hour.resets_at | local_time)"
+  end,
+
+  "",
+
+  if .weekly == null then
+    "Weekly usage: no weekly window found"
+  else
+    "\(.weekly.used_percent)% weekly used"
+    + " — \(.weekly.remaining_percent)% remaining"
+    + "\nResets: \(.weekly.resets_at | local_time)"
+  end,
+
+  "",
+
+  "Reset credits: "
+    + "\(.reset_credits.available_count) available"
+    + " (\(.reset_credits.total_earned_count) earned)",
+
+  (
+    .reset_credits.credits[]
+    | "  - \(.status // "unknown")"
+      + " · granted \(.granted_at | local_time)"
+      + " · expires \(.expires_at | local_time)"
+  )
+' <<<"$RESULT"
