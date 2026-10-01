@@ -5,19 +5,47 @@ local keymap_prefix = '<leader>a'
 vim.api.nvim_create_user_command('OpencodeReplay', function(opts)
   vim.opt.runtimepath:append('.')
   require('tests.manual.renderer_replay').start({ set_statuscolumn = false })
-  local args = vim.split(opts.args, '%s+')
-  local file = (args[1] and args[1] ~= '') and args[1] or 'multiple-question-ask-reply-all'
-  local delay = (args[2] and args[2] ~= '') and tonumber(args[2]) or 200
-  vim.schedule(function()
-    vim.cmd('ReplayLoad tests/data/' .. file .. '.json')
-    vim.defer_fn(function()
-      vim.cmd('ReplayAll ' .. delay)
-    end, 1000)
-  end)
+  local args = vim.split(opts.args, '%s+', { trimempty = true })
+  local file_arg = args[1] or ''
+  local delay = tonumber(args[2]) or 200
+  local data_dir = '/home/francis/Projects/_nvim/opencode.nvim/tests/data/'
+
+  local function load_and_play(file)
+    vim.schedule(function()
+      vim.cmd('ReplayLoad ' .. vim.fn.fnameescape(file))
+      vim.defer_fn(function()
+        vim.cmd('ReplayAll ' .. delay)
+      end, 1000)
+    end)
+  end
+
+  if file_arg == '' then
+    Snacks.picker.files({
+      cwd = data_dir,
+      exclude = { '*.expected.json' },
+      ft = 'json',
+      confirm = function(picker, item)
+        picker:close()
+        local file = item and (item.file or item.text)
+        if not file or file == '' then
+          return
+        end
+        if file:sub(1, 1) ~= '/' then
+          file = data_dir .. file
+        end
+        load_and_play(file)
+      end,
+    })
+    return
+  end
+  load_and_play('tests/data/' .. file_arg .. '.json')
 end, { nargs = '*' })
 
 vim.api.nvim_create_user_command('OpencodeReplaySave', function()
-  local file = vim.fn.input({ prompt = 'Save capruted event', default = 'tests/data/data.json' })
+  local file = vim.fn.input({
+    prompt = 'Save capruted event',
+    default = '/home/francis/Projects/_nvim/opencode.nvim/tests/data/data.json',
+  })
   if file then
     require('opencode.ui.debug_helper').save_captured_events(file)
   end
@@ -27,6 +55,7 @@ return {
   event = 'VeryLazy',
   -- 'sudo_tee/opencode.nvim',
   dir = '/home/francis/Projects/_nvim/opencode.nvim/',
+  ---@module 'opencode'
   ---@type OpencodeConfig
   opts = {
     -- preferred_picker = 'mini.pick',
@@ -34,9 +63,10 @@ return {
     -- preferred_picker = 'fzf',
     -- preferred_completion = 'vim_complete',
     -- preferred_picker = 'snacks',
+    opencode_executable = is_personal_project and '/home/francis/.local/bin/opencode-personal' or 'opencode2',
     snapshot_path = is_personal_project and '/home/francis/.local/share/opencode-personal/opencode' or nil,
     server = {
-      url = 'http://127.0.0.1',
+      -- url = 'http://127.0.0.1',
       port = is_personal_project and 4096 or 4444,
       -- timeout = 5,
       -- kill_command = nil,
@@ -79,6 +109,9 @@ return {
       tools = {
         show_output = true,
       },
+      actions = {
+        open_in_new_tab = true,
+      },
     },
     context = {
       diagnostics = {
@@ -97,8 +130,7 @@ return {
       show_ids = true,
     },
     quick_chat = {
-      default_model = is_personal_project and 'opencode/deepseek-v4-flash-free'
-        or 'databricks-gpt/databricks-gpt-5-6-luna',
+      default_model = is_personal_project and 'opencode/big-pickle' or 'databricks-gpt/databricks-gpt-6-luna',
     },
     ui = {
       output = {
@@ -115,7 +147,6 @@ return {
   ---@param _ any
   ---@param opts OpencodeConfig
   config = function(_, opts)
-    opts.opencode_executable = vim.g.opencode_executable
     require('opencode').setup(opts)
   end,
 }

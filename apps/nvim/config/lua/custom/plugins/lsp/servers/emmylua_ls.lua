@@ -40,6 +40,7 @@ return {
           vim.env.VIMRUNTIME,
           vim.fn.stdpath('data') .. '/lazy/lazy.nvim',
           vim.fn.stdpath('data') .. '/lazy/snacks.nvim',
+          '/home/francis/Projects/_nvim/opencode.nvim',
         },
         ignoreGlobs = {
           '**/*_spec.lua',
