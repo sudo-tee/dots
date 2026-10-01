@@ -1,44 +1,246 @@
 {
-    "$schema": "https://opencode.ai/config.json",
-    "permission": {
-        "edit": "allow",
-        "bash": "allow",
-        "webfetch": "allow"
-    },
-    "autoshare": false,
-    "autoupdate": false,
-    "model": "github-copilot/gpt-5-mini",
-    "agent": {
-        "no-trust": {
-            "model": "github-copilot/gpt-5-mini",
-            "description": "Reads and understands code, answers questions, and provides explanations",
-            "mode": "subagent",
-            "prompt": "You are a code reader. Provide clear explanations and answer questions about the code.",
-            "permission": {
-                "bash": "ask",
-                "edit": "ask"
+  "$schema": "https://opencode.ai/config.json",
+  "permission": {},
+  "autoupdate": false,
+  "provider": {
+    "databricks-gpt": {
+      "npm": "@ai-sdk/openai",
+      "name": "Databricks GPT",
+      "options": {
+        "baseURL": "http://127.0.0.1:4000/v1",
+        "apiKey": "{env:ANTHROPIC_AUTH_TOKEN}"
+      },
+      "models": {
+        "databricks-gpt-6-1-sol": {
+          "name": "Databricks GPT-6.1 Sol",
+          "modalities": {
+            "input": [
+              "text",
+              "image"
+            ],
+            "output": [
+              "text"
+            ]
+          },
+          "options": {
+            "reasoningEffort": "medium"
+          },
+          "variants": {
+            "low": {
+              "reasoningEffort": "low"
+            },
+            "medium": {
+              "reasoningEffort": "medium"
+            },
+            "high": {
+              "reasoningEffort": "high"
+            },
+            "xhigh": {
+              "reasoningEffort": "xhigh"
+            },
+            "max": {
+              "reasoningEffort": "max"
             }
+          }
         },
-        "plan": {}
-    },
-    "mcp": {
-        "context7": {
-            "enabled": false,
-            "command": [
-                "npx",
-                "-y",
-                "@upstash/context7-mcp"
+        "databricks-gpt-6-luna": {
+          "name": "Databricks GPT-6 Luna",
+          "modalities": {
+            "input": [
+              "text",
+              "image"
             ],
-            "type": "local"
+            "output": [
+              "text"
+            ]
+          },
+          "options": {
+            "reasoningEffort": "medium"
+          },
+          "variants": {
+            "low": {
+              "reasoningEffort": "low"
+            },
+            "medium": {
+              "reasoningEffort": "medium"
+            },
+            "high": {
+              "reasoningEffort": "high"
+            },
+            "xhigh": {
+              "reasoningEffort": "xhigh"
+            },
+            "max": {
+              "reasoningEffort": "max"
+            }
+          }
         },
-        "chrome-devtools": {
-            "enabled": false,
-            "command": [
-                "npx",
-                "-y",
-                "chrome-devtools-mcp@latest"
+        "databricks-gpt-5-6-terra": {
+          "name": "Databricks GPT-5.6 Terra",
+          "modalities": {
+            "input": [
+              "text",
+              "image"
             ],
-            "type": "local"
+            "output": [
+              "text"
+            ]
+          },
+          "options": {
+            "reasoningEffort": "medium"
+          },
+          "variants": {
+            "low": {
+              "reasoningEffort": "low"
+            },
+            "medium": {
+              "reasoningEffort": "medium"
+            },
+            "high": {
+              "reasoningEffort": "high"
+            },
+            "xhigh": {
+              "reasoningEffort": "xhigh"
+            },
+            "max": {
+              "reasoningEffort": "max"
+            }
+          }
+        },
+        "databricks-gpt-6-astra": {
+          "name": "Databricks GPT-6 Astra",
+          "modalities": {
+            "input": [
+              "text",
+              "image"
+            ],
+            "output": [
+              "text"
+            ]
+          },
+          "options": {
+            "reasoningEffort": "medium"
+          },
+          "variants": {
+            "low": {
+              "reasoningEffort": "low"
+            },
+            "medium": {
+              "reasoningEffort": "medium"
+            },
+            "high": {
+              "reasoningEffort": "high"
+            },
+            "xhigh": {
+              "reasoningEffort": "xhigh"
+            },
+            "max": {
+              "reasoningEffort": "max"
+            }
+          }
         }
+      }
     },
+    "databricks-anthropic": {
+      "npm": "@ai-sdk/anthropic",
+      "name": "Databricks Anthropic",
+      "options": {
+        "baseURL": "http://127.0.0.1:4000/v1",
+        "authToken": "{env:ANTHROPIC_AUTH_TOKEN}"
+      },
+      "models": {
+        "databricks-claude-opus-5-5": {
+          "name": "Databricks Claude Opus 5.5",
+          "headers": {
+            "x-databricks-use-coding-agent-mode": "true"
+          },
+          "modalities": {
+            "input": [
+              "text",
+              "image"
+            ],
+            "output": [
+              "text"
+            ]
+          },
+          "options": {
+            "reasoningEffort": "high",
+            "toolStreaming": false
+          },
+          "variants": {
+            "low": {
+              "reasoningEffort": "low"
+            },
+            "medium": {
+              "reasoningEffort": "medium"
+            },
+            "high": {
+              "reasoningEffort": "high"
+            },
+            "xhigh": {
+              "reasoningEffort": "xhigh"
+            },
+            "max": {
+              "reasoningEffort": "max"
+            }
+          }
+        },
+        "databricks-claude-sonnet-5-5": {
+          "name": "Databricks Claude Sonnet 5.5",
+          "headers": {
+            "x-databricks-use-coding-agent-mode": "true"
+          },
+          "modalities": {
+            "input": [
+              "text",
+              "image"
+            ],
+            "output": [
+              "text"
+            ]
+          },
+          "options": {
+            "reasoningEffort": "high",
+            "toolStreaming": false
+          },
+          "variants": {
+            "low": {
+              "reasoningEffort": "low"
+            },
+            "medium": {
+              "reasoningEffort": "medium"
+            },
+            "high": {
+              "reasoningEffort": "high"
+            },
+            "xhigh": {
+              "reasoningEffort": "xhigh"
+            },
+            "max": {
+              "reasoningEffort": "max"
+            }
+          }
+        },
+        "databricks-claude-haiku-4-5": {
+          "name": "Databricks Claude Haiku 4.5",
+          "headers": {
+            "x-databricks-use-coding-agent-mode": "true"
+          },
+          "modalities": {
+            "input": [
+              "text",
+              "image"
+            ],
+            "output": [
+              "text"
+            ]
+          },
+          "options": {
+            "toolStreaming": false
+          }
+        }
+      }
+    },
+  },
+  "model": "databricks-gpt/databricks-gpt-6-sol",
 }

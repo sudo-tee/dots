@@ -14,9 +14,8 @@
 - shell:
     - description: "💿💿💿 Installing opencode 💿💿💿"
       command: |
-          brew install sst/tap/opencode
-          
-          echo "🪄 Updating the cache (because of proxy)"
+          brew install anomalyco/tap/opencode
+          #echo "🪄 Updating the cache (because of proxy)"
           # cd ~/.cache/opencode
           # http_proxy="" https_proxy="" bun @ai-sdk/openai-compatible
           # http_proxy="" https_proxy="" opencode run "hi"

@@ -1,2 +1,2 @@
 #!/usr/bin/env bash
-XDG_DATA_HOME=~/.local/share/opencode-personal opencode "$@"
+XDG_DATA_HOME=~/.local/share/opencode-personal opencode2 "$@"
