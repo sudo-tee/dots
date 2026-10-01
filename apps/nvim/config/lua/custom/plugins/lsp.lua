@@ -86,7 +86,7 @@ return {
         -- clangd = {},
         -- gopls = {},
         -- pyright = {},
-        tsgo = require('custom.plugins.lsp.servers.tsgo'),
+        tsc = require('custom.plugins.lsp.servers.tsc'),
         eslint = require('custom.plugins.lsp.servers.eslint'),
         -- lua_ls = require('custom.plugins.lsp.servers.luals'),
         emmylua_ls = require('custom.plugins.lsp.servers.emmylua_ls'),
@@ -100,7 +100,7 @@ return {
       }
 
       for server_name, config in pairs(servers) do
-        if server_name ~= 'emmylua_ls' and server_name ~= 'cssls' then
+        if server_name ~= 'emmylua_ls' and server_name ~= 'cssls' and server_name ~= 'tsc' then
           require('lspconfig')[server_name].setup(config)
         end
         vim.lsp.config(server_name, config)
