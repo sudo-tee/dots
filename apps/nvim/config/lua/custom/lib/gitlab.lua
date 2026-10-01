@@ -90,6 +90,7 @@ M.get_mr_list = function()
 end
 
 M.generate_chat_message_for_mr = function()
+  local jira = require('custom.lib.jira')
   local details = M.get_mr_details()
 
   if details == nil then
@@ -102,7 +103,7 @@ M.generate_chat_message_for_mr = function()
   local web_url = details.web_url
 
   local message =
-    string.format('Ⓜ MR (%s) | %s \n%s \n\n @nebula-dev @nebula-testers', project_folder, title, web_url)
+    string.format('Ⓜ MR (%s) | %s \n%s \n\n Ticket: %s', project_folder, title, web_url, jira.get_issue_link())
   vim.notify('⚡ MR message copied to clipboard!', vim.log.levels.INFO)
   vim.fn.setreg('+', message)
 end
