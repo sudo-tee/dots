@@ -1,23 +1,44 @@
 local M = {}
 
 local function ignore_float_filter(filetype, content)
-  -- this is lsp progress from noice
-  if filetype == 'noice' or content:find('Loading workspace') then
+  if content:find('Loading workspace') then
     return true
   end
 
   if filetype == 'mininotify' then
     return true
   end
+
+  if filetype:match('^opencode') then
+    return true
+  end
+
+  -- ui2 (extui) cmdline window is always present
+  if filetype == 'cmd' then
+    return true
+  end
 end
 
-M.close_float_windows = function()
+local function is_ignored_float(win, ignore_float)
+  if vim.api.nvim_win_get_config(win).hide then
+    return true
+  end
+
+  local bufnr = vim.api.nvim_win_get_buf(win)
+  local file_type = vim.bo[bufnr].filetype
+  local first_line = vim.api.nvim_buf_get_lines(bufnr, 0, 1, false)[1] or ''
+  return ignore_float(file_type, first_line)
+end
+
+M.close_float_windows = function(ignore_float)
+  ignore_float = ignore_float or ignore_float_filter
+  local current_win = vim.api.nvim_get_current_win()
   local closed_windows = {}
   vim.schedule(function()
     for _, win in ipairs(vim.api.nvim_list_wins()) do
       if vim.api.nvim_win_is_valid(win) then
         local config = vim.api.nvim_win_get_config(win)
-        if config.relative ~= '' then
+        if config.relative ~= '' and (win == current_win or not is_ignored_float(win, ignore_float)) then
           vim.api.nvim_win_close(win, false)
           table.insert(closed_windows, win)
         end
@@ -33,20 +54,10 @@ function M.has_float_window(ignore_float)
     if vim.api.nvim_win_is_valid(win) then
       local config = vim.api.nvim_win_get_config(win)
 
-      if config.relative ~= '' then
-        local win_info = vim.fn.getwininfo(win)
-        local bufnr = win_info[1].bufnr
-        local file_type = vim.bo[bufnr].filetype
-        local first_line = vim.api.nvim_buf_get_lines(bufnr, 0, 1, false)[1]
-
-        if ignore_float(file_type, first_line) then
-          goto continue
-        end
-
+      if config.relative ~= '' and not is_ignored_float(win, ignore_float) then
         return true
       end
     end
-    ::continue::
   end
   return false
 end
@@ -82,7 +93,7 @@ end
 
 function M.close()
   if M.has_float_window(ignore_float_filter) then
-    return M.close_float_windows()
+    return M.close_float_windows(ignore_float_filter)
   end
 
   if M.is_buffer_in_split() then
