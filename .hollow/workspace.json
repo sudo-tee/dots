@@ -1,0 +1,22 @@
+{
+  "name": "dotfiles",
+  "tabs": [
+    {
+      "name": "",
+      "panes": [
+        {
+          "main": true,
+          "cwd": "/home/francis/dots",
+          "domain": "UbuntuWSL",
+          "command": "nvim"
+        },
+        {
+          "size": 0.06000000238418579,
+          "direction": "horizontal",
+          "cwd": "/home/francis/dots",
+          "domain": "UbuntuWSL"
+        }
+      ]
+    }
+  ]
+}

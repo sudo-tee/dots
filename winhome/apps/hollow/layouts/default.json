@@ -1,0 +1,23 @@
+{
+  "name": "default",
+  "tabs": [
+    {
+      "name": "",
+      "panes": [
+        {
+          "command": "nvim",
+          "main": true
+        },
+        {
+	 "direction": "horizontal",
+          "size": 0.05,
+          "command": "t watch"
+        },
+        {
+          "direction": "vertical",
+          "size": 0.5
+        }
+      ]
+    }
+  ]
+}
