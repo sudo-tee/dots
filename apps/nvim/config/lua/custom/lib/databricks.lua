@@ -1,23 +1,30 @@
 local M = {}
-local CACHE = vim.fn.expand('~/.claude/claude-budget-cache.json')
-local STATUS_JS = vim.fn.expand('~/.claude/claude-status.js')
+local GATEWAY_URL = vim.env.AI_GATEWAY_URL or 'http://127.0.0.1:4000'
+
+-- Sums today's costUsd from the local ai-gateway GET /usage response, or nil on failure.
+local function parse_gateway_usage(body)
+  local ok, days = pcall(vim.json.decode, body)
+  if not ok or type(days) ~= 'table' then
+    return nil
+  end
+  local total = 0
+  for _, day in ipairs(days) do
+    total = total + (tonumber(day.costUsd) or 0)
+  end
+  return total
+end
 
 function M.get_cost()
-  local f = io.open(CACHE, 'r')
-  if not f then
-    return 'N/A'
-  end
-  local ok, data = pcall(vim.fn.json_decode, f:read('*a'))
-  f:close()
-  if ok and data and data.data then
-    return string.format('$%.2f', data.data.spent)
-  end
-  return 'N/A'
+  return vim.g.databricks_cost or 'N/A'
 end
 
 function M.refresh_cost()
-  vim.fn.jobstart({ 'node', STATUS_JS, '--refresh-cache' }, { detach = true })
-  vim.g.databricks_cost = M.get_cost()
+  vim.system({ 'curl', '-sf', '-m', '3', GATEWAY_URL .. '/usage' }, { text = true }, function(res)
+    local total = res.code == 0 and parse_gateway_usage(res.stdout) or nil
+    vim.schedule(function()
+      vim.g.databricks_cost = total and string.format('$%.2f', total) or 'N/A'
+    end)
+  end)
 end
 
 function M.setup()
