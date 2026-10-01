@@ -19,33 +19,31 @@ command('ReplaceWord', function()
   replace_text(selected_text)
 end, {})
 
--- start profiling
-command('StartProfile', function()
-  vim.cmd([[profile start profile.log]])
-  vim.cmd([[profile func *]])
-  vim.cmd([[profile file *]])
-  require('plenary.profile').start('profile-lua.log')
-  vim.notify('Profilling ...')
-end, {})
-
-command('StopProfile', function()
-  vim.cmd('profile stop')
-  require('plenary.profile').stop()
-  vim.notify('End of profilling, opening results')
-  vim.cmd('e profile.log')
-  vim.cmd('e profile-lua.log')
-end, {})
-
-local is_profiling = false
-command('ToggleProfile', function()
-  if is_profiling then
-    vim.cmd('StopProfile')
-    is_profiling = false
+-- jit profiler + inferno flamegraph
+local function toggle_profile(out)
+  if not _G.jit_profile then
+    out = out or '/tmp/tmp/profile.log'
+    _G.jit_profile_out = out
+    vim.fn.mkdir(vim.fs.dirname(out), 'p')
+    -- G option for https://github.com/jonhoo/inferno
+    require('jit.p').start('10,i1,s,m0,G', out)
+    vim.notify('profile started: ' .. out)
   else
-    vim.cmd('StartProfile')
-    is_profiling = true
+    require('jit.p').stop()
+    local profile_out = _G.jit_profile_out or out or '/tmp/tmp/profile.log'
+    _G.jit_profile_out = nil
+    local svg = vim.fn.fnamemodify(profile_out, ':r') .. '.svg'
+    vim.fn.system(('inferno-flamegraph %s > %s'):format(profile_out, svg))
+    vim.system({ vim.env.BROWSER or 'xdg-open', svg })
+    vim.notify('profile stopped: ' .. svg)
   end
-end, {})
+  _G.jit_profile = not _G.jit_profile
+end
+
+command('ToggleProfile', function(opts)
+  local out = opts.args ~= '' and opts.args or nil
+  toggle_profile(out)
+end, { nargs = '?' })
 
 command('JiraLink', function(ticket)
   require('custom.lib.jira').create_jira_link(ticket.fargs[1])
