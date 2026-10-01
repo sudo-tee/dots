@@ -111,17 +111,22 @@ vim.opt.autoread = true
 
 vim.o.sessionoptions = 'blank,buffers,curdir,folds,help,tabpages,winsize,winpos,terminal,localoptions'
 
--- Allow misspellings
+-- Uppercase misspellings are commands so they also work when <CR> skips abbreviation expansion.
+vim.api.nvim_create_user_command('W', 'write<bang> <args>', { bang = true, nargs = '*', complete = 'file', bar = true })
+vim.api.nvim_create_user_command('Wq', 'wq<bang> <args>', { bang = true, nargs = '*', complete = 'file', bar = true })
+vim.api.nvim_create_user_command('WQ', 'wq<bang> <args>', { bang = true, nargs = '*', complete = 'file', bar = true })
+vim.api.nvim_create_user_command('Qa', 'qall<bang>', { bang = true, bar = true })
+vim.api.nvim_create_user_command(
+  'Bd',
+  'bdelete<bang> <args>',
+  { bang = true, nargs = '*', complete = 'buffer', bar = true }
+)
+vim.api.nvim_create_user_command('Q', 'quit<bang>', { bang = true, bar = true })
+vim.api.nvim_create_user_command('H', 'help <args>', { nargs = '?', complete = 'help', bar = true })
+
+-- User commands cannot start lowercase, so keep these as command-line abbreviations.
 vim.cmd.cnoreabbrev('qw', 'wq')
-vim.cmd.cnoreabbrev('W', 'w')
-vim.cmd.cnoreabbrev('Wq', 'wq')
-vim.cmd.cnoreabbrev('WQ', 'wq')
-vim.cmd.cnoreabbrev('Qa', 'qa')
-vim.cmd.cnoreabbrev('Bd', 'bd')
 vim.cmd.cnoreabbrev('bD', 'bd')
-vim.cmd.cnoreabbrev('bD', 'bd')
-vim.cmd.cnoreabbrev('Q', 'q')
-vim.cmd.cnoreabbrev('H', 'h')
 
 if vim.fn.executable('nvr') == 1 then
   local nvr = 'nvr --servername ' .. vim.v.servername .. ' '
