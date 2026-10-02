@@ -71,9 +71,14 @@ return {
       on_permission_requested = terminal_bell,
       on_question_asked = terminal_bell,
       on_done_thinking = function(session)
-        if not session.parentID then
-          terminal_bell()
+        if not session or not session.id or session.parentID then
+          return
         end
+        local session_tabs = require('opencode.state.session_tabs')
+        if not session_tabs.find_by_session_id(session.id) then
+          return
+        end
+        terminal_bell()
       end,
     },
     server = {
