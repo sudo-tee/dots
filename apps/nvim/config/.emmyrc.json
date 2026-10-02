@@ -6,8 +6,24 @@
   "workspace": {
     "library": [
       "$VIMRUNTIME",
-      { "path": "{env:HOME}/.local/share/nvim/lazy/lazy.nvim", "ignoreGlobs": ["**/*_spec.lua"] },
-      { "path": "{env:HOME}/.local/share/nvim/lazy/snacks.nvim", "ignoreGlobs": ["**/*_spec.lua"] }
+      {
+        "path": "{env:HOME}/.local/share/nvim/lazy/lazy.nvim",
+        "ignoreGlobs": [
+          "**/*_spec.lua"
+        ]
+      },
+      {
+        "path": "{env:HOME}/.local/share/nvim/lazy/snacks.nvim",
+        "ignoreGlobs": [
+          "**/*_spec.lua"
+        ]
+      },
+      {
+        "path": "{env:HOME}/Projects/_nvim/opencode.nvim",
+        "ignoreGlobs": [
+          "**/*_spec.lua"
+        ]
+      }
     ],
     "ignoreGlobs": [
       "**/*_spec.lua"
