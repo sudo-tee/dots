@@ -1,6 +1,8 @@
 local cwd = vim.fn.getcwd()
 local is_personal_project = cwd:find('Projects') == nil or cwd:find('Projects/_') ~= nil
 
+local terminal_bell = require('custom.lib.terminal_bell')
+
 local keymap_prefix = '<leader>a'
 vim.api.nvim_create_user_command('OpencodeReplay', function(opts)
   vim.opt.runtimepath:append('.')
@@ -65,6 +67,15 @@ return {
     -- preferred_picker = 'snacks',
     opencode_executable = is_personal_project and '/home/francis/.local/bin/opencode-personal' or 'opencode2',
     snapshot_path = is_personal_project and '/home/francis/.local/share/opencode-personal/opencode' or nil,
+    hooks = {
+      on_permission_requested = terminal_bell,
+      on_question_asked = terminal_bell,
+      on_done_thinking = function(session)
+        if not session.parentID then
+          terminal_bell()
+        end
+      end,
+    },
     server = {
       -- url = 'http://127.0.0.1',
       port = is_personal_project and 4096 or 4444,
